@@ -35,7 +35,7 @@ public class BinanceWebSocket {
 
         redisRepository.saveLoadSnapshotBinance("ETHBTC", "0");
         client.onDepthEvent("ETHBTC".toLowerCase(), depthEvent -> {
-            System.out.println(depthEvent);
+            System.out.println("New event");
             String loadSnapshot = redisRepository.getLoadSnapshotBinance("ETHBTC");
             if (loadSnapshot == null || loadSnapshot.equals("0")) {
                 String ethBtcJson = null;

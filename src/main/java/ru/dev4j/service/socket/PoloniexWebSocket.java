@@ -86,7 +86,6 @@ public class PoloniexWebSocket {
                 }
             }
         }
-        System.out.println(s);
     }
 
 

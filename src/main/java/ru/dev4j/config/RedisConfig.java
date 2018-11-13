@@ -14,7 +14,8 @@ public class RedisConfig {
     JedisConnectionFactory jedisConnectionFactory() {
         JedisConnectionFactory jedisConFactory
                 = new JedisConnectionFactory();
-        jedisConFactory.setHostName("127.0.0.1");
+        jedisConFactory.setHostName("***REMOVED***");
+        jedisConFactory.setPassword("kjVvmwxzTdNRBcVvpAQV6ZThMVnPQYTKhvuKck5n3FaTwvJvD9");
         jedisConFactory.setPort(6379);
         return jedisConFactory;
     }

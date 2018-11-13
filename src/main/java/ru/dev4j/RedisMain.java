@@ -11,9 +11,13 @@ import ru.dev4j.service.handler.BinanceHandler;
 public class RedisMain {
     public static void main(String[] args) {
 
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MongoDBConfig.class, PropertySourceConfig.class, ServiceConfig.class,RedisConfig.class);
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext( PropertySourceConfig.class, ServiceConfig.class, RedisConfig.class);
 
         RedisRepository redisRepository = applicationContext.getBean(RedisRepository.class);
+
+        redisRepository.saveLoadSnapshotBinance("TEST", "25");
+
+        System.out.println(redisRepository.getLoadSnapshotBinance("TEST"));
 
         System.out.println("DONE");
 
