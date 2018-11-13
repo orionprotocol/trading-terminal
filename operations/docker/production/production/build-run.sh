@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE_NAME=amocrm_flower
+IMAGE_NAME=exchange_notifier
 IMAGE_PATH=.
 PORT=80
 SSH_PORT=443
