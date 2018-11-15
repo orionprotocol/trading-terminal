@@ -23,11 +23,10 @@ public class ExchangeWebApi {
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     Map<String, List<ExchangeTuple>> handleDeal(@RequestParam(name = "symbol") String symbol, @RequestParam(name = "depth") Integer depth) {
-        if (symbol.equals("ETHBTC")) {
-            Map<String, List<ExchangeTuple>> response = firstAggregator.aggregateAsksAndBids(symbol, depth);
-            return response;
-        }
-        return new HashMap<>();
+        Map<String, List<ExchangeTuple>> response = firstAggregator.aggregateAsksAndBids(symbol, depth);
+
+        return response;
+
     }
 
 }

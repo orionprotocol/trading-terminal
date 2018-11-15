@@ -25,14 +25,6 @@ public class RedisRepository {
         redisTemplate.opsForHash().put(String.format("%s:%s:%s", DataType.BIDS.name(), exchange.name(), pair), price, size);
     }
 
-    public String getAsks(Exchange exchange, String pair, String price) {
-        return (String) redisTemplate.opsForHash().get(String.format("%s:%s:%s", DataType.ASKS.name(), exchange.name(), pair), price);
-    }
-
-    public String getBids(Exchange exchange, String pair, String price) {
-        return (String) redisTemplate.opsForHash().get(String.format("%s:%s:%s", DataType.BIDS.name(), exchange.name(), pair), price);
-    }
-
     public void deleteAsks(Exchange exchange, String pair, String price) {
         redisTemplate.opsForHash().delete(String.format("%s:%s:%s", DataType.ASKS.name(), exchange.name(), pair), price);
     }

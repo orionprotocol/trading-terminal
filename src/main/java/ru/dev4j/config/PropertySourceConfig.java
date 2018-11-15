@@ -6,7 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
-@PropertySource(value = {"classpath:mongodb.properties"})
+@PropertySource(value = {"classpath:mongodb.properties","classpath:redis.properties"})
 public class PropertySourceConfig {
 
     @Bean

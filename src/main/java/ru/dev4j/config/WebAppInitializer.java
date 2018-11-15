@@ -6,7 +6,7 @@ public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServlet
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[]{WebConfig.class, ServiceConfig.class, RedisConfig.class};
+        return new Class<?>[]{WebConfig.class, ServiceConfig.class, MongoDBConfig.class, RedisConfig.class};
     }
 
     @Override

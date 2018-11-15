@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 
 public abstract class AbstractRepository<T> {
 
-//	@Autowired
+	@Autowired
 	protected MongoTemplate mongoTemplate;
 
 	public void save(T entity) {
