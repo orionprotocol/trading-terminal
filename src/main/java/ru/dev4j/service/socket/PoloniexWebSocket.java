@@ -15,6 +15,7 @@ import ru.dev4j.service.handler.BinanceHandler;
 import ru.dev4j.service.handler.PoloniexHandler;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.util.Iterator;
 
 //@Service
@@ -66,7 +67,7 @@ public class PoloniexWebSocket {
             String aPrice = aPrices.next();
             if (asks.get(aPrice) instanceof String) {
                 String aSize = asks.getString(aPrice);
-                poloniexHandler.handleAskPair(aPrice, aSize, pair);
+                poloniexHandler.handleAskPair(new BigDecimal(aPrice), aSize, pair);
             }
         }
 
@@ -77,7 +78,7 @@ public class PoloniexWebSocket {
             String bPrice = bPrices.next();
             if (bids.get(bPrice) instanceof String) {
                 String bSize = bids.getString(bPrice);
-                poloniexHandler.handleBidsPair(bPrice, bSize, pair);
+                poloniexHandler.handleBidsPair(new BigDecimal(bPrice), bSize, pair);
             }
         }
         logger.info("Handle first snapshot");
@@ -94,7 +95,7 @@ public class PoloniexWebSocket {
                 String type = update.getString(0);
                 if (type.equals("o")) {
                     Integer updateType = update.getInt(1);
-                    String price = update.getString(2);
+                    BigDecimal price = update.getBigDecimal(2);
                     String size = update.getString(3);
                     if (updateType == 0) {
                         poloniexHandler.handleAskPair(price, size, pair);

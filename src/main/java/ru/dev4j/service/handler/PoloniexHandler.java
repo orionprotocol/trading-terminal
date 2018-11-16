@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dev4j.model.Exchange;
 import ru.dev4j.repository.redis.RedisRepository;
+import ru.dev4j.service.map.ExchangeMapService;
+
+import java.math.BigDecimal;
 
 @Service
 public class PoloniexHandler {
@@ -11,24 +14,28 @@ public class PoloniexHandler {
     @Autowired
     private RedisRepository redisRepository;
 
-    public void handleAskPair(String price, String size, String pair) {
+    @Autowired
+    private ExchangeMapService exchangeMapService;
 
-        redisRepository.deleteAsks(Exchange.POLONIEX, pair, price);
+
+    public void handleAskPair(BigDecimal price, String size, String pair) {
+
+        exchangeMapService.deleteAsks(Exchange.POLONIEX, pair, price);
 
         Double rSize = Double.valueOf(size);
         if (rSize > 0) {
-            redisRepository.addAsks(Exchange.POLONIEX, pair, price, size);
+            exchangeMapService.addAsks(Exchange.POLONIEX, pair, price, size);
         }
     }
 
 
-    public void handleBidsPair(String price, String size, String pair) {
+    public void handleBidsPair(BigDecimal price, String size, String pair) {
 
-        redisRepository.deleteBids(Exchange.POLONIEX, pair, price);
+        exchangeMapService.deleteBids(Exchange.POLONIEX, pair, price);
 
         Double rSize = Double.valueOf(size);
         if (rSize > 0) {
-            redisRepository.addBids(Exchange.POLONIEX, pair, price, size);
+            exchangeMapService.addBids(Exchange.POLONIEX, pair, price, size);
         }
     }
 

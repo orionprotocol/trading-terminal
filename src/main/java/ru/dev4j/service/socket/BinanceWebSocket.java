@@ -20,6 +20,7 @@ import ru.dev4j.web.api.AmoWebHooks;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 
 @Service
@@ -63,10 +64,10 @@ public class BinanceWebSocket {
                         e.printStackTrace();
                     }
                     for (OrderBookEntry orderBook : depthEvent.getAsks()) {
-                        binanceHandler.handleAskPair(orderBook.getPrice(), orderBook.getQty(), pair.getGeneralName());
+                        binanceHandler.handleAskPair(new BigDecimal(orderBook.getPrice()), orderBook.getQty(), pair.getGeneralName());
                     }
                     for (OrderBookEntry orderBook : depthEvent.getBids()) {
-                        binanceHandler.handleBidsPair(orderBook.getPrice(), orderBook.getQty(), pair.getGeneralName());
+                        binanceHandler.handleBidsPair(new BigDecimal(orderBook.getPrice()), orderBook.getQty(), pair.getGeneralName());
                     }
                     binanceHandler.handleFirstSnapshot(ethBtcJson, pair.getGeneralName());
                 }
@@ -74,10 +75,10 @@ public class BinanceWebSocket {
                     Long lastUpdateId = redisRepository.getLastUpdateIdBinance(pair.getGeneralName());
                     if (depthEvent.getFinalUpdateId() > lastUpdateId) {
                         for (OrderBookEntry orderBook : depthEvent.getAsks()) {
-                            binanceHandler.handleAskPair(orderBook.getPrice(), orderBook.getQty(), pair.getGeneralName());
+                            binanceHandler.handleAskPair(new BigDecimal(orderBook.getPrice()), orderBook.getQty(), pair.getGeneralName());
                         }
                         for (OrderBookEntry orderBook : depthEvent.getBids()) {
-                            binanceHandler.handleBidsPair(orderBook.getPrice(), orderBook.getQty(), pair.getGeneralName());
+                            binanceHandler.handleBidsPair(new BigDecimal(orderBook.getPrice()), orderBook.getQty(), pair.getGeneralName());
                         }
                     }
                 }

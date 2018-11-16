@@ -1,19 +1,22 @@
 package ru.dev4j.model;
 
+import java.math.BigDecimal;
+
 public class ExchangeTuple {
-    private String price;
+    private BigDecimal price;
     private Double size;
 
-    public ExchangeTuple(String price, Double size) {
+    public ExchangeTuple(BigDecimal price, Double size) {
+
         this.price = price;
         this.size = size;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

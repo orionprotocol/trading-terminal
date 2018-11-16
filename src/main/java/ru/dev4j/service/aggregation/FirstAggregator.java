@@ -7,17 +7,20 @@ import ru.dev4j.config.MongoDBConfig;
 import ru.dev4j.config.PropertySourceConfig;
 import ru.dev4j.config.RedisConfig;
 import ru.dev4j.config.ServiceConfig;
+import ru.dev4j.model.DataType;
 import ru.dev4j.model.Exchange;
 import ru.dev4j.model.ExchangeTuple;
 import ru.dev4j.repository.redis.RedisRepository;
+import ru.dev4j.service.map.ExchangeMapService;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
 public class FirstAggregator {
 
     @Autowired
-    private RedisRepository redisRepository;
+    private ExchangeMapService exchangeMapService;
 
     public Map<String, List<ExchangeTuple>> aggregateAsksAndBids(String pair, Integer depth) {
         List<ExchangeTuple> asks = aggregateAsksPairByDepth(pair, depth);
@@ -32,84 +35,52 @@ public class FirstAggregator {
 
     private List<ExchangeTuple> aggregateAsksPairByDepth(String pair, Integer depth) {
 
-        Map<String, Double> aggregatedTopMap = new HashMap<>();
+        TreeMap<BigDecimal, Double> aggregatedTopMap = new TreeMap<>();
 
-        Map<Object, Object> binanceAsks = redisRepository.getAllAsks(Exchange.BINANCE, pair);
+        TreeMap<BigDecimal, String> binanceAsks = exchangeMapService.getFirstAsks(Exchange.BINANCE, pair, depth);
 
-        List binanceSortedKeys = new ArrayList(binanceAsks.keySet());
-        Collections.sort(binanceSortedKeys, (Comparator<String>) (o1, o2) -> new Double(o1).compareTo(new Double(o2)));
+        mergeInMap(aggregatedTopMap, binanceAsks);
 
-        mergeInMap(depth, aggregatedTopMap, binanceAsks, binanceSortedKeys);
+        TreeMap<BigDecimal, String> poloniexAsks = exchangeMapService.getFirstAsks(Exchange.POLONIEX, pair, depth);
 
-        Map<Object, Object> poloniexAsks = redisRepository.getAllAsks(Exchange.POLONIEX, pair);
+        mergeInMap(aggregatedTopMap, poloniexAsks);
 
-        List poloniexSortedKeys = new ArrayList(poloniexAsks.keySet());
-        Collections.sort(poloniexSortedKeys, (Comparator<String>) (o1, o2) -> new Double(o1).compareTo(new Double(o2)));
-
-        mergeInMap(depth, aggregatedTopMap, poloniexAsks, poloniexSortedKeys);
-
-        List<String> aggregatedSortedKeys = new ArrayList<>(aggregatedTopMap.keySet());
-        Collections.sort(aggregatedSortedKeys, (Comparator<String>) (o1, o2) -> new Double(o1).compareTo(new Double(o2)));
-
-        List<ExchangeTuple> finalAggregatedAsks = new ArrayList<>();
-
-        for (int i = 0; i < depth; i++) {
-            String fPrice = aggregatedSortedKeys.get(i);
-            Double fSize = aggregatedTopMap.get(fPrice);
-            ExchangeTuple exchangeTuple = new ExchangeTuple(fPrice, fSize);
-            finalAggregatedAsks.add(exchangeTuple);
-        }
+        List<ExchangeTuple> finalAggregatedAsks = aggregatedTopMap.entrySet().stream()
+                .limit(depth)
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue())), List::addAll);
 
         return finalAggregatedAsks;
     }
 
     private List<ExchangeTuple> aggregateBidsPairByDepth(String pair, Integer depth) {
 
-        Map<String, Double> aggregatedTopMap = new HashMap<>();
+        TreeMap<BigDecimal, Double> aggregatedTopMap = new TreeMap<>(Comparator.reverseOrder());
 
-        Map<Object, Object> binanceBids = redisRepository.getAllBids(Exchange.BINANCE, pair);
+        TreeMap<BigDecimal, String> binanceBids = exchangeMapService.getFirstBids(Exchange.BINANCE, pair, depth);
 
-        List binanceSortedKeys = new ArrayList(binanceBids.keySet());
-        Collections.sort(binanceSortedKeys, (Comparator<String>) (o1, o2) -> new Double(o2).compareTo(new Double(o1)));
+        mergeInMap(aggregatedTopMap, binanceBids);
 
-        mergeInMap(depth, aggregatedTopMap, binanceBids, binanceSortedKeys);
+        TreeMap<BigDecimal, String> poloniexBids = exchangeMapService.getFirstBids(Exchange.POLONIEX, pair, depth);
 
-        Map<Object, Object> poloniexBids = redisRepository.getAllBids(Exchange.POLONIEX, pair);
+        mergeInMap(aggregatedTopMap, poloniexBids);
 
-        List poloniexSortedKeys = new ArrayList(poloniexBids.keySet());
-        Collections.sort(poloniexSortedKeys, (Comparator<String>) (o1, o2) -> new Double(o2).compareTo(new Double(o1)));
-
-        mergeInMap(depth, aggregatedTopMap, poloniexBids, poloniexSortedKeys);
-
-        List<String> aggregatedSortedKeys = new ArrayList<>(aggregatedTopMap.keySet());
-        Collections.sort(aggregatedSortedKeys, (Comparator<String>) (o1, o2) -> new Double(o2).compareTo(new Double(o1)));
-
-        List<ExchangeTuple> finalAggregatedBids = new ArrayList<>();
-
-        for (int i = 0; i < depth; i++) {
-            String fPrice = aggregatedSortedKeys.get(i);
-            Double fSize = aggregatedTopMap.get(fPrice);
-            ExchangeTuple exchangeTuple = new ExchangeTuple(fPrice, fSize);
-            finalAggregatedBids.add(exchangeTuple);
-        }
+        List<ExchangeTuple> finalAggregatedBids = aggregatedTopMap.entrySet().stream()
+                .limit(depth)
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue())), List::addAll);
 
         return finalAggregatedBids;
     }
 
-    private void mergeInMap(Integer depth, Map<String, Double> aggregatedTopMap, Map<Object, Object> asks, List exchangeSortedKeys) {
-        if (depth > exchangeSortedKeys.size()) {
-            depth = exchangeSortedKeys.size();
-        }
-        for (int i = 0; i < depth; i++) {
-            String price = (String) exchangeSortedKeys.get(i);
-            String size = (String) asks.get(price);
+    private void mergeInMap(Map<BigDecimal, Double> aggregatedTopMap, TreeMap<BigDecimal, String> treeMap) {
+        for (Map.Entry<BigDecimal, String> entry : treeMap.entrySet()) {
+            BigDecimal price = entry.getKey();
+            String size = entry.getValue();
             Double value = aggregatedTopMap.get(price);
             if (value == null) {
                 aggregatedTopMap.put(price, Double.valueOf(size));
             } else {
                 Double oldSize = aggregatedTopMap.get(price);
-                Double newSize = oldSize + Double.valueOf(size);
-                aggregatedTopMap.put(price, newSize);
+                aggregatedTopMap.put(price, oldSize + Double.valueOf(size));
             }
         }
     }
@@ -119,6 +90,6 @@ public class FirstAggregator {
         FirstAggregator firstAggregator = applicationContext.getBean(FirstAggregator.class);
 
         firstAggregator.aggregateAsksPairByDepth("ETHBTC", 50);
-        firstAggregator.aggregateBidsPairByDepth("ETHBTC", 50);
+
     }
 }
