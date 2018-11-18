@@ -3,22 +3,28 @@ package ru.dev4j.service.socket;
 import com.cf.client.WSSClient;
 import com.cf.client.poloniex.wss.model.PoloniexWSSSubscription;
 import com.cf.client.wss.handler.TickerMessageHandler;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.dev4j.model.DataType;
+import ru.dev4j.model.Exchange;
 import ru.dev4j.model.Pair;
 import ru.dev4j.model.PairConfig;
 import ru.dev4j.repository.db.PairConfigRepository;
+import ru.dev4j.repository.redis.RedisRepository;
 import ru.dev4j.service.handler.BinanceHandler;
 import ru.dev4j.service.handler.PoloniexHandler;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.Iterator;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-//@Service
+@Service
 public class PoloniexWebSocket {
 
     private static final String EXCHANGE_NAME = "POLONIEX";
@@ -31,27 +37,35 @@ public class PoloniexWebSocket {
     @Autowired
     private PairConfigRepository pairConfigRepository;
 
+    @Autowired
+    private RedisRepository redisRepository;
+
+    private ExecutorService executorService;
 
     @PostConstruct
     public void initConncetions() {
-        logger.info("INIT POLONIEX ETHBTC CONNECTOR");
-        try (WSSClient wssClient = new WSSClient("wss://api2.poloniex.com")) {
+        BasicThreadFactory factory = new BasicThreadFactory.Builder().namingPattern("POLONIEX-SOCKET").build();
+        executorService = Executors.newSingleThreadExecutor(factory);
+        executorService.execute(() -> {
+            logger.info("INIT POLONIEX ETHBTC CONNECTOR");
+            try (WSSClient wssClient = new WSSClient("wss://api2.poloniex.com")) {
 
-            PairConfig binanceConfig = pairConfigRepository.findByExchange(EXCHANGE_NAME);
+                PairConfig binanceConfig = pairConfigRepository.findByExchange(EXCHANGE_NAME);
 
-            for (Pair pair : binanceConfig.getPair()) {
-                wssClient.addSubscription(new PoloniexWSSSubscription(pair.getCodeName()), s -> {
-                    if (s.contains("orderBook")) {
-                        handleFirstSnapshot(s, pair.getGeneralName());
-                    } else {
-                        handleUpdates(s, pair.getGeneralName());
-                    }
-                });
+                for (Pair pair : binanceConfig.getPair()) {
+                    wssClient.addSubscription(new PoloniexWSSSubscription(pair.getCodeName()), s -> {
+                        if (s.contains("orderBook")) {
+                            handleFirstSnapshot(s, pair.getGeneralName());
+                        } else {
+                            handleUpdates(s, pair.getGeneralName());
+                        }
+                    });
+                }
+                wssClient.run(1000000000);
+            } catch (Exception e) {
+                logger.error(e);
             }
-            wssClient.run(30000);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     private void handleFirstSnapshot(String s, String pair) {
@@ -85,7 +99,7 @@ public class PoloniexWebSocket {
     }
 
     private void handleUpdates(String s, String pair) {
-        logger.info(String.format("NEW UPDATE %s POLONIEX",pair));
+        logger.info(String.format("NEW UPDATE %s POLONIEX", pair));
         String validJSON = "{'updates':" + s.substring(s.indexOf("[["), s.length() - 1) + "}";
         JSONObject updateObj = new JSONObject(validJSON);
         JSONArray updates = updateObj.getJSONArray("updates");
@@ -99,9 +113,11 @@ public class PoloniexWebSocket {
                     String size = update.getString(3);
                     if (updateType == 0) {
                         poloniexHandler.handleAskPair(price, size, pair);
+                        redisRepository.saveChanges(Exchange.POLONIEX, DataType.ASKS, pair, price.toPlainString());
                     }
                     if (updateType == 1) {
                         poloniexHandler.handleBidsPair(price, size, pair);
+                        redisRepository.saveChanges(Exchange.POLONIEX, DataType.BIDS, pair, price.toPlainString());
                     }
                 }
             }

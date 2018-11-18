@@ -11,12 +11,13 @@ import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.dev4j.model.DataType;
+import ru.dev4j.model.Exchange;
 import ru.dev4j.model.Pair;
 import ru.dev4j.model.PairConfig;
 import ru.dev4j.repository.db.PairConfigRepository;
 import ru.dev4j.repository.redis.RedisRepository;
 import ru.dev4j.service.handler.BinanceHandler;
-import ru.dev4j.web.api.AmoWebHooks;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -65,9 +66,11 @@ public class BinanceWebSocket {
                     }
                     for (OrderBookEntry orderBook : depthEvent.getAsks()) {
                         binanceHandler.handleAskPair(new BigDecimal(orderBook.getPrice()), orderBook.getQty(), pair.getGeneralName());
+                        redisRepository.saveChanges(Exchange.BINANCE,DataType.ASKS,pair.getGeneralName(),orderBook.getPrice());
                     }
                     for (OrderBookEntry orderBook : depthEvent.getBids()) {
                         binanceHandler.handleBidsPair(new BigDecimal(orderBook.getPrice()), orderBook.getQty(), pair.getGeneralName());
+                        redisRepository.saveChanges(Exchange.BINANCE,DataType.BIDS,pair.getGeneralName(),orderBook.getPrice());
                     }
                     binanceHandler.handleFirstSnapshot(ethBtcJson, pair.getGeneralName());
                 }
@@ -76,9 +79,11 @@ public class BinanceWebSocket {
                     if (depthEvent.getFinalUpdateId() > lastUpdateId) {
                         for (OrderBookEntry orderBook : depthEvent.getAsks()) {
                             binanceHandler.handleAskPair(new BigDecimal(orderBook.getPrice()), orderBook.getQty(), pair.getGeneralName());
+                            redisRepository.saveChanges(Exchange.BINANCE,DataType.ASKS,pair.getGeneralName(),orderBook.getPrice());
                         }
                         for (OrderBookEntry orderBook : depthEvent.getBids()) {
                             binanceHandler.handleBidsPair(new BigDecimal(orderBook.getPrice()), orderBook.getQty(), pair.getGeneralName());
+                            redisRepository.saveChanges(Exchange.BINANCE,DataType.BIDS,pair.getGeneralName(),orderBook.getPrice());
                         }
                     }
                 }

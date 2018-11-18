@@ -7,9 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 
 
-    @RequestMapping(value = "/starter")
+    @RequestMapping(value = "/testsocket")
     public String starter() {
-        return "starter";
+        return "testsocket";
+    }
+
+    @RequestMapping(value = "/testsocket2")
+    public String starter2() {
+        return "testsocket2";
     }
 
 

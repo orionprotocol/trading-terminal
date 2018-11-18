@@ -12,6 +12,13 @@ public class ExchangeTuple {
         this.size = size;
     }
 
+    @Override
+    public String toString() {
+        return "{price=" + price +
+                ", size=" + size +
+                '}';
+    }
+
     public BigDecimal getPrice() {
         return price;
     }

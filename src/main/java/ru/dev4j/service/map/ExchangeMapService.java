@@ -85,6 +85,16 @@ public class ExchangeMapService {
         return response;
     }
 
+    public String getExchangeMapValue(Exchange exchange, DataType dataType, String pair,BigDecimal price){
+        String key = String.format("%s:%s:%s", dataType.name(), exchange.name(), pair);
+        if(dataType.equals(DataType.ASKS)){
+            checkForNullAsk(key);
+        }else {
+            checkForNullDesk(key);
+        }
+        return exchangeHolder.get(key).get(price);
+    }
+
     private void checkForNullAsk(String key) {
         ConcurrentSkipListMap<BigDecimal, String> map = exchangeHolder.get(key);
         if (map == null) {

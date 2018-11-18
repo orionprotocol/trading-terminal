@@ -33,6 +33,40 @@ public class FirstAggregator {
         return response;
     }
 
+    public Map<String, List<ExchangeTuple>> aggregateAsksAndBidsForExchange(String pair, Integer depth, Exchange exchange) {
+        List<ExchangeTuple> asks = aggregateAsksPairByDepthForExchange(pair, depth, exchange);
+        List<ExchangeTuple> bids = aggregateBidsPairByDepthForExchange(pair, depth, exchange);
+
+        Map<String, List<ExchangeTuple>> response = new HashMap<>();
+        response.put("asks", asks);
+        response.put("bids", bids);
+
+        return response;
+    }
+
+    private List<ExchangeTuple> aggregateAsksPairByDepthForExchange(String pair, Integer depth, Exchange exchange) {
+
+        TreeMap<BigDecimal, String> asks = exchangeMapService.getFirstAsks(exchange, pair, depth);
+
+        List<ExchangeTuple> finalAggregatedAsks = asks.entrySet().stream()
+                .limit(depth)
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), Double.valueOf(e.getValue()))), List::addAll);
+
+        return finalAggregatedAsks;
+    }
+
+
+    private List<ExchangeTuple> aggregateBidsPairByDepthForExchange(String pair, Integer depth, Exchange exchange) {
+
+        TreeMap<BigDecimal, String> bids = exchangeMapService.getFirstBids(exchange, pair, depth);
+
+        List<ExchangeTuple> finalAggregatedBids = bids.entrySet().stream()
+                .limit(depth)
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), Double.valueOf(e.getValue()))), List::addAll);
+
+        return finalAggregatedBids;
+    }
+
     private List<ExchangeTuple> aggregateAsksPairByDepth(String pair, Integer depth) {
 
         TreeMap<BigDecimal, Double> aggregatedTopMap = new TreeMap<>();
@@ -44,6 +78,10 @@ public class FirstAggregator {
         TreeMap<BigDecimal, String> poloniexAsks = exchangeMapService.getFirstAsks(Exchange.POLONIEX, pair, depth);
 
         mergeInMap(aggregatedTopMap, poloniexAsks);
+
+        TreeMap<BigDecimal, String> bittrexAsks = exchangeMapService.getFirstAsks(Exchange.BITTREX, pair, depth);
+
+        mergeInMap(aggregatedTopMap, bittrexAsks);
 
         List<ExchangeTuple> finalAggregatedAsks = aggregatedTopMap.entrySet().stream()
                 .limit(depth)
@@ -63,6 +101,11 @@ public class FirstAggregator {
         TreeMap<BigDecimal, String> poloniexBids = exchangeMapService.getFirstBids(Exchange.POLONIEX, pair, depth);
 
         mergeInMap(aggregatedTopMap, poloniexBids);
+
+        TreeMap<BigDecimal, String> bittrexBids = exchangeMapService.getFirstBids(Exchange.BITTREX, pair, depth);
+
+        mergeInMap(aggregatedTopMap, bittrexBids);
+
 
         List<ExchangeTuple> finalAggregatedBids = aggregatedTopMap.entrySet().stream()
                 .limit(depth)
