@@ -37,7 +37,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
         for (String channel : channels) {
             SocketHandler socketHandler = new SocketHandler(channel);
             socketHolder.addSocket(channel, socketHandler);
-            registry.addHandler(socketHandler, "/" + channel);
+            registry.addHandler(socketHandler, "/" + channel).setAllowedOrigins("*");
 
         }
     }

@@ -44,23 +44,7 @@ public class SocketHandler extends TextWebSocketHandler {
         InetSocketAddress clientAddress = session.getRemoteAddress();
         HttpHeaders handshakeHeaders = session.getHandshakeHeaders();
 
-        //the messages will be broadcasted to all users.
         logger.info("Accepted connection from: {}:{}", clientAddress.getHostString(), clientAddress.getPort());
-//        logger.info("Client hostname: {}", clientAddress.getHostName());
-//        logger.info("Client ip: {}", clientAddress.getAddress().getHostAddress());
-//        logger.info("Client port: {}", clientAddress.getPort());
-//
-//        logger.info("Session accepted protocols: {}", session.getAcceptedProtocol());
-//        logger.info("Session binary message size limit: {}", session.getBinaryMessageSizeLimit());
-//        logger.info("Session id: {}", session.getId());
-//        logger.info("Session text message size limit: {}", session.getTextMessageSizeLimit());
-//        logger.info("Session uri: {}", session.getUri().toString());
-//
-//        logger.info("Handshake header: Accept {}", handshakeHeaders.toString());
-//        logger.info("Handshake header: User-Agent {}", handshakeHeaders.get("User-Agent").toString());
-//        logger.info("Handshake header: Sec-WebSocket-Extensions {}", handshakeHeaders.get("Sec-WebSocket-Extensions").toString());
-//        logger.info("Handshake header: Sec-WebSocket-Key {}", handshakeHeaders.get("Sec-WebSocket-Key").toString());
-//        logger.info("Handshake header: Sec-WebSocket-Version {}", handshakeHeaders.get("Sec-WebSocket-Version").toString());
 
 
         sessions.add(session);
@@ -68,7 +52,12 @@ public class SocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        logger.info("Connection closed by {}:{}", session.getRemoteAddress().getHostString(), session.getRemoteAddress().getPort());
+        for (int i = 0; i < sessions.size(); i++) {
+            if (session.getId().equals(sessions.get(i).getId())) {
+                sessions.remove(i);
+                break;
+            }
+        }
         super.afterConnectionClosed(session, status);
     }
 
