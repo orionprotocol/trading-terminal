@@ -12,6 +12,13 @@ public class IndexController {
         return "testsocket";
     }
 
+
+    @RequestMapping(value = "/socket")
+    public String socket() {
+        return "socket/socket";
+    }
+
+
     @RequestMapping(value = "/testsocket2")
     public String starter2() {
         return "testsocket2";

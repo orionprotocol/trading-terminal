@@ -24,9 +24,6 @@ public class ExchangeWebApi {
     @Autowired
     private FirstAggregator firstAggregator;
 
-    @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
-
     @RequestMapping(value = "/api/v1/orderBook", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
@@ -66,13 +63,5 @@ public class ExchangeWebApi {
         return map;
     }
 
-    @RequestMapping(value = "/sendtestpair", method = RequestMethod.GET)
-    @ResponseStatus(value = HttpStatus.OK)
-    public void sendTestPair() {
-        List<ExchangeTuple> tuples = new ArrayList<>();
-        tuples.add(new ExchangeTuple(new BigDecimal(0.1232), Double.valueOf(0.0123123)));
-        tuples.add(new ExchangeTuple(new BigDecimal(0.4354), Double.valueOf(0.32432)));
-        simpMessagingTemplate.convertAndSend("/topic/ethbtc", tuples);
-    }
 
 }

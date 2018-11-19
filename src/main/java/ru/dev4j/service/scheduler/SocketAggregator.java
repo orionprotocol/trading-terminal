@@ -1,20 +1,19 @@
 package ru.dev4j.service.scheduler;
 
 
+import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Tuple;
 import ru.dev4j.model.*;
 import ru.dev4j.repository.db.PairConfigRepository;
 import ru.dev4j.repository.redis.RedisRepository;
 import ru.dev4j.service.map.ExchangeMapService;
-import ru.dev4j.service.socket.BinanceWebSocket;
+import ru.dev4j.service.socket.custom.SocketHandler;
+import ru.dev4j.service.SocketHolder;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
-import java.sql.SQLOutput;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -31,7 +30,7 @@ public class SocketAggregator {
     final static Logger logger = Logger.getLogger(SocketAggregator.class);
 
     @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
+    private SocketHolder socketHolder;
 
     private static final int DELAY = 0;
     private static final int PERIOD = 1;
@@ -41,9 +40,7 @@ public class SocketAggregator {
     private static final String POLONIEX = "POLONIEX";
     private static final String BITTREX = "BITTREX";
 
-
     private static Set<String> pairs;
-
 
     @Autowired
     private PairConfigRepository pairConfigRepository;
@@ -53,6 +50,9 @@ public class SocketAggregator {
 
     @Autowired
     private ExchangeMapService exchangeMapService;
+
+    Gson gson = new Gson();
+
 
     @PostConstruct
     public void init() {
@@ -96,7 +96,10 @@ public class SocketAggregator {
                 Long now = System.currentTimeMillis();
                 for (String pair : pairs) {
                     Map<String, List<ExchangeTuple>> aggregatedData = handlePairChanges(pair, now);
-                    simpMessagingTemplate.convertAndSend("/topic/" + pair.toLowerCase(), aggregatedData);
+                    if (aggregatedData.get("asks").size() > 0 || aggregatedData.get("bids").size() > 0) {
+                        SocketHandler socketHandler = socketHolder.getSocket(pair);
+                        socketHandler.sendNotification(gson.toJson(aggregatedData));
+                    }
                 }
             } catch (Exception e) {
                 logger.error(e);

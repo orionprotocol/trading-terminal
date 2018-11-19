@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
-//@Service
+@Service
 public class BittrexWebSocket {
 
     private static final String BITTREX_NAME = "BITTREX";
