@@ -35,18 +35,23 @@ public class SplitAggregator {
             aggregateBids(pair, price, ordQty, splitList);
         }
 
-        Map<Exchange, BigDecimal> finalMap = new HashMap<>();
-        Map<Exchange, BigDecimal> maxMap = new HashMap<>();
+        Map<Exchange, BigDecimal> sizeMap = new HashMap<>();
+        Map<Exchange, BigDecimal> priceMap = new HashMap<>();
         for (Split split : splitList) {
-            handleSplit(split, finalMap, maxMap);
+            if (dataType.equals(DataType.ASKS)) {
+                handleAsksSplit(split, sizeMap, priceMap);
+            }
+            if (dataType.equals(DataType.BIDS)) {
+                handleBidsSplit(split, sizeMap, priceMap);
+            }
         }
         List<Route> routes = new ArrayList<>();
-        routes.add(new Route(pair, Exchange.BINANCE, maxMap.get(Exchange.BINANCE) == null ? "0" : maxMap.get(Exchange.BINANCE).toPlainString(),
-                finalMap.get(Exchange.BINANCE) == null ? "0" : finalMap.get(Exchange.BINANCE).toPlainString()));
-        routes.add(new Route(pair, Exchange.BITTREX, maxMap.get(Exchange.BITTREX) == null ? "0" : maxMap.get(Exchange.BITTREX).toPlainString(),
-                finalMap.get(Exchange.BITTREX) == null ? "0" : finalMap.get(Exchange.BITTREX).toPlainString()));
-        routes.add(new Route(pair, Exchange.POLONIEX, maxMap.get(Exchange.POLONIEX) == null ? "0" : maxMap.get(Exchange.POLONIEX).toPlainString(),
-                finalMap.get(Exchange.POLONIEX) == null ? "0" : finalMap.get(Exchange.POLONIEX).toPlainString()));
+        routes.add(new Route(pair, Exchange.BINANCE, priceMap.get(Exchange.BINANCE) == null ? "0" : priceMap.get(Exchange.BINANCE).toPlainString(),
+                sizeMap.get(Exchange.BINANCE) == null ? "0" : sizeMap.get(Exchange.BINANCE).toPlainString()));
+        routes.add(new Route(pair, Exchange.BITTREX, priceMap.get(Exchange.BITTREX) == null ? "0" : priceMap.get(Exchange.BITTREX).toPlainString(),
+                sizeMap.get(Exchange.BITTREX) == null ? "0" : sizeMap.get(Exchange.BITTREX).toPlainString()));
+        routes.add(new Route(pair, Exchange.POLONIEX, priceMap.get(Exchange.POLONIEX) == null ? "0" : priceMap.get(Exchange.POLONIEX).toPlainString(),
+                sizeMap.get(Exchange.POLONIEX) == null ? "0" : sizeMap.get(Exchange.POLONIEX).toPlainString()));
 
         return routes;
 
@@ -54,21 +59,16 @@ public class SplitAggregator {
 
     public void aggregateBids(String pair, BigDecimal price, Double ordQty, List<Split> splitList) {
 
-        Iterator<Map.Entry<BigDecimal, String>> binanceBids = exchangeMapService.getAllBids(Exchange.BINANCE, pair).descendingMap().entrySet().iterator();
-        Iterator<Map.Entry<BigDecimal, String>> bittrexBids = exchangeMapService.getAllBids(Exchange.BITTREX, pair).descendingMap().entrySet().iterator();
-        Iterator<Map.Entry<BigDecimal, String>> poloniexBids = exchangeMapService.getAllBids(Exchange.POLONIEX, pair).descendingMap().entrySet().iterator();
+        Iterator<Map.Entry<BigDecimal, String>> binanceBids = exchangeMapService.getAllBids(Exchange.BINANCE, pair).entrySet().iterator();
+        Iterator<Map.Entry<BigDecimal, String>> bittrexBids = exchangeMapService.getAllBids(Exchange.BITTREX, pair).entrySet().iterator();
+        Iterator<Map.Entry<BigDecimal, String>> poloniexBids = exchangeMapService.getAllBids(Exchange.POLONIEX, pair).entrySet().iterator();
 
         Map<Exchange, Map.Entry<BigDecimal, String>> exchangeMap = new HashMap<>();
 
-        moveIteratorToPrice(binanceBids, exchangeMap, price, Exchange.BINANCE);
-
-        moveIteratorToPrice(bittrexBids, exchangeMap, price, Exchange.BITTREX);
-
-        moveIteratorToPrice(poloniexBids, exchangeMap, price, Exchange.POLONIEX);
-
         Double aggregatedSize = 0D;
+        Map.Entry<BigDecimal, String> max = maxValue();
 
-        while (ordQty > aggregatedSize) {
+        while (ordQty > aggregatedSize && (max.getKey().compareTo(price) == 1)) {
             if (exchangeMap.get(Exchange.BINANCE) == null && binanceBids.hasNext()) {
                 exchangeMap.put(Exchange.BINANCE, binanceBids.next());
             }
@@ -81,10 +81,12 @@ public class SplitAggregator {
             if (!binanceBids.hasNext() && !bittrexBids.hasNext() && !poloniexBids.hasNext()) {
                 break;
             }
-            Map.Entry<BigDecimal, String> min = findMin(exchangeMap);
-            Double minValue = Double.valueOf(min.getValue());
-            aggregatedSize = aggregatedSize + minValue;
-            aggregatedSize = extractValue(ordQty, splitList, aggregatedSize, exchangeMap, min, minValue);
+            max = findMax(exchangeMap);
+            Double maxValue = Double.valueOf(max.getValue());
+            if (max.getKey().compareTo(price) == 1) {
+                aggregatedSize = aggregatedSize + maxValue;
+                aggregatedSize = extractValue(ordQty, splitList, aggregatedSize, exchangeMap, max, maxValue);
+            }
         }
     }
 
@@ -113,9 +115,10 @@ public class SplitAggregator {
             }
             min = findMin(exchangeMap);
             Double minValue = Double.valueOf(min.getValue());
-            aggregatedSize = aggregatedSize + minValue;
-            aggregatedSize = extractValue(ordQty, splitList, aggregatedSize, exchangeMap, min, minValue);
-
+            if (price.compareTo(min.getKey()) == 1) {
+                aggregatedSize = aggregatedSize + minValue;
+                aggregatedSize = extractValue(ordQty, splitList, aggregatedSize, exchangeMap, min, minValue);
+            }
         }
     }
 
@@ -132,39 +135,42 @@ public class SplitAggregator {
     }
 
     /**
-     * Move to up strict
-     *
-     * @param iterator
-     * @param exchangeMap
-     * @param price
-     * @param exchange
-     */
-    private void moveIteratorToPrice(Iterator<Map.Entry<BigDecimal, String>> iterator,
-                                     Map<Exchange, Map.Entry<BigDecimal, String>> exchangeMap,
-                                     BigDecimal price, Exchange exchange) {
-        while (iterator.hasNext()) {
-            Map.Entry<BigDecimal, String> iteratorValue = iterator.next();
-            exchangeMap.put(exchange, iteratorValue);
-            if (price.compareTo(iteratorValue.getKey()) != 1) {
-                break;
-            }
-        }
-    }
-
-    /**
      * Full <code>finalmap</code> and <code>maxMap</code>
      *
      * @param split
      * @param finalMap
      * @param maxMap
      */
-    private void handleSplit(Split split, Map<Exchange, BigDecimal> finalMap, Map<Exchange, BigDecimal> maxMap) {
+    private void handleAsksSplit(Split split, Map<Exchange, BigDecimal> finalMap, Map<Exchange, BigDecimal> maxMap) {
         Exchange exchange = split.getExchange();
         if (maxMap.get(exchange) == null) {
             maxMap.put(exchange, split.getPrice());
         } else {
             if (split.getPrice().compareTo(maxMap.get(exchange)) == 1) {
                 maxMap.put(exchange, split.getPrice());
+            }
+        }
+        if (finalMap.get(exchange) == null) {
+            finalMap.put(exchange, split.getSize());
+        } else {
+            finalMap.put(exchange, finalMap.get(exchange).add(split.getSize()));
+        }
+    }
+
+    /**
+     * Full <code>finalmap</code> and <code>minMap</code>
+     *
+     * @param split
+     * @param finalMap
+     * @param minMap
+     */
+    private void handleBidsSplit(Split split, Map<Exchange, BigDecimal> finalMap, Map<Exchange, BigDecimal> minMap) {
+        Exchange exchange = split.getExchange();
+        if (minMap.get(exchange) == null) {
+            minMap.put(exchange, split.getPrice());
+        } else {
+            if (split.getPrice().compareTo(minMap.get(exchange)) == -1) {
+                minMap.put(exchange, split.getPrice());
             }
         }
         if (finalMap.get(exchange) == null) {
@@ -188,6 +194,23 @@ public class SplitAggregator {
         if (smallest.getKey().compareTo(bittrex.getKey()) == 1) smallest = bittrex;
         if (smallest.getKey().compareTo(poloniex.getKey()) == 1) smallest = poloniex;
         return smallest;
+    }
+
+
+    /**
+     * Поиска наибольшего из 3х бирж
+     *
+     * @param exchangeMap
+     * @return
+     */
+    private Map.Entry<BigDecimal, String> findMax(Map<Exchange, Map.Entry<BigDecimal, String>> exchangeMap) {
+        Map.Entry<BigDecimal, String> biggest = exchangeMap.get(Exchange.BINANCE) == null ? minValue() : exchangeMap.get(Exchange.BINANCE);
+        Map.Entry<BigDecimal, String> bittrex = exchangeMap.get(Exchange.BITTREX) == null ? minValue() : exchangeMap.get(Exchange.BITTREX);
+        Map.Entry<BigDecimal, String> poloniex = exchangeMap.get(Exchange.POLONIEX) == null ? minValue() : exchangeMap.get(Exchange.POLONIEX);
+
+        if (biggest.getKey().compareTo(bittrex.getKey()) == -1) biggest = bittrex;
+        if (biggest.getKey().compareTo(poloniex.getKey()) == -1) biggest = poloniex;
+        return biggest;
     }
 
 
@@ -256,8 +279,20 @@ public class SplitAggregator {
     }
 
     public static void main(String[] args) {
-        BigDecimal a = new BigDecimal(0.000000001);
-        BigDecimal b = new BigDecimal(0.000000002);
-        BigDecimal c = new BigDecimal(0.15);
+        BigDecimal a = new BigDecimal(0.150100001);
+        BigDecimal b = new BigDecimal(0.200000002);
+        BigDecimal c = new BigDecimal(0.35);
+        Map.Entry<BigDecimal, String> ab = new AbstractMap.SimpleEntry(a, null);
+        Map.Entry<BigDecimal, String> bb = new AbstractMap.SimpleEntry(b, null);
+        Map.Entry<BigDecimal, String> cb = new AbstractMap.SimpleEntry(c, null);
+
+        Map<Exchange, Map.Entry<BigDecimal, String>> exchangeEntryMap = new HashMap<>();
+        exchangeEntryMap.put(Exchange.BINANCE, ab);
+        exchangeEntryMap.put(Exchange.BITTREX, bb);
+        exchangeEntryMap.put(Exchange.POLONIEX, cb);
+
+        SplitAggregator splitAggregator = new SplitAggregator();
+
+        System.out.println(splitAggregator.findMax(exchangeEntryMap));
     }
 }
