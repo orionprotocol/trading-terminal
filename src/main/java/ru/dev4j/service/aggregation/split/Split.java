@@ -9,9 +9,16 @@ public class Split {
     private BigDecimal size;
     private Exchange exchange;
 
-    public Split(BigDecimal price, BigDecimal size, Exchange exchange) {
+    public
+    Split(BigDecimal price, BigDecimal size, Exchange exchange) {
         this.price = price;
         this.size = size;
+        this.exchange = exchange;
+    }
+
+    public
+    Split(BigDecimal price, Exchange exchange) {
+        this.price = price;
         this.exchange = exchange;
     }
 

@@ -16,6 +16,12 @@ public class Route {
         this.subOrdQty = subOrdQty;
     }
 
+    public Route(String symbol, Exchange exchange, String price) {
+        this.symbol = symbol;
+        this.exchange = exchange;
+        this.price = price;
+    }
+
     public String getSymbol() {
         return symbol;
     }
