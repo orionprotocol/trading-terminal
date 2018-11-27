@@ -97,8 +97,12 @@ public class SocketAggregator {
                 for (String pair : pairs) {
                     Map<String, List<ExchangeTuple>> aggregatedData = handlePairChanges(pair, now);
                     if (aggregatedData.get("asks").size() > 0 || aggregatedData.get("bids").size() > 0) {
-                        SocketHandler socketHandler = socketHolder.getSocket(pair);
-                        socketHandler.sendNotification(gson.toJson(aggregatedData));
+                        try {
+                            SocketHandler socketHandler = socketHolder.getSocket(pair);
+                            socketHandler.sendNotification(gson.toJson(aggregatedData));
+                        }catch (Exception e){
+                            logger.error(e);
+                        }
                     }
                 }
             } catch (Exception e) {

@@ -7,6 +7,7 @@ import ru.dev4j.model.Exchange;
 import ru.dev4j.service.map.ExchangeMapService;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
 
 @Service
@@ -45,13 +46,14 @@ public class SplitAggregator {
                 handleBidsSplit(split, sizeMap, priceMap);
             }
         }
+        DecimalFormat decimalFormat = new DecimalFormat("#0.########");
         List<Route> routes = new ArrayList<>();
-        routes.add(new Route(pair, Exchange.BINANCE, priceMap.get(Exchange.BINANCE) == null ? "0" : priceMap.get(Exchange.BINANCE).toPlainString(),
-                sizeMap.get(Exchange.BINANCE) == null ? "0" : sizeMap.get(Exchange.BINANCE).toPlainString()));
-        routes.add(new Route(pair, Exchange.BITTREX, priceMap.get(Exchange.BITTREX) == null ? "0" : priceMap.get(Exchange.BITTREX).toPlainString(),
-                sizeMap.get(Exchange.BITTREX) == null ? "0" : sizeMap.get(Exchange.BITTREX).toPlainString()));
-        routes.add(new Route(pair, Exchange.POLONIEX, priceMap.get(Exchange.POLONIEX) == null ? "0" : priceMap.get(Exchange.POLONIEX).toPlainString(),
-                sizeMap.get(Exchange.POLONIEX) == null ? "0" : sizeMap.get(Exchange.POLONIEX).toPlainString()));
+        routes.add(new Route(pair, Exchange.BINANCE, priceMap.get(Exchange.BINANCE) == null ? "0" : decimalFormat.format(priceMap.get(Exchange.BINANCE)),
+                sizeMap.get(Exchange.BINANCE) == null ? "0" : decimalFormat.format(sizeMap.get(Exchange.BINANCE))));
+        routes.add(new Route(pair, Exchange.BITTREX, priceMap.get(Exchange.BITTREX) == null ? "0" : decimalFormat.format(priceMap.get(Exchange.BITTREX)),
+                sizeMap.get(Exchange.BITTREX) == null ? "0" : decimalFormat.format(sizeMap.get(Exchange.BITTREX))));
+        routes.add(new Route(pair, Exchange.POLONIEX, priceMap.get(Exchange.POLONIEX) == null ? "0" : decimalFormat.format(priceMap.get(Exchange.POLONIEX)),
+                sizeMap.get(Exchange.POLONIEX) == null ? "0" : decimalFormat.format(sizeMap.get(Exchange.POLONIEX))));
 
         return routes;
 
@@ -68,7 +70,7 @@ public class SplitAggregator {
         Double aggregatedSize = 0D;
         Map.Entry<BigDecimal, String> max = SplitUtils.maxValue();
 
-        while (ordQty > aggregatedSize && (max.getKey().compareTo(price) == 1)) {
+        while ((ordQty > aggregatedSize) && (max.getKey().compareTo(price) == 1)) {
             SplitUtils.fullExchangeMap(exchangeMap,binanceBids,bittrexBids,poloniexBids);
             if (!binanceBids.hasNext() && !bittrexBids.hasNext() && !poloniexBids.hasNext()) {
                 break;
@@ -217,7 +219,7 @@ public class SplitAggregator {
         }
         Map.Entry<BigDecimal, String> poloniex = exchangeMap.get(Exchange.POLONIEX);
         if (poloniex != null && poloniex.getKey().equals(min)) {
-            split.add(new Split(poloniex.getKey(), new BigDecimal(poloniex.getValue()), Exchange.POLONIEX));
+            split.add(new Split(poloniex.getKey(), new BigDecimal(rest), Exchange.POLONIEX));
             return;
         }
     }

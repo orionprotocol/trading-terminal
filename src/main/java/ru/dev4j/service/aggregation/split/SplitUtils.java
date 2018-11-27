@@ -3,6 +3,8 @@ package ru.dev4j.service.aggregation.split;
 import ru.dev4j.model.Exchange;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -50,6 +52,12 @@ public class SplitUtils {
         return biggest;
     }
 
+    public static String roundSplitNumbers(BigDecimal number){
+        number.setScale(8, RoundingMode.CEILING);
+        return number.toString();
+    }
+
+
     public static void fullExchangeMap(Map<Exchange, Map.Entry<BigDecimal, String>> exchangeMap,
                                        Iterator<Map.Entry<BigDecimal, String>> binanceIterator,
                                        Iterator<Map.Entry<BigDecimal, String>> bittrexIterator,
@@ -65,6 +73,12 @@ public class SplitUtils {
             exchangeMap.put(Exchange.POLONIEX, poloniexIterator.next());
         }
 
+    }
+
+    public static void main(String[] args) {
+        BigDecimal bigDecimal = new BigDecimal(0);
+        System.out.println(new DecimalFormat("#0.########").format(bigDecimal));
+        System.out.println(roundSplitNumbers(bigDecimal));
     }
 
 

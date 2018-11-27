@@ -26,7 +26,7 @@ public class SplitWebApi {
     @Autowired
     private BalanceSplitAggregator balanceSplitAggregator;
 
-    @RequestMapping(value = "/api/v1/split/orderBook", method = RequestMethod.GET)
+    @RequestMapping(value = "api/v1/order-route", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     List<Route> handleExchangeOrderBook(@RequestParam(name = "symbol") String symbol,
@@ -48,7 +48,7 @@ public class SplitWebApi {
         return new ArrayList<>();
     }
 
-    @RequestMapping(value = "/api/v1/split-balance/orderBook", method = RequestMethod.GET)
+    @RequestMapping(value = "api/v1/order-route/balance", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     Map<String, Object> handleExchangeBalanceOrderBook(@RequestParam(name = "symbol") String symbol,
