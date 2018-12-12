@@ -2,7 +2,7 @@ package ru.dev4j.web.api.request;
 
 public class DeleteOrder {
     private String symbol;
-    private String ordId;
+    private Long ordId;
     private String clientOrdId;
 
     public String getSymbol() {
@@ -13,11 +13,11 @@ public class DeleteOrder {
         this.symbol = symbol;
     }
 
-    public String getOrdId() {
+    public Long getOrdId() {
         return ordId;
     }
 
-    public void setOrdId(String ordId) {
+    public void setOrdId(Long ordId) {
         this.ordId = ordId;
     }
 

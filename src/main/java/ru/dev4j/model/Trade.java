@@ -1,29 +1,18 @@
 package ru.dev4j.model;
 
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "Trade")
 public class Trade {
-    private String id;
-    private String ordId;
+    private Long ordId;
     private String subOrdId;
     private String tradeId;
     private String price;
     private String qty;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getOrdId() {
+    public Long getOrdId() {
         return ordId;
     }
 
-    public void setOrdId(String ordId) {
+    public void setOrdId(Long ordId) {
         this.ordId = ordId;
     }
 

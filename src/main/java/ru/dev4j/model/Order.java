@@ -3,24 +3,35 @@ package ru.dev4j.model;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "Order")
 public class Order {
-    private String id;
+    private Long id;
     private String clientId;
     private String symbol;
     private String clientOrderId;
     private String side;
     private Double orderQty;
     private Double price;
+    private Long time;
+    private Long updateTime;
     private String ordType;
     private BigDecimal filledQty = BigDecimal.ZERO;
     private String status;
-    private List<SubOrder> subOrders;
+    private List<SubOrder> subOrders = new ArrayList<>();
 
     public List<SubOrder> getSubOrders() {
         return subOrders;
+    }
+
+    public Long getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Long updateTime) {
+        this.updateTime = updateTime;
     }
 
     public void setSubOrders(List<SubOrder> subOrders) {
@@ -51,11 +62,19 @@ public class Order {
         this.ordType = ordType;
     }
 
-    public String getId() {
+    public Long getTime() {
+        return time;
+    }
+
+    public void setTime(Long time) {
+        this.time = time;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

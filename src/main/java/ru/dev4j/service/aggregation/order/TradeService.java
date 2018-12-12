@@ -6,7 +6,6 @@ import ru.dev4j.model.Order;
 import ru.dev4j.model.SubOrder;
 import ru.dev4j.model.Trade;
 import ru.dev4j.repository.db.OrderRepository;
-import ru.dev4j.repository.db.TradeRepository;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -17,19 +16,18 @@ import java.util.Map;
 public class TradeService {
 
     @Autowired
-    private TradeRepository tradeRepository;
-
-    @Autowired
     private OrderRepository orderRepository;
 
     public Map<String, Object> handleNewTrade(Trade trade) {
         Map<String, Object> response = new HashMap<>();
         Order order = orderRepository.findOne(trade.getOrdId());
         SubOrder subOrder = getSubOrder(order, trade);
+        subOrder.getTrades().add(trade);
         //TODO:validation for price from telegram chat
         //TODO:ordId must be from index
         BigDecimal filledQty = order.getFilledQty().add(new BigDecimal(trade.getQty()));
         order.setFilledQty(filledQty);
+        order.setUpdateTime(System.currentTimeMillis());
         order.setStatus("PARTIALLY_FILLED");
         orderRepository.save(order);
 

@@ -3,18 +3,21 @@ package ru.dev4j.model;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Document
 public class SubOrder {
 
-    private String id;
-    private String orderId;
+    private Long id;
+    private Long orderId;
     private Exchange exchange;
     private BigDecimal price;
     private BigDecimal subOrdQty;
     private BigDecimal fee;
+    private Boolean reserved;
+    private List<Trade> trades;
 
-    public SubOrder(String id, String orderId, Exchange exchange, BigDecimal price, BigDecimal subOrdQty, BigDecimal fee) {
+    public SubOrder(Long id, Long orderId, Exchange exchange, BigDecimal price, BigDecimal subOrdQty, BigDecimal fee) {
         this.id = id;
         this.orderId = orderId;
         this.exchange = exchange;
@@ -23,22 +26,38 @@ public class SubOrder {
         this.fee = fee;
     }
 
+    public Boolean getReserved() {
+        return reserved;
+    }
+
+    public void setReserved(Boolean reserved) {
+        this.reserved = reserved;
+    }
+
     public SubOrder() {
     }
 
-    public String getOrderId() {
+    public List<Trade> getTrades() {
+        return trades;
+    }
+
+    public void setTrades(List<Trade> trades) {
+        this.trades = trades;
+    }
+
+    public Long getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(Long orderId) {
         this.orderId = orderId;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
