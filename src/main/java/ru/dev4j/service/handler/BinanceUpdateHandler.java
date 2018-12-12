@@ -11,7 +11,7 @@ import ru.dev4j.service.map.ExchangeMapService;
 import java.math.BigDecimal;
 
 @Service
-public class BinanceHandler {
+public class BinanceUpdateHandler {
 
     @Autowired
     private RedisRepository redisRepository;

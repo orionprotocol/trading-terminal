@@ -1,23 +1,20 @@
 package ru.dev4j.model;
 
 public class PairBalance {
-    private String pair;
+    private String symbol;
     private String balance;
 
-    public PairBalance() {
-    }
-
-    public PairBalance(String pair, String balance) {
-        this.pair = pair;
+    public PairBalance(String symbol, String balance) {
+        this.symbol = symbol;
         this.balance = balance;
     }
 
-    public String getPair() {
-        return pair;
+    public String getSymbol() {
+        return symbol;
     }
 
-    public void setPair(String pair) {
-        this.pair = pair;
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 
     public String getBalance() {

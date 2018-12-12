@@ -9,7 +9,7 @@ import ru.dev4j.service.map.ExchangeMapService;
 import java.math.BigDecimal;
 
 @Service
-public class BittrexHandler {
+public class PoloniexUpdateHandler {
 
     @Autowired
     private RedisRepository redisRepository;
@@ -18,23 +18,24 @@ public class BittrexHandler {
     private ExchangeMapService exchangeMapService;
 
 
-    public void handleAskPair(BigDecimal price, String size, String generalPair) {
+    public void handleAskPair(BigDecimal price, String size, String pair) {
 
-        exchangeMapService.deleteAsks(Exchange.BITTREX, generalPair, price);
+        exchangeMapService.deleteAsks(Exchange.POLONIEX, pair, price);
 
         Double rSize = Double.valueOf(size);
         if (rSize > 0) {
-            exchangeMapService.addAsks(Exchange.BITTREX, generalPair, price, size);
+            exchangeMapService.addAsks(Exchange.POLONIEX, pair, price, size);
         }
     }
 
-    public void handleBidsPair(BigDecimal price, String size, String generalPair) {
 
-        exchangeMapService.deleteBids(Exchange.BITTREX, generalPair, price);
+    public void handleBidsPair(BigDecimal price, String size, String pair) {
+
+        exchangeMapService.deleteBids(Exchange.POLONIEX, pair, price);
 
         Double rSize = Double.valueOf(size);
         if (rSize > 0) {
-            exchangeMapService.addBids(Exchange.BITTREX, generalPair, price, size);
+            exchangeMapService.addBids(Exchange.POLONIEX, pair, price, size);
         }
     }
 

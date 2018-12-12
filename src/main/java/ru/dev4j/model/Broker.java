@@ -29,6 +29,15 @@ public class Broker {
         this.exchangeBalances = exchangeBalances;
     }
 
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public BrokerStatus getStatus() {
         return status;
     }

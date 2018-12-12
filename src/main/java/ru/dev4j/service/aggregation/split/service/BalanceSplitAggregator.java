@@ -1,9 +1,12 @@
-package ru.dev4j.service.aggregation.split;
+package ru.dev4j.service.aggregation.split.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dev4j.model.DataType;
 import ru.dev4j.model.Exchange;
+import ru.dev4j.service.aggregation.split.Route;
+import ru.dev4j.service.aggregation.split.Split;
+import ru.dev4j.service.aggregation.split.SplitUtils;
 import ru.dev4j.service.map.ExchangeMapService;
 
 import java.math.BigDecimal;
@@ -75,7 +78,7 @@ public class BalanceSplitAggregator {
         return response;
     }
 
-    public void aggregateBids(List<Split> boughtSplits, Map<Exchange, BigDecimal> balanceMap, String pair, BigDecimal price, BigDecimal size, BigDecimal binanceBalance, BigDecimal bittrexBalance, BigDecimal poloniexBalance) {
+    private void aggregateBids(List<Split> boughtSplits, Map<Exchange, BigDecimal> balanceMap, String pair, BigDecimal price, BigDecimal size, BigDecimal binanceBalance, BigDecimal bittrexBalance, BigDecimal poloniexBalance) {
         Iterator<Map.Entry<BigDecimal, String>> binanceBids = exchangeMapService.getAllBids(Exchange.BINANCE, pair).entrySet().iterator();
         Iterator<Map.Entry<BigDecimal, String>> bittrexBids = exchangeMapService.getAllBids(Exchange.BITTREX, pair).entrySet().iterator();
         Iterator<Map.Entry<BigDecimal, String>> poloniexBids = exchangeMapService.getAllBids(Exchange.POLONIEX, pair).entrySet().iterator();
@@ -102,7 +105,7 @@ public class BalanceSplitAggregator {
     }
 
 
-    public void aggregateAsks(List<Split> boughtSplits, Map<Exchange, BigDecimal> balanceMap, String pair, BigDecimal price, BigDecimal size,
+    private void aggregateAsks(List<Split> boughtSplits, Map<Exchange, BigDecimal> balanceMap, String pair, BigDecimal price, BigDecimal size,
                               BigDecimal binanceBalance, BigDecimal bittrexBalance, BigDecimal poloniexBalance) {
         Iterator<Map.Entry<BigDecimal, String>> binanceAsks = exchangeMapService.getAllAsks(Exchange.BINANCE, pair).entrySet().iterator();
         Iterator<Map.Entry<BigDecimal, String>> bittrexAsks = exchangeMapService.getAllAsks(Exchange.BITTREX, pair).entrySet().iterator();

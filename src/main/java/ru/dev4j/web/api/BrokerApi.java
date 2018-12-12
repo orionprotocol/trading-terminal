@@ -21,6 +21,7 @@ public class BrokerApi {
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     Map<String, String> handleOrderBook(@RequestBody NewBroker newBroker) {
+        //TODO:validate
         Broker broker = brokerRepository.findByAddress(newBroker.getAddress());
         Map<String, String> response = new HashMap<>();
         if (broker != null) {
@@ -80,7 +81,7 @@ public class BrokerApi {
                 for (String key : keys) {
                     String balance = jsonObject.getString(key);
                     if (balance != null) {
-                        PairBalance pairBalance = new PairBalance(key, balance);
+                        PairBalance pairBalance = new PairBalance(key.toLowerCase(), balance);
                         pairBalances.add(pairBalance);
                     }
                 }

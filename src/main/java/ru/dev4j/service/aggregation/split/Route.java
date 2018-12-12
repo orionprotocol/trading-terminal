@@ -4,6 +4,7 @@ import ru.dev4j.model.Exchange;
 
 public class Route {
 
+    private String id;
     private String symbol;
     private Exchange exchange;
     private String price;
@@ -20,6 +21,14 @@ public class Route {
         this.symbol = symbol;
         this.exchange = exchange;
         this.price = price;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSymbol() {

@@ -1,28 +1,18 @@
 package ru.dev4j.service.socket;
 
-import com.binance.api.client.BinanceApiClientFactory;
-import com.binance.api.client.BinanceApiWebSocketClient;
-import com.binance.api.client.domain.market.OrderBookEntry;
 import com.github.ccob.bittrex4j.BittrexExchange;
 import com.github.ccob.bittrex4j.dao.MarketOrder;
-import com.github.ccob.bittrex4j.dao.Response;
-import com.github.ccob.bittrex4j.dao.WithdrawalDeposit;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.dev4j.model.DataType;
-import ru.dev4j.model.Exchange;
 import ru.dev4j.model.Pair;
 import ru.dev4j.model.PairConfig;
 import ru.dev4j.repository.db.PairConfigRepository;
 import ru.dev4j.repository.redis.RedisRepository;
-import ru.dev4j.service.handler.BinanceHandler;
-import ru.dev4j.service.handler.BittrexHandler;
+import ru.dev4j.service.handler.BittrexUpdateHandler;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -36,7 +26,7 @@ public class BittrexWebSocket {
     final static Logger logger = Logger.getLogger(BittrexWebSocket.class);
 
     @Autowired
-    private BittrexHandler bittrexHandler;
+    private BittrexUpdateHandler bittrexUpdateHandler;
 
     @Autowired
     private RedisRepository redisRepository;
@@ -54,10 +44,10 @@ public class BittrexWebSocket {
             bittrexExchange.onUpdateExchangeState(updateExchangeState -> {
                 String pair = mapToGeneralName(updateExchangeState.getMarketName(), bittrexConfig.getPair());
                 for (MarketOrder marketOrder : updateExchangeState.getSells()) {
-                    bittrexHandler.handleAskPair(marketOrder.getRate(), marketOrder.getQuantity().toPlainString(), pair);
+                    bittrexUpdateHandler.handleAskPair(marketOrder.getRate(), marketOrder.getQuantity().toPlainString(), pair);
                 }
                 for (MarketOrder marketOrder : updateExchangeState.getBuys()) {
-                    bittrexHandler.handleBidsPair(marketOrder.getRate(), marketOrder.getQuantity().toPlainString(), pair);
+                    bittrexUpdateHandler.handleBidsPair(marketOrder.getRate(), marketOrder.getQuantity().toPlainString(), pair);
                 }
             });
 
@@ -68,10 +58,10 @@ public class BittrexWebSocket {
 
                     bittrexExchange.queryExchangeState(pair.getCodeName(), exchangeState -> {
                         for (MarketOrder marketOrder : exchangeState.getSells()) {
-                            bittrexHandler.handleAskPair(marketOrder.getRate(), marketOrder.getQuantity().toPlainString(), pair.getGeneralName());
+                            bittrexUpdateHandler.handleAskPair(marketOrder.getRate(), marketOrder.getQuantity().toPlainString(), pair.getGeneralName());
                         }
                         for (MarketOrder marketOrder : exchangeState.getBuys()) {
-                            bittrexHandler.handleBidsPair(marketOrder.getRate(), marketOrder.getQuantity().toPlainString(), pair.getGeneralName());
+                            bittrexUpdateHandler.handleBidsPair(marketOrder.getRate(), marketOrder.getQuantity().toPlainString(), pair.getGeneralName());
                         }
 
                     });

@@ -51,10 +51,6 @@ public class ExchangeWebApi {
     }
 
 
-
-
-
-
     @RequestMapping(value = "/testmap", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody

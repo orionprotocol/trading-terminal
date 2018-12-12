@@ -11,6 +11,7 @@ public class ExchangeBalance {
         return exchange;
     }
 
+
     public void setExchange(Exchange exchange) {
         this.exchange = exchange;
     }

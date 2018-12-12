@@ -3,7 +3,6 @@ package ru.dev4j;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.dev4j.config.*;
 import ru.dev4j.repository.redis.RedisRepository;
-import ru.dev4j.service.handler.BinanceHandler;
 
 public class RedisMain {
     public static void main(String[] args) {
