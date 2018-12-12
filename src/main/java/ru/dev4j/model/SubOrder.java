@@ -15,6 +15,7 @@ public class SubOrder {
     private BigDecimal subOrdQty;
     private BigDecimal fee;
     private Boolean reserved;
+    private String brokerId;
     private List<Trade> trades;
 
     public SubOrder(Long id, Long orderId, Exchange exchange, BigDecimal price, BigDecimal subOrdQty, BigDecimal fee) {
@@ -24,6 +25,14 @@ public class SubOrder {
         this.price = price;
         this.subOrdQty = subOrdQty;
         this.fee = fee;
+    }
+
+    public String getBrokerId() {
+        return brokerId;
+    }
+
+    public void setBrokerId(String brokerId) {
+        this.brokerId = brokerId;
     }
 
     public Boolean getReserved() {

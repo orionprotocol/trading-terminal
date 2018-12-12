@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ru.dev4j.model.Broker;
 import ru.dev4j.model.Order;
+import ru.dev4j.model.exceptions.SubOrderException;
 import ru.dev4j.repository.db.OrderRepository;
 import ru.dev4j.service.aggregation.order.OrderService;
 import ru.dev4j.web.api.request.DeleteOrder;
@@ -25,14 +26,18 @@ public class OrderApi {
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     Map<String, Object> handleOrderBook(@RequestBody Order order) {
-        return orderService.aggregateRoutes(order);
+        try {
+            return orderService.aggregateRoutes(order);
+        } catch (SubOrderException e) {
+            return null;
+        }
     }
 
     @RequestMapping(value = "/order", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     Map<String, Object> deleteOrder(@RequestBody DeleteOrder deleteOrder) {
-        return orderService.deleteOrder(deleteOrder.getOrdId());
+        return orderService.deleteOrder(deleteOrder.getOrdId(), deleteOrder.getClientOrdId());
     }
 
     @RequestMapping(value = "/order", method = RequestMethod.GET)
@@ -47,7 +52,7 @@ public class OrderApi {
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     List<Order> orderStatus(@RequestParam(name = "symbol") String symbol, @RequestParam(name = "ordId", required = false) Long ordId,
-                            @RequestParam(name = "startTime",required = false) Long startTime,
+                            @RequestParam(name = "startTime", required = false) Long startTime,
                             @RequestParam(name = "endTime", required = false) Long endTime,
                             @RequestParam(name = "limit", defaultValue = "500", required = false) Integer limit) {
         return orderService.orderHistory(ordId, symbol, startTime, endTime, limit);

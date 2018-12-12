@@ -31,8 +31,18 @@ public class OrderService {
     @Autowired
     private OrderHttpService orderHttpService;
 
-    public Map<String, Object> deleteOrder(Long ordId) {
+    public Map<String, Object> deleteOrder(Long ordId, String clientOrdId) {
         Order order = orderRepository.findOne(ordId);
+        order.setStatus("CANCELED");
+
+        for (SubOrder subOrder : order.getSubOrders()) {
+            Broker broker = brokerRepository.findOne(subOrder.getBrokerId());
+            Boolean sent = orderHttpService.deleteOrderInfo(subOrder, order, broker);
+            if (!sent) {
+                brokerRepository.delete(broker.getId());
+            }
+        }
+
         Map<String, Object> response = new HashMap<>();
         response.put("symbol", order.getSymbol());
         response.put("ordId", order.getId());
@@ -41,9 +51,10 @@ public class OrderService {
         response.put("price", order.getPrice());
         response.put("ordQty", order.getOrderQty());
         response.put("filledQty", order.getFilledQty());
-        response.put("status", "CANCELED");
+        response.put("status", order.getStatus());
         response.put("type", order.getOrdType());
         response.put("side", order.getSide());
+
 
         order.setUpdateTime(System.currentTimeMillis());
         orderRepository.delete(ordId);
@@ -80,8 +91,11 @@ public class OrderService {
                         Boolean sent = orderHttpService.sendOrderInfo(subOrder, order, dbBroker);
                         if (sent) {
                             subOrder.setReserved(true);
+                            subOrder.setBrokerId(dbBroker.getId());
                             order.getSubOrders().add(subOrder);
                             break;
+                        } else {
+                            brokerRepository.delete(dbBroker.getId());
                         }
                     }
                 }
