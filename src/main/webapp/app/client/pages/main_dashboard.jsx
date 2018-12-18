@@ -133,7 +133,7 @@ class MainDashboard extends React.Component {
                 let percentStyle = percent + '%';
                 renderData.push(
                     <tr style={{lineHeight: '20px'}} key={key}>
-                        <td>{asks[i].price.toFixed(6)}</td>
+                        <td>{asks[i].price}</td>
                         <td style={{color: '#e5494d'}}>{asks[i].size.toFixed(6)}</td>
                         <td>
                             <div style={{width:'100%',paddingTop:'1px',paddingBottom:'1px'}}>
@@ -160,7 +160,7 @@ class MainDashboard extends React.Component {
                 let percentStyle = percent + '%';
                 renderData.push(
                     <tr style={{lineHeight: '20px'}} key={key}>
-                        <td>{bids[i].price.toFixed(6)}</td>
+                        <td>{bids[i].price}</td>
                         <td style={{color: '#2051d3'}}>{bids[i].size.toFixed(6)}</td>
                         <td>
                             <div style={{width:'100%',paddingTop:'1px',paddingBottom:'1px'}}>
@@ -281,8 +281,8 @@ class MainDashboard extends React.Component {
                             }}>
                                 <thead>
                                 <tr style={{color: '#7f8fa4', fontSize: '11px', lineHeight: '25px'}}>
-                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '33%'}}>Кол-во</td>
-                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '35%'}}>Цена</td>
+                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '33%'}}>Цена</td>
+                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '35%'}}>Кол-во</td>
                                     <td style={{borderBottom: ' 1px solid #edf0f4', width: '32%'}}>Сумма</td>
                                 </tr>
                                 </thead>
