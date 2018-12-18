@@ -1,8 +1,8 @@
 <html>
 <head>
     <title>Calculator App Using Spring 4 WebSocket</title>
-    <script src="/resources/sockjs-0.3.4.js"></script>
-    <script src="/resources/stomp.js"></script>
+    <script src="/resources/testsocket/sockjs-0.3.4.js"></script>
+    <script src="/resources/testsocket/stomp.js"></script>
     <script type="text/javascript">
         var stompClient = null;
         function setConnected(connected) {

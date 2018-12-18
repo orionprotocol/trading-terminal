@@ -24,7 +24,6 @@ public class TradeService {
         SubOrder subOrder = getSubOrder(order, trade);
         subOrder.getTrades().add(trade);
         //TODO:validation for price from telegram chat
-        //TODO:ordId must be from index
         BigDecimal filledQty = order.getFilledQty().add(new BigDecimal(trade.getQty()));
         order.setFilledQty(filledQty);
         order.setUpdateTime(System.currentTimeMillis());

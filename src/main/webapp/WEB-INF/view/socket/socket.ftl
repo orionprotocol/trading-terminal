@@ -2,10 +2,10 @@
 <html>
 <head>
     <title>Hello WebSocket</title>
-    <link href="/resources/bootstrap.min.css" rel="stylesheet">
-    <link href="/resources/main.css" rel="stylesheet">
-    <script src="/resources/jquery-1.10.2.min.js"></script>
-    <script src="/resources/app.js"></script>
+    <link href="/resources/testsocket/bootstrap.min.css" rel="stylesheet">
+    <link href="/resources/testsocket/main.css" rel="stylesheet">
+    <script src="/resources/testsocket/jquery-1.10.2.min.js"></script>
+    <script src="/resources/testsocket/app.js"></script>
 </head>
 <body>
 <noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being

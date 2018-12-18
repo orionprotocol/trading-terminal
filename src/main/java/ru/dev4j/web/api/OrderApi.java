@@ -43,7 +43,7 @@ public class OrderApi {
     @RequestMapping(value = "/order", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    Order orderStatus(@RequestParam(name = "symbol") String symbol, @RequestParam(name = "ordId") Long ordId,
+    Order orderStatus(@RequestParam(name = "symbol") String symbol, @RequestParam(name = "orderId") Long ordId,
                       @RequestParam(name = "clientOrdId", required = false) String clientOrdId) {
         return orderService.getOrderInfo(ordId);
     }

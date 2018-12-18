@@ -24,5 +24,10 @@ public class IndexController {
         return "testsocket2";
     }
 
+    @RequestMapping(value = "/")
+    public String client() {
+        return "client/client";
+    }
+
 
 }

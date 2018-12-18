@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.dev4j.model.DataType;
 import ru.dev4j.model.Exchange;
 import ru.dev4j.model.Pair;
@@ -21,7 +22,7 @@ import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-//@Service
+@Service
 public class PoloniexWebSocket {
 
     private static final String EXCHANGE_NAME = "POLONIEX";
