@@ -10,20 +10,22 @@ class MainDashboard extends React.Component {
             pairs: [],
             currentSymbol: '',
             ws: null,
-            data: null
+            data: null,
+            lastPrice: 0,
+            lastPriceStyle: '#000'
         }
         this.loadAllPairs = this.loadAllPairs.bind(this);
         this.renderPairs = this.renderPairs.bind(this);
         this.loadSnapshot = this.loadSnapshot.bind(this);
         this.connect = this.connect.bind(this);
         this.disconnect = this.disconnect.bind(this);
-        this.renderData = this.renderData.bind(this);
         this.handleNewData = this.handleNewData.bind(this);
-        this.sortAsks = this.sortAsks.bind(this);
-        this.sortBids = this.sortBids.bind(this);
+        this.sort = this.sort.bind(this);
         this.changeCurrentSymbol = this.changeCurrentSymbol.bind(this);
         this.calculateTotal = this.calculateTotal.bind(this);
         this.calculatePercent = this.calculatePercent.bind(this);
+        this.renderAsks = this.renderAsks.bind(this);
+        this.renderBids = this.renderBids.bind(this);
     }
 
     componentDidMount() {
@@ -60,17 +62,7 @@ class MainDashboard extends React.Component {
         }
     }
 
-    sortAsks(a, b) {
-        if (a.price > b.price) {
-            return 1;
-        }
-        if (a.price < b.price) {
-            return -1;
-        }
-        return 0;
-    }
-
-    sortBids(a, b) {
+    sort(a, b) {
         if (a.price > b.price) {
             return -1;
         }
@@ -96,10 +88,11 @@ class MainDashboard extends React.Component {
     }
 
     changeCurrentSymbol(symbol) {
-        this.setState({currentSymbol: symbol})
-        this.disconnect();
-        this.loadSnapshot(symbol, 10)
-        this.connect();
+        this.setState({currentSymbol: symbol},()=>{
+            this.disconnect();
+            this.loadSnapshot(symbol, 10)
+            this.connect();
+        })
 
     }
 
@@ -119,7 +112,7 @@ class MainDashboard extends React.Component {
         return 100 * value / max
     }
 
-    renderData() {
+    renderAsks() {
         let renderData = [];
         let key = 0;
         if (this.state.data) {
@@ -133,23 +126,27 @@ class MainDashboard extends React.Component {
                 let percentStyle = percent + '%';
                 renderData.push(
                     <tr style={{lineHeight: '20px'}} key={key}>
-                        <td>{asks[i].price}</td>
+                        <td>{asks[i].price.toFixed(8)}</td>
                         <td style={{color: '#e5494d'}}>{asks[i].size.toFixed(6)}</td>
                         <td>
-                            <div style={{width:'100%',paddingTop:'1px',paddingBottom:'1px'}}>
-                                <div style={{width: percentStyle, backgroundColor:'#FCECEC'}}>{asks[i].total.toFixed(6)}</div>
+                            <div style={{width: '100%', paddingTop: '1px', paddingBottom: '1px'}}>
+                                <div style={{
+                                    width: percentStyle,
+                                    backgroundColor: '#FCECEC'
+                                }}>{asks[i].total.toFixed(6)}</div>
                             </div>
-                            </td>
+                        </td>
                     </tr>
                 )
             }
-            key++;
-            renderData.push(
-                <tr key={key} style={{height: '25px', backgroundColor: '#FFF'}}>
-                    <td colSpan="3"></td>
-                </tr>
-            )
-            key++;
+        }
+        return renderData;
+    }
+
+    renderBids() {
+        let renderData = [];
+        let key = 0;
+        if (this.state.data) {
             const bids = this.state.data.bids;
             this.calculateTotal(bids);
             const maxBid = bids.reduce(function (prev, current) {
@@ -160,13 +157,16 @@ class MainDashboard extends React.Component {
                 let percentStyle = percent + '%';
                 renderData.push(
                     <tr style={{lineHeight: '20px'}} key={key}>
-                        <td>{bids[i].price}</td>
+                        <td>{bids[i].price.toFixed(8)}</td>
                         <td style={{color: '#2051d3'}}>{bids[i].size.toFixed(6)}</td>
                         <td>
-                            <div style={{width:'100%',paddingTop:'1px',paddingBottom:'1px'}}>
-                                <div style={{width: percentStyle, backgroundColor:'#EEF2FD'}}>{bids[i].total.toFixed(6)}</div>
+                            <div style={{width: '100%', paddingTop: '1px', paddingBottom: '1px'}}>
+                                <div style={{
+                                    width: percentStyle,
+                                    backgroundColor: '#EEF2FD'
+                                }}>{bids[i].total.toFixed(6)}</div>
                             </div>
-                            </td>
+                        </td>
                     </tr>
                 )
             }
@@ -195,7 +195,7 @@ class MainDashboard extends React.Component {
                 stateAsks.push(asks[i]);
             }
         }
-        stateAsks = stateAsks.sort(this.sortAsks).slice(0, 50)
+        stateAsks = stateAsks.sort(this.sort).slice(0, 20)
         const bids = data.bids;
         let stateBids = this.state.data.bids;
         for (let i = 0; i < bids.length; i++) {
@@ -215,8 +215,19 @@ class MainDashboard extends React.Component {
                 stateBids.push(bids[i]);
             }
         }
-        stateBids = stateBids.sort(this.sortBids).slice(0, 50)
-        this.setState({data: {asks: stateAsks, bids: stateBids}})
+        const maxBid = stateBids.reduce(function (prev, current) {
+            return (prev.price > current.price) ? prev : current
+        })
+        stateBids = stateBids.sort(this.sort).slice(0, 20)
+        let lastPriceStyle = "#e5494d";
+        if (maxBid.price > this.state.lastPrice) {
+            lastPriceStyle = "#2051d3";
+        }
+        this.setState({
+            data: {asks: stateAsks, bids: stateBids},
+            lastPrice: maxBid.price,
+            lastPriceStyle: lastPriceStyle
+        })
     }
 
     //TODO:on page close disconect
@@ -228,7 +239,7 @@ class MainDashboard extends React.Component {
         ws.onmessage = function (data) {
             handleNewData(JSON.parse(data.data));
         }
-        console.log("Connected")
+        console.log("Connected to " + url)
     }
 
     disconnect() {
@@ -288,12 +299,27 @@ class MainDashboard extends React.Component {
                                 </thead>
                             </table>
                         </div>
-                        <div style={{height: '450px', overflowY: 'scroll'}}>
+                        <div id="asks" style={{height: '225px', overflowY: 'scroll'}}>
                             <table style={{
                                 width: '100%'
                             }}>
                                 <tbody style={{fontSize: '11px', color: '#263241'}}>
-                                {this.renderData()}
+                                {this.renderAsks()}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style={{padding: '7px', fontSize: '11px'}}>
+                            <span style={{color: '#263241'}}>
+                                ПОСЛЕДНЯЯ ЦЕНА: <span
+                                style={{color: this.state.lastPriceStyle}}>{this.state.lastPrice.toFixed(8)}</span>
+                            </span>
+                        </div>
+                        <div id="bids" style={{height: '225px', overflowY: 'scroll'}}>
+                            <table style={{
+                                width: '100%'
+                            }}>
+                                <tbody style={{fontSize: '11px', color: '#263241'}}>
+                                {this.renderBids()}
                                 </tbody>
                             </table>
                         </div>
