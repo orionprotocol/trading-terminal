@@ -127,13 +127,13 @@ class MainDashboard extends React.Component {
                 renderData.push(
                     <tr style={{lineHeight: '20px'}} key={key}>
                         <td>{asks[i].price.toFixed(8)}</td>
-                        <td style={{color: '#e5494d'}}>{asks[i].size.toFixed(6)}</td>
+                        <td style={{color: '#e5494d'}}>{asks[i].size}</td>
                         <td>
                             <div style={{width: '100%', paddingTop: '1px', paddingBottom: '1px'}}>
                                 <div style={{
                                     width: percentStyle,
                                     backgroundColor: '#FCECEC'
-                                }}>{asks[i].total.toFixed(6)}</div>
+                                }}>{asks[i].total.toFixed(9)}</div>
                             </div>
                         </td>
                     </tr>
@@ -158,13 +158,13 @@ class MainDashboard extends React.Component {
                 renderData.push(
                     <tr style={{lineHeight: '20px'}} key={key}>
                         <td>{bids[i].price.toFixed(8)}</td>
-                        <td style={{color: '#2051d3'}}>{bids[i].size.toFixed(6)}</td>
+                        <td style={{color: '#2051d3'}}>{bids[i].size}</td>
                         <td>
                             <div style={{width: '100%', paddingTop: '1px', paddingBottom: '1px'}}>
                                 <div style={{
                                     width: percentStyle,
                                     backgroundColor: '#EEF2FD'
-                                }}>{bids[i].total.toFixed(6)}</div>
+                                }}>{bids[i].total.toFixed(9)}</div>
                             </div>
                         </td>
                     </tr>
