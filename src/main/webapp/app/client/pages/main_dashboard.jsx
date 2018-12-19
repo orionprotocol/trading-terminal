@@ -20,9 +20,11 @@ class MainDashboard extends React.Component {
         this.connect = this.connect.bind(this);
         this.disconnect = this.disconnect.bind(this);
         this.handleNewData = this.handleNewData.bind(this);
-        this.sort = this.sort.bind(this);
+        this.sortAsks = this.sortAsks.bind(this);
+        this.sortBids = this.sortBids.bind(this);
         this.changeCurrentSymbol = this.changeCurrentSymbol.bind(this);
-        this.calculateTotal = this.calculateTotal.bind(this);
+        this.calculateTotalBids = this.calculateTotalBids.bind(this);
+        this.calculateTotalAsks = this.calculateTotalAsks.bind(this);
         this.calculatePercent = this.calculatePercent.bind(this);
         this.renderAsks = this.renderAsks.bind(this);
         this.renderBids = this.renderBids.bind(this);
@@ -41,7 +43,7 @@ class MainDashboard extends React.Component {
             return results.json();
         }).then(data => {
             this.setState({pairs: data, currentSymbol: data[0]}, () => {
-                this.loadSnapshot(this.state.currentSymbol, 10);
+                this.loadSnapshot(this.state.currentSymbol, 20);
                 this.connect();
             })
         })
@@ -62,7 +64,17 @@ class MainDashboard extends React.Component {
         }
     }
 
-    sort(a, b) {
+    sortAsks(a, b) {
+        if (a.price > b.price) {
+            return 1;
+        }
+        if (a.price < b.price) {
+            return -1;
+        }
+        return 0;
+    }
+
+    sortBids(a, b) {
         if (a.price > b.price) {
             return -1;
         }
@@ -90,19 +102,30 @@ class MainDashboard extends React.Component {
     changeCurrentSymbol(symbol) {
         this.setState({currentSymbol: symbol},()=>{
             this.disconnect();
-            this.loadSnapshot(symbol, 10)
+            this.loadSnapshot(symbol, 20)
             this.connect();
         })
 
     }
 
-    calculateTotal(array) {
+    calculateTotalBids(array) {
         for (let i = 0; i < array.length; i++) {
             if (i - 1 < 0) {
                 array[i].total = array[i].price * array[i].size;
 
             } else {
                 array[i].total = array[i - 1].total + array[i].price * array[i].size
+            }
+        }
+        return array;
+    }
+
+    calculateTotalAsks(array) {
+        for (let i = array.length - 1; i >= 0; i--) {
+            if (i + 1 >= array.length) {
+                array[i].total = array[i].price * array[i].size;
+            } else {
+                array[i].total = array[i + 1].total + array[i].price * array[i].size
             }
         }
         return array;
@@ -117,7 +140,7 @@ class MainDashboard extends React.Component {
         let key = 0;
         if (this.state.data) {
             let asks = this.state.data.asks;
-            this.calculateTotal(asks);
+            this.calculateTotalAsks(asks);
             const maxAsk = asks.reduce(function (prev, current) {
                 return (prev.total > current.total) ? prev : current
             })
@@ -127,7 +150,7 @@ class MainDashboard extends React.Component {
                 renderData.push(
                     <tr style={{lineHeight: '20px'}} key={key}>
                         <td>{asks[i].price.toFixed(8)}</td>
-                        <td style={{color: '#e5494d'}}>{asks[i].size}</td>
+                        <td style={{color: '#e5494d'}}>{asks[i].size.toFixed(6)}</td>
                         <td>
                             <div style={{width: '100%', paddingTop: '1px', paddingBottom: '1px'}}>
                                 <div style={{
@@ -148,7 +171,7 @@ class MainDashboard extends React.Component {
         let key = 0;
         if (this.state.data) {
             const bids = this.state.data.bids;
-            this.calculateTotal(bids);
+            this.calculateTotalBids(bids);
             const maxBid = bids.reduce(function (prev, current) {
                 return (prev.total > current.total) ? prev : current
             })
@@ -158,7 +181,7 @@ class MainDashboard extends React.Component {
                 renderData.push(
                     <tr style={{lineHeight: '20px'}} key={key}>
                         <td>{bids[i].price.toFixed(8)}</td>
-                        <td style={{color: '#2051d3'}}>{bids[i].size}</td>
+                        <td style={{color: '#2051d3'}}>{bids[i].size.toFixed(6)}</td>
                         <td>
                             <div style={{width: '100%', paddingTop: '1px', paddingBottom: '1px'}}>
                                 <div style={{
@@ -195,7 +218,8 @@ class MainDashboard extends React.Component {
                 stateAsks.push(asks[i]);
             }
         }
-        stateAsks = stateAsks.sort(this.sort).slice(0, 20)
+        stateAsks = stateAsks.sort(this.sortAsks).slice(0, 20)
+        stateAsks = stateAsks.sort(this.sortBids);
         const bids = data.bids;
         let stateBids = this.state.data.bids;
         for (let i = 0; i < bids.length; i++) {
@@ -218,11 +242,13 @@ class MainDashboard extends React.Component {
         const maxBid = stateBids.reduce(function (prev, current) {
             return (prev.price > current.price) ? prev : current
         })
-        stateBids = stateBids.sort(this.sort).slice(0, 20)
+        stateBids = stateBids.sort(this.sortBids).slice(0, 20)
         let lastPriceStyle = "#e5494d";
         if (maxBid.price > this.state.lastPrice) {
             lastPriceStyle = "#2051d3";
         }
+        $('#asks').scrollTop(1000);
+        $('#bids').scrollTop(0);
         this.setState({
             data: {asks: stateAsks, bids: stateBids},
             lastPrice: maxBid.price,
@@ -308,7 +334,14 @@ class MainDashboard extends React.Component {
                                 </tbody>
                             </table>
                         </div>
-                        <div style={{padding: '7px', fontSize: '11px'}}>
+                        <div style={{padding: '7px', fontSize: '11px',
+                            borderBottomColor: '#edf0f4',
+                            borderBottomWidth: '1px',
+                            borderBottomStyle: 'solid',
+                            borderTopColor: '#edf0f4',
+                            borderTopWidth: '1px',
+                            borderTopStyle: 'solid'
+                        }}>
                             <span style={{color: '#263241'}}>
                                 ПОСЛЕДНЯЯ ЦЕНА: <span
                                 style={{color: this.state.lastPriceStyle}}>{this.state.lastPrice.toFixed(8)}</span>
