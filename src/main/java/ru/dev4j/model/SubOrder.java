@@ -14,7 +14,7 @@ public class SubOrder {
     private BigDecimal price;
     private BigDecimal subOrdQty;
     private BigDecimal fee;
-    private Boolean reserved;
+    private Boolean reserved = false;
     private String brokerId;
     private List<Trade> trades;
 

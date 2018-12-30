@@ -29,7 +29,9 @@ public class OrderApi {
         try {
             return orderService.aggregateRoutes(order);
         } catch (SubOrderException e) {
-            return null;
+            Map<String,Object> response = new HashMap<>();
+            response.put("code","1010");
+            return response;
         }
     }
 

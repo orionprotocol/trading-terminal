@@ -63,7 +63,7 @@ public class OrderService {
 
     public Map<String, Object> aggregateRoutes(Order order) throws SubOrderException {
 
-        String symbol[] = order.getSymbol().split(":");
+        String symbol[] = order.getSymbol().split("-");
 
         Broker broker = brokerRepository.findByAddress(order.getClientId());
         DataType dataType = DataType.ASKS;
@@ -88,7 +88,8 @@ public class OrderService {
                     Map<Exchange, BigDecimal> brokerBalances = chooseSymbolBalance(dbBroker, balanceSymbol);
                     BigDecimal value = subOrder.getPrice().multiply(subOrder.getSubOrdQty());
                     if (brokerBalances.get(subOrder.getExchange()).compareTo(value) != -1) {
-                        Boolean sent = orderHttpService.sendOrderInfo(subOrder, order, dbBroker);
+//                      Boolean sent = orderHttpService.sendOrderInfo(subOrder, order, dbBroker);
+                        Boolean sent = true;
                         if (sent) {
                             subOrder.setReserved(true);
                             subOrder.setBrokerId(dbBroker.getId());
@@ -105,6 +106,9 @@ public class OrderService {
             if (!subOrder.getReserved()) {
                 throw new SubOrderException();
             }
+        }
+        if(subOrders == null || subOrders.isEmpty()){
+            throw new SubOrderException();
         }
 
         order.setTime(time);

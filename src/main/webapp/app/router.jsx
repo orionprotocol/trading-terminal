@@ -29,7 +29,7 @@ class Router extends React.Component {
         return (
             <BrowserRouter>
                 <div className="wrapper">
-                    <div className="content-wrapper" style={{padding: 10}}>
+                    <div className="content-wrapper" style={{}}>
                         <Switch>
                             <Route exact path="/"
                                    render={props => <MainDasboard userInfo={this.state.userInfo} {...props}/>}/>

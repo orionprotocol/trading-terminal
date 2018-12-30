@@ -15,7 +15,6 @@ public class OrderRepositoryImpl extends AbstractRepository implements OrderRepo
     public List<Order> orderHistory(Long ordId, String symbol, Long startTime, Long endTime, Integer limit, Integer sort) {
         Query query = new Query(new Criteria().andOperator(Criteria.where("id").gte(ordId), Criteria.where("symbol").is(symbol),
                 Criteria.where("time").gte(startTime), Criteria.where("time").lte(endTime))).limit(limit);
-        query.fields().exclude("subOrders");
         if (sort == 0) {
             query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "id")));
         }

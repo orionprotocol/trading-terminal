@@ -16,6 +16,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Ionicons -->
     <link rel="stylesheet" href="/resources/Ionicons/css/ionicons.min.css">
 
+    <!-- OrderFrom -->
+    <link rel="stylesheet" href="/resources/css/orderform.css">
+
+    <!-- Orders -->
+    <link rel="stylesheet" href="/resources/css/orders.css">
+    <!-- Orders -->
+    <link rel="stylesheet" href="/resources/css/custom.css">
+
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -26,7 +35,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Google Font -->
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <link href="/resources/css/toastr.css" rel="stylesheet"/>
+    <link href="/resources/css/toastr.min.css" rel="stylesheet"/>
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -48,14 +57,17 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper" id="app">
+<body enableScroll="true" class="hold-transition skin-blue sidebar-mini">
+<div id="app" style="background-color: #edf0f4">
 </div>
 <script src="/resources/js/bundle.js"></script>
 <script src="/resources/jquery/dist/jquery.min.js"></script>
-
+<script src="/resources/js/orderform.js"></script>
+<script src="/resources/js/orders.js"></script>
+<script src="/resources/js/orderbook.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+<script src="/resources/js/toastr.min.js"></script>
 
 
 </body>

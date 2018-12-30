@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {MomentJS} from './../../service/MomentJS'
+import OrderForm from './../../client/components/OrderForm'
+import Orders from './../../client/components/Orders'
 
 class MainDashboard extends React.Component {
 
@@ -12,7 +14,10 @@ class MainDashboard extends React.Component {
             ws: null,
             data: null,
             lastPrice: 0,
-            lastPriceStyle: '#000'
+            lastPriceStyle: '#000',
+            ask: 0,
+            bid: 0,
+            orders: []
         }
         this.loadAllPairs = this.loadAllPairs.bind(this);
         this.renderPairs = this.renderPairs.bind(this);
@@ -28,6 +33,8 @@ class MainDashboard extends React.Component {
         this.calculatePercent = this.calculatePercent.bind(this);
         this.renderAsks = this.renderAsks.bind(this);
         this.renderBids = this.renderBids.bind(this);
+        this.loadOrderHistory = this.loadOrderHistory.bind(this);
+        this.handleJqeuryScroll = this.handleJqeuryScroll.bind(this);
     }
 
     componentDidMount() {
@@ -45,7 +52,23 @@ class MainDashboard extends React.Component {
             this.setState({pairs: data, currentSymbol: data[0]}, () => {
                 this.loadSnapshot(this.state.currentSymbol, 20);
                 this.connect();
+                this.loadOrderHistory(data[0])
+                setInterval(() => {
+                    this.loadOrderHistory(this.state.currentSymbol)
+                }, 10000);
             })
+        })
+    }
+
+    loadOrderHistory(symbol) {
+        fetch('/orderHistory?symbol=' + symbol,
+            {
+                credentials: 'same-origin',
+            }
+        ).then(results => {
+            return results.json();
+        }).then(data => {
+            this.setState({orders: data})
         })
     }
 
@@ -59,7 +82,10 @@ class MainDashboard extends React.Component {
             ).then(results => {
                 return results.json();
             }).then(data => {
-                this.setState({data: data})
+                this.setState({
+                    data: data, ask: data.asks[data.asks.length - 1].price,
+                    bid: data.bids[0].price
+                })
             })
         }
     }
@@ -100,10 +126,11 @@ class MainDashboard extends React.Component {
     }
 
     changeCurrentSymbol(symbol) {
-        this.setState({currentSymbol: symbol},()=>{
+        this.setState({currentSymbol: symbol}, () => {
             this.disconnect();
             this.loadSnapshot(symbol, 20)
             this.connect();
+            this.loadOrderHistory(symbol);
         })
 
     }
@@ -198,6 +225,15 @@ class MainDashboard extends React.Component {
 
     }
 
+    handleJqeuryScroll() {
+        let enableScroll = $('body').attr('enableScroll');
+        console.log(enableScroll)
+        if (enableScroll == 'true') {
+            $('#asks').scrollTop(1000);
+            $('#bids').scrollTop(0);
+        }
+    }
+
     handleNewData(data) {
         const asks = data.asks;
         let stateAsks = this.state.data.asks;
@@ -247,12 +283,13 @@ class MainDashboard extends React.Component {
         if (maxBid.price > this.state.lastPrice) {
             lastPriceStyle = "#2051d3";
         }
-        $('#asks').scrollTop(1000);
-        $('#bids').scrollTop(0);
+        this.handleJqeuryScroll();
         this.setState({
             data: {asks: stateAsks, bids: stateBids},
             lastPrice: maxBid.price,
-            lastPriceStyle: lastPriceStyle
+            lastPriceStyle: lastPriceStyle,
+            ask: stateAsks[stateAsks.length - 1].price,
+            bid: stateBids[0].price
         })
     }
 
@@ -277,10 +314,17 @@ class MainDashboard extends React.Component {
 
 
     render() {
+        console.log("PAIR MAIN " + this.state.currentSymbol)
         return (
-            <div>
-                <div className="row">
-                    <div style={{borderColor: '#edf0f4', borderWidth: '2px', borderStyle: 'solid', marginLeft: '10px'}}
+            <div style={{paddingRight: '20px', paddingLeft: '20px', paddingTop: '10px'}}>
+                <div className="row row-eq-height" style={{}}>
+                    <div style={{
+                        borderColor: '#edf0f4',
+                        borderWidth: '2px',
+                        borderStyle: 'solid',
+                        backgroundColor: '#fff',
+                        minHeight: '100%'
+                    }}
                          className="col-md-2">
                         <div style={{
                             padding: '10px',
@@ -298,18 +342,31 @@ class MainDashboard extends React.Component {
                             </table>
                         </div>
                     </div>
-                    <div style={{borderColor: '#edf0f4', borderWidth: '2px', borderStyle: 'solid', marginLeft: '20px'}}
-                         className="col-md-4">
-                        <div style={{
-                            padding: '10px',
-                            borderBottomColor: '#edf0f4',
-                            borderBottomWidth: '1px',
-                            borderBottomStyle: 'solid'
-                        }}>
+                    <div style={{
+                        borderColor: '#edf0f4',
+                        borderWidth: '2px',
+                        borderStyle: 'solid',
+                        height: '50%',
+                        backgroundColor: '#fff'
+                    }}
+                         className="col-md-offset-7 col-md-3">
+                        <div className="row" style={{padding: '10px'}}>
+                            <div className="col-md-10">
                             <span style={{
                                 color: '#4e5c6e',
                                 fontSize: '13px'
                             }}>Биржевой стакан / {this.state.currentSymbol}</span>
+                            </div>
+                            <div className="col-md-2">
+                                <span id="orderbook-align" style={{color: '#4e5c6e', cursor: 'pointer'}}
+                                      className="glyphicon glyphicon glyphicon-sort" aria-hidden="true"></span>
+                            </div>
+                        </div>
+                        <div style={{
+                            borderBottomColor: '#edf0f4',
+                            borderBottomWidth: '1px',
+                            borderBottomStyle: 'solid'
+                        }}>
                         </div>
                         <div>
                             <table style={{
@@ -325,7 +382,7 @@ class MainDashboard extends React.Component {
                                 </thead>
                             </table>
                         </div>
-                        <div id="asks" style={{height: '225px', overflowY: 'scroll'}}>
+                        <div id="asks" style={{height: '140px', overflowY: 'scroll'}}>
                             <table style={{
                                 width: '100%'
                             }}>
@@ -334,7 +391,8 @@ class MainDashboard extends React.Component {
                                 </tbody>
                             </table>
                         </div>
-                        <div style={{padding: '7px', fontSize: '11px',
+                        <div style={{
+                            padding: '7px', fontSize: '11px',
                             borderBottomColor: '#edf0f4',
                             borderBottomWidth: '1px',
                             borderBottomStyle: 'solid',
@@ -347,7 +405,7 @@ class MainDashboard extends React.Component {
                                 style={{color: this.state.lastPriceStyle}}>{this.state.lastPrice.toFixed(8)}</span>
                             </span>
                         </div>
-                        <div id="bids" style={{height: '225px', overflowY: 'scroll'}}>
+                        <div id="bids" style={{height: '140px', overflowY: 'scroll'}}>
                             <table style={{
                                 width: '100%'
                             }}>
@@ -356,6 +414,16 @@ class MainDashboard extends React.Component {
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+                <div className="row row-eq-height" style={{marginTop:'10px'}}>
+                    <div className="col-md-9" style={{height: '100%',marginRight:'10px'}}>
+                        <Orders orders={this.state.orders}/>
+                    </div>
+                    <div className="col-md-3" style={{padding:'0px',margin:'0px'}}>
+                        <OrderForm loadOrderHistory={this.loadOrderHistory} pair={this.state.currentSymbol}
+                                   ask={this.state.ask} bid={this.state.bid}
+                                   last={this.state.lastPrice}/>
                     </div>
                 </div>
             </div>
