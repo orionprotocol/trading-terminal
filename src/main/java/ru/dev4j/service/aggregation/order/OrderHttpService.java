@@ -32,12 +32,13 @@ public class OrderHttpService {
         JSONObject request = new JSONObject();
 
         request.put("symbol", order.getSymbol());
-        request.put("ordId", order.getId());
+//        request.put("ordId", order.getId());
         request.put("subOrdId", subOrder.getId());
         request.put("price", subOrder.getPrice());
         request.put("exchange", subOrder.getExchange());
         request.put("subOrdQty", subOrder.getSubOrdQty());
-        request.put("ordType", order.getOrdType());
+//        request.put("ordType", order.getOrdType());
+        request.put("side", order.getSide());
 
         HttpPost httpPost = new HttpPost(broker.getCallbackUrl() + "/order");
 

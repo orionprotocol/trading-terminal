@@ -95,7 +95,7 @@ class OrderForm extends React.Component {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    clientId: '3P6G8AxXyq8KvppcMGXdggEXFsucJWZ48Dv',
+                    clientId: '3NAwZFEJ2KULyknQjGqYr9bMeN2VyGYq4SF2',
                     symbol: symbol,
                     side: side,
                     orderQty: this.state.count,

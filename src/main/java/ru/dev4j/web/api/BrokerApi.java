@@ -25,6 +25,10 @@ public class BrokerApi {
         Broker broker = brokerRepository.findByAddress(newBroker.getAddress());
         Map<String, String> response = new HashMap<>();
         if (broker != null) {
+            broker.setCallbackUrl(newBroker.getCallbackUrl());
+            broker.setPublicKey(newBroker.getPublicKey());
+            broker.setSignature(newBroker.getSignature());
+            brokerRepository.save(broker);
             return response;
         } else {
             Broker bdBroker = new Broker(newBroker.getAddress(), newBroker.getCallbackUrl(), Broker.BrokerStatus.REGISTRED);
