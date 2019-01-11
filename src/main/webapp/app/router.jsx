@@ -3,14 +3,15 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import MainDasboard from "./client/pages/main_dashboard"
+import Balance from "./client/pages/balances"
 
+import Menu from "./client/pages/parts/menu"
 
 class Router extends React.Component {
 
     constructor() {
         super();
-        this.state = {
-        }
+        this.state = {}
     }
 
     componentDidMount() {
@@ -28,11 +29,16 @@ class Router extends React.Component {
     render() {
         return (
             <BrowserRouter>
-                <div className="wrapper">
-                    <div className="content-wrapper" style={{}}>
+                <div className="row" >
+                    <Menu/>
+                    <div className="col-md-11" style={{paddingLeft:'10px', marginLeft:'0px',}}>
                         <Switch>
                             <Route exact path="/"
                                    render={props => <MainDasboard userInfo={this.state.userInfo} {...props}/>}/>
+                        </Switch>
+                        <Switch>
+                            <Route exact path="/balance"
+                                   render={props => <Balance userInfo={this.state.userInfo} {...props}/>}/>
                         </Switch>
                     </div>
                 </div>

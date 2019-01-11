@@ -29,5 +29,10 @@ public class IndexController {
         return "client/client";
     }
 
+    @RequestMapping(value = "/balance")
+    public String balance() {
+        return "client/client";
+    }
+
 
 }

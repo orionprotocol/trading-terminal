@@ -12,7 +12,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="/resources/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
     <!-- Ionicons -->
     <link rel="stylesheet" href="/resources/Ionicons/css/ionicons.min.css">
 
@@ -27,6 +28,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- OrderBook -->
     <link rel="stylesheet" href="/resources/css/orderbook.css">
+
+    <!-- Balance -->
+    <link rel="stylesheet" href="/resources/css/balance.css">
+
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -61,8 +66,8 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body enableScroll="true" class="hold-transition skin-blue sidebar-mini">
-<div id="app" style="background-color: #edf0f4">
+<body enableScroll="true">
+<div id="app" style="background-color: #edf0f4;">
 </div>
 <script src="/resources/js/bundle.js"></script>
 <script src="/resources/jquery/dist/jquery.min.js"></script>
@@ -73,6 +78,11 @@ desired effect
 <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
 <script src="/resources/js/toastr.min.js"></script>
 
+<script>
+    $( document ).ready(function() {
+        $('#app').height($(window).height())
+    });
+</script>
 
 </body>
 </html>

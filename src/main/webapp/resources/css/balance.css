@@ -1,0 +1,30 @@
+#balance td {
+    padding: 20px;
+}
+#balance thead td {
+    color: #9ba6b2;
+    font-family: 'Roboto-Regular', sans-serif;
+    font-size: 13px;
+    font-weight: 100;
+}
+#balance thead{
+    border-bottom: 1px solid #edf0f4
+}
+
+#balance tbody td {
+    color: #4e5c6e;
+    font-family: 'Roboto-Medium',sans-serif;
+    font-size: 15px;
+    font-weight: 200;
+}
+
+.balance-btn{
+    background-color: #fff;
+    border:0;
+    color:#9ba6b2;
+    font-family: 'Roboto-Medium',sans-serif;
+    height:42px;
+    text-transform: capitalize;
+    box-shadow: 0 2px 4px 0 rgba(218,225,233,0.5);
+    width: 140px;
+}

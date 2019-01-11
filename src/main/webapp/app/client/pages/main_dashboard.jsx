@@ -387,7 +387,7 @@ class MainDashboard extends React.Component {
     render() {
         console.log("PAIR MAIN " + this.state.currentSymbol)
         return (
-            <div style={{paddingRight: '20px', paddingLeft: '20px', paddingTop: '10px'}}>
+            <div style={{paddingRight: '10px', paddingLeft: '10px', paddingTop: '5px',paddingBottom:'0px',fontWeight:200}}>
                 <div className="row row-eq-height" style={{}}>
                     <div style={{
                         borderColor: '#edf0f4',
