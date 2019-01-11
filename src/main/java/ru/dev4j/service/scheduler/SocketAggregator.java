@@ -114,8 +114,8 @@ public class SocketAggregator {
     private Map<String, List<ExchangeTuple>> handlePairChanges(String pair, Long now) {
         Map<String, List<ExchangeTuple>> finalMap = new HashMap<>();
 
-        Map<BigDecimal, Double> finalAsksMap = new HashMap<>();
-        Map<BigDecimal, Double> finalBidsMap = new HashMap<>();
+        Map<BigDecimal, SizeExchange> finalAsksMap = new HashMap<>();
+        Map<BigDecimal, SizeExchange> finalBidsMap = new HashMap<>();
 
         Map<Object, Object> binanceAsksChanges = redisRepository.getChanges(Exchange.BINANCE, DataType.ASKS, pair);
         Map<Object, Object> binanceBidsChanges = redisRepository.getChanges(Exchange.BINANCE, DataType.BIDS, pair);
@@ -140,10 +140,10 @@ public class SocketAggregator {
 
 
         List<ExchangeTuple> finalAggregatedAsks = finalAsksMap.entrySet().stream()
-                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue())), List::addAll);
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue().getSize(),new ArrayList<>(e.getValue().getExchanges()))), List::addAll);
 
         List<ExchangeTuple> finalAggregatedBids = finalBidsMap.entrySet().stream()
-                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue())), List::addAll);
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue().getSize(),new ArrayList<>(e.getValue().getExchanges()))), List::addAll);
 
         finalMap.put("asks", finalAggregatedAsks);
         finalMap.put("bids", finalAggregatedBids);
@@ -151,41 +151,47 @@ public class SocketAggregator {
         return finalMap;
     }
 
-    private void handleChanges(Map<Object, Object> changes, Long now, Map<BigDecimal, Double> finalMap, String pair, Exchange exchange, DataType dataType) {
+    private void handleChanges(Map<Object, Object> changes, Long now, Map<BigDecimal, SizeExchange> finalMap, String pair, Exchange exchange, DataType dataType) {
         for (Map.Entry<Object, Object> change : changes.entrySet()) {
             String key = (String) change.getKey();
             handleChange(key, now, finalMap, pair, exchange, dataType);
         }
     }
 
-    private void handleChange(String key, Long now, Map<BigDecimal, Double> finalMap, String pair, Exchange exchange, DataType dataType) {
+    private void handleChange(String key, Long now, Map<BigDecimal, SizeExchange> finalMap, String pair, Exchange exchange, DataType dataType) {
         String[] timePrice = key.split(":");
         Long time = Long.valueOf(timePrice[0]);
         if (time < now) {
             BigDecimal price = new BigDecimal(timePrice[1]);
-            Double aggregatedSize = getAggregatedSize(dataType, pair, price);
+            SizeExchange aggregatedSize = getAggregatedSize(dataType, pair, price);
             finalMap.put(price, aggregatedSize);
             redisRepository.deleteChanges(exchange, dataType, pair, key);
         }
     }
 
-    private Double getAggregatedSize(DataType dataType, String pair, BigDecimal price) {
+    private SizeExchange getAggregatedSize(DataType dataType, String pair, BigDecimal price) {
         String binanceSize = exchangeMapService.getExchangeMapValue(Exchange.BINANCE, dataType, pair, price);
         String poloniexSize = exchangeMapService.getExchangeMapValue(Exchange.POLONIEX, dataType, pair, price);
         String bittrexSize = exchangeMapService.getExchangeMapValue(Exchange.BITTREX, dataType, pair, price);
         Double dBinanceSize = 0D;
         Double dPoloniexSize = 0D;
         Double dBittrexSize = 0D;
+        SizeExchange sizeExchange = new SizeExchange();
         if (binanceSize != null && !binanceSize.isEmpty()) {
             dBinanceSize = Double.valueOf(binanceSize);
+            sizeExchange.getExchanges().add(Exchange.BINANCE.name().toLowerCase());
         }
         if (poloniexSize != null && !poloniexSize.isEmpty()) {
             dPoloniexSize = Double.valueOf(poloniexSize);
+            sizeExchange.getExchanges().add(Exchange.POLONIEX.name().toLowerCase());
         }
         if (bittrexSize != null && !bittrexSize.isEmpty()) {
             dBittrexSize = Double.valueOf(bittrexSize);
+            sizeExchange.getExchanges().add(Exchange.BITTREX.name().toLowerCase());
         }
-        return dBinanceSize + dPoloniexSize + dBittrexSize;
+        Double aggregatedSize = dBinanceSize + dPoloniexSize + dBittrexSize;
+        sizeExchange.setSize(aggregatedSize);
+        return sizeExchange;
     }
 
 }

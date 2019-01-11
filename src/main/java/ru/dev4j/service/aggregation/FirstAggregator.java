@@ -1,5 +1,6 @@
 package ru.dev4j.service.aggregation;
 
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import ru.dev4j.config.ServiceConfig;
 import ru.dev4j.model.DataType;
 import ru.dev4j.model.Exchange;
 import ru.dev4j.model.ExchangeTuple;
+import ru.dev4j.model.SizeExchange;
 import ru.dev4j.repository.redis.RedisRepository;
 import ru.dev4j.service.map.ExchangeMapService;
 
@@ -21,6 +23,8 @@ public class FirstAggregator {
 
     @Autowired
     private ExchangeMapService exchangeMapService;
+
+    //TODO:COMMENT
 
     public Map<String, List<ExchangeTuple>> aggregateAsksAndBids(String pair, Integer depth) {
         List<ExchangeTuple> asks = aggregateAsksPairByDepth(pair, depth);
@@ -50,7 +54,7 @@ public class FirstAggregator {
 
         List<ExchangeTuple> finalAggregatedAsks = asks.entrySet().stream()
                 .limit(depth)
-                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), Double.valueOf(e.getValue()))), List::addAll);
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), Double.valueOf(e.getValue()),null)), List::addAll);
 
         return finalAggregatedAsks;
     }
@@ -62,71 +66,76 @@ public class FirstAggregator {
 
         List<ExchangeTuple> finalAggregatedBids = bids.entrySet().stream()
                 .limit(depth)
-                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), Double.valueOf(e.getValue()))), List::addAll);
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), Double.valueOf(e.getValue()),null)), List::addAll);
 
         return finalAggregatedBids;
     }
 
     private List<ExchangeTuple> aggregateAsksPairByDepth(String pair, Integer depth) {
 
-        TreeMap<BigDecimal, Double> aggregatedTopMap = new TreeMap<>();
+        TreeMap<BigDecimal, SizeExchange> aggregatedTopMap = new TreeMap<>();
 
         TreeMap<BigDecimal, String> binanceAsks = exchangeMapService.getFirstAsks(Exchange.BINANCE, pair, depth);
 
-        mergeInMap(aggregatedTopMap, binanceAsks);
+        mergeInMap(aggregatedTopMap, binanceAsks, Exchange.BINANCE.name().toLowerCase());
 
         TreeMap<BigDecimal, String> poloniexAsks = exchangeMapService.getFirstAsks(Exchange.POLONIEX, pair, depth);
 
-        mergeInMap(aggregatedTopMap, poloniexAsks);
+        mergeInMap(aggregatedTopMap, poloniexAsks, Exchange.POLONIEX.name().toLowerCase());
 
         TreeMap<BigDecimal, String> bittrexAsks = exchangeMapService.getFirstAsks(Exchange.BITTREX, pair, depth);
 
-        mergeInMap(aggregatedTopMap, bittrexAsks);
+        mergeInMap(aggregatedTopMap, bittrexAsks, Exchange.BITTREX.name().toLowerCase());
 
         List<ExchangeTuple> finalAggregatedAsks = aggregatedTopMap.entrySet().stream()
                 .limit(depth)
-                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue())), List::addAll);
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue().getSize(), new ArrayList<>(e.getValue().getExchanges()))), List::addAll);
 
         return finalAggregatedAsks;
     }
 
     private List<ExchangeTuple> aggregateBidsPairByDepth(String pair, Integer depth) {
 
-        TreeMap<BigDecimal, Double> aggregatedTopMap = new TreeMap<>(Comparator.reverseOrder());
+        TreeMap<BigDecimal, SizeExchange> aggregatedTopMap = new TreeMap<>(Comparator.reverseOrder());
 
         TreeMap<BigDecimal, String> binanceBids = exchangeMapService.getFirstBids(Exchange.BINANCE, pair, depth);
 
-        mergeInMap(aggregatedTopMap, binanceBids);
+        mergeInMap(aggregatedTopMap, binanceBids, Exchange.BINANCE.name().toLowerCase());
 
         TreeMap<BigDecimal, String> poloniexBids = exchangeMapService.getFirstBids(Exchange.POLONIEX, pair, depth);
 
-        mergeInMap(aggregatedTopMap, poloniexBids);
+        mergeInMap(aggregatedTopMap, poloniexBids,Exchange.POLONIEX.name().toLowerCase());
 
         TreeMap<BigDecimal, String> bittrexBids = exchangeMapService.getFirstBids(Exchange.BITTREX, pair, depth);
 
-        mergeInMap(aggregatedTopMap, bittrexBids);
+        mergeInMap(aggregatedTopMap, bittrexBids,Exchange.POLONIEX.name().toLowerCase());
 
 
         List<ExchangeTuple> finalAggregatedBids = aggregatedTopMap.entrySet().stream()
                 .limit(depth)
-                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue())), List::addAll);
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue().getSize(),new ArrayList<>(e.getValue().getExchanges()))), List::addAll);
 
         return finalAggregatedBids;
     }
 
-    private void mergeInMap(Map<BigDecimal, Double> aggregatedTopMap, TreeMap<BigDecimal, String> treeMap) {
+    private void mergeInMap(Map<BigDecimal, SizeExchange> aggregatedTopMap, TreeMap<BigDecimal, String> treeMap, String exchange) {
         for (Map.Entry<BigDecimal, String> entry : treeMap.entrySet()) {
             BigDecimal price = entry.getKey();
             String size = entry.getValue();
-            Double value = aggregatedTopMap.get(price);
-            if (value == null) {
-                aggregatedTopMap.put(price, Double.valueOf(size));
+            SizeExchange sizeExchange = aggregatedTopMap.get(price);
+            if (sizeExchange == null) {
+                sizeExchange = new SizeExchange(Double.valueOf(size));
+                sizeExchange.getExchanges().add(exchange);
+                aggregatedTopMap.put(price, sizeExchange);
             } else {
-                Double oldSize = aggregatedTopMap.get(price);
-                aggregatedTopMap.put(price, oldSize + Double.valueOf(size));
+                SizeExchange oldExchange = aggregatedTopMap.get(price);
+                oldExchange.getExchanges().add(exchange);
+                oldExchange.setSize(oldExchange.getSize() + Double.valueOf(size));
+                aggregatedTopMap.put(price, oldExchange);
             }
         }
     }
+
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(MongoDBConfig.class, PropertySourceConfig.class, ServiceConfig.class, RedisConfig.class);

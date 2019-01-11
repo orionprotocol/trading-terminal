@@ -186,7 +186,7 @@ class MainDashboard extends React.Component {
                     total = total + asks[i].total;
                 }
             }
-            this.setState({currentPrice: price, count: count,total:total});
+            this.setState({currentPrice: price, count: count, total: total});
             $("#buy-form-link").trigger("click");
             return;
         }
@@ -203,7 +203,7 @@ class MainDashboard extends React.Component {
                     total = total + bids[i].total;
                 }
             }
-            this.setState({currentPrice: price, count: count,total:total});
+            this.setState({currentPrice: price, count: count, total: total});
             return;
         }
     }
@@ -220,18 +220,35 @@ class MainDashboard extends React.Component {
             for (let i = 0; i < asks.length; i++, key++) {
                 const percent = this.calculatePercent(maxAsk.total, asks[i].total).toFixed(6);
                 let percentStyle = percent + '%';
+                let divExchanges = [];
+                let exchanges = asks[i].exchanges || [];
+                for (let j = 0; j < exchanges.length; j++) {
+                    let imagePath = "/resources/img/exchanges/{exchange}.png".replace("{exchange}", exchanges[j]);
+                    let key = i + '' + j;
+                    divExchanges.push(
+                        <div key={key} className="col-md-1" style={{paddingLeft:'5px'}}>
+                            <img style={{height: '15px', width: '15px'}} src={imagePath}>
+                            </img>
+                        </div>
+                    )
+                }
                 renderData.push(
                     <tr onClick={() => {
                         this.chooseOrderBookLine(asks[i], 'asks')
                     }} style={{lineHeight: '20px'}} key={key}>
-                        <td>{asks[i].price.toFixed(8)}</td>
-                        <td style={{color: '#e5494d'}}>{asks[i].size.toFixed(6)}</td>
-                        <td>
+                        <td style={{width: '27%'}}>{asks[i].price.toFixed(8)}</td>
+                        <td style={{width: '27%', color: '#e5494d'}}>{asks[i].size.toFixed(3)}</td>
+                        <td style={{width: '27%'}}>
                             <div style={{width: '100%', paddingTop: '1px', paddingBottom: '1px'}}>
                                 <div style={{
                                     width: percentStyle,
                                     backgroundColor: '#FCECEC'
                                 }}>{asks[i].total.toFixed(9)}</div>
+                            </div>
+                        </td>
+                        <td style={{width: '19%'}}>
+                            <div className="row" style={{paddingLeft:'15px'}}>
+                                {divExchanges}
                             </div>
                         </td>
                     </tr>
@@ -253,18 +270,35 @@ class MainDashboard extends React.Component {
             for (let i = 0; i < bids.length; i++, key++) {
                 const percent = this.calculatePercent(maxBid.total, bids[i].total).toFixed(6);
                 let percentStyle = percent + '%';
+                let divExchanges = [];
+                let exchanges = bids[i].exchanges || [];
+                for (let j = 0; j < exchanges.length; j++) {
+                    let imagePath = "/resources/img/exchanges/{exchange}.png".replace("{exchange}", exchanges[j]);
+                    let key = i + '' + j;
+                    divExchanges.push(
+                        <div key={key} className="col-md-1" style={{paddingLeft:'5px'}}>
+                            <img style={{height: '15px', width: '15px'}} src={imagePath}>
+                            </img>
+                        </div>
+                    )
+                }
                 renderData.push(
                     <tr onClick={() => {
                         this.chooseOrderBookLine(bids[i], 'bids')
                     }} style={{lineHeight: '20px'}} key={key}>
-                        <td>{bids[i].price.toFixed(8)}</td>
-                        <td style={{color: '#2051d3'}}>{bids[i].size.toFixed(6)}</td>
-                        <td>
+                        <td style={{width: '27%'}}>{bids[i].price.toFixed(8)}</td>
+                        <td style={{color: '#2051d3', width: '27%'}}>{bids[i].size.toFixed(3)}</td>
+                        <td style={{width: '27%'}}>
                             <div style={{width: '100%', paddingTop: '1px', paddingBottom: '1px'}}>
                                 <div style={{
                                     width: percentStyle,
                                     backgroundColor: '#EEF2FD'
                                 }}>{bids[i].total.toFixed(9)}</div>
+                            </div>
+                        </td>
+                        <td style={{width: '19%'}}>
+                            <div className="row" style={{paddingLeft:'15px'}}>
+                                {divExchanges}
                             </div>
                         </td>
                     </tr>
@@ -387,7 +421,13 @@ class MainDashboard extends React.Component {
     render() {
         console.log("PAIR MAIN " + this.state.currentSymbol)
         return (
-            <div style={{paddingRight: '10px', paddingLeft: '10px', paddingTop: '5px',paddingBottom:'0px',fontWeight:200}}>
+            <div style={{
+                paddingRight: '10px',
+                paddingLeft: '10px',
+                paddingTop: '5px',
+                paddingBottom: '0px',
+                fontWeight: 200
+            }}>
                 <div className="row row-eq-height" style={{}}>
                     <div style={{
                         borderColor: '#edf0f4',
@@ -446,9 +486,10 @@ class MainDashboard extends React.Component {
                             }}>
                                 <thead>
                                 <tr style={{color: '#7f8fa4', fontSize: '11px', lineHeight: '25px'}}>
-                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '33%'}}>Цена</td>
-                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '35%'}}>Кол-во</td>
-                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '32%'}}>Сумма</td>
+                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '27%'}}>Цена</td>
+                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '27%'}}>Кол-во</td>
+                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '27%'}}>Сумма</td>
+                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '19%'}}>Биржа</td>
                                 </tr>
                                 </thead>
                             </table>
