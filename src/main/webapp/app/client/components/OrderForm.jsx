@@ -14,17 +14,10 @@ class OrderForm extends React.Component {
             secondSymbol: 'BTC',
             ask: '0',
             bid: '0',
-            last: '0',
-            currentPrice: '0',
-            count: '0',
-            total: '0'
-        }
-        this.changeCurrentPrice = this.changeCurrentPrice.bind(this);
+            last: '0'}
         this.clickAsk = this.clickAsk.bind(this);
         this.clickBid = this.clickBid.bind(this);
         this.clickLast = this.clickLast.bind(this);
-        this.changeCount = this.changeCount.bind(this);
-        this.recalculateTotal = this.recalculateTotal.bind(this);
         this.postOrder = this.postOrder.bind(this);
     }
 
@@ -37,43 +30,16 @@ class OrderForm extends React.Component {
         })
     }
 
-    changeCount(e) {
-        if (e.target.value >= 0) {
-            this.setState({count: e.target.value}, () => {
-                this.recalculateTotal();
-            })
-        }
-    }
-
-    changeCurrentPrice(e) {
-        if (e.target.value >= 0) {
-            this.setState({currentPrice: e.target.value}, () => {
-                this.recalculateTotal();
-            })
-        }
-    }
-
     clickAsk(value) {
-        this.setState({currentPrice: value}, () => {
-            this.recalculateTotal();
-        })
+        this.props.changeCurrentPrice(value);
     }
 
     clickBid(value) {
-        this.setState({currentPrice: value}, () => {
-            this.recalculateTotal();
-        })
+        this.props.changeCurrentPrice(value);
     }
 
     clickLast(value) {
-        this.setState({currentPrice: value}, () => {
-            this.recalculateTotal();
-        })
-    }
-
-    recalculateTotal() {
-        let total = this.state.count * this.state.currentPrice;
-        this.setState({total: total})
+        this.props.changeCurrentPrice(value);
     }
 
     postOrder(symbol, side) {
@@ -128,6 +94,11 @@ class OrderForm extends React.Component {
         let lastPrice = this.props.last;
         let ask = this.props.ask;
         let bid = this.props.bid;
+
+        let count = this.props.count;
+        let currentPrice = this.props.currentPrice;
+        let total = this.props.total;
+
         return (
             <div className="row">
                 <div className="col-md-6 orderform">
@@ -154,8 +125,8 @@ class OrderForm extends React.Component {
                                                 <div className="col-md-6">
                                                     <input type="number" name="count" id="amount" tabIndex="1"
                                                            className="orderform-input"
-                                                           value={this.state.count}
-                                                           onChange={this.changeCount}
+                                                           value={count}
+                                                           onChange={this.props.changeCount}
                                                            placeholder="0"/>
                                                 </div>
                                                 <div className="col-md-6 orderform-input-symbol-container">
@@ -191,8 +162,8 @@ class OrderForm extends React.Component {
                                                 <div className="col-md-6">
                                                     <input type="number" name="price" id="price" tabIndex="1"
                                                            className="orderform-input"
-                                                           value={this.state.currentPrice}
-                                                           onChange={this.changeCurrentPrice}
+                                                           value={currentPrice}
+                                                           onChange={this.props.changeCurrentPrice}
                                                            placeholder="0"/>
                                                 </div>
                                                 <div className="col-md-6 orderform-input-symbol-container">
@@ -210,7 +181,7 @@ class OrderForm extends React.Component {
                                                 <div className="col-md-6">
                                                     <input type="number" name="total" id="amount" tabIndex="1"
                                                            className="orderform-input"
-                                                           value={this.state.total}
+                                                           value={total}
                                                            placeholder="0"/>
                                                 </div>
                                                 <div className="col-md-6 orderform-input-symbol-container">

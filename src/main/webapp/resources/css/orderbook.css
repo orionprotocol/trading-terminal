@@ -1,0 +1,16 @@
+#asks tr:hover td {
+    background-color: #efefef;
+}
+
+#bids tr:hover td {
+    background-color: #efefef;
+}
+
+
+#asks tr {
+    cursor: pointer;
+}
+
+#bids tr {
+    cursor: pointer;
+}

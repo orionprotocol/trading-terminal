@@ -12,7 +12,6 @@ public class SocketHolder {
 
     private Map<String, SocketHandler> socketHandlerHolder = new HashMap<>();
 
-
     public void addSocket(String name, SocketHandler socketHandler) {
         socketHandlerHolder.put(name, socketHandler);
     }

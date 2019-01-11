@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Service
+//@Service
 public class PoloniexWebSocket {
 
     private static final String EXCHANGE_NAME = "POLONIEX";

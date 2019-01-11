@@ -17,7 +17,13 @@ class MainDashboard extends React.Component {
             lastPriceStyle: '#000',
             ask: 0,
             bid: 0,
-            orders: []
+            orders: [],
+            parentCount: null,
+            parentPrice: null,
+            parentType: null,
+            currentPrice: '0',
+            count: '0',
+            total: '0'
         }
         this.loadAllPairs = this.loadAllPairs.bind(this);
         this.renderPairs = this.renderPairs.bind(this);
@@ -35,6 +41,12 @@ class MainDashboard extends React.Component {
         this.renderBids = this.renderBids.bind(this);
         this.loadOrderHistory = this.loadOrderHistory.bind(this);
         this.handleJqeuryScroll = this.handleJqeuryScroll.bind(this);
+        this.chooseOrderBookLine = this.chooseOrderBookLine.bind(this);
+
+        this.changeCurrentPrice = this.changeCurrentPrice.bind(this);
+        this.changeCount = this.changeCount.bind(this);
+        this.recalculateTotal = this.recalculateTotal.bind(this);
+
     }
 
     componentDidMount() {
@@ -162,6 +174,40 @@ class MainDashboard extends React.Component {
         return 100 * value / max
     }
 
+    chooseOrderBookLine(data, type) {
+        if (type == 'asks') {
+            let price = data.price;
+            let count = 0;
+            let total = 0;
+            let asks = this.state.data.asks;
+            for (let i = 0; i < asks.length; i++) {
+                if (asks[i].price <= price) {
+                    count = count + asks[i].size;
+                    total = total + asks[i].total;
+                }
+            }
+            this.setState({currentPrice: price, count: count,total:total});
+            $("#buy-form-link").trigger("click");
+            return;
+        }
+        if (type == 'bids') {
+            let price = data.price;
+            this.setState({currentPrice: price})
+            $("#sell-form-link").trigger("click");
+            let count = 0;
+            let total = 0;
+            let bids = this.state.data.bids;
+            for (let i = 0; i < bids.length; i++) {
+                if (bids[i].price >= price) {
+                    count = count + bids[i].size;
+                    total = total + bids[i].total;
+                }
+            }
+            this.setState({currentPrice: price, count: count,total:total});
+            return;
+        }
+    }
+
     renderAsks() {
         let renderData = [];
         let key = 0;
@@ -175,7 +221,9 @@ class MainDashboard extends React.Component {
                 const percent = this.calculatePercent(maxAsk.total, asks[i].total).toFixed(6);
                 let percentStyle = percent + '%';
                 renderData.push(
-                    <tr style={{lineHeight: '20px'}} key={key}>
+                    <tr onClick={() => {
+                        this.chooseOrderBookLine(asks[i], 'asks')
+                    }} style={{lineHeight: '20px'}} key={key}>
                         <td>{asks[i].price.toFixed(8)}</td>
                         <td style={{color: '#e5494d'}}>{asks[i].size.toFixed(6)}</td>
                         <td>
@@ -206,7 +254,9 @@ class MainDashboard extends React.Component {
                 const percent = this.calculatePercent(maxBid.total, bids[i].total).toFixed(6);
                 let percentStyle = percent + '%';
                 renderData.push(
-                    <tr style={{lineHeight: '20px'}} key={key}>
+                    <tr onClick={() => {
+                        this.chooseOrderBookLine(bids[i], 'bids')
+                    }} style={{lineHeight: '20px'}} key={key}>
                         <td>{bids[i].price.toFixed(8)}</td>
                         <td style={{color: '#2051d3'}}>{bids[i].size.toFixed(6)}</td>
                         <td>
@@ -222,7 +272,6 @@ class MainDashboard extends React.Component {
             }
         }
         return renderData;
-
     }
 
     handleJqeuryScroll() {
@@ -310,6 +359,28 @@ class MainDashboard extends React.Component {
             this.state.ws.close();
         }
         console.log("Disconnected");
+    }
+
+
+    changeCount(e) {
+        if (e.target.value >= 0) {
+            this.setState({count: e.target.value}, () => {
+                this.recalculateTotal();
+            })
+        }
+    }
+
+    changeCurrentPrice(e) {
+        if (e.target.value >= 0) {
+            this.setState({currentPrice: e.target.value}, () => {
+                this.recalculateTotal();
+            })
+        }
+    }
+
+    recalculateTotal() {
+        let total = this.state.count * this.state.currentPrice;
+        this.setState({total: total})
     }
 
 
@@ -416,12 +487,15 @@ class MainDashboard extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div className="row row-eq-height" style={{marginTop:'10px'}}>
-                    <div className="col-md-9" style={{height: '100%',marginRight:'10px'}}>
+                <div className="row row-eq-height" style={{marginTop: '10px'}}>
+                    <div className="col-md-9" style={{height: '100%', marginRight: '10px'}}>
                         <Orders orders={this.state.orders}/>
                     </div>
-                    <div className="col-md-3" style={{padding:'0px',margin:'0px'}}>
-                        <OrderForm loadOrderHistory={this.loadOrderHistory} pair={this.state.currentSymbol}
+                    <div className="col-md-3" style={{padding: '0px', margin: '0px'}}>
+                        <OrderForm changeCount={this.changeCount} changeCurrentPrice={this.changeCurrentPrice}
+                                   count={this.state.count} currentPrice={this.state.currentPrice}
+                                   total={this.state.total}
+                                   loadOrderHistory={this.loadOrderHistory} pair={this.state.currentSymbol}
                                    ask={this.state.ask} bid={this.state.bid}
                                    last={this.state.lastPrice}/>
                     </div>
