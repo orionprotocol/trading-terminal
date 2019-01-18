@@ -14,11 +14,13 @@ class OrderForm extends React.Component {
             secondSymbol: 'BTC',
             ask: '0',
             bid: '0',
-            last: '0'}
+            last: '0'
+        }
         this.clickAsk = this.clickAsk.bind(this);
         this.clickBid = this.clickBid.bind(this);
         this.clickLast = this.clickLast.bind(this);
         this.postOrder = this.postOrder.bind(this);
+        this.renderBenefits = this.renderBenefits.bind(this);
     }
 
     componentDidMount() {
@@ -81,6 +83,19 @@ class OrderForm extends React.Component {
 
     }
 
+    renderBenefits(benefit) {
+        let rendered =
+            <div>
+                <div>
+                    +{benefit.benefitPct}%
+                </div>
+                <div>
+                    {benefit.benefitBtc} BTC
+                </div>
+            </div>
+        return rendered;
+    }
+
 
     render() {
         let pair = this.props.pair;
@@ -99,16 +114,22 @@ class OrderForm extends React.Component {
         let currentPrice = this.props.currentPrice;
         let total = this.props.total;
 
+        let benefits = this.props.benefits;
+
         return (
             <div className="row">
                 <div className="col-md-6 orderform">
                     <div className="panel panel-default orderform-panel">
                         <div className="panel-heading" style={{padding: '0px'}}>
                             <div id="buy-header" className="col-xs-6 orderform-header orderform-buy-active">
-                                <a href="#" id="buy-form-link">КУПИТЬ</a>
+                                <a onClick={() => {
+                                    this.props.setSide('buy')
+                                }} href="#" id="buy-form-link">КУПИТЬ</a>
                             </div>
                             <div id="sell-header" className="col-xs-6 orderform-header">
-                                <a href="#" id="sell-form-link">ПРОДАТЬ</a>
+                                <a onClick={() => {
+                                    this.props.setSide('sell')
+                                }} href="#" id="sell-form-link">ПРОДАТЬ</a>
                             </div>
                         </div>
                         <div className="orderform-container">
@@ -140,22 +161,22 @@ class OrderForm extends React.Component {
                                                     <span className="orderform-label">Цена</span>
                                                 </div>
                                                 <div className="col-md-offset-6 col-md-1">
-                                                    <span onClick={() => {
-                                                        this.clickAsk(ask)
-                                                    }}
-                                                          className="orderform-pointer orderform-label">Ask</span>
+                <span onClick={() => {
+                    this.clickAsk(ask)
+                }}
+                      className="orderform-pointer orderform-label">Ask</span>
                                                 </div>
                                                 <div className="col-md-1">
-                                                    <span onClick={() => {
-                                                        this.clickBid(bid)
-                                                    }}
-                                                          className="orderform-pointer orderform-label">Bid</span>
+                <span onClick={() => {
+                    this.clickBid(bid)
+                }}
+                      className="orderform-pointer orderform-label">Bid</span>
                                                 </div>
                                                 <div className="col-md-1">
-                                                    <span onClick={() => {
-                                                        this.clickLast(lastPrice)
-                                                    }}
-                                                          className="orderform-pointer orderform-label">Last</span>
+                <span onClick={() => {
+                    this.clickLast(lastPrice)
+                }}
+                      className="orderform-pointer orderform-label">Last</span>
                                                 </div>
                                             </div>
                                             <div className="row orderform-content-container">
@@ -187,6 +208,43 @@ class OrderForm extends React.Component {
                                                 <div className="col-md-6 orderform-input-symbol-container">
                                                     {secondSymbol}
                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row" style={{fontSize: '11px', marginTop: '10px'}}>
+                                        <div className="col-md-4" style={{
+                                            padding: '0px',
+                                            textAlign: 'center',
+                                            borderRight: '2px solid rgb(237, 240, 244)'
+                                        }}>
+                                            <div style={{borderBottom: '2px solid rgb(237, 240, 244)'}}>
+                                                <span style={{
+                                                    color: 'rgb(240, 185, 11)',
+                                                    fontWeight: 'bold'
+                                                }}>BINANCE</span>
+                                            </div>
+                                            <div style={{color: '#41c300', fontSize: '10px'}}>
+                                                {this.renderBenefits(benefits.binance)}
+                                            </div>
+                                        </div>
+                                        <div className="col-md-4" style={{
+                                            padding: '0px',
+                                            textAlign: 'center',
+                                            borderRight: '2px solid rgb(237, 240, 244)'
+                                        }}>
+                                            <div style={{borderBottom: '2px solid rgb(237, 240, 244)'}}>
+                                                <span style={{color: '#0a6970', fontWeight: 'bold'}}>POLONIEX</span>
+                                            </div>
+                                            <div style={{color: '#41c300', fontSize: '10px'}}>
+                                                {this.renderBenefits(benefits.poloniex)}
+                                            </div>
+                                        </div>
+                                        <div className="col-md-4" style={{padding: '0px', textAlign: 'center'}}>
+                                            <div style={{borderBottom: '2px solid rgb(237, 240, 244)'}}>
+                                                <span style={{color: '#0084d4', fontWeight: 'bold'}}>BITTREX</span>
+                                            </div>
+                                            <div style={{color: '#41c300', fontSize: '10px'}}>
+                                                {this.renderBenefits(benefits.bittrex)}
                                             </div>
                                         </div>
                                     </div>

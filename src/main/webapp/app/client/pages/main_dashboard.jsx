@@ -22,8 +22,14 @@ class MainDashboard extends React.Component {
             parentPrice: null,
             parentType: null,
             currentPrice: '0',
-            count: '0',
-            total: '0'
+            count: '1',
+            total: '0',
+            side: 'buy',
+            benefits: {
+                binance: {},
+                bittrex: {},
+                poloniex: {}
+            }
         }
         this.loadAllPairs = this.loadAllPairs.bind(this);
         this.renderPairs = this.renderPairs.bind(this);
@@ -46,7 +52,24 @@ class MainDashboard extends React.Component {
         this.changeCurrentPrice = this.changeCurrentPrice.bind(this);
         this.changeCount = this.changeCount.bind(this);
         this.recalculateTotal = this.recalculateTotal.bind(this);
+        this.loadBenefits = this.loadBenefits.bind(this);
+        this.setSide = this.setSide.bind(this);
 
+    }
+
+    setSide(side) {
+        this.setState({side: side}, () => {
+            this.loadBenefits();
+        })
+    }
+
+    changeCount(e) {
+        if (e.target.value >= 0) {
+            this.setState({count: e.target.value}, () => {
+                this.recalculateTotal();
+                this.loadBenefits();
+            })
+        }
     }
 
     componentDidMount() {
@@ -63,12 +86,29 @@ class MainDashboard extends React.Component {
         }).then(data => {
             this.setState({pairs: data, currentSymbol: data[0]}, () => {
                 this.loadSnapshot(this.state.currentSymbol, 20);
+                this.loadBenefits();
                 this.connect();
                 this.loadOrderHistory(data[0])
                 setInterval(() => {
                     this.loadOrderHistory(this.state.currentSymbol)
                 }, 10000);
             })
+        })
+    }
+
+    loadBenefits() {
+        let url = "/order-benefits?symbol={symbol}&ordQty={ordQty}&side={side}"
+            .replace("{symbol}", this.state.currentSymbol)
+            .replace("{ordQty}", this.state.count)
+            .replace("{side}", this.state.side)
+        fetch(url,
+            {
+                credentials: 'same-origin',
+            }
+        ).then(results => {
+            return results.json();
+        }).then(data => {
+            this.setState({benefits: data})
         })
     }
 
@@ -143,6 +183,7 @@ class MainDashboard extends React.Component {
             this.loadSnapshot(symbol, 20)
             this.connect();
             this.loadOrderHistory(symbol);
+            this.loadBenefits();
         })
 
     }
@@ -226,7 +267,7 @@ class MainDashboard extends React.Component {
                     let imagePath = "/resources/img/exchanges/{exchange}.png".replace("{exchange}", exchanges[j]);
                     let key = i + '' + j;
                     divExchanges.push(
-                        <div key={key} className="col-md-1" style={{paddingLeft:'5px'}}>
+                        <div key={key} className="col-md-1" style={{paddingLeft: '5px'}}>
                             <img style={{height: '15px', width: '15px'}} src={imagePath}>
                             </img>
                         </div>
@@ -247,7 +288,7 @@ class MainDashboard extends React.Component {
                             </div>
                         </td>
                         <td style={{width: '19%'}}>
-                            <div className="row" style={{paddingLeft:'15px'}}>
+                            <div className="row" style={{paddingLeft: '15px'}}>
                                 {divExchanges}
                             </div>
                         </td>
@@ -276,7 +317,7 @@ class MainDashboard extends React.Component {
                     let imagePath = "/resources/img/exchanges/{exchange}.png".replace("{exchange}", exchanges[j]);
                     let key = i + '' + j;
                     divExchanges.push(
-                        <div key={key} className="col-md-1" style={{paddingLeft:'5px'}}>
+                        <div key={key} className="col-md-1" style={{paddingLeft: '5px'}}>
                             <img style={{height: '15px', width: '15px'}} src={imagePath}>
                             </img>
                         </div>
@@ -297,7 +338,7 @@ class MainDashboard extends React.Component {
                             </div>
                         </td>
                         <td style={{width: '19%'}}>
-                            <div className="row" style={{paddingLeft:'15px'}}>
+                            <div className="row" style={{paddingLeft: '15px'}}>
                                 {divExchanges}
                             </div>
                         </td>
@@ -395,14 +436,6 @@ class MainDashboard extends React.Component {
         console.log("Disconnected");
     }
 
-
-    changeCount(e) {
-        if (e.target.value >= 0) {
-            this.setState({count: e.target.value}, () => {
-                this.recalculateTotal();
-            })
-        }
-    }
 
     changeCurrentPrice(e) {
         if (e.target.value >= 0) {
@@ -534,6 +567,8 @@ class MainDashboard extends React.Component {
                     </div>
                     <div className="col-md-3" style={{padding: '0px', margin: '0px'}}>
                         <OrderForm changeCount={this.changeCount} changeCurrentPrice={this.changeCurrentPrice}
+                                   benefits={this.state.benefits}
+                                   setSide={this.setSide}
                                    count={this.state.count} currentPrice={this.state.currentPrice}
                                    total={this.state.total}
                                    loadOrderHistory={this.loadOrderHistory} pair={this.state.currentSymbol}

@@ -45,4 +45,13 @@ public class Split {
     public void setExchange(Exchange exchange) {
         this.exchange = exchange;
     }
+
+    @Override
+    public String toString() {
+        return "Split{" +
+                "price=" + price +
+                ", size=" + size +
+                ", exchange=" + exchange +
+                '}';
+    }
 }
