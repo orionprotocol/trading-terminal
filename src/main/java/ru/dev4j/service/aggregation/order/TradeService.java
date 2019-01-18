@@ -1,5 +1,6 @@
 package ru.dev4j.service.aggregation.order;
 
+import com.wavesplatform.wavesj.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dev4j.model.Order;
@@ -7,7 +8,9 @@ import ru.dev4j.model.SubOrder;
 import ru.dev4j.model.Trade;
 import ru.dev4j.repository.db.OrderRepository;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +20,36 @@ public class TradeService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    private String seed = "***REMOVED***";
+    private final PrivateKeyAccount account = PrivateKeyAccount.fromSeed(seed, 0, Account.TESTNET);
+
+
+    Node matcher;
+    String matcherKey;
+    long MATCHER_FEE = 300_000;
+
+    private final static class WavesAssets {
+        static String WAVES = Asset.WAVES;
+        static String BTC = "DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn";
+        static String ETH = "BrmjyAWT5jjr3Wpsiyivyvg5vDuzoX2s93WgiexXetB3";
+
+        static String toWavesAsset(String asset) {
+            switch (asset){
+                case "BTC":
+                    return BTC;
+                case "ETH":
+                    return ETH;
+                default:
+                    return WAVES;
+            }
+        }
+
+        static AssetPair symbolToAssetPair(String symbol) {
+            String assets[] = symbol.split("-");
+            return new AssetPair(toWavesAsset(assets[0]), toWavesAsset(assets[1]));
+        }
+    }
 
     public Map<String, Object> handleNewTrade(Trade trade) {
         Map<String, Object> response = new HashMap<>();
@@ -38,8 +71,44 @@ public class TradeService {
         response.put("filledQty", order.getFilledQty());
         response.put("status", order.getStatus());
 
+        try {
+            createCounterOrder(order, trade);
+        } catch (Exception e) {
+            // TODO: Return 500 HTTP error
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
         return response;
 
+    }
+
+    private Node getMatcher() throws URISyntaxException {
+        if (matcher == null) {
+            matcher = new Node("https://matcher.testnet.wavesnodes.com", Account.TESTNET);
+        }
+        return matcher;
+    }
+
+    private String getMatcherKey() throws IOException {
+        if (matcherKey == null) {
+            matcherKey  = matcher.getMatcherKey();
+        }
+        return matcherKey;
+    }
+
+    private void createCounterOrder(Order order, Trade trade) throws Exception {
+        BigDecimal tokens = new BigDecimal(Asset.TOKEN);
+        long price = new BigDecimal(trade.getPrice()).multiply(tokens).longValue();
+        long amount = new BigDecimal(trade.getQty()).multiply(tokens).longValue();
+
+        com.wavesplatform.wavesj.matcher.Order wavesOrder = getMatcher().createOrder(this.account, getMatcherKey(),
+                 WavesAssets.symbolToAssetPair(order.getSymbol()),
+                // buy 10 WAVES at 0.00090000 WBTC each
+                com.wavesplatform.wavesj.matcher.Order.Type.BUY,
+                price,
+                amount,
+                // make order valid for 1 hour
+                System.currentTimeMillis() + 3_600_000, MATCHER_FEE);
     }
 
     private SubOrder getSubOrder(Order order, Trade trade) {
@@ -50,5 +119,22 @@ public class TradeService {
             }
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        Order order = new Order();
+        order.setSymbol("WAVES-BTC");
+        Trade trade = new Trade();
+        trade.setPrice("0.00071");
+        trade.setQty("300");
+
+        TradeService tradeService = new TradeService();
+        System.out.println(tradeService.account.getAddress());
+
+        try {
+            tradeService.createCounterOrder(order, trade);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
