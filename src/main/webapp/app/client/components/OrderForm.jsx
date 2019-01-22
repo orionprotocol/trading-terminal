@@ -87,10 +87,10 @@ class OrderForm extends React.Component {
         let rendered =
             <div>
                 <div>
-                    +{benefit.benefitPct}%
+                    + {benefit.benefitPct}%
                 </div>
                 <div>
-                    {benefit.benefitBtc} BTC
+                    + {benefit.benefitBtc} BTC
                 </div>
             </div>
         return rendered;

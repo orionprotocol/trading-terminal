@@ -19,7 +19,7 @@ public class OrderBenefitsService {
     private SplitAggregator splitAggregator;
 
     private static final DecimalFormat df2 = new DecimalFormat("#.#####");
-    private static final DecimalFormat df10 = new DecimalFormat("#.##########");
+    private static final DecimalFormat df10 = new DecimalFormat("#.########");
 
 
     public Map<String, Object> orderBenefits(String pair,
@@ -55,13 +55,17 @@ public class OrderBenefitsService {
         System.out.println(Arrays.toString(poloniexLevels.toArray()));
 
 
-        Double totalCostLevels = totalLevels.stream().mapToDouble(split -> split.getPrice().doubleValue() * split.getSize().doubleValue()).sum();
+        Double totalCostLevels = totalLevels.stream()
+                .mapToDouble(l -> l.getPrice().doubleValue()).max().orElse(0.0) * ordQty;
 
-        Double totalCostBinance = binanaceLevels.stream().mapToDouble(split -> split.getPrice().doubleValue() * split.getSize().doubleValue()).sum();
+        Double totalCostBinance = binanaceLevels.stream()
+                .mapToDouble(l -> l.getPrice().doubleValue()).max().orElse(0.0) * ordQty;
 
-        Double totalCostBittrex = bittrexLevels.stream().mapToDouble(split -> split.getPrice().doubleValue() * split.getSize().doubleValue()).sum();
+        Double totalCostBittrex = bittrexLevels.stream()
+                .mapToDouble(l -> l.getPrice().doubleValue()).max().orElse(0.0) * ordQty;
 
-        Double totalCostPoloniex = poloniexLevels.stream().mapToDouble(split -> split.getPrice().doubleValue() * split.getSize().doubleValue()).sum();
+        Double totalCostPoloniex = poloniexLevels.stream()
+                .mapToDouble(l -> l.getPrice().doubleValue()).max().orElse(0.0) * ordQty;
 
 
         Map<String, Object> response = new HashMap<>();
@@ -73,11 +77,11 @@ public class OrderBenefitsService {
         return response;
     }
 
-    Map<String, String> calculateBenefits(Double totalCost, Double totalCostExchange) {
+    private Map<String, String> calculateBenefits(Double totalCost, Double totalCostExchange) {
 
-        Double benefitBtcDouble = totalCostExchange - totalCost;
+        double benefitBtcDouble = Double.max(0.0,totalCostExchange - totalCost);
 
-        BigDecimal benefitPct = new BigDecimal(benefitBtcDouble / (totalCost * 100));
+        BigDecimal benefitPct = new BigDecimal(benefitBtcDouble * 100 / totalCost);
 
         BigDecimal benefitBtc = new BigDecimal(benefitBtcDouble);
 
