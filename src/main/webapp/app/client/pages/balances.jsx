@@ -14,7 +14,7 @@ class Balance extends React.Component {
 
     render() {
         return (
-            <div style={{paddingRight: '20px', paddingLeft: '10px', paddingTop: '5px'}}>
+            <div style={{paddingRight: '20px', paddingLeft: '10px', paddingTop: '5px',height:'100%'}}>
                 <div>
                     <button className="btn  balance-btn">
                         Deposit

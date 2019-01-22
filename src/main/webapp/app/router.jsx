@@ -31,7 +31,7 @@ class Router extends React.Component {
             <BrowserRouter>
                 <div className="row" >
                     <Menu/>
-                    <div className="col-md-11" style={{paddingLeft:'10px', marginLeft:'0px',}}>
+                    <div className="col-md-11" style={{paddingLeft:'20px', paddingRight:'35px'}}>
                         <Switch>
                             <Route exact path="/"
                                    render={props => <MainDasboard userInfo={this.state.userInfo} {...props}/>}/>

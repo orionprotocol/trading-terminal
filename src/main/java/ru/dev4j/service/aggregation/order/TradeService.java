@@ -1,6 +1,8 @@
 package ru.dev4j.service.aggregation.order;
 
 import com.wavesplatform.wavesj.*;
+import com.wavesplatform.wavesj.AssetPair;
+import com.wavesplatform.wavesj.PrivateKeyAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dev4j.model.Order;
@@ -22,7 +24,7 @@ public class TradeService {
     private OrderRepository orderRepository;
 
     private String seed = "***REMOVED***";
-    private final PrivateKeyAccount account = PrivateKeyAccount.fromSeed(seed, 0, Account.TESTNET);
+    private final PrivateKeyAccount account = PrivateKeyAccount.fromSeed(seed, 0, com.wavesplatform.wavesj.Account.TESTNET);
 
 
     Node matcher;
@@ -30,7 +32,7 @@ public class TradeService {
     long MATCHER_FEE = 300_000;
 
     private final static class WavesAssets {
-        static String WAVES = Asset.WAVES;
+        static String WAVES = com.wavesplatform.wavesj.Asset.WAVES;
         static String BTC = "DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn";
         static String ETH = "BrmjyAWT5jjr3Wpsiyivyvg5vDuzoX2s93WgiexXetB3";
 
@@ -84,7 +86,7 @@ public class TradeService {
 
     private Node getMatcher() throws URISyntaxException {
         if (matcher == null) {
-            matcher = new Node("https://matcher.testnet.wavesnodes.com", Account.TESTNET);
+            matcher = new Node("https://matcher.testnet.wavesnodes.com", com.wavesplatform.wavesj.Account.TESTNET);
         }
         return matcher;
     }
@@ -97,7 +99,7 @@ public class TradeService {
     }
 
     private void createCounterOrder(Order order, Trade trade) throws Exception {
-        BigDecimal tokens = new BigDecimal(Asset.TOKEN);
+        BigDecimal tokens = new BigDecimal(com.wavesplatform.wavesj.Asset.TOKEN);
         long price = new BigDecimal(trade.getPrice()).multiply(tokens).longValue();
         long amount = new BigDecimal(trade.getQty()).multiply(tokens).longValue();
 

@@ -8,6 +8,9 @@ class MainDashboard extends React.Component {
 
     constructor() {
         super();
+        let height = window.innerHeight;
+        let tableHeight = ((height / 2) / 3).toFixed(0) + "px";
+        console.log("TABLE HEIGHT " + tableHeight)
         this.state = {
             pairs: [],
             currentSymbol: '',
@@ -29,8 +32,9 @@ class MainDashboard extends React.Component {
                 binance: {},
                 bittrex: {},
                 poloniex: {}
-            }
-        }
+            },
+            tableHeight: tableHeight
+    }
         this.loadAllPairs = this.loadAllPairs.bind(this);
         this.renderPairs = this.renderPairs.bind(this);
         this.loadSnapshot = this.loadSnapshot.bind(this);
@@ -452,24 +456,18 @@ class MainDashboard extends React.Component {
 
 
     render() {
-        console.log("PAIR MAIN " + this.state.currentSymbol)
         return (
             <div style={{
-                paddingRight: '10px',
-                paddingLeft: '10px',
-                paddingTop: '5px',
-                paddingBottom: '0px',
                 fontWeight: 200
             }}>
-                <div className="row row-eq-height" style={{}}>
+                <div className="row row-eq-height">
                     <div style={{
                         borderColor: '#edf0f4',
                         borderWidth: '2px',
                         borderStyle: 'solid',
-                        backgroundColor: '#fff',
-                        minHeight: '100%'
-                    }}
-                         className="col-md-2">
+                        // height: {height},
+                        backgroundColor: '#fff'
+                    }} className="col-md-2">
                         <div style={{
                             padding: '10px',
                             borderBottomColor: '#edf0f4',
@@ -491,6 +489,7 @@ class MainDashboard extends React.Component {
                         borderWidth: '2px',
                         borderStyle: 'solid',
                         height: '50%',
+                        // height: {height},
                         backgroundColor: '#fff'
                     }}
                          className="col-md-offset-7 col-md-3">
@@ -527,7 +526,7 @@ class MainDashboard extends React.Component {
                                 </thead>
                             </table>
                         </div>
-                        <div id="asks" style={{height: '140px', overflowY: 'scroll'}}>
+                        <div id="asks" style={{overflowY: 'scroll'}}>
                             <table style={{
                                 width: '100%'
                             }}>
@@ -550,7 +549,7 @@ class MainDashboard extends React.Component {
                                 style={{color: this.state.lastPriceStyle}}>{this.state.lastPrice.toFixed(8)}</span>
                             </span>
                         </div>
-                        <div id="bids" style={{height: '140px', overflowY: 'scroll'}}>
+                        <div id="bids" style={{overflowY: 'scroll'}}>
                             <table style={{
                                 width: '100%'
                             }}>
