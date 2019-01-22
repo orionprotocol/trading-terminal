@@ -5,6 +5,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 -->
 <html>
 <head>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            min-height: 100%;
+        }
+    </style>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Exchange notifier</title>
@@ -12,7 +21,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 
     <!-- Ionicons -->
     <link rel="stylesheet" href="/resources/Ionicons/css/ionicons.min.css">
@@ -31,7 +41,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Balance -->
     <link rel="stylesheet" href="/resources/css/balance.css">
-
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -66,8 +75,8 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body enableScroll="true">
-<div id="app" style="background-color: #edf0f4;">
+<body enableScroll="true" style="overflow-x: hidden; overflow-y:hidden">
+<div id="app" style="background-color: #edf0f4; min-height: 100%">
 </div>
 <script src="/resources/js/bundle.js"></script>
 <script src="/resources/jquery/dist/jquery.min.js"></script>
@@ -77,12 +86,17 @@ desired effect
 <!-- Bootstrap 3.3.7 -->
 <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
 <script src="/resources/js/toastr.min.js"></script>
-
+</body>
 <script>
-    $( document ).ready(function() {
+    $(document).ready(function () {
         $('#app').height($(window).height())
+        var tableHeight = (($(window).height() / 2) / 3).toFixed(0) + "px";
+        $('#asks').height(tableHeight);
+        $('#bids').height(tableHeight);
+        var orderHeight = (($(window).height() / 2) * 1).toFixed(0) + "px";
+        $('#orders-open-container').height(orderHeight);
+
     });
 </script>
 
-</body>
 </html>
