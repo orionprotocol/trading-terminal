@@ -89,12 +89,21 @@ desired effect
 </body>
 <script>
     $(document).ready(function () {
-        $('#app').height($(window).height())
-        var tableHeight = (($(window).height() / 2) / 3).toFixed(0) + "px";
-        $('#asks').height(tableHeight);
-        $('#bids').height(tableHeight);
-        var orderHeight = (($(window).height() / 2) * 1).toFixed(0) + "px";
-        $('#orders-open-container').height(orderHeight);
+        var windowHeight = $(window).height();
+        var form = $('#order-form').height();
+        var top = windowHeight - form;
+        console.log("WINDOW " + windowHeight)
+        console.log("FORM " + form)
+        console.log("TOP " + top)
+        var ordbookMax = top / 2.5;
+
+        $('#pairs').height(top);
+        $('#asks').css('min-height', ordbookMax);
+        $('#bids').css('min-height', ordbookMax);
+        $('#asks').css('max-height', ordbookMax);
+        $('#bids').css('max-height', ordbookMax);
+        $('#orders-open-container').height(form - 25);
+        $('#orders-history-container').height(form - 25);
 
     });
 </script>

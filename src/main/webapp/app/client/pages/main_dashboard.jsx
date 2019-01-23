@@ -461,7 +461,9 @@ class MainDashboard extends React.Component {
                 fontWeight: 200
             }}>
                 <div className="row row-eq-height">
-                    <div style={{
+                    <div
+                        id="pairs"
+                        style={{
                         borderColor: '#edf0f4',
                         borderWidth: '2px',
                         borderStyle: 'solid',
@@ -564,7 +566,7 @@ class MainDashboard extends React.Component {
                     <div className="col-md-9" style={{height: '100%', marginRight: '10px'}}>
                         <Orders orders={this.state.orders}/>
                     </div>
-                    <div className="col-md-3" style={{padding: '0px', margin: '0px'}}>
+                    <div id="order-form" className="col-md-3" style={{padding: '0px', margin: '0px'}}>
                         <OrderForm changeCount={this.changeCount} changeCurrentPrice={this.changeCurrentPrice}
                                    benefits={this.state.benefits}
                                    setSide={this.setSide}

@@ -85,11 +85,11 @@ class OrderForm extends React.Component {
 
     renderBenefits(benefit) {
         let rendered =
-            <div>
-                <div>
+            <div style={{overflow:'scroll',minHeight:'50px',maxHeight:'50px'}}>
+                <div style={{overflow:'scroll'}}>
                     + {benefit.benefitPct}%
                 </div>
-                <div>
+                <div style={{overflow:'scroll'}}>
                     + {benefit.benefitBtc} BTC
                 </div>
             </div>
@@ -223,7 +223,7 @@ class OrderForm extends React.Component {
                                                     fontWeight: 'bold'
                                                 }}>BINANCE</span>
                                             </div>
-                                            <div style={{color: '#41c300', fontSize: '10px'}}>
+                                            <div style={{color: '#41c300', fontSize: '10px',overflow:'scroll'}}>
                                                 {this.renderBenefits(benefits.binance)}
                                             </div>
                                         </div>
@@ -235,7 +235,7 @@ class OrderForm extends React.Component {
                                             <div style={{borderBottom: '2px solid rgb(237, 240, 244)'}}>
                                                 <span style={{color: '#0a6970', fontWeight: 'bold'}}>POLONIEX</span>
                                             </div>
-                                            <div style={{color: '#41c300', fontSize: '10px'}}>
+                                            <div style={{color: '#41c300', fontSize: '10px',overflow:'scroll'}}>
                                                 {this.renderBenefits(benefits.poloniex)}
                                             </div>
                                         </div>
@@ -243,7 +243,7 @@ class OrderForm extends React.Component {
                                             <div style={{borderBottom: '2px solid rgb(237, 240, 244)'}}>
                                                 <span style={{color: '#0084d4', fontWeight: 'bold'}}>BITTREX</span>
                                             </div>
-                                            <div style={{color: '#41c300', fontSize: '10px'}}>
+                                            <div style={{color: '#41c300', fontSize: '10px',overflow:'scroll'}}>
                                                 {this.renderBenefits(benefits.bittrex)}
                                             </div>
                                         </div>
