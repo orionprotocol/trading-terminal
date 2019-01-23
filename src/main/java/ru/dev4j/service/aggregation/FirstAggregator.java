@@ -108,7 +108,7 @@ public class FirstAggregator {
 
         TreeMap<BigDecimal, String> bittrexBids = exchangeMapService.getFirstBids(Exchange.BITTREX, pair, depth);
 
-        mergeInMap(aggregatedTopMap, bittrexBids,Exchange.POLONIEX.name().toLowerCase());
+        mergeInMap(aggregatedTopMap, bittrexBids,Exchange.BITTREX.name().toLowerCase());
 
 
         List<ExchangeTuple> finalAggregatedBids = aggregatedTopMap.entrySet().stream()
