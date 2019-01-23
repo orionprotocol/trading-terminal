@@ -34,7 +34,7 @@ class MainDashboard extends React.Component {
                 poloniex: {}
             },
             tableHeight: tableHeight
-    }
+        }
         this.loadAllPairs = this.loadAllPairs.bind(this);
         this.renderPairs = this.renderPairs.bind(this);
         this.loadSnapshot = this.loadSnapshot.bind(this);
@@ -231,7 +231,9 @@ class MainDashboard extends React.Component {
                     total = total + asks[i].total;
                 }
             }
-            this.setState({currentPrice: price, count: count, total: total});
+            this.setState({currentPrice: price, count: count, total: total}, () => {
+                this.loadBenefits();
+            });
             $("#buy-form-link").trigger("click");
             return;
         }
@@ -248,7 +250,9 @@ class MainDashboard extends React.Component {
                     total = total + bids[i].total;
                 }
             }
-            this.setState({currentPrice: price, count: count, total: total});
+            this.setState({currentPrice: price, count: count, total: total}, () => {
+                this.loadBenefits();
+            });
             return;
         }
     }
@@ -464,12 +468,12 @@ class MainDashboard extends React.Component {
                     <div
                         id="pairs"
                         style={{
-                        borderColor: '#edf0f4',
-                        borderWidth: '2px',
-                        borderStyle: 'solid',
-                        // height: {height},
-                        backgroundColor: '#fff'
-                    }} className="col-md-2">
+                            borderColor: '#edf0f4',
+                            borderWidth: '2px',
+                            borderStyle: 'solid',
+                            // height: {height},
+                            backgroundColor: '#fff'
+                        }} className="col-md-2">
                         <div style={{
                             padding: '10px',
                             borderBottomColor: '#edf0f4',
