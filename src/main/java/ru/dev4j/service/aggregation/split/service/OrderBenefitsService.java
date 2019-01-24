@@ -82,6 +82,7 @@ public class OrderBenefitsService {
         response.put(Exchange.BITTREX.name().toLowerCase(), calculateBenefits(totalCostLevels, totalCostBittrex));
         response.put(Exchange.POLONIEX.name().toLowerCase(), calculateBenefits(totalCostLevels, totalCostPoloniex));
 
+
         return response;
     }
 

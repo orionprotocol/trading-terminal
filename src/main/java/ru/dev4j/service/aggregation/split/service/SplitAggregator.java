@@ -78,6 +78,7 @@ public class SplitAggregator {
             if (!binanceBids.hasNext() && !bittrexBids.hasNext() && !poloniexBids.hasNext()) {
                 break;
             }
+
             max = SplitUtils.findMax(exchangeMap);
             Double maxValue = Double.valueOf(max.getValue());
             if (max.getKey().compareTo(price) == 1) {

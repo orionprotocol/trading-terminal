@@ -11,13 +11,17 @@ import java.util.Map;
 
 public class SplitUtils {
 
+    private static final Map.Entry<BigDecimal, String> MAX_VALUE = new AbstractMap.SimpleEntry(Double.MAX_VALUE, null);
+
+    private static final Map.Entry<BigDecimal, String> MIN_VALUE = new AbstractMap.SimpleEntry(0, null);
+
     public static Map.Entry<BigDecimal, String> maxValue() {
-        return new AbstractMap.SimpleEntry(new BigDecimal(Double.MAX_VALUE), null);
+        return MAX_VALUE;
     }
 
 
     public static Map.Entry<BigDecimal, String> minValue() {
-        return new AbstractMap.SimpleEntry(new BigDecimal(0), null);
+        return MIN_VALUE;
     }
 
     /**
@@ -52,7 +56,7 @@ public class SplitUtils {
         return biggest;
     }
 
-    public static String roundSplitNumbers(BigDecimal number){
+    public static String roundSplitNumbers(BigDecimal number) {
         number.setScale(8, RoundingMode.CEILING);
         return number.toString();
     }
@@ -62,7 +66,7 @@ public class SplitUtils {
                                        Iterator<Map.Entry<BigDecimal, String>> binanceIterator,
                                        Iterator<Map.Entry<BigDecimal, String>> bittrexIterator,
                                        Iterator<Map.Entry<BigDecimal, String>> poloniexIterator
-                                       ){
+    ) {
         if (exchangeMap.get(Exchange.BINANCE) == null && binanceIterator.hasNext()) {
             exchangeMap.put(Exchange.BINANCE, binanceIterator.next());
         }
