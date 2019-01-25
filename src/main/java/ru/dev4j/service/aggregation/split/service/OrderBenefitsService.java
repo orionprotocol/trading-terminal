@@ -41,26 +41,6 @@ public class OrderBenefitsService {
         splitAggregator.aggregateExchangeLevel(pair, ordQty, binanaceLevels, Exchange.BINANCE, type);
         splitAggregator.aggregateExchangeLevel(pair, ordQty, bittrexLevels, Exchange.BITTREX, type);
         splitAggregator.aggregateExchangeLevel(pair, ordQty, poloniexLevels, Exchange.POLONIEX, type);
-//        System.out.println("PAIR " + pair + " ordQty " + ordQty + " side " + side);
-//        System.out.println("TOTAL LEVELS");
-//        for (Split split : totalLevels) {
-//            System.out.println(split.getExchange() + " " + split.getPrice() + " " + split.getSize());
-//        }
-//
-//        System.out.println("BINANCE LEVELS");
-//        for (Split split : binanaceLevels) {
-//            System.out.println(split.getExchange() + " " + split.getPrice() + " " + split.getSize());
-//        }
-//
-//        System.out.println("BITTREX LEVELS");
-//        for (Split split : bittrexLevels) {
-//            System.out.println(split.getExchange() + " " + split.getPrice() + " " + split.getSize());
-//        }
-//
-//        System.out.println("POLONIEX LEVELS");
-//        for (Split split : poloniexLevels) {
-//            System.out.println(split.getExchange() + " " + split.getPrice() + " " + split.getSize());
-//        }
 
 
         Double totalCostLevels = totalLevels.stream()

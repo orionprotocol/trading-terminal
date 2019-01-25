@@ -11,9 +11,9 @@ import java.util.Map;
 
 public class SplitUtils {
 
-    private static final Map.Entry<BigDecimal, String> MAX_VALUE = new AbstractMap.SimpleEntry(Double.MAX_VALUE, null);
+    private static final Map.Entry<BigDecimal, String> MAX_VALUE = new AbstractMap.SimpleEntry(new BigDecimal(Double.MAX_VALUE), null);
 
-    private static final Map.Entry<BigDecimal, String> MIN_VALUE = new AbstractMap.SimpleEntry(0, null);
+    private static final Map.Entry<BigDecimal, String> MIN_VALUE = new AbstractMap.SimpleEntry(new BigDecimal(0), null);
 
     public static Map.Entry<BigDecimal, String> maxValue() {
         return MAX_VALUE;

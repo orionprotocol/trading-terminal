@@ -5,6 +5,8 @@ import com.github.ccob.bittrex4j.dao.MarketOrder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.dev4j.model.DataType;
+import ru.dev4j.model.Exchange;
 import ru.dev4j.model.Pair;
 import ru.dev4j.model.PairConfig;
 import ru.dev4j.repository.db.PairConfigRepository;
@@ -59,9 +61,11 @@ public class BittrexWebSocket {
                     bittrexExchange.queryExchangeState(pair.getCodeName(), exchangeState -> {
                         for (MarketOrder marketOrder : exchangeState.getSells()) {
                             bittrexUpdateHandler.handleAskPair(marketOrder.getRate(), marketOrder.getQuantity().toPlainString(), pair.getGeneralName());
+                            redisRepository.saveChanges(Exchange.BITTREX, DataType.ASKS, pair.getGeneralName(), marketOrder.getRate().toString());
                         }
                         for (MarketOrder marketOrder : exchangeState.getBuys()) {
                             bittrexUpdateHandler.handleBidsPair(marketOrder.getRate(), marketOrder.getQuantity().toPlainString(), pair.getGeneralName());
+                            redisRepository.saveChanges(Exchange.BITTREX, DataType.BIDS, pair.getGeneralName(), marketOrder.getRate().toString());
                         }
 
                     });

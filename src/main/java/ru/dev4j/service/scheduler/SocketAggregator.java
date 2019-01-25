@@ -23,9 +23,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class SocketAggregator {
 
-    private AggregatorChecker checker = new AggregatorChecker();
     private ScheduledExecutorService executorService;
-    private ScheduledFuture<?> scheduledFuture;
+
 
     final static Logger logger = Logger.getLogger(SocketAggregator.class);
 
@@ -60,7 +59,7 @@ public class SocketAggregator {
         PairConfig poloniexConfig = pairConfigRepository.findByExchange(POLONIEX);
         PairConfig bittrexConfig = pairConfigRepository.findByExchange(BITTREX);
 
-        pairs = new HashSet<>();
+        pairs = new LinkedHashSet<>();
 
         for (Pair pair : binanceConfig.getPair()) {
             pairs.add(pair.getGeneralName());
@@ -74,42 +73,41 @@ public class SocketAggregator {
             pairs.add(pair.getGeneralName());
         }
 
-        initScheduler(DELAY, PERIOD);
+        initScheduler(DELAY, PERIOD, pairs);
     }
 
 
-    public void initScheduler(int delay, int period) {
-        executorService = Executors.newSingleThreadScheduledExecutor();
-        scheduledFuture =
-                executorService.scheduleAtFixedRate(checker, delay, period, UNIT);
+    public void initScheduler(int delay, int period, Set<String> pairs) {
+        executorService = Executors.newScheduledThreadPool(3);
+        for (String pair : pairs) {
+            executorService.scheduleAtFixedRate(createAggregator(pair), delay, period, UNIT);
+        }
     }
 
-    public void reRunScheduler(int delay, int period) {
-        scheduledFuture.cancel(true);
-        scheduledFuture = executorService.scheduleAtFixedRate(checker, delay, period, UNIT);
-    }
 
-    private class AggregatorChecker implements Runnable {
-        @Override
-        public void run() {
+    private Runnable createAggregator(final String pair) {
+        return () -> {
             try {
                 Long now = System.currentTimeMillis();
-                for (String pair : pairs) {
-                    Map<String, List<ExchangeTuple>> aggregatedData = handlePairChanges(pair, now);
-                    if (aggregatedData.get("asks").size() > 0 || aggregatedData.get("bids").size() > 0) {
-                        try {
-                            SocketHandler socketHandler = socketHolder.getSocket(pair);
-                            socketHandler.sendNotification(gson.toJson(aggregatedData));
-                        }catch (Exception e){
-                            logger.error(e);
-                        }
+                Map<String, List<ExchangeTuple>> aggregatedData = handlePairChanges(pair, now);
+                if (aggregatedData.get("asks").size() > 0 || aggregatedData.get("bids").size() > 0) {
+                    logger.info("PAIR " + pair + "ASKS " + aggregatedData.get("asks").size() + " BIDS " + aggregatedData.get("bids").size());
+                    if (pair.equals("WAVES-BTC")) {
+                        System.out.println();
+                    }
+                    try {
+                        SocketHandler socketHandler = socketHolder.getSocket(pair);
+                        socketHandler.sendNotification(gson.toJson(aggregatedData));
+                    } catch (Exception e) {
+                        logger.error(e);
                     }
                 }
             } catch (Exception e) {
                 logger.error(e);
             }
-        }
+        };
     }
+
 
     private Map<String, List<ExchangeTuple>> handlePairChanges(String pair, Long now) {
         Map<String, List<ExchangeTuple>> finalMap = new HashMap<>();
@@ -140,10 +138,10 @@ public class SocketAggregator {
 
 
         List<ExchangeTuple> finalAggregatedAsks = finalAsksMap.entrySet().stream()
-                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue().getSize(),new ArrayList<>(e.getValue().getExchanges()))), List::addAll);
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue().getSize(), new ArrayList<>(e.getValue().getExchanges()))), List::addAll);
 
         List<ExchangeTuple> finalAggregatedBids = finalBidsMap.entrySet().stream()
-                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue().getSize(),new ArrayList<>(e.getValue().getExchanges()))), List::addAll);
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue().getSize(), new ArrayList<>(e.getValue().getExchanges()))), List::addAll);
 
         finalMap.put("asks", finalAggregatedAsks);
         finalMap.put("bids", finalAggregatedBids);

@@ -367,6 +367,8 @@ class MainDashboard extends React.Component {
     }
 
     handleNewData(data) {
+        console.log("ASKS: " + JSON.stringify(data.asks))
+        console.log("BIDS: " + JSON.stringify(data.bids))
         const asks = data.asks;
         let stateAsks = this.state.data.asks;
         for (let i = 0; i < asks.length; i++) {
