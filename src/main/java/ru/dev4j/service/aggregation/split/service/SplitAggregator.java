@@ -100,7 +100,6 @@ public class SplitAggregator {
         Iterator<Map.Entry<BigDecimal, String>> bittrexAsks = exchangeMapService.getAllAsks(Exchange.BITTREX, pair).entrySet().iterator();
         Iterator<Map.Entry<BigDecimal, String>> poloniexAsks = exchangeMapService.getAllAsks(Exchange.POLONIEX, pair).entrySet().iterator();
 
-
         while ((ordQty > aggregatedSize) && (price.compareTo(min.getKey()) == 1)) {
             SplitUtils.fullExchangeMap(exchangeMap, binanceAsks, bittrexAsks, poloniexAsks);
             if (!binanceAsks.hasNext() && !bittrexAsks.hasNext() && !poloniexAsks.hasNext()) {
