@@ -2,7 +2,7 @@
 
 IMAGE_NAME=exchange_notifier
 IMAGE_PATH=.
-PORT=80sudo
+PORT=80
 SSH_PORT=443
 JMX_PORT=9010
 
