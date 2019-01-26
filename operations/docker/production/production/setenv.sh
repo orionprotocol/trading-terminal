@@ -3,5 +3,5 @@
 -Dcom.sun.management.jmxremote.authenticate=false
 -Dcom.sun.management.jmxremote.port=9010
 -Dcom.sun.management.jmxremote.rmi.port=9010
--Djava.rmi.server.hostname=0.0.0.0
+-Djava.rmi.server.hostname=***REMOVED***
 -Dcom.sun.management.jmxremote.ssl=false
