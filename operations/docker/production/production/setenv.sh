@@ -6,3 +6,5 @@ export JAVA_OPTS="
 -Dcom.sun.management.jmxremote.rmi.port=9010
 -Djava.rmi.server.hostname=***REMOVED***
 -Dcom.sun.management.jmxremote.ssl=false"
+
+export CATALINA_OPTS="$CATALINA_OPTS -Xmx3072m"
