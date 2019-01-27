@@ -15,77 +15,77 @@ import java.util.concurrent.ConcurrentSkipListMap;
 
 @Service
 public class ExchangeMapService {
-    private static ConcurrentHashMap<String, ConcurrentSkipListMap<BigDecimal, String>> exchangeHolder;
+    private static ConcurrentHashMap<String, ConcurrentSkipListMap<Double, Double>> exchangeHolder;
 
     @PostConstruct
     public void load() {
         exchangeHolder = new ConcurrentHashMap<>();
     }
 
-    public void addAsks(Exchange exchange, String pair, BigDecimal price, String size) {
+    public void addAsks(Exchange exchange, String pair, Double price, Double size) {
         String key = String.format("%s:%s:%s", DataType.ASKS.name(), exchange.name(), pair);
         checkForNullAsk(key);
-        ConcurrentSkipListMap<BigDecimal, String> map = exchangeHolder.get(key);
-        map.put(price, size);
+        ConcurrentSkipListMap<Double, Double> map = exchangeHolder.get(key);
+        map.put(price, Double.valueOf(size));
     }
 
-    public void addBids(Exchange exchange, String pair, BigDecimal price, String size) {
+    public void addBids(Exchange exchange, String pair, Double price, Double size) {
         String key = String.format("%s:%s:%s", DataType.BIDS.name(), exchange.name(), pair);
         checkForNullDesk(key);
-        ConcurrentSkipListMap<BigDecimal, String> map = exchangeHolder.get(key);
-        map.put(price, size);
+        ConcurrentSkipListMap<Double, Double> map = exchangeHolder.get(key);
+        map.put(price, Double.valueOf(size));
     }
 
 
-    public void deleteAsks(Exchange exchange, String pair, BigDecimal price) {
+    public void deleteAsks(Exchange exchange, String pair, Double price) {
         String key = String.format("%s:%s:%s", DataType.ASKS.name(), exchange.name(), pair);
         checkForNullAsk(key);
-        ConcurrentSkipListMap<BigDecimal, String> map = exchangeHolder.get(key);
+        ConcurrentSkipListMap<Double, Double> map = exchangeHolder.get(key);
         map.remove(price);
     }
 
-    public void deleteBids(Exchange exchange, String pair, BigDecimal price) {
+    public void deleteBids(Exchange exchange, String pair, Double price) {
         String key = String.format("%s:%s:%s", DataType.BIDS.name(), exchange.name(), pair);
         checkForNullDesk(key);
-        ConcurrentSkipListMap<BigDecimal, String> map = exchangeHolder.get(key);
+        ConcurrentSkipListMap<Double, Double> map = exchangeHolder.get(key);
         map.remove(price);
     }
 
-    public ConcurrentSkipListMap<BigDecimal, String> getAllAsks(Exchange exchange, String pair) {
+    public ConcurrentSkipListMap<Double, Double> getAllAsks(Exchange exchange, String pair) {
         String key = String.format("%s:%s:%s", DataType.ASKS.name(), exchange.name(), pair);
         checkForNullAsk(key);
         return exchangeHolder.get(key);
     }
 
-    public ConcurrentSkipListMap<BigDecimal, String> getAllBids(Exchange exchange, String pair) {
+    public ConcurrentSkipListMap<Double, Double> getAllBids(Exchange exchange, String pair) {
         String key = String.format("%s:%s:%s", DataType.BIDS.name(), exchange.name(), pair);
         checkForNullDesk(key);
         return exchangeHolder.get(key);
     }
 
-    public ConcurrentHashMap<String, ConcurrentSkipListMap<BigDecimal, String>> getExchangeHolder() {
+    public ConcurrentHashMap<String, ConcurrentSkipListMap<Double, Double>> getExchangeHolder() {
         return exchangeHolder;
     }
 
-    public TreeMap<BigDecimal, String> getFirstAsks(Exchange exchange, String pair, Integer depth) {
+    public TreeMap<Double, Double> getFirstAsks(Exchange exchange, String pair, Integer depth) {
         String key = String.format("%s:%s:%s", DataType.ASKS.name(), exchange.name(), pair);
         checkForNullAsk(key);
-        TreeMap<BigDecimal, String> response = exchangeHolder.get(key).entrySet().stream()
+        TreeMap<Double, Double> response = exchangeHolder.get(key).entrySet().stream()
                 .limit(depth)
                 .collect(TreeMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll);
         return response;
     }
 
-    public TreeMap<BigDecimal, String> getFirstBids(Exchange exchange, String pair, Integer depth) {
+    public TreeMap<Double, Double> getFirstBids(Exchange exchange, String pair, Integer depth) {
         String key = String.format("%s:%s:%s", DataType.BIDS.name(), exchange.name(), pair);
         checkForNullDesk(key);
-        TreeMap<BigDecimal, String> response = exchangeHolder.get(key).entrySet().stream()
+        TreeMap<Double, Double> response = exchangeHolder.get(key).entrySet().stream()
                 .limit(depth)
                 .collect(TreeMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), Map::putAll);
         return response;
     }
 
-    public String getExchangeMapValue(Exchange exchange, DataType dataType, String pair,BigDecimal price){
+    public Double getExchangeMapValue(Exchange exchange, DataType dataType, String pair,Double price){
         String key = String.format("%s:%s:%s", dataType.name(), exchange.name(), pair);
         if(dataType.equals(DataType.ASKS)){
             checkForNullAsk(key);
@@ -96,15 +96,15 @@ public class ExchangeMapService {
     }
 
     private void checkForNullAsk(String key) {
-        ConcurrentSkipListMap<BigDecimal, String> map = exchangeHolder.get(key);
+        ConcurrentSkipListMap<Double, Double> map = exchangeHolder.get(key);
         if (map == null) {
             exchangeHolder.put(key, new ConcurrentSkipListMap<>());
         }
     }
 
     private void checkForNullDesk(String key) {
-        ConcurrentSkipListMap<BigDecimal, String> map = exchangeHolder.get(key);
-        Comparator<BigDecimal> comparator = Comparator.reverseOrder();
+        ConcurrentSkipListMap<Double, Double> map = exchangeHolder.get(key);
+        Comparator<Double> comparator = Comparator.reverseOrder();
         if (map == null) {
             exchangeHolder.put(key, new ConcurrentSkipListMap<>(comparator));
         }

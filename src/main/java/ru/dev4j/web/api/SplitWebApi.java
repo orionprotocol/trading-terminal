@@ -36,13 +36,13 @@ public class SplitWebApi {
             if (price == null) {
                 price = SplitUtils.maxValue().getKey().doubleValue();
             }
-            return splitAggregator.firstLevel(symbol, DataType.ASKS, ordQty, new BigDecimal(price));
+            return splitAggregator.firstLevel(symbol, DataType.ASKS, ordQty, price);
         }
         if (side.toLowerCase().equals("sell")) {
             if (price == null) {
                 price = SplitUtils.minValue().getKey().doubleValue();
             }
-            return splitAggregator.firstLevel(symbol, DataType.BIDS, ordQty, new BigDecimal(price));
+            return splitAggregator.firstLevel(symbol, DataType.BIDS, ordQty, price);
         }
         return new ArrayList<>();
     }
@@ -51,20 +51,20 @@ public class SplitWebApi {
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
     Map<String, Object> handleExchangeBalanceOrderBook(@RequestParam(name = "symbol") String symbol,
-                                                       @RequestParam(name = "ordQty") BigDecimal ordQty,
-                                                       @RequestParam(name = "price", required = false) BigDecimal price,
+                                                       @RequestParam(name = "ordQty") Double ordQty,
+                                                       @RequestParam(name = "price", required = false) Double price,
                                                        @RequestParam(name = "side") String side,
-                                                       @RequestParam(name = "binanceBalance", required = false) BigDecimal binanceBalance,
-                                                       @RequestParam(name = "bittrexBalance", required = false) BigDecimal bittrexBalance,
-                                                       @RequestParam(name = "poloniexBalance", required = false) BigDecimal poloniexBalance) {
+                                                       @RequestParam(name = "binanceBalance", required = false) Double binanceBalance,
+                                                       @RequestParam(name = "bittrexBalance", required = false) Double bittrexBalance,
+                                                       @RequestParam(name = "poloniexBalance", required = false) Double poloniexBalance) {
         if (binanceBalance == null) {
-            binanceBalance = new BigDecimal(Double.MAX_VALUE);
+            binanceBalance = Double.MAX_VALUE;
         }
         if (bittrexBalance == null) {
-            bittrexBalance = new BigDecimal(Double.MAX_VALUE);
+            bittrexBalance = Double.MAX_VALUE;
         }
         if (poloniexBalance == null) {
-            poloniexBalance = new BigDecimal(Double.MAX_VALUE);
+            poloniexBalance = Double.MAX_VALUE;
         }
         if (side.toLowerCase().equals("buy")) {
             if (price == null) {

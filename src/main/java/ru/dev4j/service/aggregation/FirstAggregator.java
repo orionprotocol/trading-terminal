@@ -50,11 +50,11 @@ public class FirstAggregator {
 
     private List<ExchangeTuple> aggregateAsksPairByDepthForExchange(String pair, Integer depth, Exchange exchange) {
 
-        TreeMap<BigDecimal, String> asks = exchangeMapService.getFirstAsks(exchange, pair, depth);
+        TreeMap<Double, Double> asks = exchangeMapService.getFirstAsks(exchange, pair, depth);
 
         List<ExchangeTuple> finalAggregatedAsks = asks.entrySet().stream()
                 .limit(depth)
-                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), Double.valueOf(e.getValue()),null)), List::addAll);
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue(),null)), List::addAll);
 
         return finalAggregatedAsks;
     }
@@ -62,28 +62,28 @@ public class FirstAggregator {
 
     private List<ExchangeTuple> aggregateBidsPairByDepthForExchange(String pair, Integer depth, Exchange exchange) {
 
-        TreeMap<BigDecimal, String> bids = exchangeMapService.getFirstBids(exchange, pair, depth);
+        TreeMap<Double, Double> bids = exchangeMapService.getFirstBids(exchange, pair, depth);
 
         List<ExchangeTuple> finalAggregatedBids = bids.entrySet().stream()
                 .limit(depth)
-                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), Double.valueOf(e.getValue()),null)), List::addAll);
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue(),null)), List::addAll);
 
         return finalAggregatedBids;
     }
 
     private List<ExchangeTuple> aggregateAsksPairByDepth(String pair, Integer depth) {
 
-        TreeMap<BigDecimal, SizeExchange> aggregatedTopMap = new TreeMap<>();
+        TreeMap<Double, SizeExchange> aggregatedTopMap = new TreeMap<>();
 
-        TreeMap<BigDecimal, String> binanceAsks = exchangeMapService.getFirstAsks(Exchange.BINANCE, pair, depth);
+        TreeMap<Double, Double> binanceAsks = exchangeMapService.getFirstAsks(Exchange.BINANCE, pair, depth);
 
         mergeInMap(aggregatedTopMap, binanceAsks, Exchange.BINANCE.name().toLowerCase());
 
-        TreeMap<BigDecimal, String> poloniexAsks = exchangeMapService.getFirstAsks(Exchange.POLONIEX, pair, depth);
+        TreeMap<Double, Double> poloniexAsks = exchangeMapService.getFirstAsks(Exchange.POLONIEX, pair, depth);
 
         mergeInMap(aggregatedTopMap, poloniexAsks, Exchange.POLONIEX.name().toLowerCase());
 
-        TreeMap<BigDecimal, String> bittrexAsks = exchangeMapService.getFirstAsks(Exchange.BITTREX, pair, depth);
+        TreeMap<Double, Double> bittrexAsks = exchangeMapService.getFirstAsks(Exchange.BITTREX, pair, depth);
 
         mergeInMap(aggregatedTopMap, bittrexAsks, Exchange.BITTREX.name().toLowerCase());
 
@@ -96,17 +96,17 @@ public class FirstAggregator {
 
     private List<ExchangeTuple> aggregateBidsPairByDepth(String pair, Integer depth) {
 
-        TreeMap<BigDecimal, SizeExchange> aggregatedTopMap = new TreeMap<>(Comparator.reverseOrder());
+        TreeMap<Double, SizeExchange> aggregatedTopMap = new TreeMap<>(Comparator.reverseOrder());
 
-        TreeMap<BigDecimal, String> binanceBids = exchangeMapService.getFirstBids(Exchange.BINANCE, pair, depth);
+        TreeMap<Double, Double> binanceBids = exchangeMapService.getFirstBids(Exchange.BINANCE, pair, depth);
 
         mergeInMap(aggregatedTopMap, binanceBids, Exchange.BINANCE.name().toLowerCase());
 
-        TreeMap<BigDecimal, String> poloniexBids = exchangeMapService.getFirstBids(Exchange.POLONIEX, pair, depth);
+        TreeMap<Double, Double> poloniexBids = exchangeMapService.getFirstBids(Exchange.POLONIEX, pair, depth);
 
         mergeInMap(aggregatedTopMap, poloniexBids,Exchange.POLONIEX.name().toLowerCase());
 
-        TreeMap<BigDecimal, String> bittrexBids = exchangeMapService.getFirstBids(Exchange.BITTREX, pair, depth);
+        TreeMap<Double, Double> bittrexBids = exchangeMapService.getFirstBids(Exchange.BITTREX, pair, depth);
 
         mergeInMap(aggregatedTopMap, bittrexBids,Exchange.BITTREX.name().toLowerCase());
 
@@ -118,19 +118,19 @@ public class FirstAggregator {
         return finalAggregatedBids;
     }
 
-    private void mergeInMap(Map<BigDecimal, SizeExchange> aggregatedTopMap, TreeMap<BigDecimal, String> treeMap, String exchange) {
-        for (Map.Entry<BigDecimal, String> entry : treeMap.entrySet()) {
-            BigDecimal price = entry.getKey();
-            String size = entry.getValue();
+    private void mergeInMap(Map<Double, SizeExchange> aggregatedTopMap, TreeMap<Double, Double> treeMap, String exchange) {
+        for (Map.Entry<Double, Double> entry : treeMap.entrySet()) {
+            Double price = entry.getKey();
+            Double size = entry.getValue();
             SizeExchange sizeExchange = aggregatedTopMap.get(price);
             if (sizeExchange == null) {
-                sizeExchange = new SizeExchange(Double.valueOf(size));
+                sizeExchange = new SizeExchange(size);
                 sizeExchange.getExchanges().add(exchange);
                 aggregatedTopMap.put(price, sizeExchange);
             } else {
                 SizeExchange oldExchange = aggregatedTopMap.get(price);
                 oldExchange.getExchanges().add(exchange);
-                oldExchange.setSize(oldExchange.getSize() + Double.valueOf(size));
+                oldExchange.setSize(oldExchange.getSize() + size);
                 aggregatedTopMap.put(price, oldExchange);
             }
         }

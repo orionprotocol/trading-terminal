@@ -11,16 +11,16 @@ import java.util.Map;
 
 public class SplitUtils {
 
-    private static final Map.Entry<BigDecimal, String> MAX_VALUE = new AbstractMap.SimpleEntry(new BigDecimal(Double.MAX_VALUE), null);
+    private static final Map.Entry<Double, Double> MAX_VALUE = new AbstractMap.SimpleEntry(Double.MAX_VALUE, null);
 
-    private static final Map.Entry<BigDecimal, String> MIN_VALUE = new AbstractMap.SimpleEntry(new BigDecimal(0), null);
+    private static final Map.Entry<Double, Double> MIN_VALUE = new AbstractMap.SimpleEntry(0D, null);
 
-    public static Map.Entry<BigDecimal, String> maxValue() {
+    public static Map.Entry<Double, Double> maxValue() {
         return MAX_VALUE;
     }
 
 
-    public static Map.Entry<BigDecimal, String> minValue() {
+    public static Map.Entry<Double, Double> minValue() {
         return MIN_VALUE;
     }
 
@@ -30,10 +30,10 @@ public class SplitUtils {
      * @param exchangeMap
      * @return
      */
-    public static Map.Entry<BigDecimal, String> findMin(Map<Exchange, Map.Entry<BigDecimal, String>> exchangeMap) {
-        Map.Entry<BigDecimal, String> smallest = exchangeMap.get(Exchange.BINANCE) == null ? SplitUtils.maxValue() : exchangeMap.get(Exchange.BINANCE);
-        Map.Entry<BigDecimal, String> bittrex = exchangeMap.get(Exchange.BITTREX) == null ? SplitUtils.maxValue() : exchangeMap.get(Exchange.BITTREX);
-        Map.Entry<BigDecimal, String> poloniex = exchangeMap.get(Exchange.POLONIEX) == null ? SplitUtils.maxValue() : exchangeMap.get(Exchange.POLONIEX);
+    public static Map.Entry<Double, Double> findMin(Map<Exchange, Map.Entry<Double, Double>> exchangeMap) {
+        Map.Entry<Double, Double> smallest = exchangeMap.get(Exchange.BINANCE) == null ? SplitUtils.maxValue() : exchangeMap.get(Exchange.BINANCE);
+        Map.Entry<Double, Double> bittrex = exchangeMap.get(Exchange.BITTREX) == null ? SplitUtils.maxValue() : exchangeMap.get(Exchange.BITTREX);
+        Map.Entry<Double, Double> poloniex = exchangeMap.get(Exchange.POLONIEX) == null ? SplitUtils.maxValue() : exchangeMap.get(Exchange.POLONIEX);
 
         if (smallest.getKey().compareTo(bittrex.getKey()) == 1) smallest = bittrex;
         if (smallest.getKey().compareTo(poloniex.getKey()) == 1) smallest = poloniex;
@@ -46,10 +46,10 @@ public class SplitUtils {
      * @param exchangeMap
      * @return
      */
-    public static Map.Entry<BigDecimal, String> findMax(Map<Exchange, Map.Entry<BigDecimal, String>> exchangeMap) {
-        Map.Entry<BigDecimal, String> biggest = exchangeMap.get(Exchange.BINANCE) == null ? SplitUtils.minValue() : exchangeMap.get(Exchange.BINANCE);
-        Map.Entry<BigDecimal, String> bittrex = exchangeMap.get(Exchange.BITTREX) == null ? SplitUtils.minValue() : exchangeMap.get(Exchange.BITTREX);
-        Map.Entry<BigDecimal, String> poloniex = exchangeMap.get(Exchange.POLONIEX) == null ? SplitUtils.minValue() : exchangeMap.get(Exchange.POLONIEX);
+    public static Map.Entry<Double, Double> findMax(Map<Exchange, Map.Entry<Double, Double>> exchangeMap) {
+        Map.Entry<Double, Double> biggest = exchangeMap.get(Exchange.BINANCE) == null ? SplitUtils.minValue() : exchangeMap.get(Exchange.BINANCE);
+        Map.Entry<Double, Double> bittrex = exchangeMap.get(Exchange.BITTREX) == null ? SplitUtils.minValue() : exchangeMap.get(Exchange.BITTREX);
+        Map.Entry<Double, Double> poloniex = exchangeMap.get(Exchange.POLONIEX) == null ? SplitUtils.minValue() : exchangeMap.get(Exchange.POLONIEX);
 
         if (biggest.getKey().compareTo(bittrex.getKey()) == -1) biggest = bittrex;
         if (biggest.getKey().compareTo(poloniex.getKey()) == -1) biggest = poloniex;
@@ -62,11 +62,10 @@ public class SplitUtils {
     }
 
 
-    public static void fullExchangeMap(Map<Exchange, Map.Entry<BigDecimal, String>> exchangeMap,
-                                       Iterator<Map.Entry<BigDecimal, String>> binanceIterator,
-                                       Iterator<Map.Entry<BigDecimal, String>> bittrexIterator,
-                                       Iterator<Map.Entry<BigDecimal, String>> poloniexIterator
-    ) {
+    public static void fullExchangeMap(Map<Exchange, Map.Entry<Double, Double>> exchangeMap,
+                                       Iterator<Map.Entry<Double, Double>> binanceIterator,
+                                       Iterator<Map.Entry<Double, Double>> bittrexIterator,
+                                       Iterator<Map.Entry<Double, Double>> poloniexIterator) {
         if (exchangeMap.get(Exchange.BINANCE) == null && binanceIterator.hasNext()) {
             exchangeMap.put(Exchange.BINANCE, binanceIterator.next());
         }

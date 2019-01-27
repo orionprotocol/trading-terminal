@@ -18,21 +18,21 @@ public class BittrexUpdateHandler {
     private ExchangeMapService exchangeMapService;
 
 
-    public void handleAskPair(BigDecimal price, String size, String generalPair) {
+    public void handleAskPair(Double price, Double size, String generalPair) {
 
         exchangeMapService.deleteAsks(Exchange.BITTREX, generalPair, price);
 
-        Double rSize = Double.valueOf(size);
+        Double rSize = size;
         if (rSize > 0) {
             exchangeMapService.addAsks(Exchange.BITTREX, generalPair, price, size);
         }
     }
 
-    public void handleBidsPair(BigDecimal price, String size, String generalPair) {
+    public void handleBidsPair(Double price, Double size, String generalPair) {
 
         exchangeMapService.deleteBids(Exchange.BITTREX, generalPair, price);
 
-        Double rSize = Double.valueOf(size);
+        Double rSize = size;
         if (rSize > 0) {
             exchangeMapService.addBids(Exchange.BITTREX, generalPair, price, size);
         }

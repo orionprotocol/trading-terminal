@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class ExchangeTuple {
-    private BigDecimal price;
+    private Double price;
     private Double size;
     private List<String> exchanges;
 
@@ -16,7 +16,7 @@ public class ExchangeTuple {
         this.exchanges = exchanges;
     }
 
-    public ExchangeTuple(BigDecimal price, Double size, List<String> exchanges) {
+    public ExchangeTuple(Double price, Double size, List<String> exchanges) {
         this.price = price;
         this.size = size;
         this.exchanges = exchanges;
@@ -29,11 +29,11 @@ public class ExchangeTuple {
                 '}';
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

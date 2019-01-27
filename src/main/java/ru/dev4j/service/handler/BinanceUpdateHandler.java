@@ -19,7 +19,7 @@ public class BinanceUpdateHandler {
     @Autowired
     private ExchangeMapService exchangeMapService;
 
-    public void handleAskPair(BigDecimal price, String size, String pair) {
+    public void handleAskPair(Double price, Double size, String pair) {
 
         exchangeMapService.deleteAsks(Exchange.BINANCE, pair, price);
 
@@ -30,7 +30,7 @@ public class BinanceUpdateHandler {
     }
 
 
-    public void handleBidsPair(BigDecimal price, String size, String pair) {
+    public void handleBidsPair(Double price, Double size, String pair) {
 
         exchangeMapService.deleteBids(Exchange.BINANCE, pair, price);
 
@@ -48,8 +48,8 @@ public class BinanceUpdateHandler {
 
         for (int i = 0; i < asks.length(); i++) {
             JSONArray ask = asks.getJSONArray(i);
-            BigDecimal price = ask.getBigDecimal(0);
-            String size = ask.getString(1);
+            Double price = ask.getDouble(0);
+            Double size = Double.valueOf(ask.getString(1));
             handleAskPair(price, size, pair);
         }
 
@@ -57,8 +57,8 @@ public class BinanceUpdateHandler {
 
         for (int i = 0; i < bids.length(); i++) {
             JSONArray bid = bids.getJSONArray(i);
-            BigDecimal price = bid.getBigDecimal(0);
-            String size = bid.getString(1);
+            Double price = bid.getDouble(0);
+            Double size = Double.valueOf(bid.getString(1));
             handleBidsPair(price, size, pair);
         }
 

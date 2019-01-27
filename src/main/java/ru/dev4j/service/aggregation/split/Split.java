@@ -5,36 +5,35 @@ import ru.dev4j.model.Exchange;
 import java.math.BigDecimal;
 
 public class Split {
-    private BigDecimal price;
-    private BigDecimal size;
+    private Double price;
+    private Double size;
     private Exchange exchange;
 
     public
-    Split(BigDecimal price, BigDecimal size, Exchange exchange) {
+    Split(Double price, Double size, Exchange exchange) {
         this.price = price;
         this.size = size;
         this.exchange = exchange;
     }
 
-    public
-    Split(BigDecimal price, Exchange exchange) {
+    public Split(Double price, Exchange exchange) {
         this.price = price;
         this.exchange = exchange;
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public BigDecimal getSize() {
+    public Double getSize() {
         return size;
     }
 
-    public void setSize(BigDecimal size) {
+    public void setSize(Double size) {
         this.size = size;
     }
 

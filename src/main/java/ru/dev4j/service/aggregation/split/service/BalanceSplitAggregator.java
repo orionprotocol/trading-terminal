@@ -19,14 +19,14 @@ public class BalanceSplitAggregator {
     @Autowired
     private ExchangeMapService exchangeMapService;
 
-    private static final BigDecimal ZERO = BigDecimal.valueOf(0);
+    private static final Double ZERO = 0D;
 
 
-    public Map<String,Object> secondLevel(String pair, BigDecimal price, DataType dataType, BigDecimal size, BigDecimal binanceBalance, BigDecimal bittrexBalance, BigDecimal poloniexBalance) {
+    public Map<String,Object> secondLevel(String pair, Double price, DataType dataType, Double size, Double binanceBalance, Double bittrexBalance, Double poloniexBalance) {
 
         List<Split> boughtSplits = new ArrayList<>();
 
-        Map<Exchange, BigDecimal> balanceMap = new HashMap<>();
+        Map<Exchange, Double> balanceMap = new HashMap<>();
         balanceMap.put(Exchange.BINANCE, binanceBalance);
         balanceMap.put(Exchange.BITTREX, bittrexBalance);
         balanceMap.put(Exchange.POLONIEX, poloniexBalance);
@@ -40,8 +40,8 @@ public class BalanceSplitAggregator {
         }
 
 
-        Map<Exchange, BigDecimal> sizeMap = new HashMap<>();
-        Map<Exchange, BigDecimal> priceMap = new HashMap<>();
+        Map<Exchange, Double> sizeMap = new HashMap<>();
+        Map<Exchange, Double> priceMap = new HashMap<>();
 
         Double totalCost = 0D;
         Double totalSize = 0D;
@@ -78,16 +78,16 @@ public class BalanceSplitAggregator {
         return response;
     }
 
-    private void aggregateBids(List<Split> boughtSplits, Map<Exchange, BigDecimal> balanceMap, String pair, BigDecimal price, BigDecimal size, BigDecimal binanceBalance, BigDecimal bittrexBalance, BigDecimal poloniexBalance) {
-        Iterator<Map.Entry<BigDecimal, String>> binanceBids = exchangeMapService.getAllBids(Exchange.BINANCE, pair).entrySet().iterator();
-        Iterator<Map.Entry<BigDecimal, String>> bittrexBids = exchangeMapService.getAllBids(Exchange.BITTREX, pair).entrySet().iterator();
-        Iterator<Map.Entry<BigDecimal, String>> poloniexBids = exchangeMapService.getAllBids(Exchange.POLONIEX, pair).entrySet().iterator();
+    private void aggregateBids(List<Split> boughtSplits, Map<Exchange, Double> balanceMap, String pair, Double price, Double size, Double binanceBalance, Double bittrexBalance, Double poloniexBalance) {
+        Iterator<Map.Entry<Double, Double>> binanceBids = exchangeMapService.getAllBids(Exchange.BINANCE, pair).entrySet().iterator();
+        Iterator<Map.Entry<Double, Double>> bittrexBids = exchangeMapService.getAllBids(Exchange.BITTREX, pair).entrySet().iterator();
+        Iterator<Map.Entry<Double, Double>> poloniexBids = exchangeMapService.getAllBids(Exchange.POLONIEX, pair).entrySet().iterator();
 
-        BigDecimal boughtSize = BigDecimal.valueOf(0);
+        Double boughtSize = 0D;
 
-        Map.Entry<BigDecimal, String> max = SplitUtils.maxValue();
+        Map.Entry<Double, Double> max = SplitUtils.maxValue();
 
-        Map<Exchange, Map.Entry<BigDecimal, String>> exchangeMap = new HashMap<>();
+        Map<Exchange, Map.Entry<Double, Double>> exchangeMap = new HashMap<>();
 
         while (max.getKey().compareTo(price) == 1 && size.compareTo(boughtSize) == 1 && binanceBalance.compareTo(ZERO) == 1
                 && bittrexBalance.compareTo(ZERO) == 1 && poloniexBalance.compareTo(ZERO) == 1) {
@@ -105,17 +105,17 @@ public class BalanceSplitAggregator {
     }
 
 
-    private void aggregateAsks(List<Split> boughtSplits, Map<Exchange, BigDecimal> balanceMap, String pair, BigDecimal price, BigDecimal size,
-                              BigDecimal binanceBalance, BigDecimal bittrexBalance, BigDecimal poloniexBalance) {
-        Iterator<Map.Entry<BigDecimal, String>> binanceAsks = exchangeMapService.getAllAsks(Exchange.BINANCE, pair).entrySet().iterator();
-        Iterator<Map.Entry<BigDecimal, String>> bittrexAsks = exchangeMapService.getAllAsks(Exchange.BITTREX, pair).entrySet().iterator();
-        Iterator<Map.Entry<BigDecimal, String>> poloniexAsks = exchangeMapService.getAllAsks(Exchange.POLONIEX, pair).entrySet().iterator();
+    private void aggregateAsks(List<Split> boughtSplits, Map<Exchange, Double> balanceMap, String pair, Double price, Double size,
+                               Double binanceBalance, Double bittrexBalance, Double poloniexBalance) {
+        Iterator<Map.Entry<Double, Double>> binanceAsks = exchangeMapService.getAllAsks(Exchange.BINANCE, pair).entrySet().iterator();
+        Iterator<Map.Entry<Double, Double>> bittrexAsks = exchangeMapService.getAllAsks(Exchange.BITTREX, pair).entrySet().iterator();
+        Iterator<Map.Entry<Double, Double>> poloniexAsks = exchangeMapService.getAllAsks(Exchange.POLONIEX, pair).entrySet().iterator();
 
-        BigDecimal boughtSize = BigDecimal.valueOf(0);
+        Double boughtSize = 0D;
 
-        Map.Entry<BigDecimal, String> min = SplitUtils.minValue();
+        Map.Entry<Double, Double> min = SplitUtils.minValue();
 
-        Map<Exchange, Map.Entry<BigDecimal, String>> exchangeMap = new HashMap<>();
+        Map<Exchange, Map.Entry<Double, Double>> exchangeMap = new HashMap<>();
 
         while (price.compareTo(min.getKey()) == 1 && size.compareTo(boughtSize) == 1 && binanceBalance.compareTo(ZERO) == 1
                 && bittrexBalance.compareTo(ZERO) == 1 && poloniexBalance.compareTo(ZERO) == 1) {
@@ -141,13 +141,13 @@ public class BalanceSplitAggregator {
      * @param split
      * @return
      */
-    private BigDecimal getBigDecimal(List<Split> boughtSplits, BigDecimal size, BigDecimal boughtSize, Split split) {
+    private Double getBigDecimal(List<Split> boughtSplits, Double size, Double boughtSize, Split split) {
         if (split != null) {
-            boughtSize = boughtSize.add(split.getSize());
+            boughtSize = boughtSize + split.getSize();
             if (boughtSize.compareTo(size) == 1) {
-                BigDecimal rest = boughtSize.subtract(size);
-                BigDecimal subOrdQty = split.getSize();
-                BigDecimal newSubOrdQty = subOrdQty.subtract(rest);
+                Double rest = boughtSize- size;
+                Double subOrdQty = split.getSize();
+                Double newSubOrdQty = subOrdQty - rest;
                 split.setSize(newSubOrdQty);
             }
             boughtSplits.add(split);
@@ -163,7 +163,7 @@ public class BalanceSplitAggregator {
      * @param finalMap
      * @param maxMap
      */
-    private void handleAsksSplit(Split split, Map<Exchange, BigDecimal> finalMap, Map<Exchange, BigDecimal> maxMap) {
+    private void handleAsksSplit(Split split, Map<Exchange, Double> finalMap, Map<Exchange, Double> maxMap) {
         Exchange exchange = split.getExchange();
         if (maxMap.get(exchange) == null) {
             maxMap.put(exchange, split.getPrice());
@@ -175,7 +175,7 @@ public class BalanceSplitAggregator {
         if (finalMap.get(exchange) == null) {
             finalMap.put(exchange, split.getSize());
         } else {
-            finalMap.put(exchange, finalMap.get(exchange).add(split.getSize()));
+            finalMap.put(exchange, finalMap.get(exchange) + split.getSize());
         }
     }
 
@@ -186,7 +186,7 @@ public class BalanceSplitAggregator {
      * @param finalMap
      * @param minMap
      */
-    private void handleBidsSplit(Split split, Map<Exchange, BigDecimal> finalMap, Map<Exchange, BigDecimal> minMap) {
+    private void handleBidsSplit(Split split, Map<Exchange, Double> finalMap, Map<Exchange, Double> minMap) {
         Exchange exchange = split.getExchange();
         if (minMap.get(exchange) == null) {
             minMap.put(exchange, split.getPrice());
@@ -198,7 +198,7 @@ public class BalanceSplitAggregator {
         if (finalMap.get(exchange) == null) {
             finalMap.put(exchange, split.getSize());
         } else {
-            finalMap.put(exchange, finalMap.get(exchange).add(split.getSize()));
+            finalMap.put(exchange, finalMap.get(exchange) + split.getSize());
         }
     }
 
@@ -209,16 +209,16 @@ public class BalanceSplitAggregator {
      * @param exchangeMap
      * @param balanceMap
      */
-    private void extractValue(Map.Entry<BigDecimal, String> value, Map<Exchange, Map.Entry<BigDecimal, String>> exchangeMap, Map<Exchange, BigDecimal> balanceMap) {
-        Map.Entry<BigDecimal, String> binance = exchangeMap.get(Exchange.BINANCE);
+    private void extractValue(Map.Entry<Double, Double> value, Map<Exchange, Map.Entry<Double, Double>> exchangeMap, Map<Exchange, Double> balanceMap) {
+        Map.Entry<Double, Double> binance = exchangeMap.get(Exchange.BINANCE);
         if (binance != null && binance.getKey().equals(value.getKey())) {
             exchangeMap.put(Exchange.BINANCE, null);
         }
-        Map.Entry<BigDecimal, String> bittrex = exchangeMap.get(Exchange.BITTREX);
+        Map.Entry<Double, Double> bittrex = exchangeMap.get(Exchange.BITTREX);
         if (bittrex != null && bittrex.getKey().equals(value.getKey())) {
             exchangeMap.put(Exchange.BITTREX, null);
         }
-        Map.Entry<BigDecimal, String> poloniex = exchangeMap.get(Exchange.POLONIEX);
+        Map.Entry<Double, Double> poloniex = exchangeMap.get(Exchange.POLONIEX);
         if (poloniex != null && poloniex.getKey().equals(value.getKey())) {
             exchangeMap.put(Exchange.POLONIEX, null);
         }
@@ -232,33 +232,33 @@ public class BalanceSplitAggregator {
      * @param exchangeMap
      * @return
      */
-    private Split decreaseBalance(Map.Entry<BigDecimal, String> value,
-                                  Map<Exchange, BigDecimal> balanceMap, Map<Exchange, Map.Entry<BigDecimal, String>> exchangeMap) {
-        Map.Entry<BigDecimal, String> binance = exchangeMap.get(Exchange.BINANCE);
+    private Split decreaseBalance(Map.Entry<Double, Double> value,
+                                  Map<Exchange, Double> balanceMap, Map<Exchange, Map.Entry<Double, Double>> exchangeMap) {
+        Map.Entry<Double, Double> binance = exchangeMap.get(Exchange.BINANCE);
         Exchange exchange = Exchange.BINANCE;
         if (binance != null && binance.getKey().equals(value.getKey())) {
             exchange = Exchange.BINANCE;
         }
-        Map.Entry<BigDecimal, String> bittrex = exchangeMap.get(Exchange.BITTREX);
+        Map.Entry<Double, Double> bittrex = exchangeMap.get(Exchange.BITTREX);
         if (bittrex != null && bittrex.getKey().equals(value.getKey())) {
             exchange = Exchange.BITTREX;
         }
-        Map.Entry<BigDecimal, String> poloniex = exchangeMap.get(Exchange.POLONIEX);
+        Map.Entry<Double, Double> poloniex = exchangeMap.get(Exchange.POLONIEX);
         if (poloniex != null && poloniex.getKey().equals(value.getKey())) {
             exchange = Exchange.POLONIEX;
         }
-        BigDecimal balance = balanceMap.get(exchange);
+        Double balance = balanceMap.get(exchange);
         Split split = new Split(value.getKey(), exchange);
         if (balance.compareTo(ZERO) == 1) {
-            BigDecimal cost = value.getKey().multiply(new BigDecimal(value.getValue()));
+            Double cost = value.getKey() * Double.valueOf(value.getValue());
             if (balance.compareTo(cost) == 1) {
-                BigDecimal newBalance = balance.subtract(cost);
+                Double newBalance = balance - cost;
                 balanceMap.put(exchange, newBalance);
-                split.setSize(new BigDecimal(value.getValue()));
+                split.setSize(Double.valueOf(value.getValue()));
                 return split;
             } else {
-                BigDecimal size = new BigDecimal(balance.doubleValue() / value.getKey().doubleValue());
-                BigDecimal newBalance = BigDecimal.valueOf(0);
+                Double size = balance.doubleValue() / value.getKey().doubleValue();
+                Double newBalance = 0D;
                 balanceMap.put(exchange, newBalance);
                 split.setSize(size);
                 return split;

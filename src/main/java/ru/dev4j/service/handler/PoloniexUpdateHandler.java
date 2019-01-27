@@ -18,7 +18,7 @@ public class PoloniexUpdateHandler {
     private ExchangeMapService exchangeMapService;
 
 
-    public void handleAskPair(BigDecimal price, String size, String pair) {
+    public void handleAskPair(Double price, Double size, String pair) {
 
         exchangeMapService.deleteAsks(Exchange.POLONIEX, pair, price);
 
@@ -29,7 +29,7 @@ public class PoloniexUpdateHandler {
     }
 
 
-    public void handleBidsPair(BigDecimal price, String size, String pair) {
+    public void handleBidsPair(Double price, Double size, String pair) {
 
         exchangeMapService.deleteBids(Exchange.POLONIEX, pair, price);
 
