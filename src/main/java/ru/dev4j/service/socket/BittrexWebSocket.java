@@ -47,9 +47,11 @@ public class BittrexWebSocket {
                 String pair = mapToGeneralName(updateExchangeState.getMarketName(), bittrexConfig.getPair());
                 for (MarketOrder marketOrder : updateExchangeState.getSells()) {
                     bittrexUpdateHandler.handleAskPair(marketOrder.getRate().doubleValue(), marketOrder.getQuantity().doubleValue(), pair);
+                    redisRepository.saveChanges(Exchange.BITTREX, DataType.ASKS, pair, marketOrder.getRate().toString());
                 }
                 for (MarketOrder marketOrder : updateExchangeState.getBuys()) {
                     bittrexUpdateHandler.handleBidsPair(marketOrder.getRate().doubleValue(), marketOrder.getQuantity().doubleValue(), pair);
+                    redisRepository.saveChanges(Exchange.BITTREX, DataType.BIDS, pair, marketOrder.getRate().toString());
                 }
             });
 
