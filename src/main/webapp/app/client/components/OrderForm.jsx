@@ -45,12 +45,12 @@ class OrderForm extends React.Component {
     }
 
     postOrder(symbol, side) {
-        console.log("POST")
-        if (!this.state.count || this.state.count == 0) {
+        console.log("POST " + this.props.count)
+        if (!this.props.count || this.props.count == 0) {
             Toastr.showError("Введите количество")
             return;
         }
-        if (!this.state.currentPrice || this.state.currentPrice == 0) {
+        if (!this.props.currentPrice || this.props.currentPrice == 0) {
             Toastr.showError("Введите цену")
             return;
         }
@@ -66,8 +66,8 @@ class OrderForm extends React.Component {
                     clientId: '3NAwZFEJ2KULyknQjGqYr9bMeN2VyGYq4SF2',
                     symbol: symbol,
                     side: side,
-                    orderQty: this.state.count,
-                    price: this.state.currentPrice
+                    orderQty: this.props.count,
+                    price: this.props.currentPrice
                 })
             }
         ).then(results => {
