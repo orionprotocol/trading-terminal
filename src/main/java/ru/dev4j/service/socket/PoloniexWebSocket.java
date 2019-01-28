@@ -79,7 +79,7 @@ public class PoloniexWebSocket {
             String aPrice = aPrices.next();
             if (asks.get(aPrice) instanceof String) {
                 String aSize = asks.getString(aPrice);
-                poloniexUpdateHandler.handleAskPair(new BigDecimal(aPrice), aSize, pair);
+                poloniexUpdateHandler.handleAskPair(Double.valueOf(aPrice), Double.valueOf(aSize), pair);
             }
         }
 
@@ -90,7 +90,7 @@ public class PoloniexWebSocket {
             String bPrice = bPrices.next();
             if (bids.get(bPrice) instanceof String) {
                 String bSize = bids.getString(bPrice);
-                poloniexUpdateHandler.handleBidsPair(new BigDecimal(bPrice), bSize, pair);
+                poloniexUpdateHandler.handleBidsPair(Double.valueOf(bPrice), Double.valueOf(bSize), pair);
             }
         }
         logger.info("Handle first snapshot");
@@ -107,15 +107,15 @@ public class PoloniexWebSocket {
                 String type = update.getString(0);
                 if (type.equals("o")) {
                     Integer updateType = update.getInt(1);
-                    BigDecimal price = update.getBigDecimal(2);
-                    String size = update.getString(3);
+                    Double price = update.getDouble(2);
+                    Double size = Double.valueOf(update.getString(3));
                     if (updateType == 0) {
                         poloniexUpdateHandler.handleAskPair(price, size, pair);
-                        redisRepository.saveChanges(Exchange.POLONIEX, DataType.ASKS, pair, price.toPlainString());
+                        redisRepository.saveChanges(Exchange.POLONIEX, DataType.ASKS, pair, String.valueOf(price));
                     }
                     if (updateType == 1) {
                         poloniexUpdateHandler.handleBidsPair(price, size, pair);
-                        redisRepository.saveChanges(Exchange.POLONIEX, DataType.BIDS, pair, price.toPlainString());
+                        redisRepository.saveChanges(Exchange.POLONIEX, DataType.BIDS, pair, String.valueOf(price));
                     }
                 }
             }

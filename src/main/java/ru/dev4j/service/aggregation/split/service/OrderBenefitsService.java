@@ -22,38 +22,41 @@ public class OrderBenefitsService {
     private static final DecimalFormat df10 = new DecimalFormat("#.########");
 
 
-    public Map<String, Object> orderBenefits(String pair,
-                                             Double ordQty, String side) {
-        List<Split> totalLevels = new ArrayList<>();
-        List<Split> binanaceLevels = new ArrayList<>();
-        List<Split> bittrexLevels = new ArrayList<>();
-        List<Split> poloniexLevels = new ArrayList<>();
+    public Map<String, Object> orderBenefits(String pair, Double ordQty, String side) {
+        List<Split> totalLevels = null;
+        List<Split> binanaceLevels = null;
+        List<Split> bittrexLevels = null;
+        List<Split> poloniexLevels = null;
 
         String type = "";
         if (side.equals("buy")) {
-            splitAggregator.aggregateAsks(pair, ordQty, new BigDecimal(Double.MAX_VALUE), totalLevels);
+            totalLevels = splitAggregator.aggregateAsks(pair, ordQty, Double.MAX_VALUE);
             type = "asks";
         }
         if (side.equals("sell")) {
-            splitAggregator.aggregateBids(pair, new BigDecimal(0), ordQty, totalLevels);
+            totalLevels = splitAggregator.aggregateBids(pair, 0D, ordQty);
             type = "bids";
         }
-        splitAggregator.aggregateExchangeLevel(pair, ordQty, binanaceLevels, Exchange.BINANCE, type);
-        splitAggregator.aggregateExchangeLevel(pair, ordQty, bittrexLevels, Exchange.BITTREX, type);
-        splitAggregator.aggregateExchangeLevel(pair, ordQty, poloniexLevels, Exchange.POLONIEX, type);
+        binanaceLevels = splitAggregator.aggregateExchangeLevel(pair, ordQty, Exchange.BINANCE, type);
+        bittrexLevels = splitAggregator.aggregateExchangeLevel(pair, ordQty, Exchange.BITTREX, type);
+        poloniexLevels = splitAggregator.aggregateExchangeLevel(pair, ordQty, Exchange.POLONIEX, type);
 
+        System.out.println("TOTAL LEVEL " + totalLevels.size());
+        System.out.println("BINANCE LEVELS " + binanaceLevels.size());
+        System.out.println("BITTREX LEVELS " + bittrexLevels.size());
+        System.out.println("POLONIEX LEVELS " + poloniexLevels.size());
 
         Double totalCostLevels = totalLevels.stream()
-                .mapToDouble(l -> l.getPrice().doubleValue()).max().orElse(0.0) * ordQty;
+                .mapToDouble(l -> l.getPrice()).max().orElse(0.0) * ordQty;
 
         Double totalCostBinance = binanaceLevels.stream()
-                .mapToDouble(l -> l.getPrice().doubleValue()).max().orElse(0.0) * ordQty;
+                .mapToDouble(l -> l.getPrice()).max().orElse(0.0) * ordQty;
 
         Double totalCostBittrex = bittrexLevels.stream()
-                .mapToDouble(l -> l.getPrice().doubleValue()).max().orElse(0.0) * ordQty;
+                .mapToDouble(l -> l.getPrice()).max().orElse(0.0) * ordQty;
 
         Double totalCostPoloniex = poloniexLevels.stream()
-                .mapToDouble(l -> l.getPrice().doubleValue()).max().orElse(0.0) * ordQty;
+                .mapToDouble(l -> l.getPrice()).max().orElse(0.0) * ordQty;
 
 
         Map<String, Object> response = new HashMap<>();
@@ -68,7 +71,7 @@ public class OrderBenefitsService {
 
     private Map<String, String> calculateBenefits(Double totalCost, Double totalCostExchange) {
 
-        double benefitBtcDouble = Double.max(0.0,totalCostExchange - totalCost);
+        double benefitBtcDouble = Double.max(0.0, totalCostExchange - totalCost);
 
         BigDecimal benefitPct = new BigDecimal(benefitBtcDouble * 100 / totalCost);
 

@@ -46,10 +46,10 @@ public class BittrexWebSocket {
             bittrexExchange.onUpdateExchangeState(updateExchangeState -> {
                 String pair = mapToGeneralName(updateExchangeState.getMarketName(), bittrexConfig.getPair());
                 for (MarketOrder marketOrder : updateExchangeState.getSells()) {
-                    bittrexUpdateHandler.handleAskPair(marketOrder.getRate(), marketOrder.getQuantity().toPlainString(), pair);
+                    bittrexUpdateHandler.handleAskPair(marketOrder.getRate().doubleValue(), marketOrder.getQuantity().doubleValue(), pair);
                 }
                 for (MarketOrder marketOrder : updateExchangeState.getBuys()) {
-                    bittrexUpdateHandler.handleBidsPair(marketOrder.getRate(), marketOrder.getQuantity().toPlainString(), pair);
+                    bittrexUpdateHandler.handleBidsPair(marketOrder.getRate().doubleValue(), marketOrder.getQuantity().doubleValue(), pair);
                 }
             });
 
@@ -60,11 +60,11 @@ public class BittrexWebSocket {
 
                     bittrexExchange.queryExchangeState(pair.getCodeName(), exchangeState -> {
                         for (MarketOrder marketOrder : exchangeState.getSells()) {
-                            bittrexUpdateHandler.handleAskPair(marketOrder.getRate(), marketOrder.getQuantity().toPlainString(), pair.getGeneralName());
+                            bittrexUpdateHandler.handleAskPair(marketOrder.getRate().doubleValue(), marketOrder.getQuantity().doubleValue(), pair.getGeneralName());
                             redisRepository.saveChanges(Exchange.BITTREX, DataType.ASKS, pair.getGeneralName(), marketOrder.getRate().toString());
                         }
                         for (MarketOrder marketOrder : exchangeState.getBuys()) {
-                            bittrexUpdateHandler.handleBidsPair(marketOrder.getRate(), marketOrder.getQuantity().toPlainString(), pair.getGeneralName());
+                            bittrexUpdateHandler.handleBidsPair(marketOrder.getRate().doubleValue(), marketOrder.getQuantity().doubleValue(), pair.getGeneralName());
                             redisRepository.saveChanges(Exchange.BITTREX, DataType.BIDS, pair.getGeneralName(), marketOrder.getRate().toString());
                         }
 

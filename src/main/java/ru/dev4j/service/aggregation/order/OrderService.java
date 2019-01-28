@@ -72,11 +72,11 @@ public class OrderService {
             dataType = DataType.BIDS;
             balanceSymbol = symbol[0].toLowerCase();
         }
-        Map<Exchange, BigDecimal> balances = chooseSymbolBalance(broker, balanceSymbol);
+        Map<Exchange, Double> balances = chooseSymbolBalance(broker, balanceSymbol);
 
         Long time = System.currentTimeMillis();
 
-        Map<String, Object> routes = balanceSplitAggregator.secondLevel(order.getSymbol(), new BigDecimal(order.getPrice()), dataType, new BigDecimal(order.getOrderQty()),
+        Map<String, Object> routes = balanceSplitAggregator.secondLevel(order.getSymbol(), order.getPrice(), dataType, order.getOrderQty(),
                 balances.get(Exchange.BINANCE), balances.get(Exchange.BITTREX), balances.get(Exchange.POLONIEX));
 
         List<SubOrder> subOrders = getSubOrders((List<Route>) routes.get("routes"), order);
@@ -85,8 +85,8 @@ public class OrderService {
         for (Broker dbBroker : brokers) {
             for (SubOrder subOrder : subOrders) {
                 if (!subOrder.getReserved()) {
-                    Map<Exchange, BigDecimal> brokerBalances = chooseSymbolBalance(dbBroker, balanceSymbol);
-                    BigDecimal value = subOrder.getPrice().multiply(subOrder.getSubOrdQty());
+                    Map<Exchange, Double> brokerBalances = chooseSymbolBalance(dbBroker, balanceSymbol);
+                    Double value = subOrder.getPrice() * subOrder.getSubOrdQty();
                     if (brokerBalances.get(subOrder.getExchange()).compareTo(value) != -1) {
                         Boolean sent = orderHttpService.sendOrderInfo(subOrder, order, dbBroker);
                         if (sent) {
@@ -164,9 +164,9 @@ public class OrderService {
         return orderRepository.orderHistory(ordId, symbol, startTime, endTime, limit, sort);
     }
 
-    private Map<Exchange, BigDecimal> chooseSymbolBalance(Broker broker, String balanceSymbol) {
+    private Map<Exchange, Double> chooseSymbolBalance(Broker broker, String balanceSymbol) {
 
-        Map<Exchange, BigDecimal> response = new HashMap<>();
+        Map<Exchange, Double> response = new HashMap<>();
         for (ExchangeBalance exchangeBalance : broker.getExchangeBalances()) {
             Exchange exchange = Exchange.BINANCE;
             switch (exchangeBalance.getExchange()) {
@@ -180,19 +180,19 @@ public class OrderService {
                     exchange = Exchange.BINANCE;
                     break;
             }
-            BigDecimal balance = findExchangeSymbolBalance(exchangeBalance.getPairBalances(), balanceSymbol);
+            Double balance = findExchangeSymbolBalance(exchangeBalance.getPairBalances(), balanceSymbol);
             response.put(exchange, balance);
         }
         return response;
     }
 
-    private BigDecimal findExchangeSymbolBalance(List<PairBalance> pairBalances, String balanceSymbol) {
+    private Double findExchangeSymbolBalance(List<PairBalance> pairBalances, String balanceSymbol) {
         for (PairBalance pairBalance : pairBalances) {
             if (pairBalance.getSymbol().toLowerCase().equals(balanceSymbol)) {
-                return new BigDecimal(pairBalance.getBalance());
+                return Double.valueOf(pairBalance.getBalance());
             }
         }
-        return BigDecimal.ZERO;
+        return 0D;
     }
 
     private List<SubOrder> getSubOrders(List<Route> routes, Order order) {
@@ -208,7 +208,7 @@ public class OrderService {
     }
 
     private SubOrder mapToSubOrder(Route route, Order order, Long subOrdId) {
-        return new SubOrder(subOrdId, order.getId(), route.getExchange(), new BigDecimal(route.getPrice()), new BigDecimal(route.getSubOrdQty()), null);
+        return new SubOrder(subOrdId, order.getId(), route.getExchange(), Double.valueOf(route.getPrice()), Double.valueOf(route.getSubOrdQty()), null);
     }
 
 }

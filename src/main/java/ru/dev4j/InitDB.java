@@ -42,8 +42,8 @@ public class InitDB {
         subOrder.setExchange(Exchange.BINANCE);
         subOrder.setId(orderId + 5);
         subOrder.setOrderId(orderId);
-        subOrder.setPrice(new BigDecimal(1.0));
-        subOrder.setSubOrdQty(new BigDecimal(0.7));
+        subOrder.setPrice(1.0);
+        subOrder.setSubOrdQty(0.7);
 
         subOrders.add(subOrder);
 
@@ -53,8 +53,8 @@ public class InitDB {
         subOrder1.setExchange(Exchange.BINANCE);
         subOrder1.setId(orderId + 6);
         subOrder1.setOrderId(orderId);
-        subOrder1.setPrice(new BigDecimal(0.5));
-        subOrder1.setSubOrdQty(new BigDecimal(0.3));
+        subOrder1.setPrice(0.5);
+        subOrder1.setSubOrdQty(0.3);
         subOrders.add(subOrder1);
 
         return subOrders;

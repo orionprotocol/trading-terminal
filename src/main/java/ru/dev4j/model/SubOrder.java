@@ -11,14 +11,14 @@ public class SubOrder {
     private Long id;
     private Long orderId;
     private Exchange exchange;
-    private BigDecimal price;
-    private BigDecimal subOrdQty;
-    private BigDecimal fee;
+    private Double price;
+    private Double subOrdQty;
+    private Double fee;
     private Boolean reserved = false;
     private String brokerId;
     private List<Trade> trades;
 
-    public SubOrder(Long id, Long orderId, Exchange exchange, BigDecimal price, BigDecimal subOrdQty, BigDecimal fee) {
+    public SubOrder(Long id, Long orderId, Exchange exchange, Double price, Double subOrdQty, Double fee) {
         this.id = id;
         this.orderId = orderId;
         this.exchange = exchange;
@@ -78,27 +78,27 @@ public class SubOrder {
         this.exchange = exchange;
     }
 
-    public BigDecimal getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public BigDecimal getSubOrdQty() {
+    public Double getSubOrdQty() {
         return subOrdQty;
     }
 
-    public void setSubOrdQty(BigDecimal subOrdQty) {
+    public void setSubOrdQty(Double subOrdQty) {
         this.subOrdQty = subOrdQty;
     }
 
-    public BigDecimal getFee() {
+    public Double getFee() {
         return fee;
     }
 
-    public void setFee(BigDecimal fee) {
+    public void setFee(Double fee) {
         this.fee = fee;
     }
 }
