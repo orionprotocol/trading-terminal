@@ -1,5 +1,9 @@
 package ru.dev4j.service.aggregation.split.service;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
+import org.jooq.lambda.Seq;
+import org.jooq.lambda.tuple.Tuple3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dev4j.model.DataType;
@@ -10,8 +14,13 @@ import ru.dev4j.service.aggregation.split.SplitUtils;
 import ru.dev4j.service.map.ExchangeMapService;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.jooq.lambda.tuple.Tuple.tuple;
 
 @Service
 public class BalanceSplitAggregator {
@@ -20,23 +29,29 @@ public class BalanceSplitAggregator {
     private ExchangeMapService exchangeMapService;
 
     private static final Double ZERO = 0D;
-
+    private static final int DECIMALS = 8;
+    private static final MathContext mc = new MathContext(DECIMALS, RoundingMode.HALF_UP);
 
     public Map<String,Object> secondLevel(String pair, Double price, DataType dataType, Double size, Double binanceBalance, Double bittrexBalance, Double poloniexBalance) {
 
         List<Split> boughtSplits = new ArrayList<>();
 
-        Map<Exchange, Double> balanceMap = new HashMap<>();
-        balanceMap.put(Exchange.BINANCE, binanceBalance);
-        balanceMap.put(Exchange.BITTREX, bittrexBalance);
-        balanceMap.put(Exchange.POLONIEX, poloniexBalance);
+        Map<Exchange, Double> balanceMap = ImmutableMap.of(
+                Exchange.BINANCE, binanceBalance,
+                Exchange.BITTREX, bittrexBalance,
+                Exchange.POLONIEX, poloniexBalance);
 
 
         if (dataType.equals(DataType.ASKS)) {
-            aggregateAsks(boughtSplits, balanceMap, pair, price, size, binanceBalance, bittrexBalance, poloniexBalance);
+            boughtSplits.addAll(aggregateAsks(pair, price, size,
+                    balanceMap.entrySet()
+                        .stream()
+                        .collect(Collectors.toMap(Map.Entry::getKey,
+                                e -> e.getValue()/price)))
+            );
         }
         if (dataType.equals(DataType.BIDS)) {
-            aggregateBids(boughtSplits, balanceMap, pair, price, size, binanceBalance, bittrexBalance, poloniexBalance);
+            boughtSplits.addAll(aggregateBids(pair, price, size, balanceMap));
         }
 
 
@@ -104,32 +119,99 @@ public class BalanceSplitAggregator {
         }
     }
 
+    private List<Split> splitRemaining(String pair, double price, double size, Map<Exchange, Double> exchangeBalance) {
+        List<Map.Entry<Exchange, Double>> balances =
+                new ArrayList<>(exchangeBalance.entrySet()).stream()
+                        .filter(b -> !exchangeMapService.getAllBids(b.getKey(), pair).isEmpty())
+                        .sorted((o1, o2) -> (int) (o1.getValue() - o2.getValue()))
+                        .collect(Collectors.toList());
 
-    private void aggregateAsks(List<Split> boughtSplits, Map<Exchange, Double> balanceMap, String pair, Double price, Double size,
-                               Double binanceBalance, Double bittrexBalance, Double poloniexBalance) {
-        Iterator<Map.Entry<Double, Double>> binanceAsks = exchangeMapService.getAllAsks(Exchange.BINANCE, pair).entrySet().iterator();
-        Iterator<Map.Entry<Double, Double>> bittrexAsks = exchangeMapService.getAllAsks(Exchange.BITTREX, pair).entrySet().iterator();
-        Iterator<Map.Entry<Double, Double>> poloniexAsks = exchangeMapService.getAllAsks(Exchange.POLONIEX, pair).entrySet().iterator();
+        List<Split> splits = new ArrayList<>();
+        BigDecimal remainingSize = new BigDecimal(size, mc);
+        for (int i = 0; i < balances.size(); i++) {
+            BigDecimal nextSize = (remainingSize.divide(BigDecimal.valueOf(balances.size() - i), mc)
+                    .min(BigDecimal.valueOf(balances.get(i).getValue())));
 
-        Double boughtSize = 0D;
-
-        Map.Entry<Double, Double> min = SplitUtils.minValue();
-
-        Map<Exchange, Map.Entry<Double, Double>> exchangeMap = new HashMap<>();
-
-        while (price.compareTo(min.getKey()) == 1 && size.compareTo(boughtSize) == 1 && binanceBalance.compareTo(ZERO) == 1
-                && bittrexBalance.compareTo(ZERO) == 1 && poloniexBalance.compareTo(ZERO) == 1) {
-            SplitUtils.fullExchangeMap(exchangeMap, binanceAsks, bittrexAsks, poloniexAsks);
-            if (!binanceAsks.hasNext() && !bittrexAsks.hasNext() && !poloniexAsks.hasNext()) {
-                break;
-            }
-            min = SplitUtils.findMin(exchangeMap);
-            if (price.compareTo(min.getKey()) == 1) {
-                Split split = decreaseBalance(min, balanceMap, exchangeMap);
-                boughtSize = getBigDecimal(boughtSplits, size, boughtSize, split);
-                extractValue(min, exchangeMap, balanceMap);
+            if (nextSize.compareTo(BigDecimal.ZERO) > 0) {
+                splits.add(new Split(price, nextSize.doubleValue(), balances.get(i).getKey()));
+                remainingSize = remainingSize.subtract(nextSize);
             }
         }
+
+        return splits;
+    }
+
+    private List<Split> aggregateBids(String pair, Double price, Double size, Map<Exchange, Double> exchangeBalance) {
+        Seq<Tuple3<Double, Double, Exchange>> binance = Seq.seq(exchangeMapService.getAllBids(Exchange.BINANCE, pair)
+                .entrySet().stream())
+                .filter(e -> e.getKey() >= price)
+                .map(e -> tuple(e.getKey(), e.getValue(), Exchange.BINANCE));
+
+        Seq<Tuple3<Double, Double, Exchange>> bittrex = Seq.seq(exchangeMapService.getAllBids(Exchange.BITTREX, pair)
+                .entrySet().stream())
+                .filter(e -> e.getKey() >= price)
+                .map(e -> tuple(e.getKey(), e.getValue(), Exchange.BITTREX));
+
+        Seq<Tuple3<Double, Double, Exchange>> poloniex = Seq.seq(exchangeMapService.getAllBids(Exchange.POLONIEX, pair)
+                .entrySet().stream())
+                .filter(e -> e.getKey() >= price)
+                .map(e -> tuple(e.getKey(), e.getValue(), Exchange.POLONIEX));
+
+        Seq<Tuple3<Double, Double, Exchange>> aggregate = binance.concat(bittrex).concat(poloniex).sorted();
+
+        List<Split> splits = new ArrayList<>();
+        Map<Exchange, Double> remBalances = Maps.newHashMap(exchangeBalance);
+        size = calculateSplits(size, aggregate, splits, remBalances);
+
+        if (size > 0) {
+            splits.addAll(splitRemaining(pair, price, size, remBalances));
+        }
+
+        return splits;
+    }
+
+    private Double calculateSplits(Double size, Seq<Tuple3<Double, Double, Exchange>> aggregate,
+                                   List<Split> splits, Map<Exchange, Double> remBalances) {
+        for (Tuple3<Double, Double, Exchange> t : aggregate) {
+            double subOrdQty = Math.min(Math.min(size, t.v2), remBalances.get(t.v3));
+            if (subOrdQty > 0) {
+                remBalances.compute(t.v3, (exchange, bal) -> bal != null ? bal - subOrdQty : 0.0);
+
+                splits.add(new Split(t.v1, subOrdQty, t.v3));
+                size -= subOrdQty;
+                if (size <= 0) break;
+            }
+        }
+        return size;
+    }
+
+    private List<Split> aggregateAsks(String pair, Double price, Double size, Map<Exchange, Double> exchangeBalance) {
+        Seq<Tuple3<Double, Double, Exchange>> binance = Seq.seq(exchangeMapService.getAllAsks(Exchange.BINANCE, pair)
+                .entrySet().stream())
+                .filter(e -> e.getKey() <= price)
+                .map(e -> tuple(e.getKey(), e.getValue(), Exchange.BINANCE));
+
+        Seq<Tuple3<Double, Double, Exchange>> bittrex = Seq.seq(exchangeMapService.getAllAsks(Exchange.BITTREX, pair)
+                .entrySet().stream())
+                .filter(e -> e.getKey() <= price)
+                .map(e -> tuple(e.getKey(), e.getValue(), Exchange.BITTREX));
+
+        Seq<Tuple3<Double, Double, Exchange>> poloniex = Seq.seq(exchangeMapService.getAllAsks(Exchange.POLONIEX, pair)
+                .entrySet().stream())
+                .filter(e -> e.getKey() <= price)
+                .map(e -> tuple(e.getKey(), e.getValue(), Exchange.POLONIEX));
+
+        Seq<Tuple3<Double, Double, Exchange>> aggregate = binance.concat(bittrex).concat(poloniex).sorted();
+
+        List<Split> splits = new ArrayList<>();
+        Map<Exchange, Double> remBalances = Maps.newHashMap(exchangeBalance);
+        size = calculateSplits(size, aggregate, splits, remBalances);
+
+        if (size > 0) {
+            splits.addAll(splitRemaining(pair, price, size, remBalances));
+        }
+
+        return splits;
     }
 
     /**

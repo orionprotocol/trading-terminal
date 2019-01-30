@@ -75,6 +75,10 @@ public class OrderService {
         Map<Exchange, Double> balances = chooseSymbolBalance(broker, balanceSymbol);
 
         Long time = System.currentTimeMillis();
+        order.setTime(time);
+        order.setUpdateTime(time);
+        order.setId(sequenceRepository.getNextSequenceId("exchange"));
+        order.setStatus("NEW");
 
         Map<String, Object> routes = balanceSplitAggregator.secondLevel(order.getSymbol(), order.getPrice(), dataType, order.getOrderQty(),
                 balances.get(Exchange.BINANCE), balances.get(Exchange.BITTREX), balances.get(Exchange.POLONIEX));
@@ -82,38 +86,27 @@ public class OrderService {
         List<SubOrder> subOrders = getSubOrders((List<Route>) routes.get("routes"), order);
 
         List<Broker> brokers = brokerRepository.findAll();
-        for (Broker dbBroker : brokers) {
-            for (SubOrder subOrder : subOrders) {
-                if (!subOrder.getReserved()) {
-                    Map<Exchange, Double> brokerBalances = chooseSymbolBalance(dbBroker, balanceSymbol);
-                    Double value = subOrder.getPrice() * subOrder.getSubOrdQty();
-                    if (brokerBalances.get(subOrder.getExchange()).compareTo(value) != -1) {
-                        Boolean sent = orderHttpService.sendOrderInfo(subOrder, order, dbBroker);
-                        if (sent) {
-                            subOrder.setReserved(true);
-                            subOrder.setBrokerId(dbBroker.getId());
-                            order.getSubOrders().add(subOrder);
-                            break;
-                        } else {
-//                            brokerRepository.delete(dbBroker.getId());
-                        }
+        for (SubOrder subOrder : subOrders) {
+            for (Broker dbBroker : brokers) {
+                Map<Exchange, Double> brokerBalances = chooseSymbolBalance(dbBroker, balanceSymbol);
+                if (brokerBalances.get(subOrder.getExchange()) >= subOrder.getSpentQty()) {
+                    if (orderHttpService.sendOrderInfo(subOrder, order, dbBroker)) {
+                        subOrder.setReserved(true);
+                        subOrder.setBrokerId(dbBroker.getId());
+                        order.getSubOrders().add(subOrder);
+                        break;
                     }
                 }
             }
         }
-        for (SubOrder subOrder : subOrders) {
+
+        /*for (SubOrder subOrder : subOrders) {
             if (!subOrder.getReserved()) {
                 throw new SubOrderException();
             }
-        }
-        if (subOrders == null || subOrders.isEmpty()) {
-            throw new SubOrderException();
-        }
+        }*/
 
-        order.setTime(time);
-        order.setUpdateTime(time);
-        order.setId(sequenceRepository.getNextSequenceId("exchange"));
-        order.setStatus("NEW");
+
         orderRepository.save(order);
 
         order.setSubOrders(subOrders);

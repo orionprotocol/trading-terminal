@@ -62,7 +62,8 @@ public class TradeService {
         BigDecimal filledQty = order.getFilledQty().add(new BigDecimal(trade.getQty()));
         order.setFilledQty(filledQty);
         order.setUpdateTime(System.currentTimeMillis());
-        order.setStatus("PARTIALLY_FILLED");
+        order.setStatus(order.getFilledQty().compareTo(BigDecimal.valueOf(order.getOrderQty())) >= 0
+                ? "FILLED" : "PARTIALLY_FILLED");
         orderRepository.save(order);
 
         response.put("ordId", order.getId());
@@ -116,7 +117,7 @@ public class TradeService {
     private SubOrder getSubOrder(Order order, Trade trade) {
         List<SubOrder> subOrders = order.getSubOrders();
         for (SubOrder subOrder : subOrders) {
-            if (subOrder.getId().equals(trade.getSubOrdId())) {
+            if (subOrder.getId().equals(Long.valueOf(trade.getSubOrdId()))) {
                 return subOrder;
             }
         }

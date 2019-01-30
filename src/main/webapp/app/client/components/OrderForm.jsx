@@ -124,12 +124,12 @@ class OrderForm extends React.Component {
                             <div id="buy-header" className="col-xs-6 orderform-header orderform-buy-active">
                                 <a onClick={() => {
                                     this.props.setSide('buy')
-                                }} href="#" id="buy-form-link">КУПИТЬ</a>
+                                }} href="#" id="buy-form-link">BUY</a>
                             </div>
                             <div id="sell-header" className="col-xs-6 orderform-header">
                                 <a onClick={() => {
                                     this.props.setSide('sell')
-                                }} href="#" id="sell-form-link">ПРОДАТЬ</a>
+                                }} href="#" id="sell-form-link">SELL</a>
                             </div>
                         </div>
                         <div className="orderform-container">
@@ -139,7 +139,7 @@ class OrderForm extends React.Component {
                                         <div className="">
                                             <div className="row">
                                                 <div className="col-md-12" style={{padding: '0px'}}>
-                                                    <span className="orderform-label">Количество</span>
+                                                    <span className="orderform-label">Amount</span>
                                                 </div>
                                             </div>
                                             <div className="row orderform-content-container">
@@ -158,7 +158,7 @@ class OrderForm extends React.Component {
                                         <div className="orderform-input-container">
                                             <div className="row">
                                                 <div className="col-md-1" style={{padding: '0px'}}>
-                                                    <span className="orderform-label">Цена</span>
+                                                    <span className="orderform-label">Price</span>
                                                 </div>
                                                 <div className="col-md-offset-6 col-md-1">
                 <span onClick={() => {
@@ -195,7 +195,7 @@ class OrderForm extends React.Component {
                                         <div className="orderform-input-container">
                                             <div className="row">
                                                 <div className="col-md-12" style={{padding: '0px'}}>
-                                                    <span className="orderform-label">Сумма</span>
+                                                    <span className="orderform-label">Total</span>
                                                 </div>
                                             </div>
                                             <div className="row orderform-content-container">

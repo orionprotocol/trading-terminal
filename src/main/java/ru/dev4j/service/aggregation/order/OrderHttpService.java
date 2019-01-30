@@ -32,12 +32,12 @@ public class OrderHttpService {
         JSONObject request = new JSONObject();
 
         request.put("symbol", order.getSymbol());
-//        request.put("ordId", order.getId());
+        request.put("ordId", order.getId());
         request.put("subOrdId", subOrder.getId());
         request.put("price", subOrder.getPrice());
-        request.put("exchange", subOrder.getExchange());
+        request.put("exchange", subOrder.getExchange().getId());
         request.put("subOrdQty", subOrder.getSubOrdQty());
-//        request.put("ordType", order.getOrdType());
+        request.put("ordType", "LIMIT");
         request.put("side", order.getSide());
 
         HttpPost httpPost = new HttpPost(broker.getCallbackUrl() + "/order");
@@ -69,11 +69,12 @@ public class OrderHttpService {
                     success = true;
                 }
             } catch (IOException e) {
-                if (timeout == 0) {
+                timeout = FINAL_TIMEOUT + 1;
+                /*if (timeout == 0) {
                     timeout = 1000;
                 } else {
                     timeout = timeout * 2;
-                }
+                }*/
             }
         }
 
