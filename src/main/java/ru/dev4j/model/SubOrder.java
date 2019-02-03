@@ -3,6 +3,7 @@ package ru.dev4j.model;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Document
@@ -16,7 +17,7 @@ public class SubOrder {
     private Double fee;
     private Boolean reserved = false;
     private String brokerId;
-    private List<Trade> trades;
+    private List<Trade> trades = new ArrayList<>();
 
     public SubOrder(Long id, Long orderId, Exchange exchange, Double price, Double subOrdQty, Double fee) {
         this.id = id;
@@ -100,5 +101,9 @@ public class SubOrder {
 
     public void setFee(Double fee) {
         this.fee = fee;
+    }
+
+    public double getSpentQty() {
+        return 0.0;
     }
 }
