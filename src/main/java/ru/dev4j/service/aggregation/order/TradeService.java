@@ -3,6 +3,8 @@ package ru.dev4j.service.aggregation.order;
 import com.wavesplatform.wavesj.*;
 import com.wavesplatform.wavesj.AssetPair;
 import com.wavesplatform.wavesj.PrivateKeyAccount;
+import com.wavesplatform.wavesj.AssetPair;
+import com.wavesplatform.wavesj.PrivateKeyAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dev4j.model.Order;

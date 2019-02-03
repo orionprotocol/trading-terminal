@@ -4,6 +4,8 @@ import {BrowserRouter, Switch, Route} from 'react-router-dom';
 
 import MainDasboard from "./client/pages/main_dashboard"
 import Balance from "./client/pages/balances"
+import ChartExample from "./client/pages/ChartExample"
+import Modals from "./client/pages/Modals"
 
 import Menu from "./client/pages/parts/menu"
 
@@ -31,21 +33,28 @@ class Router extends React.Component {
             <BrowserRouter>
                 <div className="row" >
                     <Menu/>
-                    <div className="col-md-11" style={{paddingLeft:'20px', paddingRight:'35px'}}>
+                    <div className="col-md-11" style={{paddingLeft:'20px'}}>
                         <Switch>
                             <Route exact path="/"
-                                   render={props => <MainDasboard userInfo={this.state.userInfo} {...props}/>}/>
+                                   render={props => <MainDasboard  {...props}/>}/>
                         </Switch>
                         <Switch>
                             <Route exact path="/balance"
-                                   render={props => <Balance userInfo={this.state.userInfo} {...props}/>}/>
+                                   render={props => <Balance  {...props}/>}/>
+                        </Switch>
+                        <Switch>
+                            <Route exact path="/chart"
+                                   render={props => <ChartExample  {...props}/>}/>
+                        </Switch>
+                        <Switch>
+                            <Route exact path="/modal"
+                                   render={props => <Modals  {...props}/>}/>
                         </Switch>
                     </div>
                 </div>
             </BrowserRouter>
         );
     }
-}
-;
+};
 
 export default Router;

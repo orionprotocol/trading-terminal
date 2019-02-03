@@ -1,0 +1,11 @@
+.modal-big{
+    width: 100%;
+    height: 90%;
+}
+.modal-header{
+    height: 25px !important;
+    border-bottom: none !important;
+}
+iframe{
+    font-size: 10px;
+}

@@ -34,5 +34,15 @@ public class IndexController {
         return "client/client";
     }
 
+    @RequestMapping(value = "/modal")
+    public String modal() {
+        return "client/client";
+    }
+
+    @RequestMapping(value = "/chart")
+    public String chart() {
+        return "client/client";
+    }
+
 
 }

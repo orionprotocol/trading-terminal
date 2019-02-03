@@ -1,16 +1,7 @@
-#asks tr:hover td {
+.orderbook-rows tr:hover td {
     background-color: #efefef;
 }
-
-#bids tr:hover td {
-    background-color: #efefef;
-}
-
-
-#asks tr {
+.orderbook-rows tr {
     cursor: pointer;
 }
 
-#bids tr {
-    cursor: pointer;
-}

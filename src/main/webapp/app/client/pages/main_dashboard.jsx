@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import {MomentJS} from './../../service/MomentJS'
 import OrderForm from './../../client/components/OrderForm'
 import Orders from './../../client/components/Orders'
+import Chart from './../../client/components/Chart'
+import OrderBook from './../../client/components/OrderBook'
+import {Modal} from 'react-bootstrap'
 
 class MainDashboard extends React.Component {
 
@@ -13,17 +16,15 @@ class MainDashboard extends React.Component {
         console.log("TABLE HEIGHT " + tableHeight)
         this.state = {
             pairs: [],
-            currentSymbol: '',
+            currentSymbol: 'XRP-BTC',
             ws: null,
-            data: null,
-            lastPrice: 0,
-            lastPriceStyle: '#000',
-            ask: 0,
-            bid: 0,
+            data: {
+                lastPrice: 0,
+                lastPriceStyle: '#000',
+                ask: 0,
+                bid: 0,
+            },
             orders: [],
-            parentCount: null,
-            parentPrice: null,
-            parentType: null,
             currentPrice: '0',
             count: '1',
             total: '0',
@@ -33,6 +34,26 @@ class MainDashboard extends React.Component {
                 bittrex: {},
                 poloniex: {}
             },
+            binance: {
+                lastPrice: 0,
+                lastPriceStyle: '#000',
+                ask: 0,
+                bid: 0,
+            },
+            bittrex: {
+                lastPrice: 0,
+                lastPriceStyle: '#000',
+                ask: 0,
+                bid: 0,
+            },
+            poloniex: {
+                lastPrice: 0,
+                lastPriceStyle: '#000',
+                ask: 0,
+                bid: 0,
+            },
+            showModal: false,
+            loadChart: false,
             tableHeight: tableHeight
         }
         this.loadAllPairs = this.loadAllPairs.bind(this);
@@ -40,7 +61,8 @@ class MainDashboard extends React.Component {
         this.loadSnapshot = this.loadSnapshot.bind(this);
         this.connect = this.connect.bind(this);
         this.disconnect = this.disconnect.bind(this);
-        this.handleNewData = this.handleNewData.bind(this);
+        this.updateOrderBookData = this.updateOrderBookData.bind(this);
+        this.handleNewExchangeData = this.handleNewExchangeData.bind(this);
         this.sortAsks = this.sortAsks.bind(this);
         this.sortBids = this.sortBids.bind(this);
         this.changeCurrentSymbol = this.changeCurrentSymbol.bind(this);
@@ -58,13 +80,31 @@ class MainDashboard extends React.Component {
         this.recalculateTotal = this.recalculateTotal.bind(this);
         this.loadBenefits = this.loadBenefits.bind(this);
         this.setSide = this.setSide.bind(this);
-
+        this.renderOrderbookExchange = this.renderOrderbookExchange.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.renderChart = this.renderChart.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.loadExchangeSnapshot = this.loadExchangeSnapshot.bind(this);
     }
 
     setSide(side) {
         this.setState({side: side}, () => {
+
             this.loadBenefits();
         })
+    }
+
+    showModal() {
+        console.log("SHOW MODAL")
+        this.setState({showModal: true}, () => {
+            setTimeout(() => {
+                this.setState({loadChart: true})
+            }, 100)
+        });
+    }
+
+    closeModal() {
+        this.setState({showModal: false});
     }
 
     changeCount(e) {
@@ -96,6 +136,37 @@ class MainDashboard extends React.Component {
                 setInterval(() => {
                     this.loadOrderHistory(this.state.currentSymbol)
                 }, 10000);
+                //LOAD BINANCE
+                this.loadExchangeSnapshot("BINANCE", this.state.currentSymbol, 20, (data) => {
+                    this.setState({
+                        binance: {
+                            ...data, ...{
+                                lastPrice: 0,
+                                lastPriceStyle: '#000',
+                            }
+                        }
+                    })
+                });
+                this.loadExchangeSnapshot("BITTREX", this.state.currentSymbol, 20, (data) => {
+                    this.setState({
+                        bittrex: {
+                            ...data, ...{
+                                lastPrice: 0,
+                                lastPriceStyle: '#000',
+                            }
+                        }
+                    });
+                });
+                this.loadExchangeSnapshot("POLONIEX", this.state.currentSymbol, 20, (data) => {
+                    this.setState({
+                        poloniex: {
+                            ...data, ...{
+                                lastPrice: 0,
+                                lastPriceStyle: '#000',
+                            }
+                        }
+                    })
+                });
             })
         })
     }
@@ -139,9 +210,29 @@ class MainDashboard extends React.Component {
                 return results.json();
             }).then(data => {
                 this.setState({
-                    data: data, ask: data.asks[data.asks.length - 1].price,
-                    bid: data.bids[0].price
+                    data: {
+                        ...data,
+                        lastPrice: 0,
+                        lastPriceStyle: '#000',
+                        ask: data.asks[data.asks.length - 1].price,
+                        bid: data.bids[0].price
+                    },
                 })
+            })
+        }
+    }
+
+    loadExchangeSnapshot(exchange, symbol, depth, callback) {
+        if (symbol && depth) {
+            let url = "/api/v1/exchange/orderBook?symbol={SYMBOL}&depth={DEPTH}&exchange={EXCHANGE}".replace("{SYMBOL}", symbol).replace("{DEPTH}", depth).replace("{EXCHANGE}", exchange);
+            fetch(url,
+                {
+                    credentials: 'same-origin',
+                }
+            ).then(results => {
+                return results.json();
+            }).then(data => {
+                callback(data);
             })
         }
     }
@@ -188,6 +279,35 @@ class MainDashboard extends React.Component {
             this.connect();
             this.loadOrderHistory(symbol);
             this.loadBenefits();
+            this.loadExchangeSnapshot("BINANCE", symbol, 20, (data) => {
+                this.setState({
+                    binance: {
+                        ...data,
+                        lastPrice: 0,
+                        lastPriceStyle: '#000',
+                    }
+                })
+            });
+            this.loadExchangeSnapshot("BITTREX", symbol, 20, (data) => {
+                this.setState({
+                    bittrex: {
+                        ...data,
+                        lastPrice: 0,
+                        lastPriceStyle: '#000',
+
+                    }
+                });
+            });
+            this.loadExchangeSnapshot("POLONIEX", symbol, 20, (data) => {
+                this.setState({
+                    poloniex: {
+                        ...data,
+                        lastPrice: 0,
+                        lastPriceStyle: '#000',
+
+                    }
+                })
+            });
         })
 
     }
@@ -257,20 +377,30 @@ class MainDashboard extends React.Component {
         }
     }
 
-    renderAsks() {
+    renderOrderbookExchange(modal, divExchanges) {
+        if (!modal) {
+            return (<td style={{width: '19%'}}>
+                <div className="row" style={{paddingLeft: '15px'}}>
+                    {divExchanges}
+                </div>
+            </td>);
+        }
+    }
+
+    renderAsks(modal, exchange, data) {
         let renderData = [];
         let key = 0;
-        if (this.state.data) {
-            let asks = this.state.data.asks;
+        if (data && data.asks && data.asks.length > 0) {
+            let asks = data.asks;
             this.calculateTotalAsks(asks);
             const maxAsk = asks.reduce(function (prev, current) {
                 return (prev.total > current.total) ? prev : current
             })
             for (let i = 0; i < asks.length; i++, key++) {
+                let exchanges = asks[i].exchanges || [];
                 const percent = this.calculatePercent(maxAsk.total, asks[i].total).toFixed(6);
                 let percentStyle = percent + '%';
                 let divExchanges = [];
-                let exchanges = asks[i].exchanges || [];
                 for (let j = 0; j < exchanges.length; j++) {
                     let imagePath = "/resources/img/exchanges/{exchange}.png".replace("{exchange}", exchanges[j]);
                     let key = i + '' + j;
@@ -295,11 +425,7 @@ class MainDashboard extends React.Component {
                                 }}>{asks[i].total.toFixed(9)}</div>
                             </div>
                         </td>
-                        <td style={{width: '19%'}}>
-                            <div className="row" style={{paddingLeft: '15px'}}>
-                                {divExchanges}
-                            </div>
-                        </td>
+                        {this.renderOrderbookExchange(modal, divExchanges)}
                     </tr>
                 )
             }
@@ -307,20 +433,20 @@ class MainDashboard extends React.Component {
         return renderData;
     }
 
-    renderBids() {
+    renderBids(modal, exchange, data) {
         let renderData = [];
         let key = 0;
-        if (this.state.data) {
-            const bids = this.state.data.bids;
+        if (data && data.bids && data.bids.length > 0) {
+            const bids = data.bids;
             this.calculateTotalBids(bids);
             const maxBid = bids.reduce(function (prev, current) {
                 return (prev.total > current.total) ? prev : current
             })
             for (let i = 0; i < bids.length; i++, key++) {
+                let exchanges = bids[i].exchanges || [];
                 const percent = this.calculatePercent(maxBid.total, bids[i].total).toFixed(6);
                 let percentStyle = percent + '%';
                 let divExchanges = [];
-                let exchanges = bids[i].exchanges || [];
                 for (let j = 0; j < exchanges.length; j++) {
                     let imagePath = "/resources/img/exchanges/{exchange}.png".replace("{exchange}", exchanges[j]);
                     let key = i + '' + j;
@@ -345,11 +471,8 @@ class MainDashboard extends React.Component {
                                 }}>{bids[i].total.toFixed(9)}</div>
                             </div>
                         </td>
-                        <td style={{width: '19%'}}>
-                            <div className="row" style={{paddingLeft: '15px'}}>
-                                {divExchanges}
-                            </div>
-                        </td>
+                        {this.renderOrderbookExchange(modal, divExchanges)}
+
                     </tr>
                 )
             }
@@ -357,21 +480,108 @@ class MainDashboard extends React.Component {
         return renderData;
     }
 
-    handleJqeuryScroll() {
-        let enableScroll = $('body').attr('enableScroll');
+    handleJqeuryScroll(asks, bids,scroll) {
+        let enableScroll = $('body').attr(scroll);
         console.log(enableScroll)
         if (enableScroll == 'true') {
-            $('#asks').scrollTop(1000);
-            $('#bids').scrollTop(0);
+            $(asks).scrollTop(1000);
+            $(bids).scrollTop(0);
         }
     }
 
-    handleNewData(data) {
-        console.log("ASKS: " + JSON.stringify(data.asks))
-        console.log("BIDS: " + JSON.stringify(data.bids))
+    handleNewExchangeData(data) {
+        console.log("ASKS " + JSON.stringify(data.asks))
+        console.log("BIDS " + JSON.stringify(data.bids))
+
+        try {
+            this.updateOrderBookData(data, 'all', this.state.data, (asks, bids, maxBid, lastPriceStyle) => {
+                this.handleJqeuryScroll('#asks-general', '#bids-general','orderbook-general');
+                this.handleJqeuryScroll('#modal-asks-general', '#modal-bids-general','modal-orderbook-general');
+                this.setState({
+                    data: {
+                        asks: asks,
+                        bids: bids,
+                        lastPrice: maxBid.price,
+                        lastPriceStyle: lastPriceStyle,
+                        ask: this.state.data.asks[this.state.data.asks.length - 1].price,
+                        bid: this.state.data.bids[0].price
+                    }
+                })
+            });
+        } catch (e) {
+            console.log(e)
+        }
+        try {
+            this.updateOrderBookData(data, 'binance', this.state.binance, (asks, bids, maxBid, lastPriceStyle) => {
+                this.handleJqeuryScroll('#modal-asks-bnn', '#modal-bids-bnn','modal-orderbook-binance');
+                this.setState({
+                    binance: {
+                        asks: asks,
+                        bids: bids,
+                        lastPrice: maxBid.price,
+                        lastPriceStyle: lastPriceStyle,
+                        ask: asks[asks.length - 1].price,
+                        bid: bids[0].price
+                    },
+                })
+            });
+        } catch (e) {
+            console.log(e)
+        }
+        try {
+
+            this.updateOrderBookData(data, 'bittrex', this.state.bittrex, (asks, bids, maxBid, lastPriceStyle) => {
+                this.handleJqeuryScroll('#modal-asks-btr', '#modal-bids-btr','modal-orderbook-bittrex');
+                this.setState({
+                    bittrex: {
+                        asks: asks,
+                        bids: bids,
+                        lastPrice: maxBid.price,
+                        lastPriceStyle: lastPriceStyle,
+                        ask: asks[asks.length - 1].price,
+                        bid: bids[0].price
+                    }
+                })
+            });
+        } catch (e) {
+            console.log(e)
+        }
+        try {
+            this.updateOrderBookData(data, 'poloniex', this.state.poloniex, (asks, bids, maxBid, lastPriceStyle) => {
+                    this.handleJqeuryScroll('#modal-asks-plnx', '#modal-bids-plnx','modal-orderbook-poloniex');
+                    this.setState({
+                        poloniex: {
+                            asks: asks,
+                            bids: bids,
+                            lastPrice: maxBid.price,
+                            lastPriceStyle: lastPriceStyle,
+                            ask: asks[asks.length - 1].price,
+                            bid: bids[0].price
+                        }
+                    })
+                }
+            );
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    updateOrderBookData(data, exchange, stateData, callback) {
         const asks = data.asks;
-        let stateAsks = this.state.data.asks;
+        let stateAsks = stateData.asks;
         for (let i = 0; i < asks.length; i++) {
+            let exchanges = asks[i].exchanges || [];
+            if (exchange != "all") {
+                let needExchange = false;
+                for (let k = 0; k < exchanges.length; k++) {
+                    if (exchanges[k] == exchange) {
+                        needExchange = true;
+                    }
+                }
+                if (!needExchange) {
+                    continue;
+                }
+            }
             let updated = false;
             for (let j = 0; j < stateAsks.length; j++) {
                 if (asks[i].price == stateAsks[j].price) {
@@ -391,8 +601,20 @@ class MainDashboard extends React.Component {
         stateAsks = stateAsks.sort(this.sortAsks).slice(0, 20)
         stateAsks = stateAsks.sort(this.sortBids);
         const bids = data.bids;
-        let stateBids = this.state.data.bids;
+        let stateBids = stateData.bids;
         for (let i = 0; i < bids.length; i++) {
+            let exchanges = bids[i].exchanges || [];
+            if (exchange != "all") {
+                let needExchange = false;
+                for (let k = 0; k < exchanges.length; k++) {
+                    if (exchanges[k] == exchange) {
+                        needExchange = true;
+                    }
+                }
+                if (!needExchange) {
+                    continue;
+                }
+            }
             let updated = false;
             for (let j = 0; j < stateBids.length; j++) {
                 if (bids[i].price == stateBids[j].price) {
@@ -414,25 +636,18 @@ class MainDashboard extends React.Component {
         })
         stateBids = stateBids.sort(this.sortBids).slice(0, 20)
         let lastPriceStyle = "#e5494d";
-        if (maxBid.price > this.state.lastPrice) {
+        if (maxBid.price > data.lastPrice) {
             lastPriceStyle = "#2051d3";
         }
-        this.handleJqeuryScroll();
-        this.setState({
-            data: {asks: stateAsks, bids: stateBids},
-            lastPrice: maxBid.price,
-            lastPriceStyle: lastPriceStyle,
-            ask: stateAsks[stateAsks.length - 1].price,
-            bid: stateBids[0].price
-        })
+        callback(stateAsks, stateBids, maxBid, lastPriceStyle);
     }
 
-    //TODO:on page close disconect
+//TODO:on page close disconect
     connect() {
         let url = 'ws://***REMOVED***/{SYMBOL}'.replace("{SYMBOL}", this.state.currentSymbol);
         let ws = new WebSocket(url);
         this.setState({ws: ws})
-        let handleNewData = this.handleNewData;
+        let handleNewData = this.handleNewExchangeData;
         ws.onmessage = function (data) {
             handleNewData(JSON.parse(data.data));
         }
@@ -460,14 +675,32 @@ class MainDashboard extends React.Component {
         this.setState({total: total})
     }
 
+    renderChart(id, exchange, height, symbol, showModal, loadChart, imageName, marginTop) {
+        return (<Chart symbol={symbol}
+                       height={height}
+                       id={id}
+                       modal={showModal}
+                       loadChart={loadChart}
+                       imageName={imageName}
+                       marginTop={marginTop}
+                       exchange={exchange}
+
+        />);
+    }
+
 
     render() {
+        const windowHeight = window.innerHeight;
+        const chartHeight = windowHeight * 0.45;
+        const generalChartHeight = windowHeight * 0.55;
+        const modalOrdBook = (windowHeight / 2) * 0.3;
+        const showModal = this.state.showModal;
         return (
             <div style={{
                 fontWeight: 200
             }}>
                 <div className="row row-eq-height">
-                    <div
+                    <div1
                         id="pairs"
                         style={{
                             borderColor: '#edf0f4',
@@ -482,7 +715,18 @@ class MainDashboard extends React.Component {
                             borderBottomWidth: '1px',
                             borderBottomStyle: 'solid'
                         }}>
-                            <span style={{color: '#4e5c6e', fontSize: '13px'}}>Пара</span>
+                            <div className="row">
+                                <div className="col-md-3" style={{paddingTop: '8px'}}>
+                                    <span style={{color: '#4e5c6e', fontSize: '13px'}}>Пара</span>
+                                </div>
+                                <div className="col-md-6 col-md-offset-1">
+                                    <button style={{borderRadius: '25px', backgroundColor: 'rgb(31, 90, 246)'}}
+                                            className="btn btn-primary"
+                                            onClick={this.showModal}>
+                                        Aggregated
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <table style={{width: '100%', color: '#263241'}}>
@@ -491,6 +735,15 @@ class MainDashboard extends React.Component {
                                 </tbody>
                             </table>
                         </div>
+                    </div1>
+                    <div className="col-md-7">
+                        <Chart loadChart={true}
+                               symbol={this.state.currentSymbol}
+                               modal={false}
+                               exchange="all"
+                               marginTop="0px"
+                               height={generalChartHeight}
+                               id="general_chart"/>
                     </div>
                     <div style={{
                         borderColor: '#edf0f4',
@@ -500,72 +753,20 @@ class MainDashboard extends React.Component {
                         // height: {height},
                         backgroundColor: '#fff'
                     }}
-                         className="col-md-offset-7 col-md-3">
-                        <div className="row" style={{padding: '10px'}}>
-                            <div className="col-md-10">
-                            <span style={{
-                                color: '#4e5c6e',
-                                fontSize: '13px'
-                            }}>Биржевой стакан / {this.state.currentSymbol}</span>
-                            </div>
-                            <div className="col-md-2">
-                                <span id="orderbook-align" style={{color: '#4e5c6e', cursor: 'pointer'}}
-                                      className="glyphicon glyphicon glyphicon-sort" aria-hidden="true"></span>
-                            </div>
-                        </div>
-                        <div style={{
-                            borderBottomColor: '#edf0f4',
-                            borderBottomWidth: '1px',
-                            borderBottomStyle: 'solid'
-                        }}>
-                        </div>
-                        <div>
-                            <table style={{
-                                width: '100%',
-                                borderCollapse: 'collapse'
-                            }}>
-                                <thead>
-                                <tr style={{color: '#7f8fa4', fontSize: '11px', lineHeight: '25px'}}>
-                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '27%'}}>Цена</td>
-                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '27%'}}>Кол-во</td>
-                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '27%'}}>Сумма</td>
-                                    <td style={{borderBottom: ' 1px solid #edf0f4', width: '19%'}}>Биржа</td>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
-                        <div id="asks" style={{overflowY: 'scroll'}}>
-                            <table style={{
-                                width: '100%'
-                            }}>
-                                <tbody style={{fontSize: '11px', color: '#263241'}}>
-                                {this.renderAsks()}
-                                </tbody>
-                            </table>
-                        </div>
-                        <div style={{
-                            padding: '7px', fontSize: '11px',
-                            borderBottomColor: '#edf0f4',
-                            borderBottomWidth: '1px',
-                            borderBottomStyle: 'solid',
-                            borderTopColor: '#edf0f4',
-                            borderTopWidth: '1px',
-                            borderTopStyle: 'solid'
-                        }}>
-                            <span style={{color: '#263241'}}>
-                                ПОСЛЕДНЯЯ ЦЕНА: <span
-                                style={{color: this.state.lastPriceStyle}}>{this.state.lastPrice.toFixed(8)}</span>
-                            </span>
-                        </div>
-                        <div id="bids" style={{overflowY: 'scroll'}}>
-                            <table style={{
-                                width: '100%'
-                            }}>
-                                <tbody style={{fontSize: '11px', color: '#263241'}}>
-                                {this.renderBids()}
-                                </tbody>
-                            </table>
-                        </div>
+                         className="col-md-3">
+                        <OrderBook asks="asks-general" bids="bids-general"
+                                   modal={false}
+                                   exchange="all"
+                                   alignId="orderbook-general"
+                                   imageWidth='80px'
+                                   exchangeImage="all.svg"
+                                   currentSymbol={this.state.currentSymbol}
+                                   renderAsks={this.renderAsks}
+                                   renderBids={this.renderBids}
+                                   data={this.state.data}
+                                   lastPriceStyle={this.state.data.lastPriceStyle}
+                                   lastPrice={this.state.data.lastPrice}
+                        />
                     </div>
                 </div>
                 <div className="row row-eq-height" style={{marginTop: '10px'}}>
@@ -573,16 +774,149 @@ class MainDashboard extends React.Component {
                         <Orders orders={this.state.orders}/>
                     </div>
                     <div id="order-form" className="col-md-3" style={{padding: '0px', margin: '0px'}}>
-                        <OrderForm changeCount={this.changeCount} changeCurrentPrice={this.changeCurrentPrice}
-                                   benefits={this.state.benefits}
-                                   setSide={this.setSide}
-                                   count={this.state.count} currentPrice={this.state.currentPrice}
-                                   total={this.state.total}
-                                   loadOrderHistory={this.loadOrderHistory} pair={this.state.currentSymbol}
-                                   ask={this.state.ask} bid={this.state.bid}
-                                   last={this.state.lastPrice}/>
+                        <OrderForm
+                            ref={(orderForm) => this.orderForm = orderForm}
+                            changeCount={this.changeCount}
+                            changeCurrentPrice={this.changeCurrentPrice}
+                            benefits={this.state.benefits}
+                            setSide={this.setSide}
+                            count={this.state.count}
+                            currentPrice={this.state.currentPrice}
+                            total={this.state.total}
+                            loadOrderHistory={this.loadOrderHistory}
+                            pair={this.state.data.currentSymbol}
+                            ask={this.state.data.ask} bid={this.state.data.bid}
+                            last={this.state.data.lastPrice}/>
                     </div>
                 </div>
+                <Modal id="chart-modal" dialogClassName="modal-big" show={this.state.showModal}
+                       onHide={this.closeModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title id="exchange-modal-header"></Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div style={{backgroundColor: '#fff'}}>
+                            <div>
+                                <div className='row row-eq-height' style={{height: chartHeight}}>
+                                    <div className="col-md-8">
+                                        <div style={{float: 'left', width: '50%'}}>
+                                            {this.renderChart("first_chart", "all", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "all.svg", '0px')}
+                                        </div>
+                                        <div style={{float: 'left', width: '50%'}}>
+                                            {this.renderChart("second_chart", "bittrex", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "bittrex.jpg", '0px')}
+                                        </div>
+                                    </div>
+                                    <div className="col-md-4">
+                                        <div className="row">
+                                            <div className="col-md-6" style={{
+                                                borderColor: '#edf0f4',
+                                                borderWidth: '2px',
+                                                borderStyle: 'solid',
+                                                height: '50%',
+                                                // height: {height},
+                                                backgroundColor: '#fff'
+                                            }}>
+
+                                                <OrderBook asks="modal-asks-general" bids="modal-bids-general"
+                                                           modal={true}
+                                                           exchange="all"
+                                                           exchangeImage="all.svg"
+                                                           alignId="modal-orderbook-general"
+                                                           currentSymbol={this.state.currentSymbol}
+                                                           data={this.state.data}
+                                                           modalOrdBook={modalOrdBook}
+                                                           renderAsks={this.renderAsks}
+                                                           renderBids={this.renderBids}
+                                                           lastPriceStyle={this.state.data.lastPriceStyle}
+                                                           lastPrice={this.state.data.lastPrice}/>
+                                            </div>
+                                            <div className="col-md-6" style={{
+                                                borderColor: '#edf0f4',
+                                                borderWidth: '2px',
+                                                borderStyle: 'solid',
+                                                height: '50%',
+                                                // height: {height},
+                                                backgroundColor: '#fff'
+                                            }}>
+
+                                                <OrderBook asks="modal-asks-btr" bids="modal-bids-btr"
+                                                           modal={true}
+                                                           exchange="bittrex"
+                                                           exchangeImage="bittrex.jpg"
+                                                           alignId="modal-orderbook-bittrex"
+                                                           currentSymbol={this.state.currentSymbol}
+                                                           data={this.state.bittrex}
+                                                           modalOrdBook={modalOrdBook}
+                                                           renderAsks={this.renderAsks}
+                                                           renderBids={this.renderBids}
+                                                           lastPriceStyle={this.state.bittrex.lastPriceStyle}
+                                                           lastPrice={this.state.bittrex.lastPrice}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='row row-eq-height'>
+                                    <div className="col-md-8">
+                                        <div style={{float: 'left', width: '50%'}}>
+                                            {this.renderChart("third_chart", "binance", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "binance.svg", '10px')}
+                                        </div>
+                                        <div style={{float: 'left', width: '50%'}}>
+                                            {this.renderChart("fourth_chart", "poloniex", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "poloniex.png", '10px')}
+                                        </div>
+                                    </div>
+                                    <div className="col-md-4">
+                                        <div className="row">
+                                            <div className="col-md-6" style={{
+                                                borderColor: '#edf0f4',
+                                                borderWidth: '2px',
+                                                borderStyle: 'solid',
+                                                height: '50%',
+                                                // height: {height},
+                                                backgroundColor: '#fff'
+                                            }}>
+
+                                                <OrderBook asks="modal-asks-bnn" bids="modal-bids-bnn"
+                                                           currentSymbol={this.state.currentSymbol}
+                                                           modal={true}
+                                                           exchange="binance"
+                                                           exchangeImage="binance.svg"
+                                                           alignId="modal-orderbook-binance"
+                                                           data={this.state.binance}
+                                                           modalOrdBook={modalOrdBook}
+                                                           renderAsks={this.renderAsks}
+                                                           renderBids={this.renderBids}
+                                                           lastPriceStyle={this.state.binance.lastPriceStyle}
+                                                           lastPrice={this.state.binance.lastPrice}/>
+                                            </div>
+                                            <div className="col-md-6" style={{
+                                                borderColor: '#edf0f4',
+                                                borderWidth: '2px',
+                                                borderStyle: 'solid',
+                                                height: '50%',
+                                                // height: {height},
+                                                backgroundColor: '#fff'
+                                            }}>
+
+                                                <OrderBook asks="modal-asks-plnx" bids="modal-bids-plnx"
+                                                           currentSymbol={this.state.currentSymbol}
+                                                           modal={true}
+                                                           exchange="poloniex"
+                                                           exchangeImage="poloniex.png"
+                                                           alignId="modal-orderbook-poloniex"
+                                                           data={this.state.poloniex}
+                                                           modalOrdBook={modalOrdBook}
+                                                           renderAsks={this.renderAsks}
+                                                           renderBids={this.renderBids}
+                                                           lastPriceStyle={this.state.poloniex.lastPriceStyle}
+                                                           lastPrice={this.state.poloniex.lastPrice}/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </Modal.Body>
+                </Modal>
             </div>
         );
     }

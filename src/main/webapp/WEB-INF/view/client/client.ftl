@@ -20,6 +20,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap-toggle.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
@@ -41,6 +42,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Balance -->
     <link rel="stylesheet" href="/resources/css/balance.css">
+
+    <!-- Modal -->
+    <link rel="stylesheet" href="/resources/css/modal.css">
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -78,11 +82,18 @@ desired effect
 <body enableScroll="true" style="overflow-x: hidden; overflow-y:hidden">
 <div id="app" style="background-color: #edf0f4; min-height: 100%">
 </div>
+<script type="text/javascript" src="/resources/js/charting_library/charting_library.min.js"></script>
+<script type="text/javascript" src="/resources/js/datafeeds/udf/dist/polyfills.js"></script>
+<script type="text/javascript" src="/resources/js/datafeeds/udf/dist/bundle.js"></script>
+<script type="text/javascript" src="/resources/js/datafeeds/udf/lib/dex-history.js"></script>
+
 <script src="/resources/js/bundle.js"></script>
 <script src="/resources/jquery/dist/jquery.min.js"></script>
 <script src="/resources/js/orderform.js"></script>
 <script src="/resources/js/orders.js"></script>
 <script src="/resources/js/orderbook.js"></script>
+
+
 <!-- Bootstrap 3.3.7 -->
 <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
 <script src="/resources/js/toastr.min.js"></script>
@@ -92,16 +103,41 @@ desired effect
         var windowHeight = $(window).height();
         var form = $('#order-form').height();
         var top = windowHeight - form;
-        console.log("WINDOW " + windowHeight)
-        console.log("FORM " + form)
-        console.log("TOP " + top)
         var ordbookMax = top / 2.5;
 
+        var modalOrdBook = (windowHeight / 2) * 0.3;
+
         $('#pairs').height(top);
-        $('#asks').css('min-height', ordbookMax);
-        $('#bids').css('min-height', ordbookMax);
-        $('#asks').css('max-height', ordbookMax);
-        $('#bids').css('max-height', ordbookMax);
+        $('#asks-general').css('min-height', ordbookMax);
+        $('#asks-general').css('max-height', ordbookMax);
+
+        $('#bids-general').css('min-height', ordbookMax);
+        $('#bids-general').css('max-height', ordbookMax);
+
+        // $('#modal-asks-general').css('min-height', modalOrdBook);
+        // $('#modal-asks-general').css('max-height', modalOrdBook);
+        //
+        // $('#modal-bids-general').css('min-height', modalOrdBook);
+        // $('#modal-bids-general').css('max-height', modalOrdBook);
+        //
+        // $('#modal-asks-btr').css('min-height', modalOrdBook);
+        // $('#modal-asks-btr').css('max-height', modalOrdBook);
+        //
+        // $('#modal-bids-btr').css('min-height', modalOrdBook);
+        // $('#modal-bids-btr').css('max-height', modalOrdBook);
+        //
+        // $('#modal-asks-plnx').css('min-height', modalOrdBook);
+        // $('#modal-asks-plnx').css('max-height', modalOrdBook);
+        //
+        // $('#modal-bids-plnx').css('min-height', modalOrdBook);
+        // $('#modal-bids-plnx').css('max-height', modalOrdBook);
+        //
+        // $('#modal-asks-bnn').css('min-height', modalOrdBook);
+        // $('#modal-asks-bnn').css('max-height', modalOrdBook);
+        //
+        // $('#modal-bids-bnn').css('min-height', modalOrdBook);
+        // $('#modal-bids-bnn').css('max-height', modalOrdBook);
+
         $('#orders-open-container').height(form - 25);
         $('#orders-history-container').height(form - 25);
 
