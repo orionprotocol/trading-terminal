@@ -53,6 +53,7 @@ class MainDashboard extends React.Component {
                 bid: 0,
             },
             loadChart: false,
+            showModal: false,
             tableHeight: tableHeight,
             formHeight: 375,
             windowSize: {
@@ -102,7 +103,7 @@ class MainDashboard extends React.Component {
 
     showModal() {
         console.log("SHOW MODAL")
-        this.setState({modalDisplay: 'block'}, () => {
+        this.setState({modalDisplay: 'block', showModal: true}, () => {
             setTimeout(() => {
                 this.setState({loadChart: true})
             }, 100)
@@ -110,7 +111,7 @@ class MainDashboard extends React.Component {
     }
 
     closeModal() {
-        this.setState({modalDisplay: 'none'});
+        this.setState({modalDisplay: 'none', showModal: false, loadChart: false});
     }
 
     changeCount(e) {
@@ -684,7 +685,7 @@ class MainDashboard extends React.Component {
         this.setState({total: total})
     }
 
-    renderChart(id, exchange, height, symbol, showModal, loadChart, imageName, marginTop) {
+    renderChart(id, exchange, height, symbol, showModal, loadChart, imageName, marginTop, isModal) {
         return (<Chart symbol={symbol}
                        height={height}
                        id={id}
@@ -693,6 +694,7 @@ class MainDashboard extends React.Component {
                        imageName={imageName}
                        marginTop={marginTop}
                        exchange={exchange}
+                       isModal={isModal}
 
         />);
     }
@@ -751,6 +753,7 @@ class MainDashboard extends React.Component {
                                symbol={this.state.currentSymbol}
                                modal={false}
                                exchange="all"
+                               isModal={false}
                                marginTop="0px"
                                height={topHeight}
                                id="general_chart"/>
@@ -812,10 +815,10 @@ class MainDashboard extends React.Component {
                                     <div className='row row-eq-height' style={{height: chartHeight}}>
                                         <div className="col-md-8">
                                             <div style={{float: 'left', width: '50%'}}>
-                                                {this.renderChart("first_chart", "all", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "all.svg", '0px')}
+                                                {this.renderChart("first_chart", "all", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "all.svg", '0px', true)}
                                             </div>
                                             <div style={{float: 'left', width: '50%'}}>
-                                                {this.renderChart("second_chart", "bittrex", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "bittrex.jpg", '0px')}
+                                                {this.renderChart("second_chart", "bittrex", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "bittrex.jpg", '0px', true)}
                                             </div>
                                         </div>
                                         <div className="col-md-4">
@@ -836,7 +839,7 @@ class MainDashboard extends React.Component {
                                                                alignId="modal-orderbook-general"
                                                                currentSymbol={this.state.currentSymbol}
                                                                data={this.state.data}
-                                                               modalOrdBook={modalOrdBook}
+                                                               modalOrdBook={ordBookHeight}
                                                                renderAsks={this.renderAsks}
                                                                renderBids={this.renderBids}
                                                                lastPriceStyle={this.state.data.lastPriceStyle}
@@ -858,7 +861,7 @@ class MainDashboard extends React.Component {
                                                                alignId="modal-orderbook-bittrex"
                                                                currentSymbol={this.state.currentSymbol}
                                                                data={this.state.bittrex}
-                                                               modalOrdBook={modalOrdBook}
+                                                               modalOrdBook={ordBookHeight}
                                                                renderAsks={this.renderAsks}
                                                                renderBids={this.renderBids}
                                                                lastPriceStyle={this.state.bittrex.lastPriceStyle}
@@ -870,10 +873,10 @@ class MainDashboard extends React.Component {
                                     <div className='row row-eq-height'>
                                         <div className="col-md-8">
                                             <div style={{float: 'left', width: '50%'}}>
-                                                {this.renderChart("third_chart", "binance", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "binance.svg", '10px')}
+                                                {this.renderChart("third_chart", "binance", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "binance.svg", '10px', true)}
                                             </div>
                                             <div style={{float: 'left', width: '50%'}}>
-                                                {this.renderChart("fourth_chart", "poloniex", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "poloniex.png", '10px')}
+                                                {this.renderChart("fourth_chart", "poloniex", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "poloniex.png", '10px', true)}
                                             </div>
                                         </div>
                                         <div className="col-md-4">
@@ -894,7 +897,7 @@ class MainDashboard extends React.Component {
                                                                exchangeImage="binance.svg"
                                                                alignId="modal-orderbook-binance"
                                                                data={this.state.binance}
-                                                               modalOrdBook={modalOrdBook}
+                                                               modalOrdBook={ordBookHeight}
                                                                renderAsks={this.renderAsks}
                                                                renderBids={this.renderBids}
                                                                lastPriceStyle={this.state.binance.lastPriceStyle}
@@ -916,7 +919,7 @@ class MainDashboard extends React.Component {
                                                                exchangeImage="poloniex.png"
                                                                alignId="modal-orderbook-poloniex"
                                                                data={this.state.poloniex}
-                                                               modalOrdBook={modalOrdBook}
+                                                               modalOrdBook={ordBookHeight}
                                                                renderAsks={this.renderAsks}
                                                                renderBids={this.renderBids}
                                                                lastPriceStyle={this.state.poloniex.lastPriceStyle}

@@ -1,5 +1,5 @@
 package ru.dev4j.service.aggregation.order;
-//
+
 import com.wavesplatform.wavesj.*;
 import com.wavesplatform.wavesj.AssetPair;
 import com.wavesplatform.wavesj.PrivateKeyAccount;

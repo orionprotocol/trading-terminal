@@ -118,6 +118,12 @@ class Chart extends React.Component {
                 this.createChart();
             }
         }
+        if (this.props.isModal && !nextProps.loadChart && !nextProps.modal) {
+            if (this.state.widget) {
+                this.state.widget.remove();
+                this.setState({widget:null})
+            }
+        }
     }
 
 
