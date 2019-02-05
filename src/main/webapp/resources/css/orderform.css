@@ -64,7 +64,7 @@ input[type=number]::-webkit-outer-spin-button {
 .orderform-container {
     padding-left: 40px;
     padding-right: 40px;
-    padding-bottom: 40px;
+    padding-bottom: 20px;
 }
 
 .orderform-button-buy{

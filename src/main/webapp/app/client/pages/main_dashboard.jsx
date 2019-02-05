@@ -52,9 +52,15 @@ class MainDashboard extends React.Component {
                 ask: 0,
                 bid: 0,
             },
-            showModal: false,
             loadChart: false,
-            tableHeight: tableHeight
+            tableHeight: tableHeight,
+            formHeight: 375,
+            windowSize: {
+                orderBookHeader: 39,
+                lastPriceSize: 32,
+                tableHeader: 25
+            },
+            modalDisplay: 'none'
         }
         this.loadAllPairs = this.loadAllPairs.bind(this);
         this.renderPairs = this.renderPairs.bind(this);
@@ -96,7 +102,7 @@ class MainDashboard extends React.Component {
 
     showModal() {
         console.log("SHOW MODAL")
-        this.setState({showModal: true}, () => {
+        this.setState({modalDisplay: 'block'}, () => {
             setTimeout(() => {
                 this.setState({loadChart: true})
             }, 100)
@@ -104,7 +110,7 @@ class MainDashboard extends React.Component {
     }
 
     closeModal() {
-        this.setState({showModal: false});
+        this.setState({modalDisplay: 'none'});
     }
 
     changeCount(e) {
@@ -118,6 +124,10 @@ class MainDashboard extends React.Component {
 
     componentDidMount() {
         this.loadAllPairs();
+        const formHeight = document.getElementById('order-form').clientHeight;
+        this.setState({
+            formHeight: formHeight
+        })
     }
 
     loadAllPairs() {
@@ -480,9 +490,8 @@ class MainDashboard extends React.Component {
         return renderData;
     }
 
-    handleJqeuryScroll(asks, bids,scroll) {
+    handleJqeuryScroll(asks, bids, scroll) {
         let enableScroll = $('body').attr(scroll);
-        console.log(enableScroll)
         if (enableScroll == 'true') {
             $(asks).scrollTop(1000);
             $(bids).scrollTop(0);
@@ -495,8 +504,8 @@ class MainDashboard extends React.Component {
 
         try {
             this.updateOrderBookData(data, 'all', this.state.data, (asks, bids, maxBid, lastPriceStyle) => {
-                this.handleJqeuryScroll('#asks-general', '#bids-general','orderbook-general');
-                this.handleJqeuryScroll('#modal-asks-general', '#modal-bids-general','modal-orderbook-general');
+                this.handleJqeuryScroll('#asks-general', '#bids-general', 'orderbook-general');
+                this.handleJqeuryScroll('#modal-asks-general', '#modal-bids-general', 'modal-orderbook-general');
                 this.setState({
                     data: {
                         asks: asks,
@@ -513,7 +522,7 @@ class MainDashboard extends React.Component {
         }
         try {
             this.updateOrderBookData(data, 'binance', this.state.binance, (asks, bids, maxBid, lastPriceStyle) => {
-                this.handleJqeuryScroll('#modal-asks-bnn', '#modal-bids-bnn','modal-orderbook-binance');
+                this.handleJqeuryScroll('#modal-asks-bnn', '#modal-bids-bnn', 'modal-orderbook-binance');
                 this.setState({
                     binance: {
                         asks: asks,
@@ -531,7 +540,7 @@ class MainDashboard extends React.Component {
         try {
 
             this.updateOrderBookData(data, 'bittrex', this.state.bittrex, (asks, bids, maxBid, lastPriceStyle) => {
-                this.handleJqeuryScroll('#modal-asks-btr', '#modal-bids-btr','modal-orderbook-bittrex');
+                this.handleJqeuryScroll('#modal-asks-btr', '#modal-bids-btr', 'modal-orderbook-bittrex');
                 this.setState({
                     bittrex: {
                         asks: asks,
@@ -548,7 +557,7 @@ class MainDashboard extends React.Component {
         }
         try {
             this.updateOrderBookData(data, 'poloniex', this.state.poloniex, (asks, bids, maxBid, lastPriceStyle) => {
-                    this.handleJqeuryScroll('#modal-asks-plnx', '#modal-bids-plnx','modal-orderbook-poloniex');
+                    this.handleJqeuryScroll('#modal-asks-plnx', '#modal-bids-plnx', 'modal-orderbook-poloniex');
                     this.setState({
                         poloniex: {
                             asks: asks,
@@ -691,8 +700,9 @@ class MainDashboard extends React.Component {
 
     render() {
         const windowHeight = window.innerHeight;
-        const chartHeight = windowHeight * 0.45;
-        const generalChartHeight = windowHeight * 0.55;
+        const chartHeight = windowHeight * 0.5;
+        const topHeight = windowHeight - this.state.formHeight;
+        const ordBookHeight = (topHeight - this.state.windowSize.orderBookHeader - this.state.windowSize.lastPriceSize - this.state.windowSize.tableHeader) / 2;
         const modalOrdBook = (windowHeight / 2) * 0.3;
         const showModal = this.state.showModal;
         return (
@@ -706,7 +716,7 @@ class MainDashboard extends React.Component {
                             borderColor: '#edf0f4',
                             borderWidth: '2px',
                             borderStyle: 'solid',
-                            // height: {height},
+                            height: topHeight,
                             backgroundColor: '#fff'
                         }} className="col-md-2">
                         <div style={{
@@ -742,7 +752,7 @@ class MainDashboard extends React.Component {
                                modal={false}
                                exchange="all"
                                marginTop="0px"
-                               height={generalChartHeight}
+                               height={topHeight}
                                id="general_chart"/>
                     </div>
                     <div style={{
@@ -760,6 +770,7 @@ class MainDashboard extends React.Component {
                                    alignId="orderbook-general"
                                    imageWidth='80px'
                                    exchangeImage="all.svg"
+                                   generalHeight={ordBookHeight}
                                    currentSymbol={this.state.currentSymbol}
                                    renderAsks={this.renderAsks}
                                    renderBids={this.renderBids}
@@ -789,134 +800,136 @@ class MainDashboard extends React.Component {
                             last={this.state.data.lastPrice}/>
                     </div>
                 </div>
-                <Modal id="chart-modal" dialogClassName="modal-big" show={this.state.showModal}
-                       onHide={this.closeModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title id="exchange-modal-header"></Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div style={{backgroundColor: '#fff'}}>
-                            <div>
-                                <div className='row row-eq-height' style={{height: chartHeight}}>
-                                    <div className="col-md-8">
-                                        <div style={{float: 'left', width: '50%'}}>
-                                            {this.renderChart("first_chart", "all", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "all.svg", '0px')}
-                                        </div>
-                                        <div style={{float: 'left', width: '50%'}}>
-                                            {this.renderChart("second_chart", "bittrex", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "bittrex.jpg", '0px')}
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4">
-                                        <div className="row">
-                                            <div className="col-md-6" style={{
-                                                borderColor: '#edf0f4',
-                                                borderWidth: '2px',
-                                                borderStyle: 'solid',
-                                                height: '50%',
-                                                // height: {height},
-                                                backgroundColor: '#fff'
-                                            }}>
-
-                                                <OrderBook asks="modal-asks-general" bids="modal-bids-general"
-                                                           modal={true}
-                                                           exchange="all"
-                                                           exchangeImage="all.svg"
-                                                           alignId="modal-orderbook-general"
-                                                           currentSymbol={this.state.currentSymbol}
-                                                           data={this.state.data}
-                                                           modalOrdBook={modalOrdBook}
-                                                           renderAsks={this.renderAsks}
-                                                           renderBids={this.renderBids}
-                                                           lastPriceStyle={this.state.data.lastPriceStyle}
-                                                           lastPrice={this.state.data.lastPrice}/>
+                <div id="exchangeModal" className="modal" style={{display: this.state.modalDisplay}}>
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <span onClick={this.closeModal} className="close">&times;</span>
+                            <h2>Modal Header</h2>
+                        </div>
+                        <div className="modal-body">
+                            <div style={{backgroundColor: '#fff'}}>
+                                <div>
+                                    <div className='row row-eq-height' style={{height: chartHeight}}>
+                                        <div className="col-md-8">
+                                            <div style={{float: 'left', width: '50%'}}>
+                                                {this.renderChart("first_chart", "all", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "all.svg", '0px')}
                                             </div>
-                                            <div className="col-md-6" style={{
-                                                borderColor: '#edf0f4',
-                                                borderWidth: '2px',
-                                                borderStyle: 'solid',
-                                                height: '50%',
-                                                // height: {height},
-                                                backgroundColor: '#fff'
-                                            }}>
-
-                                                <OrderBook asks="modal-asks-btr" bids="modal-bids-btr"
-                                                           modal={true}
-                                                           exchange="bittrex"
-                                                           exchangeImage="bittrex.jpg"
-                                                           alignId="modal-orderbook-bittrex"
-                                                           currentSymbol={this.state.currentSymbol}
-                                                           data={this.state.bittrex}
-                                                           modalOrdBook={modalOrdBook}
-                                                           renderAsks={this.renderAsks}
-                                                           renderBids={this.renderBids}
-                                                           lastPriceStyle={this.state.bittrex.lastPriceStyle}
-                                                           lastPrice={this.state.bittrex.lastPrice}/>
+                                            <div style={{float: 'left', width: '50%'}}>
+                                                {this.renderChart("second_chart", "bittrex", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "bittrex.jpg", '0px')}
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className='row row-eq-height'>
-                                    <div className="col-md-8">
-                                        <div style={{float: 'left', width: '50%'}}>
-                                            {this.renderChart("third_chart", "binance", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "binance.svg", '10px')}
-                                        </div>
-                                        <div style={{float: 'left', width: '50%'}}>
-                                            {this.renderChart("fourth_chart", "poloniex", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "poloniex.png", '10px')}
-                                        </div>
-                                    </div>
-                                    <div className="col-md-4">
-                                        <div className="row">
-                                            <div className="col-md-6" style={{
-                                                borderColor: '#edf0f4',
-                                                borderWidth: '2px',
-                                                borderStyle: 'solid',
-                                                height: '50%',
-                                                // height: {height},
-                                                backgroundColor: '#fff'
-                                            }}>
+                                        <div className="col-md-4">
+                                            <div className="row">
+                                                <div className="col-md-6" style={{
+                                                    borderColor: '#edf0f4',
+                                                    borderWidth: '2px',
+                                                    borderStyle: 'solid',
+                                                    height: '50%',
+                                                    // height: {height},
+                                                    backgroundColor: '#fff'
+                                                }}>
 
-                                                <OrderBook asks="modal-asks-bnn" bids="modal-bids-bnn"
-                                                           currentSymbol={this.state.currentSymbol}
-                                                           modal={true}
-                                                           exchange="binance"
-                                                           exchangeImage="binance.svg"
-                                                           alignId="modal-orderbook-binance"
-                                                           data={this.state.binance}
-                                                           modalOrdBook={modalOrdBook}
-                                                           renderAsks={this.renderAsks}
-                                                           renderBids={this.renderBids}
-                                                           lastPriceStyle={this.state.binance.lastPriceStyle}
-                                                           lastPrice={this.state.binance.lastPrice}/>
+                                                    <OrderBook asks="modal-asks-general" bids="modal-bids-general"
+                                                               modal={true}
+                                                               exchange="all"
+                                                               exchangeImage="all.svg"
+                                                               alignId="modal-orderbook-general"
+                                                               currentSymbol={this.state.currentSymbol}
+                                                               data={this.state.data}
+                                                               modalOrdBook={modalOrdBook}
+                                                               renderAsks={this.renderAsks}
+                                                               renderBids={this.renderBids}
+                                                               lastPriceStyle={this.state.data.lastPriceStyle}
+                                                               lastPrice={this.state.data.lastPrice}/>
+                                                </div>
+                                                <div className="col-md-6" style={{
+                                                    borderColor: '#edf0f4',
+                                                    borderWidth: '2px',
+                                                    borderStyle: 'solid',
+                                                    height: '50%',
+                                                    // height: {height},
+                                                    backgroundColor: '#fff'
+                                                }}>
+
+                                                    <OrderBook asks="modal-asks-btr" bids="modal-bids-btr"
+                                                               modal={true}
+                                                               exchange="bittrex"
+                                                               exchangeImage="bittrex.jpg"
+                                                               alignId="modal-orderbook-bittrex"
+                                                               currentSymbol={this.state.currentSymbol}
+                                                               data={this.state.bittrex}
+                                                               modalOrdBook={modalOrdBook}
+                                                               renderAsks={this.renderAsks}
+                                                               renderBids={this.renderBids}
+                                                               lastPriceStyle={this.state.bittrex.lastPriceStyle}
+                                                               lastPrice={this.state.bittrex.lastPrice}/>
+                                                </div>
                                             </div>
-                                            <div className="col-md-6" style={{
-                                                borderColor: '#edf0f4',
-                                                borderWidth: '2px',
-                                                borderStyle: 'solid',
-                                                height: '50%',
-                                                // height: {height},
-                                                backgroundColor: '#fff'
-                                            }}>
+                                        </div>
+                                    </div>
+                                    <div className='row row-eq-height'>
+                                        <div className="col-md-8">
+                                            <div style={{float: 'left', width: '50%'}}>
+                                                {this.renderChart("third_chart", "binance", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "binance.svg", '10px')}
+                                            </div>
+                                            <div style={{float: 'left', width: '50%'}}>
+                                                {this.renderChart("fourth_chart", "poloniex", chartHeight, this.state.currentSymbol, showModal, this.state.loadChart, "poloniex.png", '10px')}
+                                            </div>
+                                        </div>
+                                        <div className="col-md-4">
+                                            <div className="row">
+                                                <div className="col-md-6" style={{
+                                                    borderColor: '#edf0f4',
+                                                    borderWidth: '2px',
+                                                    borderStyle: 'solid',
+                                                    height: '50%',
+                                                    // height: {height},
+                                                    backgroundColor: '#fff'
+                                                }}>
 
-                                                <OrderBook asks="modal-asks-plnx" bids="modal-bids-plnx"
-                                                           currentSymbol={this.state.currentSymbol}
-                                                           modal={true}
-                                                           exchange="poloniex"
-                                                           exchangeImage="poloniex.png"
-                                                           alignId="modal-orderbook-poloniex"
-                                                           data={this.state.poloniex}
-                                                           modalOrdBook={modalOrdBook}
-                                                           renderAsks={this.renderAsks}
-                                                           renderBids={this.renderBids}
-                                                           lastPriceStyle={this.state.poloniex.lastPriceStyle}
-                                                           lastPrice={this.state.poloniex.lastPrice}/>
+                                                    <OrderBook asks="modal-asks-bnn" bids="modal-bids-bnn"
+                                                               currentSymbol={this.state.currentSymbol}
+                                                               modal={true}
+                                                               exchange="binance"
+                                                               exchangeImage="binance.svg"
+                                                               alignId="modal-orderbook-binance"
+                                                               data={this.state.binance}
+                                                               modalOrdBook={modalOrdBook}
+                                                               renderAsks={this.renderAsks}
+                                                               renderBids={this.renderBids}
+                                                               lastPriceStyle={this.state.binance.lastPriceStyle}
+                                                               lastPrice={this.state.binance.lastPrice}/>
+                                                </div>
+                                                <div className="col-md-6" style={{
+                                                    borderColor: '#edf0f4',
+                                                    borderWidth: '2px',
+                                                    borderStyle: 'solid',
+                                                    height: '50%',
+                                                    // height: {height},
+                                                    backgroundColor: '#fff'
+                                                }}>
+
+                                                    <OrderBook asks="modal-asks-plnx" bids="modal-bids-plnx"
+                                                               currentSymbol={this.state.currentSymbol}
+                                                               modal={true}
+                                                               exchange="poloniex"
+                                                               exchangeImage="poloniex.png"
+                                                               alignId="modal-orderbook-poloniex"
+                                                               data={this.state.poloniex}
+                                                               modalOrdBook={modalOrdBook}
+                                                               renderAsks={this.renderAsks}
+                                                               renderBids={this.renderBids}
+                                                               lastPriceStyle={this.state.poloniex.lastPriceStyle}
+                                                               lastPrice={this.state.poloniex.lastPrice}/>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </Modal.Body>
-                </Modal>
+                    </div>
+                </div>
             </div>
         );
     }

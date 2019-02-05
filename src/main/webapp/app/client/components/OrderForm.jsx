@@ -249,7 +249,7 @@ class OrderForm extends React.Component {
                                         </div>
                                     </div>
                                     <div id="buy-form" className="orderform-input-container"
-                                         style={{marginTop: '40px'}}>
+                                         style={{marginTop: '20px'}}>
                                         <div className="row">
                                             <div className="col-md-12" style={{padding: '0px'}}>
                                                 <button onClick={() => {
@@ -262,7 +262,7 @@ class OrderForm extends React.Component {
                                         </div>
                                     </div>
                                     <div id="sell-form" className="orderform-input-container"
-                                         style={{marginTop: '40px', display: 'none'}}>
+                                         style={{marginTop: '20px', display: 'none'}}>
                                         <div className="row">
                                             <div className="col-md-12" style={{padding: '0px'}}>
                                                 <button onClick={() => {

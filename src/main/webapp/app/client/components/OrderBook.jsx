@@ -12,6 +12,23 @@ class OrderBook extends React.Component {
     }
 
     componentDidMount() {
+        const alignId = this.props.alignId;
+
+        $('body').attr(alignId,'true')
+        // BINANCE GENERAL
+        $('#' + this.props.asks).on('scroll', function () {
+            $('body').attr(alignId, 'false')
+        });
+        $('#' + this.props.bids).on('scroll', function () {
+            $('body').attr(alignId, 'false')
+        });
+
+        $('#' + alignId).on('click', function () {
+            $('body').attr(alignId, 'true')
+            $('#' + this.props.asks).scrollTop(1000);
+            $('#' + this.props.bids).scrollTop(0);
+        })
+
     }
 
     renderExchangeColumn() {
@@ -24,7 +41,7 @@ class OrderBook extends React.Component {
         if (this.props.modalOrdBook) {
             return {overflowY: 'scroll', height: this.props.modalOrdBook}
         } else {
-            return {overflowY: 'scroll'}
+            return {overflowY: 'scroll', height: this.props.generalHeight}
 
         }
     }
@@ -38,6 +55,10 @@ class OrderBook extends React.Component {
                 <div className="row" style={{padding: '10px'}}>
                     <div className="col-md-10">
                         <img style={{width: '80px'}} src={imagePath}/>
+                    </div>
+                    <div className="col-md-2">
+                                <span id={alignId} style={{color: '#4e5c6e', cursor: 'pointer'}}
+                                      className="glyphicon glyphicon glyphicon-sort" aria-hidden="true"></span>
                     </div>
                 </div>
             )

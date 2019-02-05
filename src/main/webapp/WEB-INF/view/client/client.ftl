@@ -79,7 +79,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body enableScroll="true" style="overflow-x: hidden; overflow-y:hidden">
+<body enableScroll="true" style="overflow-x: hidden">
 <div id="app" style="background-color: #edf0f4; min-height: 100%">
 </div>
 <script type="text/javascript" src="/resources/js/charting_library/charting_library.min.js"></script>
@@ -87,8 +87,8 @@ desired effect
 <script type="text/javascript" src="/resources/js/datafeeds/udf/dist/bundle.js"></script>
 <script type="text/javascript" src="/resources/js/datafeeds/udf/lib/dex-history.js"></script>
 
-<script src="/resources/js/bundle.js"></script>
 <script src="/resources/jquery/dist/jquery.min.js"></script>
+<script src="/resources/js/bundle.js"></script>
 <script src="/resources/js/orderform.js"></script>
 <script src="/resources/js/orders.js"></script>
 <script src="/resources/js/orderbook.js"></script>
@@ -102,41 +102,13 @@ desired effect
     $(document).ready(function () {
         var windowHeight = $(window).height();
         var form = $('#order-form').height();
+
         var top = windowHeight - form;
         var ordbookMax = top / 2.5;
 
-        var modalOrdBook = (windowHeight / 2) * 0.3;
-
-        $('#pairs').height(top);
-        $('#asks-general').css('min-height', ordbookMax);
-        $('#asks-general').css('max-height', ordbookMax);
-
-        $('#bids-general').css('min-height', ordbookMax);
-        $('#bids-general').css('max-height', ordbookMax);
-
-        // $('#modal-asks-general').css('min-height', modalOrdBook);
-        // $('#modal-asks-general').css('max-height', modalOrdBook);
-        //
-        // $('#modal-bids-general').css('min-height', modalOrdBook);
-        // $('#modal-bids-general').css('max-height', modalOrdBook);
-        //
-        // $('#modal-asks-btr').css('min-height', modalOrdBook);
-        // $('#modal-asks-btr').css('max-height', modalOrdBook);
-        //
-        // $('#modal-bids-btr').css('min-height', modalOrdBook);
-        // $('#modal-bids-btr').css('max-height', modalOrdBook);
-        //
-        // $('#modal-asks-plnx').css('min-height', modalOrdBook);
-        // $('#modal-asks-plnx').css('max-height', modalOrdBook);
-        //
-        // $('#modal-bids-plnx').css('min-height', modalOrdBook);
-        // $('#modal-bids-plnx').css('max-height', modalOrdBook);
-        //
-        // $('#modal-asks-bnn').css('min-height', modalOrdBook);
-        // $('#modal-asks-bnn').css('max-height', modalOrdBook);
-        //
-        // $('#modal-bids-bnn').css('min-height', modalOrdBook);
-        // $('#modal-bids-bnn').css('max-height', modalOrdBook);
+        console.log("WINDOW HEIGHT " + windowHeight)
+        console.log("FORM " + form)
+        console.log("TOP " + top)
 
         $('#orders-open-container').height(form - 25);
         $('#orders-history-container').height(form - 25);
