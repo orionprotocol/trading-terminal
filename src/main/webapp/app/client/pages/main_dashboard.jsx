@@ -798,7 +798,7 @@ class MainDashboard extends React.Component {
                             currentPrice={this.state.currentPrice}
                             total={this.state.total}
                             loadOrderHistory={this.loadOrderHistory}
-                            pair={this.state.data.currentSymbol}
+                            pair={this.state.currentSymbol}
                             ask={this.state.data.ask} bid={this.state.data.bid}
                             last={this.state.data.lastPrice}/>
                     </div>
