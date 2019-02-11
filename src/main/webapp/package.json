@@ -24,10 +24,11 @@
     "webpack-dev-server": "^2.2.0"
   },
   "dependencies": {
+    "@waves/waves-transactions": "^3.0.22",
     "babel-runtime": "^6.23.0",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1",
     "react-bootstrap": "^0.32.1",
+    "react-dom": "^15.6.1",
     "react-dynamic-modal": "^1.1.1",
     "react-router-dom": "^4.2.2",
     "vex-dialog": "^1.0.7",

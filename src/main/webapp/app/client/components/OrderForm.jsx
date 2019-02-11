@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {MomentJS} from './../../service/MomentJS'
 import {Toastr} from './../../service/Toastr'
+import {WavesOrder} from './../../service/WavesOrder'
 
 class OrderForm extends React.Component {
 
@@ -47,14 +48,16 @@ class OrderForm extends React.Component {
     postOrder(symbol, side) {
         console.log("POST " + this.props.count)
         if (!this.props.count || this.props.count == 0) {
-            Toastr.showError("Введите количество")
+            Toastr.showError("Amount is empty")
             return;
         }
         if (!this.props.currentPrice || this.props.currentPrice == 0) {
-            Toastr.showError("Введите цену")
+            Toastr.showError("Price is empty")
             return;
         }
-        fetch('/order',
+
+        const wavesOrder = WavesOrder.toWavesOrder(symbol, side, this.props.currentPrice, this.props.count);
+        fetch(`${WavesOrder.orionUrl}/api/order`,
             {
                 credentials: 'same-origin',
                 method: "POST",
@@ -62,13 +65,7 @@ class OrderForm extends React.Component {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    clientId: '3NAwZFEJ2KULyknQjGqYr9bMeN2VyGYq4SF2',
-                    symbol: symbol,
-                    side: side,
-                    orderQty: this.props.count,
-                    price: this.props.currentPrice
-                })
+                body: JSON.stringify(wavesOrder)
             }
         ).then(results => {
             return results.json();

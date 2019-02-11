@@ -65,14 +65,15 @@ public class OrderService {
 
         String symbol[] = order.getSymbol().split("-");
 
-        Broker broker = brokerRepository.findByAddress(order.getClientId());
         DataType dataType = DataType.ASKS;
         String balanceSymbol = symbol[1].toLowerCase();
         if (order.getSide().toLowerCase().equals("sell")) {
             dataType = DataType.BIDS;
             balanceSymbol = symbol[0].toLowerCase();
         }
-        Map<Exchange, Double> balances = chooseSymbolBalance(broker, balanceSymbol);
+
+        List<Broker> brokers = brokerRepository.findAll();
+        Map<Exchange, Double> balances = aggregateBalances(brokers, balanceSymbol);
 
         Long time = System.currentTimeMillis();
         order.setTime(time);
@@ -85,7 +86,6 @@ public class OrderService {
 
         List<SubOrder> subOrders = getSubOrders((List<Route>) routes.get("routes"), order);
 
-        List<Broker> brokers = brokerRepository.findAll();
         for (SubOrder subOrder : subOrders) {
             for (Broker dbBroker : brokers) {
                 Map<Exchange, Double> brokerBalances = chooseSymbolBalance(dbBroker, balanceSymbol);
@@ -128,6 +128,18 @@ public class OrderService {
         response.put("subOrders", order.getSubOrders());
 
         return response;
+    }
+
+    private Map<Exchange, Double> aggregateBalances(List<Broker> brokers, String balanceSymbol) {
+        Map<Exchange, Double> balances = new HashMap<>();
+        for (Broker broker : brokers) {
+            for (ExchangeBalance eb : broker.getExchangeBalances()) {
+                double balance = findExchangeSymbolBalance(eb.getPairBalances(), balanceSymbol);
+                balances.compute(eb.getExchange(), (exchange, bal) -> bal == null ? balance : bal + balance);
+            }
+        }
+
+        return balances;
     }
 
     public Order getOrderInfo(Long ordId) {

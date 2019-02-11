@@ -108,10 +108,14 @@ public class TradeService {
         long price = new BigDecimal(trade.getPrice()).multiply(tokens).longValue();
         long amount = new BigDecimal(trade.getQty()).multiply(tokens).longValue();
 
+        com.wavesplatform.wavesj.matcher.Order.Type side = order.getSide().equals("buy") ?
+                com.wavesplatform.wavesj.matcher.Order.Type.SELL :
+                com.wavesplatform.wavesj.matcher.Order.Type.BUY;
+
         com.wavesplatform.wavesj.matcher.Order wavesOrder = getMatcher().createOrder(this.account, getMatcherKey(),
                  WavesAssets.symbolToAssetPair(order.getSymbol()),
                 // buy 10 WAVES at 0.00090000 WBTC each
-                com.wavesplatform.wavesj.matcher.Order.Type.BUY,
+                side,
                 price,
                 amount,
                 // make order valid for 1 hour
