@@ -130,7 +130,7 @@ public class BalanceSplitAggregator {
         BigDecimal remainingSize = new BigDecimal(size, mc);
         for (int i = 0; i < balances.size(); i++) {
             BigDecimal nextSize = (remainingSize.divide(BigDecimal.valueOf(balances.size() - i), mc)
-                    .min(BigDecimal.valueOf(balances.get(i).getValue())));
+                    .min(BigDecimal.valueOf(balances.get(i).getValue()))).setScale(2, RoundingMode.FLOOR);
 
             if (nextSize.compareTo(BigDecimal.ZERO) > 0) {
                 splits.add(new Split(price, nextSize.doubleValue(), balances.get(i).getKey()));
@@ -173,12 +173,13 @@ public class BalanceSplitAggregator {
     private Double calculateSplits(Double size, Seq<Tuple3<Double, Double, Exchange>> aggregate,
                                    List<Split> splits, Map<Exchange, Double> remBalances) {
         for (Tuple3<Double, Double, Exchange> t : aggregate) {
-            double subOrdQty = Math.min(Math.min(size, t.v2), remBalances.get(t.v3));
-            if (subOrdQty > 0) {
-                remBalances.compute(t.v3, (exchange, bal) -> bal != null ? bal - subOrdQty : 0.0);
+            BigDecimal subOrdQty = BigDecimal.valueOf(Math.min(Math.min(size, t.v2), remBalances.get(t.v3)))
+                    .setScale(2, RoundingMode.FLOOR);
+            if (subOrdQty.compareTo(BigDecimal.ZERO) > 0) {
+                remBalances.compute(t.v3, (exchange, bal) -> bal != null ? bal - subOrdQty.doubleValue() : 0.0);
 
-                splits.add(new Split(t.v1, subOrdQty, t.v3));
-                size -= subOrdQty;
+                splits.add(new Split(t.v1, subOrdQty.doubleValue(), t.v3));
+                size -= subOrdQty.doubleValue();
                 if (size <= 0) break;
             }
         }
