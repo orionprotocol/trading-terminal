@@ -14,7 +14,7 @@ class OrderBook extends React.Component {
     componentDidMount() {
         const alignId = this.props.alignId;
 
-        $('body').attr(alignId,'true')
+        $('body').attr(alignId, 'true')
         // BINANCE GENERAL
         $('#' + this.props.asks).on('scroll', function () {
             $('body').attr(alignId, 'false')
@@ -39,9 +39,9 @@ class OrderBook extends React.Component {
 
     renderHeight() {
         if (this.props.modalOrdBook) {
-            return {overflowY: 'scroll', height: this.props.modalOrdBook}
+            return {overflowY: 'scroll', overflowX: 'hidden', height: this.props.modalOrdBook}
         } else {
-            return {overflowY: 'scroll', height: this.props.generalHeight}
+            return {overflowY: 'scroll', overflowX: 'hidden', height: this.props.generalHeight}
 
         }
     }

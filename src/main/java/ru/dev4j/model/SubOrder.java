@@ -17,6 +17,7 @@ public class SubOrder {
     private Double fee;
     private Boolean reserved = false;
     private String brokerId;
+    private String status;
     private List<Trade> trades = new ArrayList<>();
 
     public SubOrder(Long id, Long orderId, Exchange exchange, Double price, Double subOrdQty, Double fee) {
@@ -26,6 +27,14 @@ public class SubOrder {
         this.price = price;
         this.subOrdQty = subOrdQty;
         this.fee = fee;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getBrokerId() {

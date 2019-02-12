@@ -444,7 +444,7 @@ class MainDashboard extends React.Component {
                     let imagePath = "/resources/img/exchanges/{exchange}.png".replace("{exchange}", exchanges[j]);
                     let key = i + '' + j;
                     divExchanges.push(
-                        <div key={key} className="col-md-1" style={{paddingLeft: '5px'}}>
+                        <div key={key} className="col-md-1" style={{paddingLeft: '1px'}}>
                             <img style={{height: '15px', width: '15px'}} src={imagePath}>
                             </img>
                         </div>

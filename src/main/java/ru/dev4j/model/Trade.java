@@ -7,6 +7,15 @@ public class Trade {
     private String tradeId;
     private String price;
     private String qty;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public Long getOrdId() {
         return ordId;

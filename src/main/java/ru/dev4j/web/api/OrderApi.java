@@ -28,7 +28,7 @@ public class OrderApi {
     Map<String, Object> handleOrderBook(@RequestBody Order order) {
         try {
             return orderService.aggregateRoutes(order);
-        } catch (SubOrderException e) {
+        } catch (Exception e) {
             Map<String,Object> response = new HashMap<>();
             response.put("code","1010");
             return response;

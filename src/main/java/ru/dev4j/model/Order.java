@@ -19,7 +19,7 @@ public class Order {
     private Long updateTime;
     private String ordType;
     private BigDecimal filledQty = BigDecimal.ZERO;
-    private String status;
+    private OrderStatus status;
     private List<SubOrder> subOrders = new ArrayList<>();
 
     public List<SubOrder> getSubOrders() {
@@ -38,11 +38,11 @@ public class Order {
         this.subOrders = subOrders;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
@@ -125,4 +125,5 @@ public class Order {
     public void setPrice(Double price) {
         this.price = price;
     }
+
 }

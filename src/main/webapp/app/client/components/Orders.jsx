@@ -51,7 +51,7 @@ class Orders extends React.Component {
                         {subOrders[i].price}
                     </td>
                     <td style={{width: '20%', padding: '5px'}}>
-                        {order.status}
+                        {subOrders[i].status}
                     </td>
                 </tr>
             )
@@ -72,6 +72,9 @@ class Orders extends React.Component {
                 }
                 let rowId = "order-open" + orders[i].id;
                 let tableId = "order-table-open" + orders[i].id;
+                let orderQty = orders[i].orderQty;
+                let filledQty = orders[i].filledQty;
+                let percent = filledQty * 100 / orderQty;
                 renderOrders.push(
                     <div id={rowId} key={i} onClick={() => {
                         this.switchTable(tableId)
@@ -90,7 +93,7 @@ class Orders extends React.Component {
                                 {orders[i].price}
                             </div>
                             <div className="col-md-2">
-                                0%
+                                {percent}%
                             </div>
                             <div className="col-md-2">
                                 {total}
@@ -249,7 +252,7 @@ class Orders extends React.Component {
                                     Итого
                                 </div>
                             </div>
-                            <div style={{overflowY: 'scroll', maxHeight: '225px'}}>
+                            <div style={{overflowY: 'scroll',overflowX: 'hidden', maxHeight: '225px'}}>
                                 {this.renderOpenOrders(orders)}
                             </div>
                         </div>
@@ -295,7 +298,7 @@ class Orders extends React.Component {
                                     Итого
                                 </div>
                             </div>
-                            <div style={{overflowY: 'scroll', maxHeight: '225px'}}>
+                            <div style={{overflowY: 'scroll',overflowX: 'hidden', maxHeight: '225px'}}>
                                 {this.renderHistoryOrders(orders)}
                             </div>
                         </div>
