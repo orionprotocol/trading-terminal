@@ -5,6 +5,7 @@ import ru.dev4j.config.MongoDBConfig;
 import ru.dev4j.config.PropertySourceConfig;
 import ru.dev4j.model.Exchange;
 import ru.dev4j.model.Order;
+import ru.dev4j.model.OrderStatus;
 import ru.dev4j.model.SubOrder;
 import ru.dev4j.repository.db.OrderRepository;
 
@@ -20,7 +21,7 @@ public class InitDB {
         for (long i = 0; i < 20; i++) {
             Order order = new Order();
             order.setId(i + 25);
-            order.setStatus("NEW");
+            order.setStatus(OrderStatus.NEW);
             order.setClientId("3P6G8AxXyq8KvppcMGXdggEXFsucJWZ48Dv");
             order.setSymbol("ETH-BTC");
             order.setSide(i % 2 == 0 ? "buy" : "sell");
