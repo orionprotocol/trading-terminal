@@ -7,6 +7,8 @@ import Chart from './../../client/components/Chart'
 import OrderBook from './../../client/components/OrderBook'
 import {Modal} from 'react-bootstrap'
 
+const FULL_HEIGHT = 430;
+
 class MainDashboard extends React.Component {
 
     constructor() {
@@ -26,8 +28,9 @@ class MainDashboard extends React.Component {
             },
             orders: [],
             currentPrice: '0',
-            count: '1',
-            total: '0',
+            count: 1,
+            customCount: false,
+            total: 0,
             side: 'buy',
             benefits: {
                 binance: {},
@@ -55,13 +58,14 @@ class MainDashboard extends React.Component {
             loadChart: false,
             showModal: false,
             tableHeight: tableHeight,
-            formHeight: 375,
+            formHeight: FULL_HEIGHT,
             windowSize: {
                 orderBookHeader: 39,
                 lastPriceSize: 32,
                 tableHeader: 25
             },
-            modalDisplay: 'none'
+            modalDisplay: 'none',
+            marketType: 'market'
         }
         this.loadAllPairs = this.loadAllPairs.bind(this);
         this.renderPairs = this.renderPairs.bind(this);
@@ -92,11 +96,11 @@ class MainDashboard extends React.Component {
         this.renderChart = this.renderChart.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.loadExchangeSnapshot = this.loadExchangeSnapshot.bind(this);
+        this.changeMarketType = this.changeMarketType.bind(this);
     }
 
     setSide(side) {
         this.setState({side: side}, () => {
-
             this.loadBenefits();
         })
     }
@@ -115,12 +119,23 @@ class MainDashboard extends React.Component {
     }
 
     changeCount(e) {
-        if (e.target.value >= 0) {
-            this.setState({count: e.target.value}, () => {
+        if (e.target.value) {
+            if (e.target.value >= 0) {
+                this.setState({count: e.target.value, customCount: true}, () => {
+                    this.recalculateTotal();
+                    this.loadBenefits();
+                })
+            }
+        } else {
+            this.setState({count: e.target.value, customCount: false}, () => {
                 this.recalculateTotal();
                 this.loadBenefits();
             })
         }
+    }
+
+    changeMarketType(type) {
+        this.setState({marketType: type})
     }
 
     componentDidMount() {
@@ -362,9 +377,16 @@ class MainDashboard extends React.Component {
                     total = total + asks[i].total;
                 }
             }
-            this.setState({currentPrice: price, count: count, total: total}, () => {
-                this.loadBenefits();
-            });
+            if (this.state.customCount) {
+                this.setState({currentPrice: price, total: total}, () => {
+                    this.loadBenefits();
+                });
+            } else {
+                this.setState({currentPrice: price, count: count, total: total}, () => {
+                    this.loadBenefits();
+                });
+            }
+
             $("#buy-form-link").trigger("click");
             return;
         }
@@ -381,9 +403,15 @@ class MainDashboard extends React.Component {
                     total = total + bids[i].total;
                 }
             }
-            this.setState({currentPrice: price, count: count, total: total}, () => {
-                this.loadBenefits();
-            });
+            if (this.state.customCount) {
+                this.setState({currentPrice: price, total: total}, () => {
+                    this.loadBenefits();
+                });
+            } else {
+                this.setState({currentPrice: price, count: count, total: total}, () => {
+                    this.loadBenefits();
+                });
+            }
             return;
         }
     }
@@ -779,8 +807,7 @@ class MainDashboard extends React.Component {
                                    renderBids={this.renderBids}
                                    data={this.state.data}
                                    lastPriceStyle={this.state.data.lastPriceStyle}
-                                   lastPrice={this.state.data.lastPrice}
-                        />
+                                   lastPrice={this.state.data.lastPrice}/>
                     </div>
                 </div>
                 <div className="row row-eq-height" style={{marginTop: '10px'}}>
@@ -795,12 +822,17 @@ class MainDashboard extends React.Component {
                             benefits={this.state.benefits}
                             setSide={this.setSide}
                             count={this.state.count}
+                            customCount={this.state.customCount}
                             currentPrice={this.state.currentPrice}
                             total={this.state.total}
                             loadOrderHistory={this.loadOrderHistory}
                             pair={this.state.currentSymbol}
                             ask={this.state.data.ask} bid={this.state.data.bid}
-                            last={this.state.data.lastPrice}/>
+                            last={this.state.data.lastPrice}
+                            side={this.state.side}
+                            marketType={this.state.marketType}
+                            changeMarketType={this.changeMarketType}
+                        />
                     </div>
                 </div>
                 <div id="exchangeModal" className="modal" style={{display: this.state.modalDisplay}}>

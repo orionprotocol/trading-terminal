@@ -46,7 +46,6 @@ public class ExchangeWebApi {
         if (exchange.equals(Exchange.BITTREX.name())) {
             return firstAggregator.aggregateAsksAndBidsForExchange(symbol, depth, Exchange.BITTREX);
         }
-
         return new HashMap<>();
     }
 

@@ -64,6 +64,16 @@ public class BrokerApi {
         return response;
     }
 
+    @RequestMapping(value = "/broker/balance/symbols", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    public @ResponseBody
+    Map<String, String> balanceSymbols() {
+
+        Map<String, String> response = new HashMap<>();
+
+        return response;
+    }
+
 
     private List<ExchangeBalance> getBalances(JSONObject root) {
         List<Exchange> exchanges = new ArrayList<>();

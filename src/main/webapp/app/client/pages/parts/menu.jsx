@@ -1,27 +1,79 @@
 import React from 'react';
+import {Modal} from 'react-bootstrap'
 import ReactDOM from 'react-dom';
 
 class Menu extends React.Component {
 
     constructor() {
         super();
-        this.state = {}
+        this.state = {
+            modal: false,
+            seed: '',
+            publicKey: '',
+            address: ''
+        }
 
+        this.showModal = this.showModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.changeSeed = this.changeSeed.bind(this);
+        this.changePublicKey = this.changePublicKey.bind(this);
+        this.changeAddress = this.changeAddress.bind(this);
+    }
+
+    changeSeed(e) {
+        this.setState({
+            seed: e.target.value
+        })
+        localStorage.setItem('seed', e.target.value);
+        window.exchangeSeed = e.target.value
+    }
+
+    changePublicKey(e) {
+        this.setState({
+            publicKey: e.target.value
+        })
+        localStorage.setItem('publicKey', e.target.value);
+        window.exchangePublicKey = e.target.value
+    }
+
+    changeAddress(e) {
+        this.setState({
+            address: e.target.value
+        })
+        localStorage.setItem('address', e.target.value);
+        window.exchangeAddress = e.target.value
+    }
+
+
+    showModal() {
+        this.setState({modal: true})
+    }
+
+    closeModal() {
+        this.setState({modal: false})
     }
 
     componentDidMount() {
-
+        let seed = localStorage.getItem('seed') || '';
+        let publicKey = localStorage.getItem('publicKey') || '';
+        let address = localStorage.getItem('address') || '';
+        this.setState({
+            seed: seed,
+            publicKey: publicKey,
+            address: address
+        })
     }
 
 
     render() {
         let pathName = window.location.pathname;
+        const settingsHeight = (window.innerHeight - 400) + 'px';
         return (
             <div className="col-md-1" style={{
                 backgroundColor: '#fff',
                 height: '100%',
                 padding: '0px',
-                width:'90px',
+                width: '90px',
                 minHeight: '100%',
                 marginBottom: '-9999px',
                 paddingBottom: '9999px',
@@ -60,7 +112,103 @@ class Menu extends React.Component {
                         </a>
                     </div>
                 </div>
-
+                <div style={{width: '100%', padding: '27%', paddingLeft: '28%', marginTop: settingsHeight}}>
+                    <div style={{
+                        width: '55px',
+                        height: '55px',
+                        backgroundColor: '#fff',
+                        textAlign: 'center',
+                        paddingTop: '15px',
+                        borderRadius: '10%'
+                    }}>
+                        <a style={{color: '#111', cursor: 'pointer'}} onClick={this.showModal}>
+                            <i style={{fontSize: '28px'}} className="fas fa-cog"></i>
+                        </a>
+                    </div>
+                </div>
+                <Modal show={this.state.modal} onHide={this.closeModal}>
+                    <Modal.Header closeButton>
+                        <Modal.Title></Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div style={{backgroundColor: '#fff'}}>
+                            <div style={{padding: '20px', paddingTop: '0px'}}>
+                                <div>
+                                    <div className='row'>
+                                        <div>
+                                        <span style={{color: '#9ba6b2'}}>
+                                            Секретная фраза
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div className="row" style={{
+                                        backgroundColor: 'rgb(248, 249, 251)',
+                                        padding: '20px',
+                                        paddingLeft: '5px',
+                                        border: '1px dashed #dae1e9',
+                                        borderRadius: '4px',
+                                        marginTop: '5px'
+                                    }}>
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <input type="text" onChange={this.changeSeed} value={this.state.seed}
+                                                       className="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style={{marginTop: '15px'}}>
+                                    <div className='row'>
+                                        <div>
+                                        <span style={{color: '#9ba6b2'}}>
+                                            Публичный ключ
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div className="row" style={{
+                                        backgroundColor: 'rgb(248, 249, 251)',
+                                        padding: '20px',
+                                        paddingLeft: '5px',
+                                        border: '1px dashed #dae1e9',
+                                        borderRadius: '4px',
+                                        marginTop: '5px'
+                                    }}>
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <input type="text" onChange={this.changePublicKey}
+                                                       value={this.state.publicKey} className="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style={{marginTop: '15px'}}>
+                                    <div className='row'>
+                                        <div>
+                                        <span style={{color: '#9ba6b2'}}>
+                                            Адрес
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div className="row" style={{
+                                        backgroundColor: 'rgb(248, 249, 251)',
+                                        padding: '20px',
+                                        paddingLeft: '5px',
+                                        border: '1px dashed #dae1e9',
+                                        borderRadius: '4px',
+                                        marginTop: '5px'
+                                    }}>
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <input type="text" onChange={this.changeAddress}
+                                                       value={this.state.address} className="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </Modal.Body>
+                </Modal>
             </div>
         );
     }

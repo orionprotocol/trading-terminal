@@ -28,7 +28,7 @@ public class SplitAggregator {
      * @param price
      * @return
      */
-    public List<Route> firstLevel(String pair, DataType dataType, Double ordQty, Double price) {
+    public Map<String, Object> firstLevel(String pair, DataType dataType, Double ordQty, Double price) {
 
         List<Split> splitList = null;
 
@@ -41,6 +41,11 @@ public class SplitAggregator {
 
         Map<Exchange, Double> sizeMap = new HashMap<>();
         Map<Exchange, Double> priceMap = new HashMap<>();
+
+
+        Double totalCost = 0D;
+        Double totalSize = 0D;
+
         for (Split split : splitList) {
             if (dataType.equals(DataType.ASKS)) {
                 handleAsksSplit(split, sizeMap, priceMap);
@@ -48,7 +53,13 @@ public class SplitAggregator {
             if (dataType.equals(DataType.BIDS)) {
                 handleBidsSplit(split, sizeMap, priceMap);
             }
+            Double cost = split.getSize().doubleValue() * split.getPrice().doubleValue();
+            totalCost = totalCost + cost;
+            totalSize = totalSize + split.getSize().doubleValue();
         }
+
+
+        Map<String, Object> response = new HashMap<>();
         DecimalFormat decimalFormat = new DecimalFormat("#0.########");
         List<Route> routes = new ArrayList<>();
         routes.add(new Route(pair, Exchange.BINANCE, priceMap.get(Exchange.BINANCE) == null ? "0" : decimalFormat.format(priceMap.get(Exchange.BINANCE)),
@@ -58,8 +69,14 @@ public class SplitAggregator {
         routes.add(new Route(pair, Exchange.POLONIEX, priceMap.get(Exchange.POLONIEX) == null ? "0" : decimalFormat.format(priceMap.get(Exchange.POLONIEX)),
                 sizeMap.get(Exchange.POLONIEX) == null ? "0" : decimalFormat.format(sizeMap.get(Exchange.POLONIEX))));
 
-        return routes;
-
+        response.put("routes", routes);
+        response.put("totalCost", totalCost);
+        if(totalSize > 0){
+            response.put("totalPrice", totalCost / totalSize);
+        }else{
+            response.put("totalPrice", 0);
+        }
+        return response;
     }
 
     /**

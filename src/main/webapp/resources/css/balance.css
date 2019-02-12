@@ -20,11 +20,9 @@
 
 .balance-btn{
     background-color: #fff;
-    border:0;
+    border: 1px solid;
     color:#9ba6b2;
     font-family: 'Roboto-Medium',sans-serif;
     height:42px;
-    text-transform: capitalize;
-    box-shadow: 0 2px 4px 0 rgba(218,225,233,0.5);
     width: 140px;
 }

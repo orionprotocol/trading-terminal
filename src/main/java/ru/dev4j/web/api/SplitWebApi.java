@@ -28,7 +28,7 @@ public class SplitWebApi {
     @RequestMapping(value = "api/v1/order-route", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody
-    List<Route> handleExchangeOrderBook(@RequestParam(name = "symbol") String symbol,
+    Map<String, Object> handleExchangeOrderBook(@RequestParam(name = "symbol") String symbol,
                                         @RequestParam(name = "ordQty") Double ordQty,
                                         @RequestParam(name = "price", required = false) Double price,
                                         @RequestParam(name = "side") String side) {
@@ -44,7 +44,7 @@ public class SplitWebApi {
             }
             return splitAggregator.firstLevel(symbol, DataType.BIDS, ordQty, price);
         }
-        return new ArrayList<>();
+        return new HashMap<>();
     }
 
     @RequestMapping(value = "api/v1/order-route/balance", method = RequestMethod.GET)
