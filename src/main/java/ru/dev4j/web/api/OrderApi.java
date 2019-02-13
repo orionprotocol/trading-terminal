@@ -56,7 +56,8 @@ public class OrderApi {
     List<Order> orderStatus(@RequestParam(name = "symbol") String symbol, @RequestParam(name = "ordId", required = false) Long ordId,
                             @RequestParam(name = "startTime", required = false) Long startTime,
                             @RequestParam(name = "endTime", required = false) Long endTime,
+                            @RequestParam(name = "address") String address,
                             @RequestParam(name = "limit", defaultValue = "500", required = false) Integer limit) {
-        return orderService.orderHistory(ordId, symbol, startTime, endTime, limit);
+        return orderService.orderHistory(ordId, symbol, startTime, endTime, limit,address);
     }
 }

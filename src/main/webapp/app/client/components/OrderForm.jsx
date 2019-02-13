@@ -107,7 +107,6 @@ class OrderForm extends React.Component {
 
     loadTotalCost() {
         if (this.props.marketType == 'market' && this.props.count > 0) {
-
             let url = "/api/v1/order-route" +
                 "?symbol={symbol}&ordQty={ordQty}&side={side}"
                     .replace("{symbol}", this.props.pair)
@@ -119,7 +118,8 @@ class OrderForm extends React.Component {
             ).then(results => {
                 return results.json();
             }).then(data => {
-                this.setState({totalPrice: data.totalPrice, totalCost: data.totalCost})
+                this.setState({totalPrice: data.totalPrice, totalCost: data.totalCost});
+                this.props.loadBenefits();
             })
         }
     }

@@ -187,6 +187,9 @@ class Orders extends React.Component {
                                     <th>
                                         Цена
                                     </th>
+                                    <th>
+                                        Статус
+                                    </th>
                                 </tr>
                                 </thead>
                                 <tbody>

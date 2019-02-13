@@ -6,6 +6,7 @@ import Orders from './../../client/components/Orders'
 import Chart from './../../client/components/Chart'
 import OrderBook from './../../client/components/OrderBook'
 import {Modal} from 'react-bootstrap'
+import {Toastr} from "../../service/Toastr";
 
 const FULL_HEIGHT = 430;
 
@@ -214,15 +215,19 @@ class MainDashboard extends React.Component {
     }
 
     loadOrderHistory(symbol) {
-        fetch('http://***REMOVED***/orderHistory?symbol=' + symbol,
-            {
-                credentials: 'same-origin',
-            }
-        ).then(results => {
-            return results.json();
-        }).then(data => {
-            this.setState({orders: data})
-        })
+        let address = localStorage.getItem('address') || '';
+        if (address) {
+            let url = 'http://***REMOVED***/orderHistory?symbol=' + symbol + "&address=" + address;
+            fetch(url,
+                {
+                    credentials: 'same-origin',
+                }
+            ).then(results => {
+                return results.json();
+            }).then(data => {
+                this.setState({orders: data})
+            })
+        }
     }
 
     loadSnapshot(symbol, depth) {
@@ -836,6 +841,7 @@ class MainDashboard extends React.Component {
                             last={this.state.data.lastPrice}
                             side={this.state.side}
                             marketType={this.state.marketType}
+                            loadBenefits={this.loadBenefits}
                             changeMarketType={this.changeMarketType}
                         />
                     </div>
