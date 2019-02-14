@@ -46,17 +46,45 @@ public class OrderBenefitsService {
         System.out.println("BITTREX LEVELS " + bittrexLevels.size());
         System.out.println("POLONIEX LEVELS " + poloniexLevels.size());
 
-        Double totalCostLevels = totalLevels.stream()
-                .mapToDouble(l -> l.getPrice()).max().orElse(0.0) * ordQty;
+        double totalCostLevels, totalCostBinance, totalCostBittrex, totalCostPoloniex;
 
-        Double totalCostBinance = binanaceLevels.stream()
-                .mapToDouble(l -> l.getPrice()).max().orElse(0.0) * ordQty;
+        /*if (side.equals("buy")) {
+            totalCostLevels = totalLevels.stream()
+                    .mapToDouble(Split::getPrice).max().orElse(0.0) * ordQty;
 
-        Double totalCostBittrex = bittrexLevels.stream()
-                .mapToDouble(l -> l.getPrice()).max().orElse(0.0) * ordQty;
+            totalCostBinance = binanaceLevels.stream()
+                    .mapToDouble(Split::getPrice).max().orElse(0.0) * ordQty;
 
-        Double totalCostPoloniex = poloniexLevels.stream()
-                .mapToDouble(l -> l.getPrice()).max().orElse(0.0) * ordQty;
+            totalCostBittrex = bittrexLevels.stream()
+                    .mapToDouble(Split::getPrice).max().orElse(0.0) * ordQty;
+
+            totalCostPoloniex = poloniexLevels.stream()
+                    .mapToDouble(Split::getPrice).max().orElse(0.0) * ordQty;
+        } else  {
+            totalCostLevels = totalLevels.stream()
+                    .mapToDouble(Split::getPrice).min().orElse(0.0) * ordQty;
+
+            totalCostBinance = binanaceLevels.stream()
+                    .mapToDouble(Split::getPrice).min().orElse(0.0) * ordQty;
+
+            totalCostBittrex = bittrexLevels.stream()
+                    .mapToDouble(Split::getPrice).min().orElse(0.0) * ordQty;
+
+            totalCostPoloniex = poloniexLevels.stream()
+                    .mapToDouble(Split::getPrice).min().orElse(0.0) * ordQty;
+        }*/
+
+        totalCostLevels = totalLevels.stream()
+                .mapToDouble(split -> split.getPrice() * split.getSize()).sum();
+
+        totalCostBinance = binanaceLevels.stream()
+                .mapToDouble(split -> split.getPrice() * split.getSize()).sum();
+
+        totalCostBittrex = bittrexLevels.stream()
+                .mapToDouble(split -> split.getPrice() * split.getSize()).sum();
+
+        totalCostPoloniex = poloniexLevels.stream().
+                mapToDouble(split -> split.getPrice() * split.getSize()).sum();
 
 
         Map<String, Object> response = new HashMap<>();
@@ -71,7 +99,7 @@ public class OrderBenefitsService {
 
     private Map<String, String> calculateBenefits(Double totalCost, Double totalCostExchange) {
 
-        double benefitBtcDouble = Double.max(0.0, totalCostExchange - totalCost);
+        double benefitBtcDouble = totalCostExchange > 0 ? Math.abs(totalCostExchange - totalCost) : 0.0;
 
         BigDecimal benefitPct = new BigDecimal(benefitBtcDouble * 100 / totalCost);
 

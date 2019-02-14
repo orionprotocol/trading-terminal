@@ -157,7 +157,8 @@ public class BalanceSplitAggregator {
                 .filter(e -> e.getKey() >= price)
                 .map(e -> tuple(e.getKey(), e.getValue(), Exchange.POLONIEX));
 
-        Seq<Tuple3<Double, Double, Exchange>> aggregate = binance.concat(bittrex).concat(poloniex).sorted();
+        Seq<Tuple3<Double, Double, Exchange>> aggregate = binance.concat(bittrex).concat(poloniex)
+                .sorted(Comparator.reverseOrder());
 
         List<Split> splits = new ArrayList<>();
         Map<Exchange, Double> remBalances = Maps.newHashMap(exchangeBalance);

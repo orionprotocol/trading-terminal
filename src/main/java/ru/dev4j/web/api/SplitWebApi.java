@@ -34,13 +34,13 @@ public class SplitWebApi {
                                         @RequestParam(name = "side") String side) {
         if (side.toLowerCase().equals("buy")) {
             if (price == null) {
-                price = SplitUtils.maxValue().getKey().doubleValue();
+                price = SplitUtils.maxValue().getKey();
             }
             return splitAggregator.firstLevel(symbol, DataType.ASKS, ordQty, price);
         }
         if (side.toLowerCase().equals("sell")) {
             if (price == null) {
-                price = SplitUtils.minValue().getKey().doubleValue();
+                price = SplitUtils.minValue().getKey();
             }
             return splitAggregator.firstLevel(symbol, DataType.BIDS, ordQty, price);
         }

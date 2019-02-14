@@ -1,13 +1,13 @@
 package ru.dev4j.service.aggregation.split.service;
 
 import org.jooq.lambda.Seq;
+import org.jooq.lambda.tuple.Tuple2;
 import org.jooq.lambda.tuple.Tuple3;
+import ru.dev4j.model.Exchange;
+import ru.dev4j.service.aggregation.split.Split;
 
 import java.time.ZonedDateTime;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -20,6 +20,42 @@ import static org.jooq.lambda.tuple.Tuple.tuple;
 import static org.junit.Assert.*;
 
 public class BalanceSplitAggregatorTest {
+
+    @org.junit.Test
+    public void testAggregateBids() {
+        ConcurrentSkipListMap<Double, Double> bids1
+                = new ConcurrentSkipListMap<>(Comparator.reverseOrder());
+        IntStream
+                .rangeClosed(1, 10)
+                .forEach(index -> {
+                    bids1.put((double) index, (double) index + 1);
+                });
+
+        ConcurrentSkipListMap<Double, Double> bids2
+                = new ConcurrentSkipListMap<>(Comparator.reverseOrder());
+
+        IntStream
+                .rangeClosed(4, 8)
+                .forEach(index -> {
+                    bids2.put((double) index, (double) index * 2);
+                });
+
+        Seq<Tuple3<Double, Double, Exchange>> binance = Seq.seq(bids1.entrySet().stream()).map(e -> tuple(e.getKey(), e.getValue(), Exchange.BINANCE));
+        Seq<Tuple3<Double, Double, Exchange>> bittrex = Seq.seq(bids2.entrySet().stream()).map(e -> tuple(e.getKey(), e.getValue(), Exchange.BITTREX));
+
+        double ordQty = 37;
+        List<Split> splits = binance.concat(bittrex)
+                .sorted(Comparator.reverseOrder())
+                .scanLeft(tuple(0.0, tuple(0.0, 0.0, Exchange.BINANCE)), (withSum, i) ->
+                        tuple(withSum.v1 + i.v2, i))
+                .drop(1)
+                .peek(System.out::println)
+                .limitWhileClosed(i -> i.v1 < ordQty)
+                .map(i -> new Split(i.v2.v1, Math.min(ordQty - (i.v1 - i.v2.v2) , i.v2.v2), i.v2.v3))
+                .collect(Collectors.toList());
+
+        splits.forEach(System.out::println);
+    }
 
     @org.junit.Test
     public void secondLevel() {

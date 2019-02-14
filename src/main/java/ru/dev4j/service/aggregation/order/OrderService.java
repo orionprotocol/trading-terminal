@@ -33,7 +33,7 @@ public class OrderService {
 
     public Map<String, Object> deleteOrder(Long ordId, String clientOrdId) {
         Order order = orderRepository.findOne(ordId);
-        order.setStatus("CANCELED");
+        order.setStatus(OrderStatus.CANCELED);
 
         for (SubOrder subOrder : order.getSubOrders()) {
             Broker broker = brokerRepository.findOne(subOrder.getBrokerId());
@@ -79,7 +79,7 @@ public class OrderService {
         order.setTime(time);
         order.setUpdateTime(time);
         order.setId(sequenceRepository.getNextSequenceId("exchange"));
-        order.setStatus("NEW");
+        order.setStatus(OrderStatus.NEW);
 
         Map<String, Object> routes = balanceSplitAggregator.secondLevel(order.getSymbol(), order.getPrice(), dataType, order.getOrderQty(),
                 balances.get(Exchange.BINANCE), balances.get(Exchange.BITTREX), balances.get(Exchange.POLONIEX));
