@@ -21,20 +21,14 @@ export class Toastr {
     }
 
     static showSuccess(text) {
-        var $ = require("jquery");
-        var toastr = require('toastr');
         Toastr.configureToastr(toastr);
         toastr.success(text);
     }
     static showWarn(text) {
-        var $ = require("jquery");
-        var toastr = require('toastr');
         Toastr.configureToastr(toastr);
         toastr.warning(text);
     }
     static showError(text) {
-        var $ = require("jquery");
-        var toastr = require('toastr');
         Toastr.configureToastr(toastr);
         toastr.error(text);
     }

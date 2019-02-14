@@ -2,7 +2,6 @@ export class MomentJS {
 
 
     static renderTime(date) {
-        var moment = require('moment');
         const months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
         let datetime = moment(date)
         let hour = datetime.hour();
