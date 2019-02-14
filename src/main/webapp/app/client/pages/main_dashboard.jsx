@@ -6,6 +6,7 @@ import Orders from './../../client/components/Orders'
 import Chart from './../../client/components/Chart'
 import OrderBook from './../../client/components/OrderBook'
 import {Modal} from 'react-bootstrap'
+import {Toastr} from "../../service/Toastr";
 
 const FULL_HEIGHT = 430;
 
@@ -147,7 +148,7 @@ class MainDashboard extends React.Component {
     }
 
     loadAllPairs() {
-        fetch('/pairs/list',
+        fetch('http://***REMOVED***/pairs/list',
             {
                 credentials: 'same-origin',
             }
@@ -198,7 +199,7 @@ class MainDashboard extends React.Component {
     }
 
     loadBenefits() {
-        let url = "/order-benefits?symbol={symbol}&ordQty={ordQty}&side={side}"
+        let url = "http://***REMOVED***/order-benefits?symbol={symbol}&ordQty={ordQty}&side={side}"
             .replace("{symbol}", this.state.currentSymbol)
             .replace("{ordQty}", this.state.count)
             .replace("{side}", this.state.side)
@@ -214,20 +215,24 @@ class MainDashboard extends React.Component {
     }
 
     loadOrderHistory(symbol) {
-        fetch('/orderHistory?symbol=' + symbol,
-            {
-                credentials: 'same-origin',
-            }
-        ).then(results => {
-            return results.json();
-        }).then(data => {
-            this.setState({orders: data})
-        })
+        let address = localStorage.getItem('address') || '';
+        if (address) {
+            let url = 'http://***REMOVED***/orderHistory?symbol=' + symbol + "&address=" + address;
+            fetch(url,
+                {
+                    credentials: 'same-origin',
+                }
+            ).then(results => {
+                return results.json();
+            }).then(data => {
+                this.setState({orders: data})
+            })
+        }
     }
 
     loadSnapshot(symbol, depth) {
         if (symbol && depth) {
-            let url = "/api/v1/orderBook?symbol={SYMBOL}&depth={DEPTH}".replace("{SYMBOL}", symbol).replace("{DEPTH}", depth);
+            let url = "http://***REMOVED***/api/v1/orderBook?symbol={SYMBOL}&depth={DEPTH}".replace("{SYMBOL}", symbol).replace("{DEPTH}", depth);
             fetch(url,
                 {
                     credentials: 'same-origin',
@@ -250,7 +255,7 @@ class MainDashboard extends React.Component {
 
     loadExchangeSnapshot(exchange, symbol, depth, callback) {
         if (symbol && depth) {
-            let url = "/api/v1/exchange/orderBook?symbol={SYMBOL}&depth={DEPTH}&exchange={EXCHANGE}".replace("{SYMBOL}", symbol).replace("{DEPTH}", depth).replace("{EXCHANGE}", exchange);
+            let url = "http://***REMOVED***/api/v1/exchange/orderBook?symbol={SYMBOL}&depth={DEPTH}&exchange={EXCHANGE}".replace("{SYMBOL}", symbol).replace("{DEPTH}", depth).replace("{EXCHANGE}", exchange);
             fetch(url,
                 {
                     credentials: 'same-origin',
@@ -549,46 +554,31 @@ class MainDashboard extends React.Component {
         } catch (e) {
             console.log(e)
         }
-        try {
-            this.updateOrderBookData(data, 'binance', this.state.binance, (asks, bids, maxBid, lastPriceStyle) => {
-                this.handleJqeuryScroll('#modal-asks-bnn', '#modal-bids-bnn', 'modal-orderbook-binance');
-                this.setState({
-                    binance: {
-                        asks: asks,
-                        bids: bids,
-                        lastPrice: maxBid.price,
-                        lastPriceStyle: lastPriceStyle,
-                        ask: asks[asks.length - 1].price,
-                        bid: bids[0].price
-                    },
-                })
-            });
-        } catch (e) {
-            console.log(e)
-        }
-        try {
-
-            this.updateOrderBookData(data, 'bittrex', this.state.bittrex, (asks, bids, maxBid, lastPriceStyle) => {
-                this.handleJqeuryScroll('#modal-asks-btr', '#modal-bids-btr', 'modal-orderbook-bittrex');
-                this.setState({
-                    bittrex: {
-                        asks: asks,
-                        bids: bids,
-                        lastPrice: maxBid.price,
-                        lastPriceStyle: lastPriceStyle,
-                        ask: asks[asks.length - 1].price,
-                        bid: bids[0].price
-                    }
-                })
-            });
-        } catch (e) {
-            console.log(e)
-        }
-        try {
-            this.updateOrderBookData(data, 'poloniex', this.state.poloniex, (asks, bids, maxBid, lastPriceStyle) => {
-                    this.handleJqeuryScroll('#modal-asks-plnx', '#modal-bids-plnx', 'modal-orderbook-poloniex');
+        if (this.state.showModal) {
+            try {
+                this.updateOrderBookData(data, 'binance', this.state.binance, (asks, bids, maxBid, lastPriceStyle) => {
+                    this.handleJqeuryScroll('#modal-asks-bnn', '#modal-bids-bnn', 'modal-orderbook-binance');
                     this.setState({
-                        poloniex: {
+                        binance: {
+                            asks: asks,
+                            bids: bids,
+                            lastPrice: maxBid.price,
+                            lastPriceStyle: lastPriceStyle,
+                            ask: asks[asks.length - 1].price,
+                            bid: bids[0].price
+                        },
+                    })
+                });
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        if (this.state.showModal) {
+            try {
+                this.updateOrderBookData(data, 'bittrex', this.state.bittrex, (asks, bids, maxBid, lastPriceStyle) => {
+                    this.handleJqeuryScroll('#modal-asks-btr', '#modal-bids-btr', 'modal-orderbook-bittrex');
+                    this.setState({
+                        bittrex: {
                             asks: asks,
                             bids: bids,
                             lastPrice: maxBid.price,
@@ -597,10 +587,30 @@ class MainDashboard extends React.Component {
                             bid: bids[0].price
                         }
                     })
-                }
-            );
-        } catch (e) {
-            console.log(e)
+                });
+            } catch (e) {
+                console.log(e)
+            }
+        }
+        if (this.state.showModal) {
+            try {
+                this.updateOrderBookData(data, 'poloniex', this.state.poloniex, (asks, bids, maxBid, lastPriceStyle) => {
+                        this.handleJqeuryScroll('#modal-asks-plnx', '#modal-bids-plnx', 'modal-orderbook-poloniex');
+                        this.setState({
+                            poloniex: {
+                                asks: asks,
+                                bids: bids,
+                                lastPrice: maxBid.price,
+                                lastPriceStyle: lastPriceStyle,
+                                ask: asks[asks.length - 1].price,
+                                bid: bids[0].price
+                            }
+                        })
+                    }
+                );
+            } catch (e) {
+                console.log(e)
+            }
         }
     }
 
@@ -831,6 +841,7 @@ class MainDashboard extends React.Component {
                             last={this.state.data.lastPrice}
                             side={this.state.side}
                             marketType={this.state.marketType}
+                            loadBenefits={this.loadBenefits}
                             changeMarketType={this.changeMarketType}
                         />
                     </div>

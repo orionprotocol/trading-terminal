@@ -148,7 +148,7 @@ public class OrderService {
         return order;
     }
 
-    public List<Order> orderHistory(Long ordId, String symbol, Long startTime, Long endTime, Integer limit) {
+    public List<Order> orderHistory(Long ordId, String symbol, Long startTime, Long endTime, Integer limit, String clientId) {
         Integer sort = 1;
         if (ordId == null) {
             ordId = Long.MIN_VALUE;
@@ -166,7 +166,7 @@ public class OrderService {
             limit = 1000;
         }
 
-        return orderRepository.orderHistory(ordId, symbol, startTime, endTime, limit, sort);
+        return orderRepository.orderHistory(ordId, symbol, startTime, endTime, limit, sort,clientId);
     }
 
     private Map<Exchange, Double> chooseSymbolBalance(Broker broker, String balanceSymbol) {
