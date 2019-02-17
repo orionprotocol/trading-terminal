@@ -3,6 +3,7 @@ import {Modal} from 'react-bootstrap'
 import QRCode from 'qrcode.react'
 
 import ReactDOM from 'react-dom';
+import {Toastr} from "../../service/Toastr";
 
 class Balance extends React.Component {
 
@@ -22,10 +23,17 @@ class Balance extends React.Component {
     }
 
     componentDidMount() {
-        this.loadBalance();
+        setInterval(() => {
+            this.loadBalance()
+        }, 1000);
     }
 
     showModal() {
+        let address = localStorage.getItem('address') || '';
+        if (!address) {
+            Toastr.showError("Заполните address в настройках в меню.");
+            return;
+        }
         this.setState({modal: true})
     }
 
@@ -34,15 +42,18 @@ class Balance extends React.Component {
     }
 
     loadBalance() {
-        fetch('http://***REMOVED***:3001/api/balance/3Mw6FiBf6BFwZThVxhPbQRin2ia1BjKF3oF',
-            {
-                credentials: 'same-origin',
-            }
-        ).then(results => {
-            return results.json();
-        }).then(data => {
-            this.setState({balances: data})
-        })
+        let address = localStorage.getItem('address') || '';
+        if (address) {
+            fetch('http://***REMOVED***:3001/api/balance/' + address,
+                {
+                    credentials: 'same-origin',
+                }
+            ).then(results => {
+                return results.json();
+            }).then(data => {
+                this.setState({balances: data})
+            })
+        }
     }
 
     mapToImage(symbol) {
@@ -104,6 +115,7 @@ class Balance extends React.Component {
 
     render() {
         const windowHeight = window.innerHeight + 'px';
+        let address = localStorage.getItem('address') || '';
         return (
             <div style={{paddingRight: '20px', paddingLeft: '10px', paddingTop: '5px', height: windowHeight}}>
                 <div style={{backgroundColor: '#fff', marginTop: '20px'}}>
@@ -148,29 +160,51 @@ class Balance extends React.Component {
                                             borderRadius: '4px'
                                         }}>
                                         <span style={{fontFamily: '\'Roboto-Regular\',sans-serif', fontSize: '17px'}}>
-                                            34nvJWRGAnd2mh1qkHsBoPk6SvP4CPCKxK
+                                            {address}
                                         </span>
                                         </div>
                                     </div>
                                 </div>
                                 <div style={{marginTop: '30px'}}>
-                                    <div style={{textTransform:'text-transform',width:'100%', display:'flex',
-                                        flexDirection:'row',justifyContent:'center',alignItems:'center',whiteSpace:'nowrap',
-                                        boxSizing:'border-box',}}>
-                                        <span style={{color:'#2d2d2d',fontSize:'13px'}}>ИЛИ</span>
+                                    <div style={{
+                                        textTransform: 'text-transform',
+                                        width: '100%',
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        whiteSpace: 'nowrap',
+                                        boxSizing: 'border-box',
+                                    }}>
+                                        <span style={{color: '#2d2d2d', fontSize: '13px'}}>ИЛИ</span>
                                     </div>
                                 </div>
                                 <div style={{marginTop: '20px'}}>
-                                    <div style={{textTransform:'text-transform',width:'100%', display:'flex',
-                                        flexDirection:'row',justifyContent:'center',alignItems:'center',whiteSpace:'nowrap',
-                                        boxSizing:'border-box',}}>
-                                        <span style={{color:'#2d2d2d',fontSize:'15px'}}>Просканируйте QR-код</span>
+                                    <div style={{
+                                        textTransform: 'text-transform',
+                                        width: '100%',
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        whiteSpace: 'nowrap',
+                                        boxSizing: 'border-box',
+                                    }}>
+                                        <span style={{color: '#2d2d2d', fontSize: '15px'}}>Просканируйте QR-код</span>
                                     </div>
                                 </div>
                                 <div style={{marginTop: '40px'}}>
-                                    <div style={{textTransform:'text-transform',width:'100%', display:'flex',
-                                        flexDirection:'row',justifyContent:'center',alignItems:'center',whiteSpace:'nowrap', boxSizing:'border-box',}}>
-                                        <QRCode value="34nvJWRGAnd2mh1qkHsBoPk6SvP4CPCKxK" />
+                                    <div style={{
+                                        textTransform: 'text-transform',
+                                        width: '100%',
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        whiteSpace: 'nowrap',
+                                        boxSizing: 'border-box',
+                                    }}>
+                                        <QRCode value="34nvJWRGAnd2mh1qkHsBoPk6SvP4CPCKxK"/>
                                     </div>
                                 </div>
                             </div>

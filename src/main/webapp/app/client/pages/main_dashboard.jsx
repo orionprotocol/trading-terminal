@@ -162,7 +162,7 @@ class MainDashboard extends React.Component {
                 this.loadOrderHistory(data[0])
                 setInterval(() => {
                     this.loadOrderHistory(this.state.currentSymbol)
-                }, 10000);
+                }, 2000);
                 //LOAD BINANCE
                 this.loadExchangeSnapshot("BINANCE", this.state.currentSymbol, 20, (data) => {
                     this.setState({

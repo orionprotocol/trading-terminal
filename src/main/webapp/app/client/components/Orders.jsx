@@ -33,7 +33,7 @@ class Orders extends React.Component {
 
     }
 
-    renderSubOrders(subOrders,order) {
+    renderSubOrders(subOrders, order) {
         let renderSubOrders = [];
         for (let i = 0; i < subOrders.length; i++) {
             renderSubOrders.push(
@@ -45,10 +45,10 @@ class Orders extends React.Component {
                         {subOrders[i].id}
                     </td>
                     <td style={{width: '20%', padding: '5px'}}>
-                        {subOrders[i].subOrdQty}
+                        {parseFloat(subOrders[i].subOrdQty).toFixed(8)}
                     </td>
                     <td style={{width: '20%', padding: '5px'}}>
-                        {subOrders[i].price}
+                        {parseFloat(subOrders[i].price).toFixed(8)}
                     </td>
                     <td style={{width: '20%', padding: '5px'}}>
                         {subOrders[i].status}
@@ -87,16 +87,16 @@ class Orders extends React.Component {
                                 {orders[i].symbol}
                             </div>
                             <div className="col-md-2">
-                                {orders[i].orderQty}
+                                {parseFloat(orders[i].orderQty).toFixed(8)}
                             </div>
                             <div className="col-md-2">
-                                {orders[i].price}
+                                {parseFloat(orders[i].price).toFixed(8)}
                             </div>
                             <div className="col-md-2">
                                 {percent}%
                             </div>
                             <div className="col-md-2">
-                                {total}
+                                {parseFloat(total).toFixed(8)}
                             </div>
                         </div>
                         <div id={tableId} className="row orders-table-hide">
@@ -122,12 +122,11 @@ class Orders extends React.Component {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {this.renderSubOrders(orders[i].subOrders,orders[i])}
+                                    {this.renderSubOrders(orders[i].subOrders, orders[i])}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
                     </div>)
             }
         }
@@ -146,6 +145,9 @@ class Orders extends React.Component {
             }
             let rowId = "order-history" + orders[i].id;
             let tableId = "order-table-history" + orders[i].id;
+            let orderQty = orders[i].orderQty;
+            let filledQty = orders[i].filledQty;
+            let percent = filledQty * 100 / orderQty;
             renderOrders.push(
                 <div id={rowId} key={i} onClick={() => {
                     this.switchTable(tableId)
@@ -158,16 +160,16 @@ class Orders extends React.Component {
                             {orders[i].symbol}
                         </div>
                         <div className="col-md-2">
-                            {orders[i].orderQty}
+                            {parseFloat(orders[i].orderQty).toFixed(8)}
                         </div>
                         <div className="col-md-2">
-                            {orders[i].price}
+                            {parseFloat(orders[i].price).toFixed(8)}
                         </div>
                         <div className="col-md-2">
-                            0%
+                            {percent}%
                         </div>
                         <div className="col-md-2">
-                            {total}
+                            {parseFloat(total).toFixed(8)}
                         </div>
                     </div>
                     <div id={tableId} className="row orders-table-hide">
@@ -193,7 +195,7 @@ class Orders extends React.Component {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {this.renderSubOrders(orders[i].subOrders,orders[i])}
+                                {this.renderSubOrders(orders[i].subOrders, orders[i])}
                                 </tbody>
                             </table>
                         </div>
@@ -216,7 +218,8 @@ class Orders extends React.Component {
                         <a href="#" id="history-orders-link">История ордеров</a>
                     </div>
                 </div>
-                <div id="orders-open-container" className="row" style={{backgroundColor: '#fff', borderRadius: '3px',height:'300px'}}>
+                <div id="orders-open-container" className="row"
+                     style={{backgroundColor: '#fff', borderRadius: '3px', height: '300px'}}>
                     <div className="col-md-12">
                         <div style={{padding: '10px'}}>
                         <span style={{color: '#4e5c6e', fontSize: '13px', fontWeight: 'bold'}}>
@@ -255,14 +258,14 @@ class Orders extends React.Component {
                                     Итого
                                 </div>
                             </div>
-                            <div style={{overflowY: 'scroll',overflowX: 'hidden', maxHeight: '225px'}}>
+                            <div style={{overflowY: 'scroll', overflowX: 'hidden', maxHeight: '225px'}}>
                                 {this.renderOpenOrders(orders)}
                             </div>
                         </div>
                     </div>
                 </div>
                 <div id="orders-history-container" className="row"
-                     style={{backgroundColor: '#fff', borderRadius: '3px', display: 'none', height:'300px'}}>
+                     style={{backgroundColor: '#fff', borderRadius: '3px', display: 'none', height: '300px'}}>
                     <div className="col-md-12">
                         <div style={{padding: '10px'}}>
                         <span style={{color: '#4e5c6e', fontSize: '13px', fontWeight: 'bold'}}>
@@ -301,7 +304,7 @@ class Orders extends React.Component {
                                     Итого
                                 </div>
                             </div>
-                            <div style={{overflowY: 'scroll',overflowX: 'hidden', maxHeight: '225px'}}>
+                            <div style={{overflowY: 'scroll', overflowX: 'hidden', maxHeight: '225px'}}>
                                 {this.renderHistoryOrders(orders)}
                             </div>
                         </div>
