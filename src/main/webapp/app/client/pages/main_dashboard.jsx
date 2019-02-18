@@ -148,7 +148,7 @@ class MainDashboard extends React.Component {
     }
 
     loadAllPairs() {
-        fetch('http://***REMOVED***/pairs/list',
+        fetch('/pairs/list',
             {
                 credentials: 'same-origin',
             }
@@ -199,7 +199,7 @@ class MainDashboard extends React.Component {
     }
 
     loadBenefits() {
-        let url = "http://***REMOVED***/order-benefits?symbol={symbol}&ordQty={ordQty}&side={side}"
+        let url = "/order-benefits?symbol={symbol}&ordQty={ordQty}&side={side}"
             .replace("{symbol}", this.state.currentSymbol)
             .replace("{ordQty}", this.state.count)
             .replace("{side}", this.state.side)
@@ -217,7 +217,7 @@ class MainDashboard extends React.Component {
     loadOrderHistory(symbol) {
         let address = localStorage.getItem('address') || '';
         if (address) {
-            let url = 'http://***REMOVED***/orderHistory?symbol=' + symbol + "&address=" + address;
+            let url = '/orderHistory?symbol=' + symbol + "&address=" + address;
             fetch(url,
                 {
                     credentials: 'same-origin',
@@ -232,7 +232,7 @@ class MainDashboard extends React.Component {
 
     loadSnapshot(symbol, depth) {
         if (symbol && depth) {
-            let url = "http://***REMOVED***/api/v1/orderBook?symbol={SYMBOL}&depth={DEPTH}".replace("{SYMBOL}", symbol).replace("{DEPTH}", depth);
+            let url = "/api/v1/orderBook?symbol={SYMBOL}&depth={DEPTH}".replace("{SYMBOL}", symbol).replace("{DEPTH}", depth);
             fetch(url,
                 {
                     credentials: 'same-origin',
@@ -255,7 +255,7 @@ class MainDashboard extends React.Component {
 
     loadExchangeSnapshot(exchange, symbol, depth, callback) {
         if (symbol && depth) {
-            let url = "http://***REMOVED***/api/v1/exchange/orderBook?symbol={SYMBOL}&depth={DEPTH}&exchange={EXCHANGE}".replace("{SYMBOL}", symbol).replace("{DEPTH}", depth).replace("{EXCHANGE}", exchange);
+            let url = "/api/v1/exchange/orderBook?symbol={SYMBOL}&depth={DEPTH}&exchange={EXCHANGE}".replace("{SYMBOL}", symbol).replace("{DEPTH}", depth).replace("{EXCHANGE}", exchange);
             fetch(url,
                 {
                     credentials: 'same-origin',
@@ -692,7 +692,7 @@ class MainDashboard extends React.Component {
 
 //TODO:on page close disconect
     connect() {
-        let url = 'ws://***REMOVED***/{SYMBOL}'.replace("{SYMBOL}", this.state.currentSymbol);
+        let url = `ws://${window.location.href.split('/')[2]}/{SYMBOL}`.replace("{SYMBOL}", this.state.currentSymbol);
         let ws = new WebSocket(url);
         this.setState({ws: ws})
         let handleNewData = this.handleNewExchangeData;

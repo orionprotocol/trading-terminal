@@ -1,15 +1,8 @@
 package ru.dev4j.service.aggregation.order;
 
-import com.wavesplatform.wavesj.*;
 import com.wavesplatform.wavesj.AssetPair;
+import com.wavesplatform.wavesj.Node;
 import com.wavesplatform.wavesj.PrivateKeyAccount;
-import com.wavesplatform.wavesj.AssetPair;
-import com.wavesplatform.wavesj.PrivateKeyAccount;
-import com.wavesplatform.wavesj.AssetPair;
-import com.wavesplatform.wavesj.PrivateKeyAccount;
-import com.wavesplatform.wavesj.AssetPair;
-import com.wavesplatform.wavesj.PrivateKeyAccount;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dev4j.model.Order;
@@ -83,7 +76,9 @@ public class TradeService {
         response.put("status", order.getStatus());
 
         try {
-            createCounterOrder(order, trade);
+            if (new BigDecimal(trade.getQty()).compareTo(BigDecimal.ZERO) > 0) {
+                createCounterOrder(order, trade);
+            }
         } catch (Exception e) {
             // TODO: Return 500 HTTP error
             e.printStackTrace();

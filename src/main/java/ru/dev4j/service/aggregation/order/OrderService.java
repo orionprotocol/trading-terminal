@@ -1,5 +1,7 @@
 package ru.dev4j.service.aggregation.order;
 
+import org.jooq.lambda.tuple.Tuple;
+import org.jooq.lambda.tuple.Tuple3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dev4j.model.*;
@@ -10,7 +12,6 @@ import ru.dev4j.repository.db.SequenceRepository;
 import ru.dev4j.service.aggregation.split.Route;
 import ru.dev4j.service.aggregation.split.service.BalanceSplitAggregator;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -61,19 +62,31 @@ public class OrderService {
         return response;
     }
 
-    public Map<String, Object> aggregateRoutes(Order order) throws SubOrderException {
+    public Tuple3<List<Broker>, List<Route>, String> findRoutes(String symbol, String side, double ordQty, double price) {
 
-        String symbol[] = order.getSymbol().split("-");
+        String assets[] = symbol.split("-");
 
-        DataType dataType = DataType.ASKS;
-        String balanceSymbol = symbol[1].toLowerCase();
-        if (order.getSide().toLowerCase().equals("sell")) {
-            dataType = DataType.BIDS;
-            balanceSymbol = symbol[0].toLowerCase();
-        }
+        DataType dataType = Objects.equals(side, "buy") ? DataType.ASKS : DataType.BIDS;
+        String balanceAsset = Objects.equals(side, "buy") ? assets[1].toLowerCase():  assets[0].toLowerCase();
 
         List<Broker> brokers = brokerRepository.findAll();
-        Map<Exchange, Double> balances = aggregateBalances(brokers, balanceSymbol);
+        Map<Exchange, Double> balances = aggregateBalances(brokers, balanceAsset);
+
+        List<Route> routes = (List<Route>) balanceSplitAggregator.secondLevel(
+                symbol,
+                price,
+                dataType,
+                ordQty,
+                balances.get(Exchange.BINANCE), balances.get(Exchange.BITTREX), balances.get(Exchange.POLONIEX))
+                    .get("routes");
+
+        return Tuple.tuple(brokers, routes, balanceAsset);
+    }
+
+
+    public Map<String, Object> aggregateRoutes(Order order) throws SubOrderException {
+
+        Tuple3<List<Broker>, List<Route>, String> routes = findRoutes(order.getSymbol(), order.getSide(), order.getOrderQty(), order.getPrice());
 
         Long time = System.currentTimeMillis();
         order.setTime(time);
@@ -81,14 +94,11 @@ public class OrderService {
         order.setId(sequenceRepository.getNextSequenceId("exchange"));
         order.setStatus(OrderStatus.NEW);
 
-        Map<String, Object> routes = balanceSplitAggregator.secondLevel(order.getSymbol(), order.getPrice(), dataType, order.getOrderQty(),
-                balances.get(Exchange.BINANCE), balances.get(Exchange.BITTREX), balances.get(Exchange.POLONIEX));
-
-        List<SubOrder> subOrders = getSubOrders((List<Route>) routes.get("routes"), order);
+        List<SubOrder> subOrders = getSubOrders(routes.v2, order);
 
         for (SubOrder subOrder : subOrders) {
-            for (Broker dbBroker : brokers) {
-                Map<Exchange, Double> brokerBalances = chooseSymbolBalance(dbBroker, balanceSymbol);
+            for (Broker dbBroker : routes.v1) {
+                Map<Exchange, Double> brokerBalances = chooseSymbolBalance(dbBroker, routes.v3);
                 if (brokerBalances.get(subOrder.getExchange()) >= subOrder.getSpentQty()) {
                     if (orderHttpService.sendOrderInfo(subOrder, order, dbBroker)) {
                         subOrder.setReserved(true);
@@ -100,19 +110,11 @@ public class OrderService {
             }
         }
 
-        /*for (SubOrder subOrder : subOrders) {
-            if (!subOrder.getReserved()) {
-                throw new SubOrderException();
-            }
-        }*/
-
 
         orderRepository.save(order);
 
         order.setSubOrders(subOrders);
         orderRepository.save(order);
-
-        routes.get(Exchange.BINANCE);
 
         Map<String, Object> response = new HashMap<>();
         response.put("symbol", order.getSymbol());

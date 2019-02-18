@@ -97,9 +97,9 @@ class OrderBook extends React.Component {
                     }}>
                         <thead>
                         <tr style={{color: '#7f8fa4', fontSize: '11px', lineHeight: '25px'}}>
-                            <td style={{borderBottom: ' 1px solid #edf0f4', width: '27%'}}>Цена</td>
-                            <td style={{borderBottom: ' 1px solid #edf0f4', width: '27%'}}>Кол-во</td>
-                            <td style={{borderBottom: ' 1px solid #edf0f4', width: '27%'}}>Сумма</td>
+                            <td style={{borderBottom: ' 1px solid #edf0f4', width: '27%'}}>Price</td>
+                            <td style={{borderBottom: ' 1px solid #edf0f4', width: '27%'}}>Amount</td>
+                            <td style={{borderBottom: ' 1px solid #edf0f4', width: '27%'}}>Total</td>
                             {this.renderExchangeColumn()}
                         </tr>
                         </thead>
@@ -124,7 +124,7 @@ class OrderBook extends React.Component {
                     borderTopStyle: 'solid'
                 }}>
                             <span style={{color: '#263241'}}>
-                                ПОСЛЕДНЯЯ ЦЕНА: <span
+                                Last Price: <span
                                 style={{color: this.props.lastPriceStyle}}>{this.props.lastPrice.toFixed(8)}</span>
                             </span>
                 </div>

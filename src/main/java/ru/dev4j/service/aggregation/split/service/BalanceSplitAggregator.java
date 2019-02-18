@@ -10,7 +10,6 @@ import ru.dev4j.model.DataType;
 import ru.dev4j.model.Exchange;
 import ru.dev4j.service.aggregation.split.Route;
 import ru.dev4j.service.aggregation.split.Split;
-import ru.dev4j.service.aggregation.split.SplitUtils;
 import ru.dev4j.service.map.ExchangeMapService;
 
 import java.math.BigDecimal;
@@ -43,14 +42,8 @@ public class BalanceSplitAggregator {
 
 
         if (dataType.equals(DataType.ASKS)) {
-            boughtSplits.addAll(aggregateAsks(pair, price, size,
-                    balanceMap.entrySet()
-                        .stream()
-                        .collect(Collectors.toMap(Map.Entry::getKey,
-                                e -> e.getValue()/price)))
-            );
-        }
-        if (dataType.equals(DataType.BIDS)) {
+            boughtSplits.addAll(aggregateAsks(pair, price, size, balanceMap));
+        } else if (dataType.equals(DataType.BIDS)) {
             boughtSplits.addAll(aggregateBids(pair, price, size, balanceMap));
         }
 
@@ -91,32 +84,6 @@ public class BalanceSplitAggregator {
         }
 
         return response;
-    }
-
-    private void aggregateBids(List<Split> boughtSplits, Map<Exchange, Double> balanceMap, String pair, Double price, Double size, Double binanceBalance, Double bittrexBalance, Double poloniexBalance) {
-        Iterator<Map.Entry<Double, Double>> binanceBids = exchangeMapService.getAllBids(Exchange.BINANCE, pair).entrySet().iterator();
-        Iterator<Map.Entry<Double, Double>> bittrexBids = exchangeMapService.getAllBids(Exchange.BITTREX, pair).entrySet().iterator();
-        Iterator<Map.Entry<Double, Double>> poloniexBids = exchangeMapService.getAllBids(Exchange.POLONIEX, pair).entrySet().iterator();
-
-        Double boughtSize = 0D;
-
-        Map.Entry<Double, Double> max = SplitUtils.maxValue();
-
-        Map<Exchange, Map.Entry<Double, Double>> exchangeMap = new HashMap<>();
-
-        while (max.getKey().compareTo(price) == 1 && size.compareTo(boughtSize) == 1 && binanceBalance.compareTo(ZERO) == 1
-                && bittrexBalance.compareTo(ZERO) == 1 && poloniexBalance.compareTo(ZERO) == 1) {
-            SplitUtils.fullExchangeMap(exchangeMap, binanceBids, bittrexBids, poloniexBids);
-            if (!binanceBids.hasNext() && !bittrexBids.hasNext() && !poloniexBids.hasNext()) {
-                break;
-            }
-            max = SplitUtils.findMax(exchangeMap);
-            if (max.getKey().compareTo(price) == 1) {
-                Split split = decreaseBalance(max, balanceMap, exchangeMap);
-                boughtSize = getBigDecimal(boughtSplits, size, boughtSize, split);
-                extractValue(max, exchangeMap, balanceMap);
-            }
-        }
     }
 
     private List<Split> splitRemaining(String pair, double price, double size, Map<Exchange, Double> exchangeBalance) {
@@ -162,7 +129,7 @@ public class BalanceSplitAggregator {
 
         List<Split> splits = new ArrayList<>();
         Map<Exchange, Double> remBalances = Maps.newHashMap(exchangeBalance);
-        size = calculateSplits(size, aggregate, splits, remBalances);
+        size = calculateSplits(DataType.BIDS, size, aggregate, splits, remBalances);
 
         if (size > 0) {
             splits.addAll(splitRemaining(pair, price, size, remBalances));
@@ -171,16 +138,26 @@ public class BalanceSplitAggregator {
         return splits;
     }
 
-    private Double calculateSplits(Double size, Seq<Tuple3<Double, Double, Exchange>> aggregate,
+    private double withMinNotional(double price, double qty) {
+        return price * qty >= 0.001 ? qty : 0;
+    }
+
+    private Double calculateSplits(DataType side, Double size, Seq<Tuple3<Double, Double, Exchange>> aggregate,
                                    List<Split> splits, Map<Exchange, Double> remBalances) {
         for (Tuple3<Double, Double, Exchange> t : aggregate) {
-            BigDecimal subOrdQty = BigDecimal.valueOf(Math.min(Math.min(size, t.v2), remBalances.get(t.v3)))
-                    .setScale(2, RoundingMode.FLOOR);
-            if (subOrdQty.compareTo(BigDecimal.ZERO) > 0) {
-                remBalances.compute(t.v3, (exchange, bal) -> bal != null ? bal - subOrdQty.doubleValue() : 0.0);
+            double minSize = withMinNotional(t.v1, Math.min(size, t.v2));
+            double availableQty = side == DataType.ASKS ?
+                    remBalances.get(t.v3) / t.v1
+                    : remBalances.get(t.v3);
+            double subOrdQty = withMinNotional(t.v1, BigDecimal.valueOf(Math.min(minSize, availableQty))
+                    .setScale(2, RoundingMode.FLOOR).doubleValue());
 
-                splits.add(new Split(t.v1, subOrdQty.doubleValue(), t.v3));
-                size -= subOrdQty.doubleValue();
+            if (subOrdQty > 0) {
+                double spentQty = side == DataType.ASKS ? subOrdQty * t.v1 : subOrdQty;
+                remBalances.compute(t.v3, (exchange, bal) -> bal != null ? bal - spentQty : 0.0);
+
+                splits.add(new Split(t.v1, subOrdQty, t.v3));
+                size -= subOrdQty;
                 if (size <= 0) break;
             }
         }
@@ -207,7 +184,7 @@ public class BalanceSplitAggregator {
 
         List<Split> splits = new ArrayList<>();
         Map<Exchange, Double> remBalances = Maps.newHashMap(exchangeBalance);
-        size = calculateSplits(size, aggregate, splits, remBalances);
+        size = calculateSplits(DataType.ASKS, size, aggregate, splits, remBalances);
 
         if (size > 0) {
             splits.addAll(splitRemaining(pair, price, size, remBalances));
