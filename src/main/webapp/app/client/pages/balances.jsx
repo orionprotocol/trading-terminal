@@ -31,7 +31,7 @@ class Balance extends React.Component {
     showModal() {
         let address = localStorage.getItem('address') || '';
         if (!address) {
-            Toastr.showError("Заполните address в настройках в меню.");
+            Toastr.showError("Please set your address in settings");
             return;
         }
         this.setState({modal: true})
@@ -122,10 +122,10 @@ class Balance extends React.Component {
                     <table id="balance" style={{width: '100%', height: '100%', minHeight: '100%'}}>
                         <thead>
                         <td>
-                            Имя токена
+                            Asset
                         </td>
                         <td>
-                            Баланс
+                            Balance
                         </td>
                         <td>
                             Deposit
@@ -149,7 +149,7 @@ class Balance extends React.Component {
                                 <div>
                                     <div>
                                     <span style={{fontSize: '15px'}}>
-                                        Скопируйте и поделитесь адресом
+                                        Copy and share your address
                                     </span>
                                     </div>
                                     <div style={{marginTop: '5px'}}>
@@ -190,7 +190,7 @@ class Balance extends React.Component {
                                         whiteSpace: 'nowrap',
                                         boxSizing: 'border-box',
                                     }}>
-                                        <span style={{color: '#2d2d2d', fontSize: '15px'}}>Просканируйте QR-код</span>
+                                        <span style={{color: '#2d2d2d', fontSize: '15px'}}>Scan QR-code</span>
                                     </div>
                                 </div>
                                 <div style={{marginTop: '40px'}}>

@@ -149,15 +149,15 @@ public class BalanceSplitAggregator {
             double availableQty = side == DataType.ASKS ?
                     remBalances.get(t.v3) / t.v1
                     : remBalances.get(t.v3);
-            BigDecimal subOrdQty = BigDecimal.valueOf(Math.min(minSize, availableQty))
-                    .setScale(2, RoundingMode.FLOOR);
+            double subOrdQty = withMinNotional(t.v1, BigDecimal.valueOf(Math.min(minSize, availableQty))
+                    .setScale(2, RoundingMode.FLOOR).doubleValue());
 
-            if (subOrdQty.compareTo(BigDecimal.ZERO) > 0) {
-                double spentQty = side == DataType.ASKS ? subOrdQty.doubleValue() * t.v1 : subOrdQty.doubleValue();
+            if (subOrdQty > 0) {
+                double spentQty = side == DataType.ASKS ? subOrdQty * t.v1 : subOrdQty;
                 remBalances.compute(t.v3, (exchange, bal) -> bal != null ? bal - spentQty : 0.0);
 
-                splits.add(new Split(t.v1, subOrdQty.doubleValue(), t.v3));
-                size -= subOrdQty.doubleValue();
+                splits.add(new Split(t.v1, subOrdQty, t.v3));
+                size -= subOrdQty;
                 if (size <= 0) break;
             }
         }

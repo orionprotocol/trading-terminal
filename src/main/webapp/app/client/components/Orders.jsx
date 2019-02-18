@@ -63,11 +63,11 @@ class Orders extends React.Component {
         let renderOrders = [];
         for (let i = 0; i < orders.length; i++) {
             if (orders[i].status == "NEW" || orders[i].status == "PARTIALLY_FILLED") {
-                let side = "Продажа"
+                let side = "Sell"
                 let styleSide = "#e5494d";
                 let total = orders[i].price * orders[i].orderQty;
                 if (orders[i].side == 'buy') {
-                    side = "Покупка";
+                    side = "Buy";
                     styleSide = "#1f5af6";
                 }
                 let rowId = "order-open" + orders[i].id;
@@ -105,19 +105,19 @@ class Orders extends React.Component {
                                     <thead>
                                     <tr>
                                         <th>
-                                            Биржа
+                                            Exchange
                                         </th>
                                         <th>
                                             ID
                                         </th>
                                         <th>
-                                            Кол-во
+                                            Amount
                                         </th>
                                         <th>
-                                            Цена
+                                            Price
                                         </th>
                                         <th>
-                                            Статус
+                                            Status
                                         </th>
                                     </tr>
                                     </thead>
@@ -136,11 +136,11 @@ class Orders extends React.Component {
     renderHistoryOrders(orders) {
         let renderOrders = [];
         for (let i = 0; i < orders.length; i++) {
-            let side = "Продажа"
+            let side = "Sell"
             let styleSide = "#e5494d";
             let total = orders[i].price * orders[i].orderQty;
             if (orders[i].side == 'buy') {
-                side = "Покупка";
+                side = "Buy";
                 styleSide = "#1f5af6";
             }
             let rowId = "order-history" + orders[i].id;
@@ -178,19 +178,19 @@ class Orders extends React.Component {
                                 <thead>
                                 <tr>
                                     <th>
-                                        Биржа
+                                        Exchange
                                     </th>
                                     <th>
                                         ID
                                     </th>
                                     <th>
-                                        Кол-во
+                                        Amount
                                     </th>
                                     <th>
-                                        Цена
+                                        Price
                                     </th>
                                     <th>
-                                        Статус
+                                        Status
                                     </th>
                                 </tr>
                                 </thead>
@@ -212,10 +212,10 @@ class Orders extends React.Component {
             <div className="panel panel-default orderform-panel">
                 <div className="panel-heading" style={{padding: '0px'}}>
                     <div id="orders-open-tab" className="col-xs-4 orders-tab orders-tab-active-open">
-                        <a href="#" id="open-orders-link">Открытые ордеры</a>
+                        <a href="#" id="open-orders-link">Open Orders</a>
                     </div>
                     <div id="orders-history-tab" className="col-xs-4 orders-tab">
-                        <a href="#" id="history-orders-link">История ордеров</a>
+                        <a href="#" id="history-orders-link">Order History</a>
                     </div>
                 </div>
                 <div id="orders-open-container" className="row"

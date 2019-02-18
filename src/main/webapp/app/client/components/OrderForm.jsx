@@ -60,7 +60,7 @@ class OrderForm extends React.Component {
         }
         let address = localStorage.getItem('address') || '';
         if (!address) {
-            Toastr.showError("Заполните address в настройках в меню.")
+            Toastr.showError("Please set your address in settings")
             return;
         }
         let price = this.props.currentPrice;
