@@ -46,4 +46,18 @@ public class RedisRepository {
         Map<Object, Object> changes = redisTemplate.opsForHash().entries(String.format("%s:%s:%s", exchange.name(), dataType.name(), pair));
         return changes;
     }
+
+    public void clearAllChanges(Exchange exchange, String pair){
+        Map<Object, Object> bittrexAsksChanges = getChanges(exchange, DataType.ASKS, pair);
+        Map<Object, Object> bittrexBidsChanges = getChanges(exchange, DataType.BIDS, pair);
+
+        for (Map.Entry<Object, Object> askChange : bittrexAsksChanges.entrySet()) {
+            String key = (String) askChange.getKey();
+            deleteChanges(exchange, DataType.ASKS, pair, key);
+        }
+        for (Map.Entry<Object, Object> bidChange : bittrexBidsChanges.entrySet()) {
+            String key = (String) bidChange.getKey();
+            deleteChanges(exchange, DataType.BIDS, pair, key);
+        }
+    }
 }

@@ -38,4 +38,8 @@ public class BittrexUpdateHandler {
         }
     }
 
+    public void clearAllPairs(Exchange exchange, String pair){
+        exchangeMapService.clearState(exchange,pair);
+    }
+
 }

@@ -85,6 +85,19 @@ public class ExchangeMapService {
         return response;
     }
 
+    public void clearState(Exchange exchange, String pair){
+        String askKey = String.format("%s:%s:%s", DataType.ASKS.name(), exchange, pair);
+        checkForNullDesk(askKey);
+        ConcurrentSkipListMap<Double, Double> askMap = exchangeHolder.get(askKey);
+        askMap.clear();
+
+        String bidKey = String.format("%s:%s:%s", DataType.BIDS.name(), exchange, pair);
+        checkForNullDesk(bidKey);
+        ConcurrentSkipListMap<Double, Double> bidMap = exchangeHolder.get(bidKey);
+        bidMap.clear();
+
+    }
+
     public Double getExchangeMapValue(Exchange exchange, DataType dataType, String pair,Double price){
         String key = String.format("%s:%s:%s", dataType.name(), exchange.name(), pair);
         if(dataType.equals(DataType.ASKS)){
@@ -109,6 +122,7 @@ public class ExchangeMapService {
             exchangeHolder.put(key, new ConcurrentSkipListMap<>(comparator));
         }
     }
+
 
 
 }
