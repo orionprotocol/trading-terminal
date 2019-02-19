@@ -16,12 +16,11 @@ import ru.dev4j.model.Exchange;
 import ru.dev4j.model.Pair;
 import ru.dev4j.model.PairConfig;
 import ru.dev4j.repository.db.PairConfigRepository;
-import ru.dev4j.repository.redis.RedisRepository;
+import ru.dev4j.repository.redis.InMemoryRepository;
 import ru.dev4j.service.handler.BinanceUpdateHandler;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 
 @Service
@@ -35,7 +34,7 @@ public class BinanceWebSocket {
     private BinanceUpdateHandler binanceUpdateHandler;
 
     @Autowired
-    private RedisRepository redisRepository;
+    private InMemoryRepository inMemoryRepository;
 
     @Autowired
     private PairConfigRepository pairConfigRepository;
@@ -49,13 +48,13 @@ public class BinanceWebSocket {
 
         for (Pair pair : binanceConfig.getPair()) {
 
-            redisRepository.saveLoadSnapshotBinance(pair.getGeneralName(), "0");
+            inMemoryRepository.saveLoadSnapshotBinance(pair.getGeneralName(), "0");
             logger.info(String.format("INIT %S PAIR", pair.getCodeName()));
 
             BinanceApiWebSocketClient client = BinanceApiClientFactory.newInstance().newWebSocketClient();
 
             client.onDepthEvent(pair.getCodeName().toLowerCase(), depthEvent -> {
-                String loadSnapshot = redisRepository.getLoadSnapshotBinance(pair.getGeneralName());
+                String loadSnapshot = inMemoryRepository.getLoadSnapshotBinance(pair.getGeneralName());
                 if (loadSnapshot == null || loadSnapshot.equals("0")) {
                     String ethBtcJson = null;
                     try {
@@ -65,24 +64,24 @@ public class BinanceWebSocket {
                     }
                     for (OrderBookEntry orderBook : depthEvent.getAsks()) {
                         binanceUpdateHandler.handleAskPair(Double.valueOf(orderBook.getPrice()), Double.valueOf(orderBook.getQty()), pair.getGeneralName());
-                        redisRepository.saveChanges(Exchange.BINANCE, DataType.ASKS, pair.getGeneralName(), orderBook.getPrice());
+                        inMemoryRepository.saveChanges(Exchange.BINANCE, DataType.ASKS, pair.getGeneralName(), orderBook.getPrice());
                     }
                     for (OrderBookEntry orderBook : depthEvent.getBids()) {
                         binanceUpdateHandler.handleBidsPair(Double.valueOf(orderBook.getPrice()), Double.valueOf(orderBook.getQty()), pair.getGeneralName());
-                        redisRepository.saveChanges(Exchange.BINANCE, DataType.BIDS, pair.getGeneralName(), orderBook.getPrice());
+                        inMemoryRepository.saveChanges(Exchange.BINANCE, DataType.BIDS, pair.getGeneralName(), orderBook.getPrice());
                     }
                     binanceUpdateHandler.handleFirstSnapshot(ethBtcJson, pair.getGeneralName());
                 }
                 if (loadSnapshot != null && loadSnapshot.equals("1")) {
-                    Long lastUpdateId = redisRepository.getLastUpdateIdBinance(pair.getGeneralName());
+                    Long lastUpdateId = inMemoryRepository.getLastUpdateIdBinance(pair.getGeneralName());
                     if (depthEvent.getFinalUpdateId() > lastUpdateId) {
                         for (OrderBookEntry orderBook : depthEvent.getAsks()) {
                             binanceUpdateHandler.handleAskPair(Double.valueOf(orderBook.getPrice()), Double.valueOf(orderBook.getQty()), pair.getGeneralName());
-                            redisRepository.saveChanges(Exchange.BINANCE, DataType.ASKS, pair.getGeneralName(), orderBook.getPrice());
+                            inMemoryRepository.saveChanges(Exchange.BINANCE, DataType.ASKS, pair.getGeneralName(), orderBook.getPrice());
                         }
                         for (OrderBookEntry orderBook : depthEvent.getBids()) {
                             binanceUpdateHandler.handleBidsPair(Double.valueOf(orderBook.getPrice()), Double.valueOf(orderBook.getQty()), pair.getGeneralName());
-                            redisRepository.saveChanges(Exchange.BINANCE, DataType.BIDS, pair.getGeneralName(), orderBook.getPrice());
+                            inMemoryRepository.saveChanges(Exchange.BINANCE, DataType.BIDS, pair.getGeneralName(), orderBook.getPrice());
                         }
                     }
                 }

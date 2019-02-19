@@ -10,7 +10,7 @@ import ru.dev4j.model.Exchange;
 import ru.dev4j.model.Pair;
 import ru.dev4j.model.PairConfig;
 import ru.dev4j.repository.db.PairConfigRepository;
-import ru.dev4j.repository.redis.RedisRepository;
+import ru.dev4j.repository.redis.InMemoryRepository;
 import ru.dev4j.service.handler.BittrexUpdateHandler;
 
 import javax.annotation.PostConstruct;
@@ -32,7 +32,7 @@ public class BittrexWebSocket {
     private BittrexUpdateHandler bittrexUpdateHandler;
 
     @Autowired
-    private RedisRepository redisRepository;
+    private InMemoryRepository inMemoryRepository;
 
     @Autowired
     private PairConfigRepository pairConfigRepository;
@@ -57,11 +57,11 @@ public class BittrexWebSocket {
             String pair = mapToGeneralName(updateExchangeState.getMarketName(), bittrexConfig.getPair());
             for (MarketOrder marketOrder : updateExchangeState.getSells()) {
                 bittrexUpdateHandler.handleAskPair(marketOrder.getRate().doubleValue(), marketOrder.getQuantity().doubleValue(), pair);
-                redisRepository.saveChanges(Exchange.BITTREX, DataType.ASKS, pair, marketOrder.getRate().toString());
+                inMemoryRepository.saveChanges(Exchange.BITTREX, DataType.ASKS, pair, marketOrder.getRate().toString());
             }
             for (MarketOrder marketOrder : updateExchangeState.getBuys()) {
                 bittrexUpdateHandler.handleBidsPair(marketOrder.getRate().doubleValue(), marketOrder.getQuantity().doubleValue(), pair);
-                redisRepository.saveChanges(Exchange.BITTREX, DataType.BIDS, pair, marketOrder.getRate().toString());
+                inMemoryRepository.saveChanges(Exchange.BITTREX, DataType.BIDS, pair, marketOrder.getRate().toString());
             }
         });
 
@@ -73,11 +73,11 @@ public class BittrexWebSocket {
                 bittrexExchange.queryExchangeState(pair.getCodeName(), exchangeState -> {
                     for (MarketOrder marketOrder : exchangeState.getSells()) {
                         bittrexUpdateHandler.handleAskPair(marketOrder.getRate().doubleValue(), marketOrder.getQuantity().doubleValue(), pair.getGeneralName());
-                        redisRepository.saveChanges(Exchange.BITTREX, DataType.ASKS, pair.getGeneralName(), marketOrder.getRate().toString());
+                        inMemoryRepository.saveChanges(Exchange.BITTREX, DataType.ASKS, pair.getGeneralName(), marketOrder.getRate().toString());
                     }
                     for (MarketOrder marketOrder : exchangeState.getBuys()) {
                         bittrexUpdateHandler.handleBidsPair(marketOrder.getRate().doubleValue(), marketOrder.getQuantity().doubleValue(), pair.getGeneralName());
-                        redisRepository.saveChanges(Exchange.BITTREX, DataType.BIDS, pair.getGeneralName(), marketOrder.getRate().toString());
+                        inMemoryRepository.saveChanges(Exchange.BITTREX, DataType.BIDS, pair.getGeneralName(), marketOrder.getRate().toString());
                     }
 
                 });

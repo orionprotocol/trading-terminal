@@ -5,16 +5,14 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dev4j.model.Exchange;
-import ru.dev4j.repository.redis.RedisRepository;
+import ru.dev4j.repository.redis.InMemoryRepository;
 import ru.dev4j.service.map.ExchangeMapService;
-
-import java.math.BigDecimal;
 
 @Service
 public class BinanceUpdateHandler {
 
     @Autowired
-    private RedisRepository redisRepository;
+    private InMemoryRepository inMemoryRepository;
 
     @Autowired
     private ExchangeMapService exchangeMapService;
@@ -62,7 +60,7 @@ public class BinanceUpdateHandler {
             handleBidsPair(price, size, pair);
         }
 
-        redisRepository.saveLasUpdateIdBinance(pair, String.valueOf(lastUpdateId));
-        redisRepository.saveLoadSnapshotBinance(pair,"1");
+        inMemoryRepository.saveLasUpdateIdBinance(pair, String.valueOf(lastUpdateId));
+        inMemoryRepository.saveLoadSnapshotBinance(pair,"1");
     }
 }
