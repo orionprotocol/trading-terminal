@@ -36,7 +36,7 @@ public class InMemoryRepository {
         String key = String.format("%s:%s", Exchange.BINANCE.name(), pair);
         checkForNullAsk(key);
         ConcurrentSkipListMap<String, Object> map = inMemoryHolder.get(key);
-        return (Long) map.get("lastUpdateId");
+        return Long.valueOf((String) map.get("lastUpdateId"));
     }
 
     public void saveLoadSnapshotBinance(String pair, String bool) {

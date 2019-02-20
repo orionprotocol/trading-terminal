@@ -55,27 +55,16 @@ public class BinanceWebSocket {
 
             client.onDepthEvent(pair.getCodeName().toLowerCase(), depthEvent -> {
                 logger.info("New event " + pair.getGeneralName());
-                String loadSnapshot = inMemoryRepository.getLoadSnapshotBinance(pair.getGeneralName());
-                if (loadSnapshot == null || loadSnapshot.equals("0")) {
-                    String ethBtcJson = null;
-                    try {
-                        ethBtcJson = getFirstSnapshot(API.replace("{PAIR}", pair.getCodeName()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    for (OrderBookEntry orderBook : depthEvent.getAsks()) {
-                        binanceUpdateHandler.handleAskPair(Double.valueOf(orderBook.getPrice()), Double.valueOf(orderBook.getQty()), pair.getGeneralName());
-                        inMemoryRepository.saveChanges(Exchange.BINANCE, DataType.ASKS, pair.getGeneralName(), orderBook.getPrice());
-                    }
-                    for (OrderBookEntry orderBook : depthEvent.getBids()) {
-                        binanceUpdateHandler.handleBidsPair(Double.valueOf(orderBook.getPrice()), Double.valueOf(orderBook.getQty()), pair.getGeneralName());
-                        inMemoryRepository.saveChanges(Exchange.BINANCE, DataType.BIDS, pair.getGeneralName(), orderBook.getPrice());
-                    }
-                    binanceUpdateHandler.handleFirstSnapshot(ethBtcJson, pair.getGeneralName());
-                }
-                if (loadSnapshot != null && loadSnapshot.equals("1")) {
-                    Long lastUpdateId = inMemoryRepository.getLastUpdateIdBinance(pair.getGeneralName());
-                    if (depthEvent.getFinalUpdateId() > lastUpdateId) {
+                try {
+
+                    String loadSnapshot = inMemoryRepository.getLoadSnapshotBinance(pair.getGeneralName());
+                    if (loadSnapshot == null || loadSnapshot.equals("0")) {
+                        String ethBtcJson = null;
+                        try {
+                            ethBtcJson = getFirstSnapshot(API.replace("{PAIR}", pair.getCodeName()));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                         for (OrderBookEntry orderBook : depthEvent.getAsks()) {
                             binanceUpdateHandler.handleAskPair(Double.valueOf(orderBook.getPrice()), Double.valueOf(orderBook.getQty()), pair.getGeneralName());
                             inMemoryRepository.saveChanges(Exchange.BINANCE, DataType.ASKS, pair.getGeneralName(), orderBook.getPrice());
@@ -84,7 +73,23 @@ public class BinanceWebSocket {
                             binanceUpdateHandler.handleBidsPair(Double.valueOf(orderBook.getPrice()), Double.valueOf(orderBook.getQty()), pair.getGeneralName());
                             inMemoryRepository.saveChanges(Exchange.BINANCE, DataType.BIDS, pair.getGeneralName(), orderBook.getPrice());
                         }
+                        binanceUpdateHandler.handleFirstSnapshot(ethBtcJson, pair.getGeneralName());
                     }
+                    if (loadSnapshot != null && loadSnapshot.equals("1")) {
+                        Long lastUpdateId = Long.valueOf(inMemoryRepository.getLastUpdateIdBinance(pair.getGeneralName()));
+                        if (depthEvent.getFinalUpdateId() > lastUpdateId) {
+                            for (OrderBookEntry orderBook : depthEvent.getAsks()) {
+                                binanceUpdateHandler.handleAskPair(Double.valueOf(orderBook.getPrice()), Double.valueOf(orderBook.getQty()), pair.getGeneralName());
+                                inMemoryRepository.saveChanges(Exchange.BINANCE, DataType.ASKS, pair.getGeneralName(), orderBook.getPrice());
+                            }
+                            for (OrderBookEntry orderBook : depthEvent.getBids()) {
+                                binanceUpdateHandler.handleBidsPair(Double.valueOf(orderBook.getPrice()), Double.valueOf(orderBook.getQty()), pair.getGeneralName());
+                                inMemoryRepository.saveChanges(Exchange.BINANCE, DataType.BIDS, pair.getGeneralName(), orderBook.getPrice());
+                            }
+                        }
+                    }
+                }catch (Exception e){
+                    logger.error(e);
                 }
 
 
