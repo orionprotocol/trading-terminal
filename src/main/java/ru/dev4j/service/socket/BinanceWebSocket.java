@@ -54,6 +54,7 @@ public class BinanceWebSocket {
             BinanceApiWebSocketClient client = BinanceApiClientFactory.newInstance().newWebSocketClient();
 
             client.onDepthEvent(pair.getCodeName().toLowerCase(), depthEvent -> {
+                logger.info("New event " + pair.getGeneralName());
                 String loadSnapshot = inMemoryRepository.getLoadSnapshotBinance(pair.getGeneralName());
                 if (loadSnapshot == null || loadSnapshot.equals("0")) {
                     String ethBtcJson = null;
