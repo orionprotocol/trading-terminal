@@ -1,6 +1,5 @@
 package ru.dev4j.service.aggregation;
 
-import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
@@ -8,14 +7,11 @@ import ru.dev4j.config.MongoDBConfig;
 import ru.dev4j.config.PropertySourceConfig;
 import ru.dev4j.config.RedisConfig;
 import ru.dev4j.config.ServiceConfig;
-import ru.dev4j.model.DataType;
 import ru.dev4j.model.Exchange;
 import ru.dev4j.model.ExchangeTuple;
 import ru.dev4j.model.SizeExchange;
-import ru.dev4j.repository.redis.RedisRepository;
 import ru.dev4j.service.map.ExchangeMapService;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @Service

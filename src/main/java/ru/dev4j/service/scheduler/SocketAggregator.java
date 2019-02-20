@@ -7,17 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dev4j.model.*;
 import ru.dev4j.repository.db.PairConfigRepository;
-import ru.dev4j.repository.redis.RedisRepository;
+import ru.dev4j.repository.redis.InMemoryRepository;
 import ru.dev4j.service.map.ExchangeMapService;
 import ru.dev4j.service.socket.custom.SocketHandler;
 import ru.dev4j.service.SocketHolder;
 
 import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -45,7 +43,7 @@ public class SocketAggregator {
     private PairConfigRepository pairConfigRepository;
 
     @Autowired
-    private RedisRepository redisRepository;
+    private InMemoryRepository inMemoryRepository;
 
     @Autowired
     private ExchangeMapService exchangeMapService;
@@ -115,14 +113,14 @@ public class SocketAggregator {
         Map<Double, SizeExchange> finalAsksMap = new HashMap<>();
         Map<Double, SizeExchange> finalBidsMap = new HashMap<>();
 
-        Map<Object, Object> binanceAsksChanges = redisRepository.getChanges(Exchange.BINANCE, DataType.ASKS, pair);
-        Map<Object, Object> binanceBidsChanges = redisRepository.getChanges(Exchange.BINANCE, DataType.BIDS, pair);
+        Set<Map.Entry<String, Object>> binanceAsksChanges = inMemoryRepository.getChanges(Exchange.BINANCE, DataType.ASKS, pair);
+        Set<Map.Entry<String, Object>> binanceBidsChanges = inMemoryRepository.getChanges(Exchange.BINANCE, DataType.BIDS, pair);
 
-        Map<Object, Object> poloniexAsksChanges = redisRepository.getChanges(Exchange.POLONIEX, DataType.ASKS, pair);
-        Map<Object, Object> poloniexBidsChanges = redisRepository.getChanges(Exchange.POLONIEX, DataType.BIDS, pair);
+        Set<Map.Entry<String, Object>> poloniexAsksChanges = inMemoryRepository.getChanges(Exchange.POLONIEX, DataType.ASKS, pair);
+        Set<Map.Entry<String, Object>> poloniexBidsChanges = inMemoryRepository.getChanges(Exchange.POLONIEX, DataType.BIDS, pair);
 
-        Map<Object, Object> bittrexAsksChanges = redisRepository.getChanges(Exchange.BITTREX, DataType.ASKS, pair);
-        Map<Object, Object> bittrexBidsChanges = redisRepository.getChanges(Exchange.BITTREX, DataType.BIDS, pair);
+        Set<Map.Entry<String, Object>> bittrexAsksChanges = inMemoryRepository.getChanges(Exchange.BITTREX, DataType.ASKS, pair);
+        Set<Map.Entry<String, Object>> bittrexBidsChanges = inMemoryRepository.getChanges(Exchange.BITTREX, DataType.BIDS, pair);
 
         handleChanges(binanceAsksChanges, now, finalAsksMap, pair, Exchange.BINANCE, DataType.ASKS);
 
@@ -149,9 +147,9 @@ public class SocketAggregator {
         return finalMap;
     }
 
-    private void handleChanges(Map<Object, Object> changes, Long now, Map<Double, SizeExchange> finalMap, String pair, Exchange exchange, DataType dataType) {
-        for (Map.Entry<Object, Object> change : changes.entrySet()) {
-            String key = (String) change.getKey();
+    private void handleChanges(Set<Map.Entry<String, Object>> changes, Long now, Map<Double, SizeExchange> finalMap, String pair, Exchange exchange, DataType dataType) {
+        for (Map.Entry<String, Object> change : changes) {
+            String key = change.getKey();
             handleChange(key, now, finalMap, pair, exchange, dataType);
         }
     }
@@ -163,7 +161,7 @@ public class SocketAggregator {
             Double price = Double.valueOf(timePrice[1]);
             SizeExchange aggregatedSize = getAggregatedSize(dataType, pair, price);
             finalMap.put(price, aggregatedSize);
-            redisRepository.deleteChanges(exchange, dataType, pair, key);
+            inMemoryRepository.deleteChanges(exchange, dataType, pair, key);
         }
     }
 
