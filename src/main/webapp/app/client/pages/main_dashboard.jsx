@@ -633,7 +633,7 @@ class MainDashboard extends React.Component {
             let updated = false;
             for (let j = 0; j < stateAsks.length; j++) {
                 if (asks[i].price == stateAsks[j].price) {
-                    if (asks[i].size == 0) {
+                    if (parseFloat(asks[i].size) == 0) {
                         stateAsks.splice(j, 1);
                     } else {
                         stateAsks[j].size = asks[i].size;
@@ -666,7 +666,7 @@ class MainDashboard extends React.Component {
             let updated = false;
             for (let j = 0; j < stateBids.length; j++) {
                 if (bids[i].price == stateBids[j].price) {
-                    if (bids[i].size == 0) {
+                    if (parseFloat(bids[i].size) == 0) {
                         stateBids.splice(j, 1);
                     } else {
                         stateBids[j].size = bids[i].size;
