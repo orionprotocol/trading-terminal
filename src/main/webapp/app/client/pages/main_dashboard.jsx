@@ -86,7 +86,7 @@ class MainDashboard extends React.Component {
         this.loadOrderHistory = this.loadOrderHistory.bind(this);
         this.handleJqeuryScroll = this.handleJqeuryScroll.bind(this);
         this.chooseOrderBookLine = this.chooseOrderBookLine.bind(this);
-
+        this.loadOrderBooks = this.loadOrderBooks.bind(this);
         this.changeCurrentPrice = this.changeCurrentPrice.bind(this);
         this.changeCount = this.changeCount.bind(this);
         this.recalculateTotal = this.recalculateTotal.bind(this);
@@ -156,7 +156,6 @@ class MainDashboard extends React.Component {
             return results.json();
         }).then(data => {
             this.setState({pairs: data, currentSymbol: data[0]}, () => {
-                this.loadSnapshot(this.state.currentSymbol, 20);
                 this.loadBenefits();
                 this.connect();
                 this.loadOrderHistory(data[0])
@@ -164,38 +163,43 @@ class MainDashboard extends React.Component {
                     this.loadOrderHistory(this.state.currentSymbol)
                 }, 2000);
                 //LOAD BINANCE
-                this.loadExchangeSnapshot("BINANCE", this.state.currentSymbol, 20, (data) => {
-                    this.setState({
-                        binance: {
-                            ...data, ...{
-                                lastPrice: 0,
-                                lastPriceStyle: '#000',
-                            }
-                        }
-                    })
-                });
-                this.loadExchangeSnapshot("BITTREX", this.state.currentSymbol, 20, (data) => {
-                    this.setState({
-                        bittrex: {
-                            ...data, ...{
-                                lastPrice: 0,
-                                lastPriceStyle: '#000',
-                            }
-                        }
-                    });
-                });
-                this.loadExchangeSnapshot("POLONIEX", this.state.currentSymbol, 20, (data) => {
-                    this.setState({
-                        poloniex: {
-                            ...data, ...{
-                                lastPrice: 0,
-                                lastPriceStyle: '#000',
-                            }
-                        }
-                    })
-                });
+                this.loadOrderBooks();
             })
         })
+    }
+
+    loadOrderBooks(){
+        this.loadSnapshot(this.state.currentSymbol, 20);
+        this.loadExchangeSnapshot("BINANCE", this.state.currentSymbol, 20, (data) => {
+            this.setState({
+                binance: {
+                    ...data, ...{
+                        lastPrice: 0,
+                        lastPriceStyle: '#000',
+                    }
+                }
+            })
+        });
+        this.loadExchangeSnapshot("BITTREX", this.state.currentSymbol, 20, (data) => {
+            this.setState({
+                bittrex: {
+                    ...data, ...{
+                        lastPrice: 0,
+                        lastPriceStyle: '#000',
+                    }
+                }
+            });
+        });
+        this.loadExchangeSnapshot("POLONIEX", this.state.currentSymbol, 20, (data) => {
+            this.setState({
+                poloniex: {
+                    ...data, ...{
+                        lastPrice: 0,
+                        lastPriceStyle: '#000',
+                    }
+                }
+            })
+        });
     }
 
     loadBenefits() {
@@ -306,39 +310,10 @@ class MainDashboard extends React.Component {
     changeCurrentSymbol(symbol) {
         this.setState({currentSymbol: symbol}, () => {
             this.disconnect();
-            this.loadSnapshot(symbol, 20)
             this.connect();
             this.loadOrderHistory(symbol);
             this.loadBenefits();
-            this.loadExchangeSnapshot("BINANCE", symbol, 20, (data) => {
-                this.setState({
-                    binance: {
-                        ...data,
-                        lastPrice: 0,
-                        lastPriceStyle: '#000',
-                    }
-                })
-            });
-            this.loadExchangeSnapshot("BITTREX", symbol, 20, (data) => {
-                this.setState({
-                    bittrex: {
-                        ...data,
-                        lastPrice: 0,
-                        lastPriceStyle: '#000',
-
-                    }
-                });
-            });
-            this.loadExchangeSnapshot("POLONIEX", symbol, 20, (data) => {
-                this.setState({
-                    poloniex: {
-                        ...data,
-                        lastPrice: 0,
-                        lastPriceStyle: '#000',
-
-                    }
-                })
-            });
+            this.loadOrderBooks();
         })
 
     }
@@ -533,11 +508,21 @@ class MainDashboard extends React.Component {
     }
 
     handleNewExchangeData(data) {
-        console.log("ASKS " + JSON.stringify(data.asks))
-        console.log("BIDS " + JSON.stringify(data.bids))
+        console.log("AGGREGATED ASKS " + JSON.stringify(data.aggregatedAsks))
+        console.log("AGGREGATED BIDS " + JSON.stringify(data.aggregatedBids))
 
+        console.log("EXCHANGE ASKS " + JSON.stringify(data.exchangeAsks))
+        console.log("EXCHANGE BIDS " + JSON.stringify(data.exchangeBids))
+        let aggregatedData = {
+            asks:data.aggregatedAsks,
+            bids:data.aggregatedBids
+        }
+        let exchangeData = {
+            asks:data.exchangeAsks,
+            bids:data.exchangeBids
+        }
         try {
-            this.updateOrderBookData(data, 'all', this.state.data, (asks, bids, maxBid, lastPriceStyle) => {
+            this.updateOrderBookData(aggregatedData, 'all', this.state.data, (asks, bids, maxBid, lastPriceStyle) => {
                 this.handleJqeuryScroll('#asks-general', '#bids-general', 'orderbook-general');
                 this.handleJqeuryScroll('#modal-asks-general', '#modal-bids-general', 'modal-orderbook-general');
                 this.setState({
@@ -556,7 +541,7 @@ class MainDashboard extends React.Component {
         }
         if (this.state.showModal) {
             try {
-                this.updateOrderBookData(data, 'binance', this.state.binance, (asks, bids, maxBid, lastPriceStyle) => {
+                this.updateOrderBookData(exchangeData, 'binance', this.state.binance, (asks, bids, maxBid, lastPriceStyle) => {
                     this.handleJqeuryScroll('#modal-asks-bnn', '#modal-bids-bnn', 'modal-orderbook-binance');
                     this.setState({
                         binance: {
@@ -575,7 +560,7 @@ class MainDashboard extends React.Component {
         }
         if (this.state.showModal) {
             try {
-                this.updateOrderBookData(data, 'bittrex', this.state.bittrex, (asks, bids, maxBid, lastPriceStyle) => {
+                this.updateOrderBookData(exchangeData, 'bittrex', this.state.bittrex, (asks, bids, maxBid, lastPriceStyle) => {
                     this.handleJqeuryScroll('#modal-asks-btr', '#modal-bids-btr', 'modal-orderbook-bittrex');
                     this.setState({
                         bittrex: {
@@ -594,7 +579,7 @@ class MainDashboard extends React.Component {
         }
         if (this.state.showModal) {
             try {
-                this.updateOrderBookData(data, 'poloniex', this.state.poloniex, (asks, bids, maxBid, lastPriceStyle) => {
+                this.updateOrderBookData(exchangeData, 'poloniex', this.state.poloniex, (asks, bids, maxBid, lastPriceStyle) => {
                         this.handleJqeuryScroll('#modal-asks-plnx', '#modal-bids-plnx', 'modal-orderbook-poloniex');
                         this.setState({
                             poloniex: {

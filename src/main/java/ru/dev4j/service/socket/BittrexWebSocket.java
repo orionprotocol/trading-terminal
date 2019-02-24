@@ -71,13 +71,13 @@ public class BittrexWebSocket {
             for (Pair pair : bittrexConfig.getPair()) {
 
                 bittrexExchange.queryExchangeState(pair.getCodeName(), exchangeState -> {
+                    bittrexUpdateHandler.clearAllPairs(Exchange.BITTREX, pair.getGeneralName());
+                    inMemoryRepository.clearAllChanges(Exchange.BITTREX, pair.getGeneralName());
                     for (MarketOrder marketOrder : exchangeState.getSells()) {
                         bittrexUpdateHandler.handleAskPair(marketOrder.getRate().doubleValue(), marketOrder.getQuantity().doubleValue(), pair.getGeneralName());
-                        inMemoryRepository.saveChanges(Exchange.BITTREX, DataType.ASKS, pair.getGeneralName(), marketOrder.getRate().toString());
                     }
                     for (MarketOrder marketOrder : exchangeState.getBuys()) {
                         bittrexUpdateHandler.handleBidsPair(marketOrder.getRate().doubleValue(), marketOrder.getQuantity().doubleValue(), pair.getGeneralName());
-                        inMemoryRepository.saveChanges(Exchange.BITTREX, DataType.BIDS, pair.getGeneralName(), marketOrder.getRate().toString());
                     }
 
                 });

@@ -88,8 +88,8 @@ public class SocketAggregator {
             try {
                 Long now = System.currentTimeMillis();
                 Map<String, List<ExchangeTuple>> aggregatedData = handlePairChanges(pair, now);
-                if (aggregatedData.get("asks").size() > 0 || aggregatedData.get("bids").size() > 0) {
-                    logger.info("PAIR " + pair + "ASKS " + aggregatedData.get("asks").size() + " BIDS " + aggregatedData.get("bids").size());
+                if (aggregatedData.get("aggregatedAsks").size() > 0 || aggregatedData.get("aggregatedBids").size() > 0) {
+                    logger.info("PAIR " + pair + "ASKS " + aggregatedData.get("aggregatedAsks").size() + " BIDS " + aggregatedData.get("aggregatedBids").size());
                     if (pair.equals("WAVES-BTC")) {
                         System.out.println();
                     }
@@ -113,6 +113,9 @@ public class SocketAggregator {
         Map<Double, SizeExchange> finalAsksMap = new HashMap<>();
         Map<Double, SizeExchange> finalBidsMap = new HashMap<>();
 
+        Map<Double, SizeExchange> exchangeAsksMap = new HashMap<>();
+        Map<Double, SizeExchange> exchangeBidsMap = new HashMap<>();
+
         Set<Map.Entry<String, Object>> binanceAsksChanges = inMemoryRepository.getChanges(Exchange.BINANCE, DataType.ASKS, pair);
         Set<Map.Entry<String, Object>> binanceBidsChanges = inMemoryRepository.getChanges(Exchange.BINANCE, DataType.BIDS, pair);
 
@@ -122,17 +125,17 @@ public class SocketAggregator {
         Set<Map.Entry<String, Object>> bittrexAsksChanges = inMemoryRepository.getChanges(Exchange.BITTREX, DataType.ASKS, pair);
         Set<Map.Entry<String, Object>> bittrexBidsChanges = inMemoryRepository.getChanges(Exchange.BITTREX, DataType.BIDS, pair);
 
-        handleChanges(binanceAsksChanges, now, finalAsksMap, pair, Exchange.BINANCE, DataType.ASKS);
+        handleChanges(binanceAsksChanges, now, finalAsksMap, exchangeAsksMap, pair, Exchange.BINANCE, DataType.ASKS);
 
-        handleChanges(poloniexAsksChanges, now, finalAsksMap, pair, Exchange.POLONIEX, DataType.ASKS);
+        handleChanges(poloniexAsksChanges, now, finalAsksMap, exchangeAsksMap, pair, Exchange.POLONIEX, DataType.ASKS);
 
-        handleChanges(bittrexAsksChanges, now, finalAsksMap, pair, Exchange.BITTREX, DataType.ASKS);
+        handleChanges(bittrexAsksChanges, now, finalAsksMap, exchangeAsksMap, pair, Exchange.BITTREX, DataType.ASKS);
 
-        handleChanges(binanceBidsChanges, now, finalBidsMap, pair, Exchange.BINANCE, DataType.BIDS);
+        handleChanges(binanceBidsChanges, now, finalBidsMap, exchangeBidsMap, pair, Exchange.BINANCE, DataType.BIDS);
 
-        handleChanges(poloniexBidsChanges, now, finalBidsMap, pair, Exchange.POLONIEX, DataType.BIDS);
+        handleChanges(poloniexBidsChanges, now, finalBidsMap, exchangeBidsMap, pair, Exchange.POLONIEX, DataType.BIDS);
 
-        handleChanges(bittrexBidsChanges, now, finalBidsMap, pair, Exchange.BITTREX, DataType.BIDS);
+        handleChanges(bittrexBidsChanges, now, finalBidsMap, exchangeBidsMap, pair, Exchange.BITTREX, DataType.BIDS);
 
 
         List<ExchangeTuple> finalAggregatedAsks = finalAsksMap.entrySet().stream()
@@ -141,26 +144,37 @@ public class SocketAggregator {
         List<ExchangeTuple> finalAggregatedBids = finalBidsMap.entrySet().stream()
                 .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue().getSize(), new ArrayList<>(e.getValue().getExchanges()))), List::addAll);
 
-        finalMap.put("asks", finalAggregatedAsks);
-        finalMap.put("bids", finalAggregatedBids);
+        List<ExchangeTuple> exchangeAsks = exchangeAsksMap.entrySet().stream()
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue().getSize(), new ArrayList<>(e.getValue().getExchanges()))), List::addAll);
 
+        List<ExchangeTuple> exchangeBids = exchangeBidsMap.entrySet().stream()
+                .collect(ArrayList::new, (m, e) -> m.add(new ExchangeTuple(e.getKey(), e.getValue().getSize(), new ArrayList<>(e.getValue().getExchanges()))), List::addAll);
+
+
+        finalMap.put("aggregatedAsks", finalAggregatedAsks);
+        finalMap.put("aggregatedBids", finalAggregatedBids);
+
+        finalMap.put("exchangeAsks", exchangeAsks);
+        finalMap.put("exchangeBids", exchangeBids);
         return finalMap;
     }
 
-    private void handleChanges(Set<Map.Entry<String, Object>> changes, Long now, Map<Double, SizeExchange> finalMap, String pair, Exchange exchange, DataType dataType) {
+    private void handleChanges(Set<Map.Entry<String, Object>> changes, Long now, Map<Double, SizeExchange> finalMap, Map<Double, SizeExchange> exchangeMap, String pair, Exchange exchange, DataType dataType) {
         for (Map.Entry<String, Object> change : changes) {
             String key = change.getKey();
-            handleChange(key, now, finalMap, pair, exchange, dataType);
+            handleChange(key, now, finalMap, exchangeMap, pair, exchange, dataType);
         }
     }
 
-    private void handleChange(String key, Long now, Map<Double, SizeExchange> finalMap, String pair, Exchange exchange, DataType dataType) {
+    private void handleChange(String key, Long now, Map<Double, SizeExchange> finalMap, Map<Double, SizeExchange> exchangeMap, String pair, Exchange exchange, DataType dataType) {
         String[] timePrice = key.split(":");
         Long time = Long.valueOf(timePrice[0]);
         if (time < now) {
             Double price = Double.valueOf(timePrice[1]);
             SizeExchange aggregatedSize = getAggregatedSize(dataType, pair, price);
+            SizeExchange exchangeSize = getExchangeSize(dataType, pair, price, exchange);
             finalMap.put(price, aggregatedSize);
+            exchangeMap.put(price, exchangeSize);
             inMemoryRepository.deleteChanges(exchange, dataType, pair, key);
         }
     }
@@ -173,21 +187,34 @@ public class SocketAggregator {
         SizeExchange sizeExchange = new SizeExchange();
         if (binanceSize != null) {
             sizeExchange.getExchanges().add(Exchange.BINANCE.name().toLowerCase());
-        }else{
+        } else {
             binanceSize = 0D;
         }
         if (poloniexSize != null) {
             sizeExchange.getExchanges().add(Exchange.POLONIEX.name().toLowerCase());
-        }else {
+        } else {
             poloniexSize = 0D;
         }
         if (bittrexSize != null) {
             sizeExchange.getExchanges().add(Exchange.BITTREX.name().toLowerCase());
-        }else{
+        } else {
             bittrexSize = 0D;
         }
         Double aggregatedSize = binanceSize + poloniexSize + bittrexSize;
         sizeExchange.setSize(aggregatedSize);
+        return sizeExchange;
+    }
+
+    private SizeExchange getExchangeSize(DataType dataType, String pair, Double price, Exchange exchange) {
+        Double size = exchangeMapService.getExchangeMapValue(exchange, dataType, pair, price);
+
+        SizeExchange sizeExchange = new SizeExchange();
+        sizeExchange.getExchanges().add(exchange.name().toLowerCase());
+        if (size != null) {
+            sizeExchange.setSize(size);
+        } else {
+            sizeExchange.setSize(0D);
+        }
         return sizeExchange;
     }
 
