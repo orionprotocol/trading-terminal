@@ -91,6 +91,7 @@ class MainDashboard extends React.Component {
         this.changeCount = this.changeCount.bind(this);
         this.recalculateTotal = this.recalculateTotal.bind(this);
         this.loadBenefits = this.loadBenefits.bind(this);
+        this.renderSize = this.renderSize.bind(this);
         this.setSide = this.setSide.bind(this);
         this.renderOrderbookExchange = this.renderOrderbookExchange.bind(this);
         this.showModal = this.showModal.bind(this);
@@ -168,7 +169,7 @@ class MainDashboard extends React.Component {
         })
     }
 
-    loadOrderBooks(){
+    loadOrderBooks() {
         this.loadSnapshot(this.state.currentSymbol, 20);
         this.loadExchangeSnapshot("BINANCE", this.state.currentSymbol, 20, (data) => {
             this.setState({
@@ -406,6 +407,26 @@ class MainDashboard extends React.Component {
         }
     }
 
+    renderSize(data) {
+        let colorClassName = "exchange-size-default-color";
+        if (!data.dynamic) {
+            colorClassName = "exchange-size-default-color";
+        } else {
+            if (data.dynamic == 0) {
+                colorClassName = "exchange-size-default-color";
+            }
+            if (data.dynamic == 1) {
+                colorClassName = "exchange-size-increase-color";
+            }
+            if (data.dynamic == -1) {
+                colorClassName = "exchange-size-decrease-color";
+            }
+        }
+        data.dynamic = 0;
+        return (<td className={colorClassName}
+                    style={{width: '27%'}}>{data.size.toFixed(3)}</td>);
+    }
+
     renderAsks(modal, exchange, data) {
         let renderData = [];
         let key = 0;
@@ -435,7 +456,7 @@ class MainDashboard extends React.Component {
                         this.chooseOrderBookLine(asks[i], 'asks')
                     }} style={{lineHeight: '20px'}} key={key}>
                         <td style={{width: '27%'}}>{asks[i].price.toFixed(8)}</td>
-                        <td style={{width: '27%', color: '#e5494d'}}>{asks[i].size.toFixed(3)}</td>
+                        {this.renderSize(asks[i])}
                         <td style={{width: '27%'}}>
                             <div style={{width: '100%', paddingTop: '1px', paddingBottom: '1px'}}>
                                 <div style={{
@@ -481,7 +502,7 @@ class MainDashboard extends React.Component {
                         this.chooseOrderBookLine(bids[i], 'bids')
                     }} style={{lineHeight: '20px'}} key={key}>
                         <td style={{width: '27%'}}>{bids[i].price.toFixed(8)}</td>
-                        <td style={{color: '#2051d3', width: '27%'}}>{bids[i].size.toFixed(3)}</td>
+                        {this.renderSize(bids[i])}
                         <td style={{width: '27%'}}>
                             <div style={{width: '100%', paddingTop: '1px', paddingBottom: '1px'}}>
                                 <div style={{
@@ -514,12 +535,12 @@ class MainDashboard extends React.Component {
         console.log("EXCHANGE ASKS " + JSON.stringify(data.exchangeAsks))
         console.log("EXCHANGE BIDS " + JSON.stringify(data.exchangeBids))
         let aggregatedData = {
-            asks:data.aggregatedAsks,
-            bids:data.aggregatedBids
+            asks: data.aggregatedAsks,
+            bids: data.aggregatedBids
         }
         let exchangeData = {
-            asks:data.exchangeAsks,
-            bids:data.exchangeBids
+            asks: data.exchangeAsks,
+            bids: data.exchangeBids
         }
         try {
             this.updateOrderBookData(aggregatedData, 'all', this.state.data, (asks, bids, maxBid, lastPriceStyle) => {
@@ -621,6 +642,13 @@ class MainDashboard extends React.Component {
                     if (parseFloat(asks[i].size) == 0) {
                         stateAsks.splice(j, 1);
                     } else {
+                        stateAsks[j].dynamic = 0;
+                        if (stateAsks[j].size > asks[i].size) {
+                            stateAsks[j].dynamic = -1;
+                        }
+                        if (stateAsks[j].size < asks[i].size) {
+                            stateAsks[j].dynamic = 1;
+                        }
                         stateAsks[j].size = asks[i].size;
                     }
                     updated = true;
@@ -628,6 +656,7 @@ class MainDashboard extends React.Component {
                 }
             }
             if (!updated && asks[i].size != 0) {
+                asks[i].dynamic = 1
                 stateAsks.push(asks[i]);
             }
         }
@@ -654,6 +683,13 @@ class MainDashboard extends React.Component {
                     if (parseFloat(bids[i].size) == 0) {
                         stateBids.splice(j, 1);
                     } else {
+                        stateBids[j].dynamic = 0;
+                        if (stateBids[j].size > bids[i].size) {
+                            stateBids[j].dynamic = -1;
+                        }
+                        if (stateBids[j].size < bids[i].size) {
+                            stateBids[j].dynamic = 1;
+                        }
                         stateBids[j].size = bids[i].size;
                     }
                     updated = true;
@@ -661,6 +697,7 @@ class MainDashboard extends React.Component {
                 }
             }
             if (!updated && bids[i].size != 0) {
+                bids[i].dynamic = 1;
                 stateBids.push(bids[i]);
             }
         }

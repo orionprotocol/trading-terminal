@@ -5,3 +5,34 @@
     cursor: pointer;
 }
 
+.exchange-size-default-color{
+    background-color: #fff;
+}
+
+.exchange-size-decrease-color {
+    animation-name: animation-decrease;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+}
+
+.exchange-size-increase-color {
+    animation-name: animation-increase;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-play-state: running;
+}
+
+@keyframes animation-decrease {
+    0%     {background-color:white;}
+    50.0%  {background-color:rgb(252, 236, 236);}
+    100.0%  {background-color:white;}
+}
+
+@keyframes animation-increase {
+    0%     {background-color:white;}
+    50.0%  {background-color:rgb(238, 242, 253);}
+    100.0%  {background-color:white;}
+}
