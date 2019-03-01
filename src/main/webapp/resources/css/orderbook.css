@@ -11,28 +11,28 @@
 
 .exchange-size-decrease-color {
     animation-name: animation-decrease;
-    animation-duration: 0.5s;
+    animation-duration: 1s;
     animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
+    animation-iteration-count: 1;
     animation-play-state: running;
 }
 
 .exchange-size-increase-color {
     animation-name: animation-increase;
-    animation-duration: 0.5s;
+    animation-duration: 1s;
     animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
+    animation-iteration-count: 1;
     animation-play-state: running;
 }
 
 @keyframes animation-decrease {
     0%     {background-color:white;}
-    50.0%  {background-color:rgb(252, 236, 236);}
+    50.0%  {background-color:#ef9797;}
     100.0%  {background-color:white;}
 }
 
 @keyframes animation-increase {
     0%     {background-color:white;}
-    50.0%  {background-color:rgb(238, 242, 253);}
+    50.0%  {background-color:#7693e0;}
     100.0%  {background-color:white;}
 }

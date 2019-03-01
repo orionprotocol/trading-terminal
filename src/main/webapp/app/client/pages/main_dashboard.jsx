@@ -407,7 +407,10 @@ class MainDashboard extends React.Component {
         }
     }
 
-    renderSize(data) {
+    renderSize(data, exchange) {
+        if (exchange == "binance" && data.dynamic != 0) {
+            console.log("EXCHANGE " + exchange + " DYNAMIC " + data.dynamic)
+        }
         let colorClassName = "exchange-size-default-color";
         if (!data.dynamic) {
             colorClassName = "exchange-size-default-color";
@@ -443,7 +446,7 @@ class MainDashboard extends React.Component {
                 let divExchanges = [];
                 for (let j = 0; j < exchanges.length; j++) {
                     let imagePath = "/resources/img/exchanges/{exchange}.png".replace("{exchange}", exchanges[j]);
-                    let key = i + '' + j;
+                    let key = exchange + '' + i + '' + j;
                     divExchanges.push(
                         <div key={key} className="col-md-1" style={{paddingLeft: '1px'}}>
                             <img style={{height: '15px', width: '15px'}} src={imagePath}>
@@ -456,7 +459,7 @@ class MainDashboard extends React.Component {
                         this.chooseOrderBookLine(asks[i], 'asks')
                     }} style={{lineHeight: '20px'}} key={key}>
                         <td style={{width: '27%'}}>{asks[i].price.toFixed(8)}</td>
-                        {this.renderSize(asks[i])}
+                        {this.renderSize(asks[i], exchange)}
                         <td style={{width: '27%'}}>
                             <div style={{width: '100%', paddingTop: '1px', paddingBottom: '1px'}}>
                                 <div style={{
@@ -502,7 +505,7 @@ class MainDashboard extends React.Component {
                         this.chooseOrderBookLine(bids[i], 'bids')
                     }} style={{lineHeight: '20px'}} key={key}>
                         <td style={{width: '27%'}}>{bids[i].price.toFixed(8)}</td>
-                        {this.renderSize(bids[i])}
+                        {this.renderSize(bids[i], exchange)}
                         <td style={{width: '27%'}}>
                             <div style={{width: '100%', paddingTop: '1px', paddingBottom: '1px'}}>
                                 <div style={{
