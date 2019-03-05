@@ -69,7 +69,7 @@ class OrderBook extends React.Component {
                 <span style={{
                     color: '#4e5c6e',
                     fontSize: headerSize
-                }}>Биржевой стакан / {this.props.currentSymbol}</span>
+                }}>Aggregated OrderBook / {this.props.currentSymbol}</span>
                     </div>
                     <div className="col-md-2">
                                 <span id={alignId} style={{color: '#4e5c6e', cursor: 'pointer'}}

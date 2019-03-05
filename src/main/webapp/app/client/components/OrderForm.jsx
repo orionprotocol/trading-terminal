@@ -193,7 +193,7 @@ class OrderForm extends React.Component {
                                 this.postOrder(pair, 'buy')
                             }} type="button"
                                     className="btn btn-primary orderform-button orderform-button-buy">
-                                Купить {firstSymbol}
+                                Buy {firstSymbol}
                             </button>
                         </div>
                     </div>
@@ -206,7 +206,7 @@ class OrderForm extends React.Component {
                                 this.postOrder(pair, 'sell')
                             }} type="button"
                                     className="btn btn-primary orderform-button orderform-button-sell">
-                                Продать {firstSymbol}
+                                Sell {firstSymbol}
                             </button>
                         </div>
                     </div>

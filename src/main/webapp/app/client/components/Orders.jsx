@@ -240,22 +240,22 @@ class Orders extends React.Component {
                                 paddingBottom: '8px'
                             }}>
                                 <div className="col-md-2">
-                                    Тип
+                                    Type
                                 </div>
                                 <div className="col-md-2">
-                                    Пара
+                                    Symbol
                                 </div>
                                 <div className="col-md-2">
-                                    Кол-во
+                                    Amount
                                 </div>
                                 <div className="col-md-2">
-                                    Цена
+                                    Price
                                 </div>
                                 <div className="col-md-2">
-                                    Статус
+                                    Status
                                 </div>
                                 <div className="col-md-2">
-                                    Итого
+                                    Total
                                 </div>
                             </div>
                             <div style={{overflowY: 'scroll', overflowX: 'hidden', maxHeight: '225px'}}>
@@ -286,22 +286,22 @@ class Orders extends React.Component {
                                 paddingBottom: '8px'
                             }}>
                                 <div className="col-md-2">
-                                    Тип
+                                    Type
                                 </div>
                                 <div className="col-md-2">
-                                    Пара
+                                    Symbol
                                 </div>
                                 <div className="col-md-2">
-                                    Кол-во
+                                    Amount
                                 </div>
                                 <div className="col-md-2">
-                                    Цена
+                                    Price
                                 </div>
                                 <div className="col-md-2">
-                                    Статус
+                                    Status
                                 </div>
                                 <div className="col-md-2">
-                                    Итого
+                                    Total
                                 </div>
                             </div>
                             <div style={{overflowY: 'scroll', overflowX: 'hidden', maxHeight: '225px'}}>

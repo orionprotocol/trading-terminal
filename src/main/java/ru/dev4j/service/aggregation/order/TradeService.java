@@ -34,7 +34,7 @@ public class TradeService {
 
     private final static class WavesAssets {
         static String WAVES = com.wavesplatform.wavesj.Asset.WAVES;
-        static String BTC = "DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn";
+        static String BTC = "EBJDs3MRUiK35xbj59ejsf5Z4wH9oz6FuHvSCHVQqZHS";
         static String ETH = "BrmjyAWT5jjr3Wpsiyivyvg5vDuzoX2s93WgiexXetB3";
 
         static String toWavesAsset(String asset) {

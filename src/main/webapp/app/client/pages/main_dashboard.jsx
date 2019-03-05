@@ -767,7 +767,7 @@ class MainDashboard extends React.Component {
                         }}>
                             <div className="row">
                                 <div className="col-md-3" style={{paddingTop: '8px'}}>
-                                    <span style={{color: '#4e5c6e', fontSize: '13px'}}>Пара</span>
+                                    <span style={{color: '#4e5c6e', fontSize: '13px'}}>WatchList</span>
                                 </div>
                                 <div className="col-md-6 col-md-offset-1">
                                     <button style={{borderRadius: '25px', backgroundColor: 'rgb(31, 90, 246)'}}

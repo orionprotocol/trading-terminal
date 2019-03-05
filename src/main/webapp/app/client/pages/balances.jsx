@@ -44,7 +44,7 @@ class Balance extends React.Component {
     loadBalance() {
         let address = localStorage.getItem('address') || '';
         if (address) {
-            fetch('http://***REMOVED***:3001/api/balance/' + address,
+            fetch(`http://${window.location.hostname}:3001/api/balance/${address}`,
                 {
                     credentials: 'same-origin',
                 }

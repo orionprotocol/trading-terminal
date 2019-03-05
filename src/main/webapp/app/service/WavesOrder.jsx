@@ -2,12 +2,12 @@ import {order} from '@waves/waves-transactions';
 
 const Assets = {
     WAVES: '',
-    BTC: 'DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn',
+    BTC: 'EBJDs3MRUiK35xbj59ejsf5Z4wH9oz6FuHvSCHVQqZHS',
     ETH: 'BrmjyAWT5jjr3Wpsiyivyvg5vDuzoX2s93WgiexXetB3',
 
     toSymbolAsset: function(asset) {
         switch (asset) {
-            case 'DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn':
+            case 'EBJDs3MRUiK35xbj59ejsf5Z4wH9oz6FuHvSCHVQqZHS':
                 return 'BTC';
             case 'BrmjyAWT5jjr3Wpsiyivyvg5vDuzoX2s93WgiexXetB3':
                 return 'ETH';
