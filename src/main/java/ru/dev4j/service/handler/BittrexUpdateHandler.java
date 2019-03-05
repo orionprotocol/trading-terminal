@@ -3,16 +3,14 @@ package ru.dev4j.service.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.dev4j.model.Exchange;
-import ru.dev4j.repository.redis.RedisRepository;
+import ru.dev4j.repository.redis.InMemoryRepository;
 import ru.dev4j.service.map.ExchangeMapService;
-
-import java.math.BigDecimal;
 
 @Service
 public class BittrexUpdateHandler {
 
     @Autowired
-    private RedisRepository redisRepository;
+    private InMemoryRepository inMemoryRepository;
 
     @Autowired
     private ExchangeMapService exchangeMapService;
@@ -36,6 +34,10 @@ public class BittrexUpdateHandler {
         if (rSize > 0) {
             exchangeMapService.addBids(Exchange.BITTREX, generalPair, price, size);
         }
+    }
+
+    public void clearAllPairs(Exchange exchange, String pair){
+        exchangeMapService.clearState(exchange,pair);
     }
 
 }

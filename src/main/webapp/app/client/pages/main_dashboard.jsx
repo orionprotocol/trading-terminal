@@ -86,11 +86,12 @@ class MainDashboard extends React.Component {
         this.loadOrderHistory = this.loadOrderHistory.bind(this);
         this.handleJqeuryScroll = this.handleJqeuryScroll.bind(this);
         this.chooseOrderBookLine = this.chooseOrderBookLine.bind(this);
-
+        this.loadOrderBooks = this.loadOrderBooks.bind(this);
         this.changeCurrentPrice = this.changeCurrentPrice.bind(this);
         this.changeCount = this.changeCount.bind(this);
         this.recalculateTotal = this.recalculateTotal.bind(this);
         this.loadBenefits = this.loadBenefits.bind(this);
+        this.renderSize = this.renderSize.bind(this);
         this.setSide = this.setSide.bind(this);
         this.renderOrderbookExchange = this.renderOrderbookExchange.bind(this);
         this.showModal = this.showModal.bind(this);
@@ -156,7 +157,6 @@ class MainDashboard extends React.Component {
             return results.json();
         }).then(data => {
             this.setState({pairs: data, currentSymbol: data[0]}, () => {
-                this.loadSnapshot(this.state.currentSymbol, 20);
                 this.loadBenefits();
                 this.connect();
                 this.loadOrderHistory(data[0])
@@ -164,38 +164,43 @@ class MainDashboard extends React.Component {
                     this.loadOrderHistory(this.state.currentSymbol)
                 }, 2000);
                 //LOAD BINANCE
-                this.loadExchangeSnapshot("BINANCE", this.state.currentSymbol, 20, (data) => {
-                    this.setState({
-                        binance: {
-                            ...data, ...{
-                                lastPrice: 0,
-                                lastPriceStyle: '#000',
-                            }
-                        }
-                    })
-                });
-                this.loadExchangeSnapshot("BITTREX", this.state.currentSymbol, 20, (data) => {
-                    this.setState({
-                        bittrex: {
-                            ...data, ...{
-                                lastPrice: 0,
-                                lastPriceStyle: '#000',
-                            }
-                        }
-                    });
-                });
-                this.loadExchangeSnapshot("POLONIEX", this.state.currentSymbol, 20, (data) => {
-                    this.setState({
-                        poloniex: {
-                            ...data, ...{
-                                lastPrice: 0,
-                                lastPriceStyle: '#000',
-                            }
-                        }
-                    })
-                });
+                this.loadOrderBooks();
             })
         })
+    }
+
+    loadOrderBooks() {
+        this.loadSnapshot(this.state.currentSymbol, 20);
+        this.loadExchangeSnapshot("BINANCE", this.state.currentSymbol, 20, (data) => {
+            this.setState({
+                binance: {
+                    ...data, ...{
+                        lastPrice: 0,
+                        lastPriceStyle: '#000',
+                    }
+                }
+            })
+        });
+        this.loadExchangeSnapshot("BITTREX", this.state.currentSymbol, 20, (data) => {
+            this.setState({
+                bittrex: {
+                    ...data, ...{
+                        lastPrice: 0,
+                        lastPriceStyle: '#000',
+                    }
+                }
+            });
+        });
+        this.loadExchangeSnapshot("POLONIEX", this.state.currentSymbol, 20, (data) => {
+            this.setState({
+                poloniex: {
+                    ...data, ...{
+                        lastPrice: 0,
+                        lastPriceStyle: '#000',
+                    }
+                }
+            })
+        });
     }
 
     loadBenefits() {
@@ -306,39 +311,10 @@ class MainDashboard extends React.Component {
     changeCurrentSymbol(symbol) {
         this.setState({currentSymbol: symbol}, () => {
             this.disconnect();
-            this.loadSnapshot(symbol, 20)
             this.connect();
             this.loadOrderHistory(symbol);
             this.loadBenefits();
-            this.loadExchangeSnapshot("BINANCE", symbol, 20, (data) => {
-                this.setState({
-                    binance: {
-                        ...data,
-                        lastPrice: 0,
-                        lastPriceStyle: '#000',
-                    }
-                })
-            });
-            this.loadExchangeSnapshot("BITTREX", symbol, 20, (data) => {
-                this.setState({
-                    bittrex: {
-                        ...data,
-                        lastPrice: 0,
-                        lastPriceStyle: '#000',
-
-                    }
-                });
-            });
-            this.loadExchangeSnapshot("POLONIEX", symbol, 20, (data) => {
-                this.setState({
-                    poloniex: {
-                        ...data,
-                        lastPrice: 0,
-                        lastPriceStyle: '#000',
-
-                    }
-                })
-            });
+            this.loadOrderBooks();
         })
 
     }
@@ -431,6 +407,29 @@ class MainDashboard extends React.Component {
         }
     }
 
+    renderSize(data, exchange) {
+        if (exchange == "binance" && data.dynamic != 0) {
+            console.log("EXCHANGE " + exchange + " DYNAMIC " + data.dynamic)
+        }
+        let colorClassName = "exchange-size-default-color";
+        if (!data.dynamic) {
+            colorClassName = "exchange-size-default-color";
+        } else {
+            if (data.dynamic == 0) {
+                colorClassName = "exchange-size-default-color";
+            }
+            if (data.dynamic == 1) {
+                colorClassName = "exchange-size-increase-color";
+            }
+            if (data.dynamic == -1) {
+                colorClassName = "exchange-size-decrease-color";
+            }
+        }
+        data.dynamic = 0;
+        return (<td className={colorClassName}
+                    style={{width: '27%'}}>{data.size.toFixed(3)}</td>);
+    }
+
     renderAsks(modal, exchange, data) {
         let renderData = [];
         let key = 0;
@@ -447,7 +446,7 @@ class MainDashboard extends React.Component {
                 let divExchanges = [];
                 for (let j = 0; j < exchanges.length; j++) {
                     let imagePath = "/resources/img/exchanges/{exchange}.png".replace("{exchange}", exchanges[j]);
-                    let key = i + '' + j;
+                    let key = exchange + '' + i + '' + j;
                     divExchanges.push(
                         <div key={key} className="col-md-1" style={{paddingLeft: '1px'}}>
                             <img style={{height: '15px', width: '15px'}} src={imagePath}>
@@ -460,7 +459,7 @@ class MainDashboard extends React.Component {
                         this.chooseOrderBookLine(asks[i], 'asks')
                     }} style={{lineHeight: '20px'}} key={key}>
                         <td style={{width: '27%'}}>{asks[i].price.toFixed(8)}</td>
-                        <td style={{width: '27%', color: '#e5494d'}}>{asks[i].size.toFixed(3)}</td>
+                        {this.renderSize(asks[i], exchange)}
                         <td style={{width: '27%'}}>
                             <div style={{width: '100%', paddingTop: '1px', paddingBottom: '1px'}}>
                                 <div style={{
@@ -506,7 +505,7 @@ class MainDashboard extends React.Component {
                         this.chooseOrderBookLine(bids[i], 'bids')
                     }} style={{lineHeight: '20px'}} key={key}>
                         <td style={{width: '27%'}}>{bids[i].price.toFixed(8)}</td>
-                        <td style={{color: '#2051d3', width: '27%'}}>{bids[i].size.toFixed(3)}</td>
+                        {this.renderSize(bids[i], exchange)}
                         <td style={{width: '27%'}}>
                             <div style={{width: '100%', paddingTop: '1px', paddingBottom: '1px'}}>
                                 <div style={{
@@ -533,11 +532,21 @@ class MainDashboard extends React.Component {
     }
 
     handleNewExchangeData(data) {
-        console.log("ASKS " + JSON.stringify(data.asks))
-        console.log("BIDS " + JSON.stringify(data.bids))
+        console.log("AGGREGATED ASKS " + JSON.stringify(data.aggregatedAsks))
+        console.log("AGGREGATED BIDS " + JSON.stringify(data.aggregatedBids))
 
+        console.log("EXCHANGE ASKS " + JSON.stringify(data.exchangeAsks))
+        console.log("EXCHANGE BIDS " + JSON.stringify(data.exchangeBids))
+        let aggregatedData = {
+            asks: data.aggregatedAsks,
+            bids: data.aggregatedBids
+        }
+        let exchangeData = {
+            asks: data.exchangeAsks,
+            bids: data.exchangeBids
+        }
         try {
-            this.updateOrderBookData(data, 'all', this.state.data, (asks, bids, maxBid, lastPriceStyle) => {
+            this.updateOrderBookData(aggregatedData, 'all', this.state.data, (asks, bids, maxBid, lastPriceStyle) => {
                 this.handleJqeuryScroll('#asks-general', '#bids-general', 'orderbook-general');
                 this.handleJqeuryScroll('#modal-asks-general', '#modal-bids-general', 'modal-orderbook-general');
                 this.setState({
@@ -556,7 +565,7 @@ class MainDashboard extends React.Component {
         }
         if (this.state.showModal) {
             try {
-                this.updateOrderBookData(data, 'binance', this.state.binance, (asks, bids, maxBid, lastPriceStyle) => {
+                this.updateOrderBookData(exchangeData, 'binance', this.state.binance, (asks, bids, maxBid, lastPriceStyle) => {
                     this.handleJqeuryScroll('#modal-asks-bnn', '#modal-bids-bnn', 'modal-orderbook-binance');
                     this.setState({
                         binance: {
@@ -575,7 +584,7 @@ class MainDashboard extends React.Component {
         }
         if (this.state.showModal) {
             try {
-                this.updateOrderBookData(data, 'bittrex', this.state.bittrex, (asks, bids, maxBid, lastPriceStyle) => {
+                this.updateOrderBookData(exchangeData, 'bittrex', this.state.bittrex, (asks, bids, maxBid, lastPriceStyle) => {
                     this.handleJqeuryScroll('#modal-asks-btr', '#modal-bids-btr', 'modal-orderbook-bittrex');
                     this.setState({
                         bittrex: {
@@ -594,7 +603,7 @@ class MainDashboard extends React.Component {
         }
         if (this.state.showModal) {
             try {
-                this.updateOrderBookData(data, 'poloniex', this.state.poloniex, (asks, bids, maxBid, lastPriceStyle) => {
+                this.updateOrderBookData(exchangeData, 'poloniex', this.state.poloniex, (asks, bids, maxBid, lastPriceStyle) => {
                         this.handleJqeuryScroll('#modal-asks-plnx', '#modal-bids-plnx', 'modal-orderbook-poloniex');
                         this.setState({
                             poloniex: {
@@ -633,9 +642,16 @@ class MainDashboard extends React.Component {
             let updated = false;
             for (let j = 0; j < stateAsks.length; j++) {
                 if (asks[i].price == stateAsks[j].price) {
-                    if (asks[i].size == 0) {
+                    if (parseFloat(asks[i].size) == 0) {
                         stateAsks.splice(j, 1);
                     } else {
+                        stateAsks[j].dynamic = 0;
+                        if (stateAsks[j].size > asks[i].size) {
+                            stateAsks[j].dynamic = -1;
+                        }
+                        if (stateAsks[j].size < asks[i].size) {
+                            stateAsks[j].dynamic = 1;
+                        }
                         stateAsks[j].size = asks[i].size;
                     }
                     updated = true;
@@ -643,6 +659,7 @@ class MainDashboard extends React.Component {
                 }
             }
             if (!updated && asks[i].size != 0) {
+                asks[i].dynamic = 1
                 stateAsks.push(asks[i]);
             }
         }
@@ -666,9 +683,16 @@ class MainDashboard extends React.Component {
             let updated = false;
             for (let j = 0; j < stateBids.length; j++) {
                 if (bids[i].price == stateBids[j].price) {
-                    if (bids[i].size == 0) {
+                    if (parseFloat(bids[i].size) == 0) {
                         stateBids.splice(j, 1);
                     } else {
+                        stateBids[j].dynamic = 0;
+                        if (stateBids[j].size > bids[i].size) {
+                            stateBids[j].dynamic = -1;
+                        }
+                        if (stateBids[j].size < bids[i].size) {
+                            stateBids[j].dynamic = 1;
+                        }
                         stateBids[j].size = bids[i].size;
                     }
                     updated = true;
@@ -676,6 +700,7 @@ class MainDashboard extends React.Component {
                 }
             }
             if (!updated && bids[i].size != 0) {
+                bids[i].dynamic = 1;
                 stateBids.push(bids[i]);
             }
         }

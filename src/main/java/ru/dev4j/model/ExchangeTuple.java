@@ -24,8 +24,10 @@ public class ExchangeTuple {
 
     @Override
     public String toString() {
-        return "{price=" + price +
+        return "ExchangeTuple{" +
+                "price=" + price +
                 ", size=" + size +
+                ", exchanges=" + exchanges +
                 '}';
     }
 

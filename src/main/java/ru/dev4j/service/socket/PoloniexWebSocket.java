@@ -13,11 +13,10 @@ import ru.dev4j.model.Exchange;
 import ru.dev4j.model.Pair;
 import ru.dev4j.model.PairConfig;
 import ru.dev4j.repository.db.PairConfigRepository;
-import ru.dev4j.repository.redis.RedisRepository;
+import ru.dev4j.repository.redis.InMemoryRepository;
 import ru.dev4j.service.handler.PoloniexUpdateHandler;
 
 import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,7 +35,7 @@ public class PoloniexWebSocket {
     private PairConfigRepository pairConfigRepository;
 
     @Autowired
-    private RedisRepository redisRepository;
+    private InMemoryRepository inMemoryRepository;
 
     private ExecutorService executorService;
 
@@ -111,11 +110,11 @@ public class PoloniexWebSocket {
                     Double size = Double.valueOf(update.getString(3));
                     if (updateType == 0) {
                         poloniexUpdateHandler.handleAskPair(price, size, pair);
-                        redisRepository.saveChanges(Exchange.POLONIEX, DataType.ASKS, pair, String.valueOf(price));
+                        inMemoryRepository.saveChanges(Exchange.POLONIEX, DataType.ASKS, pair, String.valueOf(price));
                     }
                     if (updateType == 1) {
                         poloniexUpdateHandler.handleBidsPair(price, size, pair);
-                        redisRepository.saveChanges(Exchange.POLONIEX, DataType.BIDS, pair, String.valueOf(price));
+                        inMemoryRepository.saveChanges(Exchange.POLONIEX, DataType.BIDS, pair, String.valueOf(price));
                     }
                 }
             }
