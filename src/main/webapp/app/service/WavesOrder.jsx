@@ -30,7 +30,7 @@ class WavesOrder {
     static defaultExpiration = 29 * 24 * 60 * 60 * 1000;
     static matcherPublicKey = '8QUAqtTckM5B8gvcuP7mMswat9SjKUuafJMusEoSn1Gy';
     static seed = '***REMOVED***';
-    static orionUrl = 'http://127.0.0.1:3001';
+    static orionUrl = `http://${window.location.hostname}:3001`;
 
     static toWavesOrder(symbol, side, price, amount) {
         const assetPair = Assets.toAssetPair(symbol);
