@@ -137,7 +137,7 @@ class Menu extends React.Component {
                                     <div className='row'>
                                         <div>
                                         <span style={{color: '#9ba6b2'}}>
-                                            Секретная фраза
+                                            Seed phrase
                                         </span>
                                         </div>
                                     </div>
@@ -161,7 +161,7 @@ class Menu extends React.Component {
                                     <div className='row'>
                                         <div>
                                         <span style={{color: '#9ba6b2'}}>
-                                            Публичный ключ
+                                            Public key
                                         </span>
                                         </div>
                                     </div>
@@ -185,7 +185,7 @@ class Menu extends React.Component {
                                     <div className='row'>
                                         <div>
                                         <span style={{color: '#9ba6b2'}}>
-                                            Адрес
+                                            Address
                                         </span>
                                         </div>
                                     </div>

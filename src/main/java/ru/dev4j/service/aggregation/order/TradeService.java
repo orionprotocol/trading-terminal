@@ -35,7 +35,8 @@ public class TradeService {
     private final static class WavesAssets {
         static String WAVES = com.wavesplatform.wavesj.Asset.WAVES;
         static String BTC = "EBJDs3MRUiK35xbj59ejsf5Z4wH9oz6FuHvSCHVQqZHS";
-        static String ETH = "BrmjyAWT5jjr3Wpsiyivyvg5vDuzoX2s93WgiexXetB3";
+        static String ETH = "25BEcPNiopW1ioBveCZTaDTVPci2o9ZLkqCELHC2GYoZ";
+        static String XRP = "GqudznuaRtCKRKfEJu7WJyVxpFEwU1TNLtd7yUuwaP7R";
 
         static String toWavesAsset(String asset) {
             switch (asset){
@@ -43,6 +44,8 @@ public class TradeService {
                     return BTC;
                 case "ETH":
                     return ETH;
+                case "XRP":
+                    return XRP;
                 default:
                     return WAVES;
             }

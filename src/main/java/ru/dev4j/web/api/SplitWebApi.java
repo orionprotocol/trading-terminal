@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.DoubleStream;
 
 import static org.jooq.lambda.tuple.Tuple.tuple;
 
@@ -58,8 +59,13 @@ public class SplitWebApi {
         response.put("routes", routes.v2);
         response.put("totalCost", decimalFormat.format(total.v2));
         if(total.v1 > 0){
-            response.put("totalPrice", decimalFormat.format(total.v2 / total.v1));
-        }else{
+            DoubleStream doubleStream = routes.v2.stream()
+                    .filter(r ->  Double.valueOf(r.getSubOrdQty()) > 0 && Double.valueOf(r.getPrice()) > 0)
+                    .mapToDouble(r -> Double.valueOf(r.getPrice()));
+            double totalPrice = (Objects.equals(side, "buy") ? doubleStream.max() : doubleStream.min()).orElse(0.0);
+            DecimalFormat df = new DecimalFormat("#0.########");
+            response.put("totalPrice", df.format(totalPrice));
+        } else{
             response.put("totalPrice", 0);
         }
         return response;

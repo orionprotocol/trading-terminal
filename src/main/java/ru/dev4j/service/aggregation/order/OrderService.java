@@ -95,26 +95,28 @@ public class OrderService {
         order.setStatus(OrderStatus.NEW);
 
         List<SubOrder> subOrders = getSubOrders(routes.v2, order);
-
         for (SubOrder subOrder : subOrders) {
             for (Broker dbBroker : routes.v1) {
                 Map<Exchange, Double> brokerBalances = chooseSymbolBalance(dbBroker, routes.v3);
                 if (brokerBalances.get(subOrder.getExchange()) >= subOrder.getSpentQty()) {
-                    if (orderHttpService.sendOrderInfo(subOrder, order, dbBroker)) {
-                        subOrder.setReserved(true);
-                        subOrder.setBrokerId(dbBroker.getId());
-                        order.getSubOrders().add(subOrder);
-                        break;
-                    }
+                    subOrder.setReserved(true);
+                    subOrder.setBrokerId(dbBroker.getId());
+                    order.getSubOrders().add(subOrder);
+                    break;
                 }
             }
         }
-
-
         orderRepository.save(order);
-
         order.setSubOrders(subOrders);
         orderRepository.save(order);
+
+        for (SubOrder subOrder : subOrders) {
+            for (Broker dbBroker : routes.v1) {
+                if (Objects.equals(dbBroker.getId(), subOrder.getBrokerId())) {
+                    orderHttpService.sendOrderInfo(subOrder, order, dbBroker);
+                }
+            }
+        }
 
         Map<String, Object> response = new HashMap<>();
         response.put("symbol", order.getSymbol());

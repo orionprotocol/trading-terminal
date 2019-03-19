@@ -1,16 +1,20 @@
 import {order} from '@waves/waves-transactions';
 
 const Assets = {
-    WAVES: '',
+    WAVES: 'WAVES',
     BTC: 'EBJDs3MRUiK35xbj59ejsf5Z4wH9oz6FuHvSCHVQqZHS',
-    ETH: 'BrmjyAWT5jjr3Wpsiyivyvg5vDuzoX2s93WgiexXetB3',
+    ETH: '25BEcPNiopW1ioBveCZTaDTVPci2o9ZLkqCELHC2GYoZ',
+    XRP: 'GqudznuaRtCKRKfEJu7WJyVxpFEwU1TNLtd7yUuwaP7R',
+
 
     toSymbolAsset: function(asset) {
         switch (asset) {
             case 'EBJDs3MRUiK35xbj59ejsf5Z4wH9oz6FuHvSCHVQqZHS':
                 return 'BTC';
-            case 'BrmjyAWT5jjr3Wpsiyivyvg5vDuzoX2s93WgiexXetB3':
+            case '25BEcPNiopW1ioBveCZTaDTVPci2o9ZLkqCELHC2GYoZ':
                 return 'ETH';
+            case 'GqudznuaRtCKRKfEJu7WJyVxpFEwU1TNLtd7yUuwaP7R':
+                return 'XRP';
             default:
                 return 'WAVES';
         }

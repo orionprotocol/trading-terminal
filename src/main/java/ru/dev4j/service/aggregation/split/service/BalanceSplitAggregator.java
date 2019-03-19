@@ -131,37 +131,38 @@ public class BalanceSplitAggregator {
         Map<Exchange, Double> remBalances = Maps.newHashMap(exchangeBalance);
         size = calculateSplits(DataType.BIDS, size, aggregate, splits, remBalances);
 
-        if (size > 0) {
+        if (size > 0 && price > Double.MIN_VALUE && price < Double.MAX_VALUE) {
             splits.addAll(splitRemaining(pair, price, size, remBalances));
         }
 
         return splits;
     }
 
-    private double withMinNotional(double price, double qty) {
-        return price * qty >= 0.001 ? qty : 0;
+    private BigDecimal withMinNotional(double price, BigDecimal qty) {
+        return qty;
+        //return price * qty >= 0.001 ? qty : 0;
     }
 
     private Double calculateSplits(DataType side, Double size, Seq<Tuple3<Double, Double, Exchange>> aggregate,
                                    List<Split> splits, Map<Exchange, Double> remBalances) {
+        BigDecimal remSize = BigDecimal.valueOf(size);
         for (Tuple3<Double, Double, Exchange> t : aggregate) {
-            double minSize = withMinNotional(t.v1, Math.min(size, t.v2));
-            double availableQty = side == DataType.ASKS ?
+            BigDecimal minSize = withMinNotional(t.v1, remSize.min(BigDecimal.valueOf(t.v2)));
+            BigDecimal availableQty = BigDecimal.valueOf(side == DataType.ASKS ?
                     remBalances.get(t.v3) / t.v1
-                    : remBalances.get(t.v3);
-            double subOrdQty = withMinNotional(t.v1, BigDecimal.valueOf(Math.min(minSize, availableQty))
-                    .setScale(2, RoundingMode.FLOOR).doubleValue());
+                    : remBalances.get(t.v3));
+            BigDecimal subOrdQty = withMinNotional(t.v1, minSize.min(availableQty)).setScale(2, RoundingMode.FLOOR);
 
-            if (subOrdQty > 0) {
-                double spentQty = side == DataType.ASKS ? subOrdQty * t.v1 : subOrdQty;
-                remBalances.compute(t.v3, (exchange, bal) -> bal != null ? bal - spentQty : 0.0);
+            if (subOrdQty.compareTo(BigDecimal.ZERO) > 0) {
+                BigDecimal spentQty = side == DataType.ASKS ? subOrdQty.multiply(BigDecimal.valueOf(t.v1)) : subOrdQty;
+                remBalances.compute(t.v3, (exchange, bal) -> bal != null ? bal - spentQty.doubleValue() : 0.0);
 
-                splits.add(new Split(t.v1, subOrdQty, t.v3));
-                size -= subOrdQty;
-                if (size <= 0) break;
+                splits.add(new Split(t.v1, subOrdQty.doubleValue(), t.v3));
+                remSize = remSize.subtract(subOrdQty);
+                if (remSize.compareTo(BigDecimal.ZERO) <= 0) break;
             }
         }
-        return size;
+        return remSize.setScale(2, RoundingMode.FLOOR).doubleValue();
     }
 
     private List<Split> aggregateAsks(String pair, Double price, Double size, Map<Exchange, Double> exchangeBalance) {
@@ -186,7 +187,7 @@ public class BalanceSplitAggregator {
         Map<Exchange, Double> remBalances = Maps.newHashMap(exchangeBalance);
         size = calculateSplits(DataType.ASKS, size, aggregate, splits, remBalances);
 
-        if (size > 0) {
+        if (size > 0 && price > Double.MIN_VALUE && price < Double.MAX_VALUE) {
             splits.addAll(splitRemaining(pair, price, size, remBalances));
         }
 

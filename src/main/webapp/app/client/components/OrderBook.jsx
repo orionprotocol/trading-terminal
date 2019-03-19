@@ -33,7 +33,7 @@ class OrderBook extends React.Component {
 
     renderExchangeColumn() {
         if (!this.props.modal) {
-            return (<td style={{borderBottom: ' 1px solid #edf0f4', width: '19%'}}>Биржа</td>);
+            return (<td style={{borderBottom: ' 1px solid #edf0f4', width: '19%'}}>Exchange</td>);
         }
     }
 
