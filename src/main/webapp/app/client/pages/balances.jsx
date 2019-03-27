@@ -63,7 +63,9 @@ class Balance extends React.Component {
             case "waves":
                 return "/resources/img/waves.svg";
             case "eth":
-                return "/resources/img/etherium.svg";
+                return "/resources/img/ethereum.svg"
+            case "xrp":
+                return "/resources/img/ripple.svg";
         }
     }
 

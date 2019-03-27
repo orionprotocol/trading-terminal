@@ -129,7 +129,7 @@ class CandlesService {
                 onResetCacheNeededCallback
             );
 
-            if (candles.length) {
+            if (candles.length > 1) {
                 this._updateLastTime(candles);
                 CandlesService
                     .filterCandlesByTime(candles, from, to)
@@ -140,8 +140,8 @@ class CandlesService {
         var timerId = setTimeout(() => {
                 CandlesService._getAndHandleCandles(
                     symbolInfo,
-                    from,
-                    to,
+                    this._lastTime,
+                    Math.round(Date.now() / 1000),
                     resolution,
                     handleCandles
                 );
@@ -174,7 +174,7 @@ class CandlesService {
     }
 
     _updateLastTime(candles) {
-        const lastTime = candles[candles.length - 1].timeStart;
+        const lastTime = candles[candles.length - 2].timeStart;
         if (this._lastTime >= lastTime) {
             return false;
         }

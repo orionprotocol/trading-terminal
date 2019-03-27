@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="424px" height="368px" viewBox="0 0 424 368" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>ripple</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ripple" fill="#393939" fill-rule="nonzero">
+            <path d="M361.890969,0 L423.216969,0 L295.628969,132.3358 C249.444969,180.2398 174.564369,180.2398 128.379569,132.3358 L0.792969021,0 L62.117769,0 L159.042169,100.5322 C188.292369,130.8712 235.714969,130.8712 264.966969,100.5322 L361.890969,0 Z" id="Shape"></path>
+            <path d="M61.325,368.0004 L0,368.0004 L128.3748,234.8468 C174.5596,186.94306 249.44,186.94306 295.626,234.8468 L424,368.0004 L362.674,368.0004 L264.962,266.65 C235.71,236.3106 188.2876,236.3106 159.0374,266.65 L61.325,368.0004 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>
