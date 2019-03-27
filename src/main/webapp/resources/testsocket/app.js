@@ -13,7 +13,7 @@ function setConnected(connected) {
 }
 
 function connect() {
-    ws = new WebSocket('ws://***REMOVED***/ETHBTC');
+    ws = new WebSocket('ws://host/ETHBTC');
     ws.onmessage = function(data){
         showGreeting(data.data);
     }
