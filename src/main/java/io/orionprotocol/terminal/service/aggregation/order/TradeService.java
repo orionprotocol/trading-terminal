@@ -24,7 +24,7 @@ public class TradeService {
     @Autowired
     private OrderRepository orderRepository;
 
-    private String seed = "***REMOVED***";
+    private String seed = "";
     private final PrivateKeyAccount account = PrivateKeyAccount.fromSeed(seed, 0, com.wavesplatform.wavesj.Account.TESTNET);
 
 
