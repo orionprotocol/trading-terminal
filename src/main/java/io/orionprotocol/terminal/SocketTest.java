@@ -14,8 +14,8 @@ public class SocketTest {
 
         System.out.println("Press any key to quit");
 
-        String API_KEY = "***REMOVED***";
-        String SECRET_KEY = "***REMOVED***";
+        String API_KEY = "6fa1574ccfb048f4aa5d69e8ce797bab";
+        String SECRET_KEY = "a6bc0b684d244035854c955d996f6038";
 
         try (BittrexExchange bittrexExchange = new BittrexExchange(API_KEY, SECRET_KEY)) {
 

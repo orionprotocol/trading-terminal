@@ -22,8 +22,8 @@ import java.util.List;
 public class BittrexWebSocket {
 
     private static final String BITTREX_NAME = "BITTREX";
-    private String API_KEY = "***REMOVED***";
-    private String SECRET_KEY = "***REMOVED***";
+    private String API_KEY = "";
+    private String SECRET_KEY = "";
 
 
     final static Logger logger = Logger.getLogger(BittrexWebSocket.class);
