@@ -206,7 +206,7 @@
         <dependency>
             <groupId>com.github.ccob</groupId>
             <artifactId>bittrex4j</artifactId>
-            <version>1.0.12-SNAPSHOT</version>
+            <version>1.0.11</version>
         </dependency>
 
         <!--REDIS-->
