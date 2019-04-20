@@ -10,33 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 @Configuration
 @Import({PropertySourceConfig.class})
-@ComponentScan("ru.dev4j.repository.redis")
+@ComponentScan("io.orionprotocol.terminal.repository.redis")
 public class RedisConfig {
 
-    @Value("${redis.host}")
-    private String host;
-
-    @Value("${redis.password}")
-    private String password;
-
-
-    @Bean
-    JedisConnectionFactory jedisConnectionFactory() {
-        JedisConnectionFactory jedisConFactory
-                = new JedisConnectionFactory();
-        jedisConFactory.setHostName(host);
-        if (password != null && !password.isEmpty()) {
-            jedisConFactory.setPassword(password);
-        }
-        jedisConFactory.setPort(6379);
-        return jedisConFactory;
-    }
-
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(jedisConnectionFactory());
-        template.setEnableTransactionSupport(true);
-        return template;
-    }
 }

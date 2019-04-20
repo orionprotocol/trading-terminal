@@ -23,7 +23,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"ru.dev4j.web"})
+@ComponentScan(basePackages = {"io.orionprotocol.terminal.web"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired

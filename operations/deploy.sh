@@ -2,4 +2,4 @@
 PROFILE=$1
 
 cd ..
-mvn clean package -P$PROFILE tomcat7:redeploy -DskipTests
+mvn clean package tomcat7:redeploy -DskipTests

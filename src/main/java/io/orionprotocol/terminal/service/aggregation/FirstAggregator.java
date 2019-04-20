@@ -1,11 +1,11 @@
 package io.orionprotocol.terminal.service.aggregation;
 
+import io.orionprotocol.terminal.config.RedisConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 import io.orionprotocol.terminal.config.MongoDBConfig;
 import io.orionprotocol.terminal.config.PropertySourceConfig;
-import io.orionprotocol.terminal.config.RedisConfig;
 import io.orionprotocol.terminal.config.ServiceConfig;
 import io.orionprotocol.terminal.model.Exchange;
 import io.orionprotocol.terminal.model.ExchangeTuple;

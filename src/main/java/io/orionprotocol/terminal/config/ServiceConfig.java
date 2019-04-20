@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
 @EnableScheduling
-@ComponentScan(basePackages = {"ru.dev4j.service"})
+@ComponentScan(basePackages = {"io.orionprotocol.terminal.service"})
 public class ServiceConfig {
 
 }

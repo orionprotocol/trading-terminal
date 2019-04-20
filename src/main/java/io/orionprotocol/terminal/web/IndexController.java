@@ -34,6 +34,12 @@ public class IndexController {
         return "client/client";
     }
 
+    @RequestMapping(value = "/deposit")
+    public String deposit() {
+        return "client/client";
+    }
+
+
     @RequestMapping(value = "/modal")
     public String modal() {
         return "client/client";
