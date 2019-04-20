@@ -5,9 +5,9 @@
 *.log
 target/
 
-
 src/main/webapp/node_modules
-src/main/resources/project.properties
+/src/main/resources/project.properties
+
 
 # Project files
 app.log
