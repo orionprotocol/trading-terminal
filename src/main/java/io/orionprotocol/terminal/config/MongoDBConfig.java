@@ -12,7 +12,7 @@ import java.util.Collections;
 
 @Configuration
 @Import({PropertySourceConfig.class})
-@EnableMongoRepositories(basePackages = {"ru.dev4j.repository.db"})
+@EnableMongoRepositories(basePackages = {"io.orionprotocol.terminal.repository.db"})
 @EnableMongoAuditing
 public class MongoDBConfig extends AbstractMongoConfiguration {
 

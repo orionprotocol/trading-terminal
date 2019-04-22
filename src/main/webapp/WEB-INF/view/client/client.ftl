@@ -43,6 +43,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Balance -->
     <link rel="stylesheet" href="/resources/css/balance.css">
 
+    <!-- Balance -->
+    <link rel="stylesheet" href="/resources/css/details.css">
+
     <!-- Modal -->
     <link rel="stylesheet" href="/resources/css/modal.css">
 

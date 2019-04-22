@@ -10,12 +10,9 @@ class Balance extends React.Component {
     constructor() {
         super();
         this.state = {
-            balances: {},
-            modal: false
+            balances: {}
         }
 
-        this.showModal = this.showModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
         this.loadBalance = this.loadBalance.bind(this);
         this.renderBalances = this.renderBalances.bind(this);
         this.mapToImage = this.mapToImage.bind(this);
@@ -26,19 +23,6 @@ class Balance extends React.Component {
         setInterval(() => {
             this.loadBalance()
         }, 1000);
-    }
-
-    showModal() {
-        let address = localStorage.getItem('address') || '';
-        if (!address) {
-            Toastr.showError("Please set your address in settings");
-            return;
-        }
-        this.setState({modal: true})
-    }
-
-    closeModal() {
-        this.setState({modal: false})
     }
 
     loadBalance() {
@@ -69,8 +53,10 @@ class Balance extends React.Component {
         }
     }
 
-    showDeposit() {
-
+    showDeposit(key){
+        if(key == "btc"){
+            window.location.href = "/deposit";
+        }
     }
 
     renderBalances() {
@@ -100,7 +86,7 @@ class Balance extends React.Component {
                         </b>
                     </td>
                     <td>
-                        <button onClick={this.showModal} className="btn  balance-btn">
+                        <button onClick={()=> this.showDeposit(key)} className="btn  balance-btn">
                             Deposit
                         </button>
                     </td>

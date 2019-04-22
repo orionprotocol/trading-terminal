@@ -1,5 +1,6 @@
-export class MomentJS {
+import moment from "moment";
 
+export class MomentJS {
 
     static renderTime(date) {
         const months = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];

@@ -7,6 +7,7 @@ class Orders extends React.Component {
 
     constructor() {
         super();
+
         this.state = {
             buy: {},
             sell: {},

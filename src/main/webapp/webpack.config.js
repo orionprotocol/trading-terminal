@@ -15,11 +15,24 @@ var defaults = {
                 query: {
                     presets: ["es2015", "stage-0", "react"],
                     plugins: ["babel-plugin-transform-runtime"]
-                    }
+                }
+            },
+            {
+                test: /\.css$/,
+                include: /node_modules/,
+                loaders: ['style-loader', 'css-loader'],
             }
         ]
     },
-    resolve: {extensions: ['.js', '.jsx']},
+    resolve: {
+        extensions: ['.js', '.jsx']
+    },
+    node: {
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty',
+        dns: 'empty'
+    }
 };
 
 module.exports = defaults;
