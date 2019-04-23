@@ -4,6 +4,7 @@ import QRCode from 'qrcode.react'
 import {confirmAlert} from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import {MomentJS} from './../../service/MomentJS'
+
 const regtestUtils = require('../../service/_regtest')
 var orion = require('orion-atomic')
 const wc = require('@waves/waves-crypto')
@@ -40,14 +41,18 @@ class DepositHistory extends React.Component {
     componentDidMount() {
         // localStorage.setItem('deposits',[])
         orion.btcSwap.settings.network = regtestUtils.network
-        orion.btcSwap.settings.client = {unspents: regtestUtils.unspents, calcFee: regtestUtils.calcFee, getBalance: regtestUtils.getBalance}
 
+        orion.btcSwap.settings.client = {
+            unspents: regtestUtils.unspents,
+            calcFee: regtestUtils.calcFee,
+            getBalance: regtestUtils.getBalance
+        }
         orion.wavesSwap.settings.network = 'T'
         orion.wavesSwap.settings.nodeUrl = 'https://pool.testnet.wavesnodes.com'
         orion.wavesSwap.settings.assetId = 'EBJDs3MRUiK35xbj59ejsf5Z4wH9oz6FuHvSCHVQqZHS'
 
         let deposits = [];
-        if(localStorage.getItem('deposits')){
+        if (localStorage.getItem('deposits')) {
             deposits = JSON.parse(localStorage.getItem('deposits'));
         }
         console.log(localStorage.getItem("deposits"));
@@ -186,8 +191,8 @@ class DepositHistory extends React.Component {
             publicKey: newContract.publicKey,
             date: new Date(),
             status: 'NEW',
-            clientPublicKey:publicKey,
-            clientAddress:address
+            clientPublicKey: publicKey,
+            clientAddress: address
         }
         if (this.state.deposits) {
             let deposits = this.state.deposits;
@@ -208,10 +213,10 @@ class DepositHistory extends React.Component {
         let secretId = "secret" + detailId;
         renderDetails.push(
             <tr key={detailId} id={detailId} className="details-hide">
-                <td colSpan={6}>
+                <td style={{maxWidth: '300px'}} colSpan={6}>
                     <div>
                         <div>
-                            <span style={{fontWeight:'600'}}>Script: </span> {Buffer.from(deposit.script).toString('hex')}
+                            <span style={{fontWeight: '600'}}>Script: </span> <span style={{overflowWrap: 'break-word'}}>{Buffer.from(deposit.script).toString('hex')}</span>
                         </div>
                         <div style={{marginTop: '10px'}}>
                             <span className="details-btn" style={{border: 'none', outline: 'none'}}
@@ -301,13 +306,13 @@ class DepositHistory extends React.Component {
                             <i className="fas fa-qrcode"></i> Show QR cofde
                         </span>
                     </div>
-                    <div style={{marginTop:'5px'}}>
+                    <div style={{marginTop: '5px'}}>
                         <span className="details-btn" onClick={() => this.handlePaid(deposit)}
                               style={{border: 'none', outline: 'none'}}>
                             <i style={{fontSize: '20px'}} className="fas fa-hand-holding"></i> <span>Paid</span>
                         </span>
                     </div>
-                    <div style={{marginTop:'10px'}}>
+                    <div style={{marginTop: '10px'}}>
                         <span className="details-btn" onClick={() => this.refund(deposit)}
                               style={{border: 'none', outline: 'none'}}>
                             <i className="fas fa-redo-alt"></i> Refund
@@ -388,9 +393,12 @@ class DepositHistory extends React.Component {
     }
 
     render() {
-        const windowHeight = window.innerHeight + 'px';
+        let windowHeight = window.innerHeight + 'px';
+        if (this.state.deposits.length > 0) {
+            windowHeight = this.state.deposits.length * 265 + 'px';
+        }
         return (
-            <div style={{paddingRight: '20px', paddingLeft: '10px', paddingTop: '5px',height:windowHeight}}>
+            <div style={{paddingRight: '20px', paddingLeft: '10px', paddingTop: '5px', height: windowHeight}}>
 
                 <div style={{marginLeft: '90%'}}>
                     <button onClick={this.createNew} className="btn">Create New</button>

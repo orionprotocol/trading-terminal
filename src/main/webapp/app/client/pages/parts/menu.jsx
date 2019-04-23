@@ -21,6 +21,7 @@ class Menu extends React.Component {
         this.changePublicKey = this.changePublicKey.bind(this);
         this.changeAddress = this.changeAddress.bind(this);
 
+
         orion.wavesSwap.settings.network = 'T'
         orion.wavesSwap.settings.nodeUrl = 'https://pool.testnet.wavesnodes.com'
         orion.wavesSwap.settings.assetId = 'EBJDs3MRUiK35xbj59ejsf5Z4wH9oz6FuHvSCHVQqZHS'
