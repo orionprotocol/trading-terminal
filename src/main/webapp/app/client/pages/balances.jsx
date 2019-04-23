@@ -1,6 +1,9 @@
 import React from 'react';
 import {Modal} from 'react-bootstrap'
 import QRCode from 'qrcode.react'
+const regtestUtils = require('../../service/_regtest')
+var orion = require('orion-atomic')
+const wc = require('@waves/waves-crypto')
 
 import ReactDOM from 'react-dom';
 import {Toastr} from "../../service/Toastr";
@@ -20,14 +23,18 @@ class Balance extends React.Component {
     }
 
     componentDidMount() {
+        orion.btcSwap.settings.network = regtestUtils.network
+        orion.btcSwap.settings.client = {unspents: regtestUtils.unspents, calcFee: regtestUtils.calcFee, getBalance: regtestUtils.getBalance}
         setInterval(() => {
             this.loadBalance()
         }, 1000);
     }
 
     loadBalance() {
-        let address = localStorage.getItem('address') || '';
+        let seed = localStorage.getItem('seed') || '';
+        let address = wc.address(seed,'T')
         if (address) {
+            // let url = ${window.location.hostname}
             fetch(`http://${window.location.hostname}:3001/api/balance/${address}`,
                 {
                     credentials: 'same-origin',
@@ -54,7 +61,7 @@ class Balance extends React.Component {
     }
 
     showDeposit(key){
-        if(key == "btc"){
+        if(key.toLowerCase() == "btc"){
             window.location.href = "/deposit";
         }
     }
@@ -62,7 +69,7 @@ class Balance extends React.Component {
     renderBalances() {
         const balances = this.state.balances;
         let renderedBalances = [];
-        for (var key in balances) {
+        for (let key in balances) {
             if (balances.hasOwnProperty(key)) {
                 const image = this.mapToImage(key.toLowerCase());
                 renderedBalances.push(<tr key={key}>
