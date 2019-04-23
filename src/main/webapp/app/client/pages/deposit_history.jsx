@@ -206,12 +206,12 @@ class DepositHistory extends React.Component {
                 <td colSpan={6}>
                     <div>
                         <div>
-                            {Buffer.from(deposit.script).toString('base64')}
+                            <span style={{fontWeight:'600'}}>Script: </span> {Buffer.from(deposit.script).toString('hex')}
                         </div>
                         <div style={{marginTop: '10px'}}>
                             <span className="details-btn" style={{border: 'none', outline: 'none'}}
                                   onClick={() => this.switchSecret(secretId)}><i className="fas fa-eye"></i></span>
-                            <span id={secretId} className="secret-hide">{Buffer.from(deposit.secret).toString('hex')}</span>
+                            <span id={secretId} className="secret-hide"><span style={{fontWeight:'600'}} >Secret: </span> {Buffer.from(deposit.secret).toString('hex')}</span>
                         </div>
                     </div>
                 </td>
@@ -244,7 +244,7 @@ class DepositHistory extends React.Component {
                 },
                 body: JSON.stringify({
                     address: deposit.address,
-                    contractScript: Buffer.from(deposit.script).toString('base64'),
+                    contractScript: Buffer.from(deposit.script).toString('hex'),
                     recipientAddress: deposit.clientAddress
                 })
             }
