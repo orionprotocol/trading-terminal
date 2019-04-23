@@ -41,11 +41,16 @@ class DepositHistory extends React.Component {
     componentDidMount() {
         // localStorage.setItem('deposits',[])
         orion.btcSwap.settings.network = regtestUtils.network
+
         orion.btcSwap.settings.client = {
             unspents: regtestUtils.unspents,
             calcFee: regtestUtils.calcFee,
             getBalance: regtestUtils.getBalance
         }
+        orion.wavesSwap.settings.network = 'T'
+        orion.wavesSwap.settings.nodeUrl = 'https://pool.testnet.wavesnodes.com'
+        orion.wavesSwap.settings.assetId = 'EBJDs3MRUiK35xbj59ejsf5Z4wH9oz6FuHvSCHVQqZHS'
+
         let deposits = [];
         if (localStorage.getItem('deposits')) {
             deposits = JSON.parse(localStorage.getItem('deposits'));
@@ -177,7 +182,7 @@ class DepositHistory extends React.Component {
         let publicKey = wc.publicKey(seed);
         let address = wc.address(seed, orion.wavesSwap.settings.network)
 
-        const newContract = orion.btcSwap.initiate(publicKey, this.state.publicKey)
+        const newContract = orion.btcSwap.initiate(publicKey, Buffer.from(this.state.publicKey, 'hex'))
         let newDeposit = {
             address: newContract.address,
             secret: newContract.secret,
@@ -211,14 +216,12 @@ class DepositHistory extends React.Component {
                 <td style={{maxWidth: '300px'}} colSpan={6}>
                     <div>
                         <div>
-                            <span style={{fontWeight: '600'}}>Script: </span> <span
-                            style={{overflowWrap: 'break-word'}}>{Buffer.from(deposit.script).toString('hex')}</span>
+                            <span style={{fontWeight: '600'}}>Script: </span> <span style={{overflowWrap: 'break-word'}}>{Buffer.from(deposit.script).toString('hex')}</span>
                         </div>
                         <div style={{marginTop: '10px'}}>
                             <span className="details-btn" style={{border: 'none', outline: 'none'}}
                                   onClick={() => this.switchSecret(secretId)}><i className="fas fa-eye"></i></span>
-                            <span id={secretId} className="secret-hide"><span
-                                style={{fontWeight: '600'}}>Secret: </span> {Buffer.from(deposit.secret).toString('hex')}</span>
+                            <span id={secretId} className="secret-hide"><span style={{fontWeight:'600'}} >Secret: </span> {Buffer.from(deposit.secret).toString('hex')}</span>
                         </div>
                     </div>
                 </td>
