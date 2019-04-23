@@ -209,7 +209,7 @@ class CandlesService {
         const baseUrl = 'https://api.wavesplatform.com';
         const exchange = symbolInfo.exchange;
         //const path = `${baseUrl}/candles/${amountId}/${priceId}`;
-        const path = 'http://host:port/api/v1/candles';
+        const path = 'http://51.15.88.39:8080/api/v1/candles';
         const fetchPath = exchange == 'all' ? `${path}?symbol=${symbolInfo.ticker}&timeStart=${from}&timeEnd=${to}&interval=${interval}` : `${path}?symbol=${symbolInfo.ticker}&timeStart=${from}&timeEnd=${to}&interval=${interval}&exchange=${exchange}`;
         return fetch(fetchPath).then((res) => res.json()).then((res) => res.candles);
     }
