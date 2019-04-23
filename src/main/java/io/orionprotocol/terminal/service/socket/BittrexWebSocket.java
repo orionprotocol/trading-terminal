@@ -7,6 +7,7 @@ import io.orionprotocol.terminal.repository.redis.InMemoryRepository;
 import io.orionprotocol.terminal.service.handler.BittrexUpdateHandler;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import io.orionprotocol.terminal.model.DataType;
 import io.orionprotocol.terminal.model.Exchange;
@@ -22,8 +23,12 @@ import java.util.List;
 public class BittrexWebSocket {
 
     private static final String BITTREX_NAME = "BITTREX";
-    private String API_KEY = "";
-    private String SECRET_KEY = "";
+
+    @Value("${bittrex.apikey}")
+    private String API_KEY;
+
+    @Value("${bittrex.secret}")
+    private String SECRET_KEY;
 
 
     final static Logger logger = Logger.getLogger(BittrexWebSocket.class);
