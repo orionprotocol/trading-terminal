@@ -206,7 +206,7 @@ class DepositHistory extends React.Component {
                 <td colSpan={6}>
                     <div>
                         <div>
-                            <span style={{fontWeight:'600'}}>Script: </span> {Buffer.from(deposit.script).toString('base64')}
+                            <span style={{fontWeight:'600'}}>Script: </span> {Buffer.from(deposit.script).toString('hex')}
                         </div>
                         <div style={{marginTop: '10px'}}>
                             <span className="details-btn" style={{border: 'none', outline: 'none'}}
