@@ -1,19 +1,25 @@
 import React from 'react';
 import {Modal} from 'react-bootstrap'
 import ReactDOM from 'react-dom';
-
+const regtestUtils = require('../../../service/_regtest')
+var orion = require('orion-atomic')
+const wc = require('@waves/waves-crypto')
 class Menu extends React.Component {
 
     constructor() {
         super();
         this.state = {
             modal: false,
-            seed: ''
+            seed: '',
+            publicKey: '',
+            address: ''
         }
 
         this.showModal = this.showModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.changeSeed = this.changeSeed.bind(this);
+        this.changePublicKey = this.changePublicKey.bind(this);
+        this.changeAddress = this.changeAddress.bind(this);
     }
 
     changeSeed(e) {
@@ -22,6 +28,29 @@ class Menu extends React.Component {
         })
         localStorage.setItem('seed', e.target.value);
         window.exchangeSeed = e.target.value
+
+        let publicKey = wc.publicKey(e.target.value);
+        let address = wc.address(e.target.value, orion.wavesSwap.settings.network)
+
+        this.changePublicKey(publicKey);
+        this.changeAddress(address);
+
+    }
+
+    changePublicKey(value) {
+        this.setState({
+            publicKey: value
+        })
+        localStorage.setItem('publicKey', value);
+        window.exchangePublicKey = value
+    }
+
+    changeAddress(value) {
+        this.setState({
+            address: value
+        })
+        localStorage.setItem('address', value);
+        window.exchangeAddress = value
     }
 
 
@@ -133,6 +162,52 @@ class Menu extends React.Component {
                                             <div className="col-md-6">
                                                 <input type="text" onChange={this.changeSeed} value={this.state.seed}
                                                        className="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style={{marginTop: '15px'}}>
+                                    <div className='row'>
+                                        <div>
+                                        <span style={{color: '#9ba6b2'}}>
+                                            Public key
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div className="row" style={{
+                                        backgroundColor: 'rgb(248, 249, 251)',
+                                        padding: '20px',
+                                        paddingLeft: '5px',
+                                        border: '1px dashed #dae1e9',
+                                        borderRadius: '4px',
+                                        marginTop: '5px'
+                                    }}>
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <input type="text" value={this.state.publicKey} readOnly className="form-control"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style={{marginTop: '15px'}}>
+                                    <div className='row'>
+                                        <div>
+                                        <span style={{color: '#9ba6b2'}}>
+                                            Address
+                                        </span>
+                                        </div>
+                                    </div>
+                                    <div className="row" style={{
+                                        backgroundColor: 'rgb(248, 249, 251)',
+                                        padding: '20px',
+                                        paddingLeft: '5px',
+                                        border: '1px dashed #dae1e9',
+                                        borderRadius: '4px',
+                                        marginTop: '5px'
+                                    }}>
+                                        <div className="row">
+                                            <div className="col-md-6">
+                                                <input type="text" value={this.state.address} readOnly className="form-control"/>
                                             </div>
                                         </div>
                                     </div>
