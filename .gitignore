@@ -7,7 +7,7 @@ target/
 
 src/main/webapp/node_modules
 /src/main/resources/project.properties
-
+src/main/webapp/resources/js/bundle.js
 
 # Project files
 app.log
