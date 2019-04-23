@@ -20,6 +20,10 @@ class Balance extends React.Component {
         this.renderBalances = this.renderBalances.bind(this);
         this.mapToImage = this.mapToImage.bind(this);
         this.showDeposit = this.showDeposit.bind(this);
+
+        orion.wavesSwap.settings.network = 'T'
+        orion.wavesSwap.settings.nodeUrl = 'https://pool.testnet.wavesnodes.com'
+        orion.wavesSwap.settings.assetId = 'EBJDs3MRUiK35xbj59ejsf5Z4wH9oz6FuHvSCHVQqZHS'
     }
 
     componentDidMount() {
@@ -35,7 +39,7 @@ class Balance extends React.Component {
         let address = wc.address(seed,'T')
         if (address) {
             // let url = ${window.location.hostname}
-            fetch(`http://${window.location.hostname}:3001/api/balance/${address}`,
+            fetch(`http://demo.orionprotocol.io:3001/api/balance/${address}`,
                 {
                     credentials: 'same-origin',
                 }
