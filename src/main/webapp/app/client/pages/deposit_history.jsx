@@ -244,7 +244,7 @@ class DepositHistory extends React.Component {
                 },
                 body: JSON.stringify({
                     address: deposit.address,
-                    contractScript: Buffer.from(deposit.script).toString('base64'),
+                    contractScript: Buffer.from(deposit.script).toString('hex'),
                     recipientAddress: deposit.clientAddress
                 })
             }
