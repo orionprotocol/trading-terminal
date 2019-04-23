@@ -8,16 +8,12 @@ class Menu extends React.Component {
         super();
         this.state = {
             modal: false,
-            seed: '',
-            publicKey: '',
-            address: ''
+            seed: ''
         }
 
         this.showModal = this.showModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.changeSeed = this.changeSeed.bind(this);
-        this.changePublicKey = this.changePublicKey.bind(this);
-        this.changeAddress = this.changeAddress.bind(this);
     }
 
     changeSeed(e) {
@@ -26,22 +22,6 @@ class Menu extends React.Component {
         })
         localStorage.setItem('seed', e.target.value);
         window.exchangeSeed = e.target.value
-    }
-
-    changePublicKey(e) {
-        this.setState({
-            publicKey: e.target.value
-        })
-        localStorage.setItem('publicKey', e.target.value);
-        window.exchangePublicKey = e.target.value
-    }
-
-    changeAddress(e) {
-        this.setState({
-            address: e.target.value
-        })
-        localStorage.setItem('address', e.target.value);
-        window.exchangeAddress = e.target.value
     }
 
 
@@ -153,54 +133,6 @@ class Menu extends React.Component {
                                             <div className="col-md-6">
                                                 <input type="text" onChange={this.changeSeed} value={this.state.seed}
                                                        className="form-control"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style={{marginTop: '15px'}}>
-                                    <div className='row'>
-                                        <div>
-                                        <span style={{color: '#9ba6b2'}}>
-                                            Public key
-                                        </span>
-                                        </div>
-                                    </div>
-                                    <div className="row" style={{
-                                        backgroundColor: 'rgb(248, 249, 251)',
-                                        padding: '20px',
-                                        paddingLeft: '5px',
-                                        border: '1px dashed #dae1e9',
-                                        borderRadius: '4px',
-                                        marginTop: '5px'
-                                    }}>
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <input type="text" onChange={this.changePublicKey}
-                                                       value={this.state.publicKey} className="form-control"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style={{marginTop: '15px'}}>
-                                    <div className='row'>
-                                        <div>
-                                        <span style={{color: '#9ba6b2'}}>
-                                            Address
-                                        </span>
-                                        </div>
-                                    </div>
-                                    <div className="row" style={{
-                                        backgroundColor: 'rgb(248, 249, 251)',
-                                        padding: '20px',
-                                        paddingLeft: '5px',
-                                        border: '1px dashed #dae1e9',
-                                        borderRadius: '4px',
-                                        marginTop: '5px'
-                                    }}>
-                                        <div className="row">
-                                            <div className="col-md-6">
-                                                <input type="text" onChange={this.changeAddress}
-                                                       value={this.state.address} className="form-control"/>
                                             </div>
                                         </div>
                                     </div>
