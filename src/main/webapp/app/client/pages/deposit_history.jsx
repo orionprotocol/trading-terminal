@@ -41,6 +41,11 @@ class DepositHistory extends React.Component {
         // localStorage.setItem('deposits',[])
         orion.btcSwap.settings.network = regtestUtils.network
         orion.btcSwap.settings.client = {unspents: regtestUtils.unspents, calcFee: regtestUtils.calcFee, getBalance: regtestUtils.getBalance}
+
+        orion.wavesSwap.settings.network = 'T'
+        orion.wavesSwap.settings.nodeUrl = 'https://pool.testnet.wavesnodes.com'
+        orion.wavesSwap.settings.assetId = 'EBJDs3MRUiK35xbj59ejsf5Z4wH9oz6FuHvSCHVQqZHS'
+
         let deposits = [];
         if(localStorage.getItem('deposits')){
             deposits = JSON.parse(localStorage.getItem('deposits'));
@@ -172,7 +177,7 @@ class DepositHistory extends React.Component {
         let publicKey = wc.publicKey(seed);
         let address = wc.address(seed, orion.wavesSwap.settings.network)
 
-        const newContract = orion.btcSwap.initiate(publicKey, this.state.publicKey)
+        const newContract = orion.btcSwap.initiate(publicKey, Buffer.from(this.state.publicKey, 'hex'))
         let newDeposit = {
             address: newContract.address,
             secret: newContract.secret,
