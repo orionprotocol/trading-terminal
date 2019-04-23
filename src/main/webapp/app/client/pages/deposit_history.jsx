@@ -4,6 +4,7 @@ import QRCode from 'qrcode.react'
 import {confirmAlert} from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import {MomentJS} from './../../service/MomentJS'
+
 const regtestUtils = require('../../service/_regtest')
 var orion = require('orion-atomic')
 const wc = require('@waves/waves-crypto')
@@ -40,9 +41,13 @@ class DepositHistory extends React.Component {
     componentDidMount() {
         // localStorage.setItem('deposits',[])
         orion.btcSwap.settings.network = regtestUtils.network
-        orion.btcSwap.settings.client = {unspents: regtestUtils.unspents, calcFee: regtestUtils.calcFee, getBalance: regtestUtils.getBalance}
+        orion.btcSwap.settings.client = {
+            unspents: regtestUtils.unspents,
+            calcFee: regtestUtils.calcFee,
+            getBalance: regtestUtils.getBalance
+        }
         let deposits = [];
-        if(localStorage.getItem('deposits')){
+        if (localStorage.getItem('deposits')) {
             deposits = JSON.parse(localStorage.getItem('deposits'));
         }
         console.log(localStorage.getItem("deposits"));
@@ -181,8 +186,8 @@ class DepositHistory extends React.Component {
             publicKey: newContract.publicKey,
             date: new Date(),
             status: 'NEW',
-            clientPublicKey:publicKey,
-            clientAddress:address
+            clientPublicKey: publicKey,
+            clientAddress: address
         }
         if (this.state.deposits) {
             let deposits = this.state.deposits;
@@ -203,15 +208,17 @@ class DepositHistory extends React.Component {
         let secretId = "secret" + detailId;
         renderDetails.push(
             <tr key={detailId} id={detailId} className="details-hide">
-                <td colSpan={6}>
+                <td style={{maxWidth: '300px'}} colSpan={6}>
                     <div>
                         <div>
-                            <span style={{fontWeight:'600'}}>Script: </span> {Buffer.from(deposit.script).toString('hex')}
+                            <span style={{fontWeight: '600'}}>Script: </span> <span
+                            style={{overflowWrap: 'break-word'}}>{Buffer.from(deposit.script).toString('hex')}</span>
                         </div>
                         <div style={{marginTop: '10px'}}>
                             <span className="details-btn" style={{border: 'none', outline: 'none'}}
                                   onClick={() => this.switchSecret(secretId)}><i className="fas fa-eye"></i></span>
-                            <span id={secretId} className="secret-hide"><span style={{fontWeight:'600'}} >Secret: </span> {Buffer.from(deposit.secret).toString('hex')}</span>
+                            <span id={secretId} className="secret-hide"><span
+                                style={{fontWeight: '600'}}>Secret: </span> {Buffer.from(deposit.secret).toString('hex')}</span>
                         </div>
                     </div>
                 </td>
@@ -296,13 +303,13 @@ class DepositHistory extends React.Component {
                             <i className="fas fa-qrcode"></i> Show QR cofde
                         </span>
                     </div>
-                    <div style={{marginTop:'5px'}}>
+                    <div style={{marginTop: '5px'}}>
                         <span className="details-btn" onClick={() => this.handlePaid(deposit)}
                               style={{border: 'none', outline: 'none'}}>
                             <i style={{fontSize: '20px'}} className="fas fa-hand-holding"></i> <span>Paid</span>
                         </span>
                     </div>
-                    <div style={{marginTop:'10px'}}>
+                    <div style={{marginTop: '10px'}}>
                         <span className="details-btn" onClick={() => this.refund(deposit)}
                               style={{border: 'none', outline: 'none'}}>
                             <i className="fas fa-redo-alt"></i> Refund
@@ -383,9 +390,12 @@ class DepositHistory extends React.Component {
     }
 
     render() {
-        const windowHeight = window.innerHeight + 'px';
+        let windowHeight = window.innerHeight + 'px';
+        if (this.state.deposits.length > 0) {
+            windowHeight = this.state.deposits.length * 265 + 'px';
+        }
         return (
-            <div style={{paddingRight: '20px', paddingLeft: '10px', paddingTop: '5px',height:windowHeight}}>
+            <div style={{paddingRight: '20px', paddingLeft: '10px', paddingTop: '5px', height: windowHeight}}>
 
                 <div style={{marginLeft: '90%'}}>
                     <button onClick={this.createNew} className="btn">Create New</button>
