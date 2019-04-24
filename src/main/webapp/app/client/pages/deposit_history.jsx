@@ -106,14 +106,18 @@ class DepositHistory extends React.Component {
         }
 
         const deposits = this.state.deposits;
+        let isChanged = false;
         for (let i = 0; i < deposits.length; i++) {
             if (deposits[i].status.toLowerCase() === "pending") {
                 await this.swapAddress(deposits[i], myAddress)
+                isChanged = true;
             }
         }
 
-        this.setState({ deposits: deposits });
-        localStorage.setItem('deposits', JSON.stringify(deposits))
+        if (isChanged) {
+            this.setState({deposits: deposits});
+            localStorage.setItem('deposits', JSON.stringify(deposits))
+        }
     }
 
     async redeem(deposit) {
@@ -122,36 +126,39 @@ class DepositHistory extends React.Component {
             Toastr.showError("Define address first.");
             return;
         }
+        const deposits = this.state.deposits;
         try {
-            const redeemTx = await orion.wavesSwap.redeem(respContract.publicKey, address, deposit.respContract.secret);
+            const redeemTx = await orion.wavesSwap.redeem(deposit.respContract.publicKey, address, deposit.secret);
 
-            fetch(`http://${window.location.hostname}:5000/swap/${deposit.address}/redeem/`,
+            await fetch(`http://${window.location.hostname}:5000/swap/${deposit.address}/redeem`,
                 {
                     credentials: 'same-origin',
                     method: "POST",
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     }
-                }
-            ).then(results => {
-                return results.json();
-            }).then(data => {
-                let deposits = this.state.deposits;
-                for (let i = 0; i < deposits.length; i++) {
-                    if (deposits[i].address == deposit.address) {
-                        deposits[i].status = "Completed"
-                        deposits[i].date = new Date();
-                        break;
-                    }
-                }
-                this.setState({deposits: deposits})
-                localStorage.setItem('deposits', JSON.stringify(deposits))
-            })
+                });
 
+            for (let i = 0; i < deposits.length; i++) {
+                if (deposits[i].address === deposit.address) {
+                    deposits[i].status = "COMPLETED";
+                    deposits[i].date = new Date();
+                    break;
+                }
+            }
         } catch (e) {
-
+            for (let i = 0; i < deposits.length; i++) {
+                if (deposits[i].address === deposit.address) {
+                    deposits[i].reason = e;
+                    deposits[i].status = "INVALID";
+                    deposits[i].date = new Date();
+                    break;
+                }
+            }
         }
+        this.setState({deposits: deposits});
+        localStorage.setItem('deposits', JSON.stringify(deposits))
     }
 
     refund(deposit) {
@@ -340,12 +347,12 @@ class DepositHistory extends React.Component {
         if (status == "ready") {
             buttons.push(<div>
                 <div>
-                    <span style={{border: 'none', outline: 'none'}} onClick={() => this.redeem(deposit)}>
+                    <span className="details-btn" style={{border: 'none', outline: 'none'}} onClick={() => this.redeem(deposit)}>
                         <i className="fas fa-handshake"></i> Redeem
                     </span>
                 </div>
                 <div>
-                    <span onClick={() => this.refund(deposit)}
+                    <span className="details-btn" onClick={() => this.refund(deposit)}
                           style={{border: 'none', outline: 'none'}}>
                         <i className="fas fa-redo-alt"></i> Refund
                     </span>
@@ -367,7 +374,7 @@ class DepositHistory extends React.Component {
                         {deposits[i].address}
                     </td>
                     <td>
-
+                        {deposits[i].amount}
                     </td>
                     <td>
                         {MomentJS.renderTime(deposits[i].date)}
