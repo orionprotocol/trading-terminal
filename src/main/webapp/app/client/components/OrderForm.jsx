@@ -65,7 +65,8 @@ class OrderForm extends React.Component {
         }
         let price = this.props.currentPrice;
         if (this.props.marketType == 'market') {
-            price = this.state.totalPrice;
+            price = side === 'buy' ? Number(this.state.totalPrice*1.01.toFixed(8)) :
+                Number(this.state.totalPrice*0.99.toFixed(8));
         }
 
         if(this.props.marketType == 'limit'){
@@ -75,7 +76,8 @@ class OrderForm extends React.Component {
             }
         }
 
-        const wavesOrder = WavesOrder.toWavesOrder(symbol, side, price, this.props.count);
+        let seed = localStorage.getItem('seed') || '';
+        const wavesOrder = WavesOrder.toWavesOrder(symbol, side, price, this.props.count, seed);
         fetch(`${WavesOrder.orionUrl}/api/order`,
             {
                 credentials: 'same-origin',

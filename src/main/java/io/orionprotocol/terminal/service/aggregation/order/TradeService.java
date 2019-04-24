@@ -5,6 +5,7 @@ import com.wavesplatform.wavesj.Node;
 import com.wavesplatform.wavesj.PrivateKeyAccount;
 import io.orionprotocol.terminal.repository.db.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import io.orionprotocol.terminal.model.Order;
 import io.orionprotocol.terminal.model.OrderStatus;
@@ -24,9 +25,12 @@ public class TradeService {
     @Autowired
     private OrderRepository orderRepository;
 
-    private String seed = "";
-    private final PrivateKeyAccount account = PrivateKeyAccount.fromSeed(seed, 0, com.wavesplatform.wavesj.Account.TESTNET);
+    @Value("${orion.wavesSeed}")
+    private String seed;
 
+    private PrivateKeyAccount getAccount() {
+        return PrivateKeyAccount.fromSeed(seed, 0, com.wavesplatform.wavesj.Account.TESTNET);
+    }
 
     Node matcher;
     String matcherKey;
@@ -153,7 +157,7 @@ public class TradeService {
                 com.wavesplatform.wavesj.matcher.Order.Type.SELL :
                 com.wavesplatform.wavesj.matcher.Order.Type.BUY;
 
-        com.wavesplatform.wavesj.matcher.Order wavesOrder = getMatcher().createOrder(this.account, getMatcherKey(),
+        com.wavesplatform.wavesj.matcher.Order wavesOrder = getMatcher().createOrder(this.getAccount(), getMatcherKey(),
                  WavesAssets.symbolToAssetPair(order.getSymbol()),
                 // buy 10 WAVES at 0.00090000 WBTC each
                 side,
@@ -181,7 +185,7 @@ public class TradeService {
         trade.setQty("300");
 
         TradeService tradeService = new TradeService();
-        System.out.println(tradeService.account.getAddress());
+        System.out.println(tradeService.getAccount().getAddress());
 
         try {
             tradeService.createCounterOrder(order, trade);

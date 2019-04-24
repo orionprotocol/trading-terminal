@@ -33,10 +33,9 @@ class WavesOrder {
     static defaultMatcherFee = 300000;
     static defaultExpiration = 29 * 24 * 60 * 60 * 1000;
     static matcherPublicKey = '8QUAqtTckM5B8gvcuP7mMswat9SjKUuafJMusEoSn1Gy';
-    static seed = '';
     static orionUrl = `http://${window.location.hostname}:3001`;
 
-    static toWavesOrder(symbol, side, price, amount) {
+    static toWavesOrder(symbol, side, price, amount, seed) {
         const assetPair = Assets.toAssetPair(symbol);
         const params = {
             amount: Assets.toLongValue(amount, 8),
@@ -46,7 +45,7 @@ class WavesOrder {
             matcherPublicKey: WavesOrder.matcherPublicKey,
             orderType: side.toLowerCase()
         };
-        const signedOrder = order(params, WavesOrder.seed);
+        const signedOrder = order(params, seed);
         return signedOrder;
     }
 }

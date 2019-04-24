@@ -220,8 +220,7 @@ class DepositHistory extends React.Component {
                 <td style={{maxWidth: '300px'}} colSpan={6}>
                     <div>
                         <div>
-                            <span style={{fontWeight: '600'}}>Script: </span> <span
-                            style={{overflowWrap: 'break-word'}}>{Buffer.from(deposit.script).toString('hex')}</span>
+                            <span style={{fontWeight: '600'}}>Script: </span> <span style={{overflowWrap: 'break-word'}}>{Buffer.from(deposit.script).toString('hex')}</span>
                         </div>
                         <div style={{marginTop: '10px'}}>
                             <span className="details-btn" style={{border: 'none', outline: 'none'}}
