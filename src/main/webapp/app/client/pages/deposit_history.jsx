@@ -75,47 +75,51 @@ class DepositHistory extends React.Component {
         })
     }
 
-    swapAddress(deposit) {
-        fetch(`http://${window.location.hostname}:5000/swap/${deposit.address}`,
-            {
-                credentials: 'same-origin',
+    async swapAddress(deposit, myAddress) {
+        try {
+            const res = await (await fetch(`http://${window.location.hostname}:5000/swap/${deposit.address}`,
+                {
+                    credentials: 'same-origin'
+                })).json();
+            if (res.status.toLowerCase() === "ready") {
+                deposit.respContract = res.respContract;
+                const wavesSecretHash = await orion.wavesSwap.auditAccount(deposit.respContract.address, myAddress, deposit.amount)
+                if (wavesSecretHash !== deposit.secretHash) {
+                    throw new Error(`Incorrect response contract secret hash: ${wavesSecretHash}`)
+                }
+                deposit.status = "READY";
             }
-        ).then(results => {
-            return results.json();
-        }).then(data => {
-            return data;
-        })
+            deposit.date = new Date();
+            return deposit;
+        } catch (e) {
+            deposit.reason = e;
+            deposit.status = "INVALID";
+            deposit.date = new Date();
+            return deposit;
+        }
     }
 
     async updateStatus() {
-        let address = localStorage.getItem('address') || '';
-        if (!address) {
+        const myAddress = localStorage.getItem('address');
+        if (!myAddress) {
             return;
         }
-        let deposits = this.state.deposits;
+
+        const deposits = this.state.deposits;
         for (let i = 0; i < deposits.length; i++) {
-            if (deposits[i].status.toLowerCase() == "pending") {
-                let response = this.swapAddress(deposits[i]);
-                deposits[i].respContract = response.respContract;
-                if (response.status.toLowerCase() == "ready") {
-                    try {
-                        const wavesSecretHash = await orion.wavesSwap.auditAccount(deposits[i].respContract.address, address, deposits[i].amount)
-                        deposits[i].status = "READY";
-                    } catch (e) {
-                        deposits[i].status = "INVALID";
-                    }
-                    deposits[i].date = new Date();
-                }
+            if (deposits[i].status.toLowerCase() === "pending") {
+                await this.swapAddress(deposits[i], myAddress)
             }
         }
-        this.setState({deposits: deposits})
+
+        this.setState({ deposits: deposits });
         localStorage.setItem('deposits', JSON.stringify(deposits))
     }
 
     async redeem(deposit) {
         let address = localStorage.getItem('address') || '';
         if (!address) {
-            Toastr.showError("Define address first.")
+            Toastr.showError("Define address first.");
             return;
         }
         try {
