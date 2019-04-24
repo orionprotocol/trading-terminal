@@ -39,7 +39,6 @@ class DepositHistory extends React.Component {
     }
 
     componentDidMount() {
-        // localStorage.setItem('deposits',[])
         orion.btcSwap.settings.network = regtestUtils.network
 
         orion.btcSwap.settings.client = {
@@ -75,7 +74,7 @@ class DepositHistory extends React.Component {
         })
     }
 
-    swapAddress(deposit) {
+    swapAddress(deposit, callback) {
         fetch(`http://${window.location.hostname}:5000/swap/${deposit.address}`,
             {
                 credentials: 'same-origin',
@@ -83,7 +82,7 @@ class DepositHistory extends React.Component {
         ).then(results => {
             return results.json();
         }).then(data => {
-            return data;
+            callback(data);
         })
     }
 
@@ -94,18 +93,23 @@ class DepositHistory extends React.Component {
         }
         let deposits = this.state.deposits;
         for (let i = 0; i < deposits.length; i++) {
-            if (deposits[i].status.toLowerCase() == "pending") {
-                let response = this.swapAddress(deposits[i]);
-                deposits[i].respContract = response.respContract;
-                if (response.status.toLowerCase() == "ready") {
-                    try {
-                        const wavesSecretHash = await orion.wavesSwap.auditAccount(deposits[i].respContract.address, address, deposits[i].amount)
-                        deposits[i].status = "READY";
-                    } catch (e) {
-                        deposits[i].status = "INVALID";
-                    }
-                    deposits[i].date = new Date();
+            try {
+                if (deposits[i].status.toLowerCase() == "pending") {
+                    this.swapAddress(deposits[i], async (response) => {
+                        deposits[i].respContract = response.respContract;
+                        if (response.status.toLowerCase() == "ready") {
+                            try {
+                                const wavesSecretHash = await orion.wavesSwap.auditAccount(deposits[i].respContract.address, address, deposits[i].amount)
+                                deposits[i].status = "READY";
+                            } catch (e) {
+                                deposits[i].status = "INVALID";
+                            }
+                            deposits[i].date = new Date();
+                        }
+                    });
                 }
+            } catch (e) {
+                console.log(e);
             }
         }
         this.setState({deposits: deposits})
@@ -216,12 +220,14 @@ class DepositHistory extends React.Component {
                 <td style={{maxWidth: '300px'}} colSpan={6}>
                     <div>
                         <div>
-                            <span style={{fontWeight: '600'}}>Script: </span> <span style={{overflowWrap: 'break-word'}}>{Buffer.from(deposit.script).toString('hex')}</span>
+                            <span style={{fontWeight: '600'}}>Script: </span> <span
+                            style={{overflowWrap: 'break-word'}}>{Buffer.from(deposit.script).toString('hex')}</span>
                         </div>
                         <div style={{marginTop: '10px'}}>
                             <span className="details-btn" style={{border: 'none', outline: 'none'}}
                                   onClick={() => this.switchSecret(secretId)}><i className="fas fa-eye"></i></span>
-                            <span id={secretId} className="secret-hide"><span style={{fontWeight:'600'}} >Secret: </span> {Buffer.from(deposit.secret).toString('hex')}</span>
+                            <span id={secretId} className="secret-hide"><span
+                                style={{fontWeight: '600'}}>Secret: </span> {Buffer.from(deposit.secret).toString('hex')}</span>
                         </div>
                     </div>
                 </td>
@@ -363,7 +369,7 @@ class DepositHistory extends React.Component {
                         {deposits[i].address}
                     </td>
                     <td>
-
+                        {deposits[i].amount}
                     </td>
                     <td>
                         {MomentJS.renderTime(deposits[i].date)}
