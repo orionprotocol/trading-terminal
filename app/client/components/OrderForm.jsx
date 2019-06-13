@@ -87,6 +87,7 @@ class OrderForm extends React.Component {
             this.props.count,
             seed
         );
+        console.log(WavesOrder.orionUrl);
         fetch(`${WavesOrder.orionUrl}/api/order`, {
             credentials: "same-origin",
             method: "POST",
@@ -105,9 +106,13 @@ class OrderForm extends React.Component {
                         "No brokers were found to execute your order"
                     );
                     return;
+                } else if (data.code && data.code == "1000") {
+                    Toastr.showError("Not enough tradable balance.");
+                    return;
+                } else {
+                    Toastr.showSuccess("Order has been created");
+                    this.props.loadOrderHistory(this.props.pair);
                 }
-                Toastr.showSuccess("Order has been created");
-                this.props.loadOrderHistory(this.props.pair);
             });
     }
 
