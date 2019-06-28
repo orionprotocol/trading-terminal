@@ -3,7 +3,7 @@
     border-collapse: collapse;
     border: 1px solid #dee2e6;
     border-spacing: 1px;
-    fontSize: 13px;
+    fontsize: 13px;
     margin-bottom: 15px;
     text-align: center;
 }
@@ -13,14 +13,13 @@
 }
 
 #suborders th {
-
     border-collapse: collapse;
     border: 1px solid #dee2e6;
     border-spacing: 1px;
-    fontSize: 13px;
+    fontsize: 13px;
     text-align: center;
     width: 25%;
-    padding: 5px
+    padding: 5px;
 }
 
 .orders-row {
@@ -40,17 +39,23 @@
     color: #4e5c6e;
     border-top: 2px solid #1f5af6;
     border-right: 1px solid #edf0f4;
-
 }
 
 .orders-tab-active-history {
     color: #4e5c6e;
     border-top: 2px solid #1f5af6;
     border-left: 1px solid #edf0f4;
-
 }
 
 .orders-tab {
     height: 40px;
     padding-top: 5px;
+}
+
+.orders-title {
+    margin-left: 4px;
+}
+
+.orders-title:hover {
+    cursor: pointer;
 }
