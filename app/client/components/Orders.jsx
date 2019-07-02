@@ -126,14 +126,28 @@ const ordersTest = [
     }
 ];
 
-function compare(a, b) {
-    if (a.symbol < b.symbol) {
-        return -1;
+function compareValues(key, order = "asc") {
+    try {
+        return function(a, b) {
+            if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+                // property doesn't exist on either object
+                return 0;
+            }
+            const varA =
+                typeof a[key] === "string" ? a[key].toUpperCase() : a[key];
+            const varB =
+                typeof b[key] === "string" ? b[key].toUpperCase() : b[key];
+            let comparison = 0;
+            if (varA > varB) {
+                comparison = 1;
+            } else if (varA < varB) {
+                comparison = -1;
+            }
+            return order == "desc" ? comparison * -1 : comparison;
+        };
+    } catch (e) {
+        console.log(e);
     }
-    if (a.symbol > b.symbol) {
-        return 1;
-    }
-    return 0;
 }
 
 class Orders extends React.Component {
@@ -182,18 +196,31 @@ class Orders extends React.Component {
     }
 
     componentDidMount = () => {
-        // alert("MOunted");
-        this.setState({
-            orders: ordersTest
-        });
+        // alert("Mounted");
+        // let orders = this.computeOrders(ordersTest);
+        // this.setState({
+        //     orders
+        // });
     };
 
+    computeOrders = orders =>
+        orders.map(order => {
+            let total = order.price * order.orderQty;
+            let orderQty = order.orderQty;
+            let filledQty = order.filledQty;
+            let percent = parseFloat((filledQty * 100) / orderQty).toFixed(4);
+            order.total = total;
+            order.percent = percent;
+            return order;
+        });
+
     componentWillReceiveProps = props => {
-        // if (props.orders) {
-        //     this.setState({
-        //         orders: props.orders
-        //     });
-        // }
+        if (props.orders) {
+            let orders = this.computeOrders(props.orders);
+            this.setState({
+                orders
+            });
+        }
     };
 
     renderSubOrders(subOrders, order) {
@@ -232,18 +259,18 @@ class Orders extends React.Component {
             ) {
                 let side = "Sell";
                 let styleSide = "#e5494d";
-                let total = orders[i].price * orders[i].orderQty;
+                // let total = orders[i].price * orders[i].orderQty;
                 if (orders[i].side == "buy") {
                     side = "Buy";
                     styleSide = "#1f5af6";
                 }
                 let rowId = "order-open" + orders[i].id;
                 let tableId = "order-table-open" + orders[i].id;
-                let orderQty = orders[i].orderQty;
-                let filledQty = orders[i].filledQty;
-                let percent = parseFloat((filledQty * 100) / orderQty).toFixed(
-                    4
-                );
+                // let orderQty = orders[i].orderQty;
+                // let filledQty = orders[i].filledQty;
+                // let percent = parseFloat((filledQty * 100) / orderQty).toFixed(
+                //     4
+                // );
                 renderOrders.push(
                     <div
                         id={rowId}
@@ -264,12 +291,12 @@ class Orders extends React.Component {
                             <div className="col-md-2">
                                 {parseFloat(orders[i].price).toFixed(8)}
                             </div>
-                            <div className="col-md-2">{percent}%</div>
+                            <div className="col-md-2">{orders[i].percent}%</div>
                             <div className="col-md-2">
-                                {parseFloat(total).toFixed(8)}
+                                {parseFloat(orders[i].total).toFixed(8)}
                             </div>
                         </div>
-                        {/* <div id={tableId} className="row orders-table-hide">
+                        <div id={tableId} className="row orders-table-hide">
                             <div className="col-md-12">
                                 <table id="suborders">
                                     <thead>
@@ -289,7 +316,7 @@ class Orders extends React.Component {
                                     </tbody>
                                 </table>
                             </div>
-                        </div> */}
+                        </div>
                     </div>
                 );
             }
@@ -302,16 +329,16 @@ class Orders extends React.Component {
         for (let i = 0; i < orders.length; i++) {
             let side = "Sell";
             let styleSide = "#e5494d";
-            let total = orders[i].price * orders[i].orderQty;
+            //let total = orders[i].price * orders[i].orderQty;
             if (orders[i].side == "buy") {
                 side = "Buy";
                 styleSide = "#1f5af6";
             }
             let rowId = "order-history" + orders[i].id;
             let tableId = "order-table-history" + orders[i].id;
-            let orderQty = orders[i].orderQty;
-            let filledQty = orders[i].filledQty;
-            let percent = (filledQty * 100) / orderQty;
+            // let orderQty = orders[i].orderQty;
+            // let filledQty = orders[i].filledQty;
+            // let percent = (filledQty * 100) / orderQty;
             renderOrders.push(
                 <div
                     id={rowId}
@@ -334,12 +361,12 @@ class Orders extends React.Component {
                         <div className="col-md-2">
                             {parseFloat(orders[i].price).toFixed(8)}
                         </div>
-                        <div className="col-md-2">{percent}%</div>
+                        <div className="col-md-2">{orders[i].percent}%</div>
                         <div className="col-md-2">
-                            {parseFloat(total).toFixed(8)}
+                            {parseFloat(orders[i].total).toFixed(8)}
                         </div>
                     </div>
-                    {/* <div id={tableId} className="row orders-table-hide">
+                    <div id={tableId} className="row orders-table-hide">
                         <div className="col-md-12">
                             <table id="suborders">
                                 <thead>
@@ -359,21 +386,23 @@ class Orders extends React.Component {
                                 </tbody>
                             </table>
                         </div>
-                    </div> */}
+                    </div>
                 </div>
             );
         }
         return renderOrders;
     }
+
     handleClick = e => {
-        //typeO symbolO timeO amountO priceO statusO totalO
-        //typeH symbolH timeH amountH priceH statusH totalH
+        //typeO symbolO timeO amountO priceO statusO totalO - Open orders
+        //typeH symbolH timeH amountH priceH statusH totalH - History Orders
 
         let id = e.target.id;
         let idx = Number(id.split("-")[0]);
+        let key = id.split("-")[1];
+        let newOrders = [];
 
         if (/O$/.test(id)) {
-            let newOrders = [];
             let newStyleOpen = [
                 "fa-sort",
                 "fa-sort",
@@ -387,14 +416,13 @@ class Orders extends React.Component {
 
             if (check === "fa-sort" || check === "fa-sort-up") {
                 newStyleOpen[idx] = "fa-sort-down";
+
+                newOrders = this.state.orders.sort(compareValues(key, "desc"));
             } else if (check === "fa-sort-down") {
                 newStyleOpen[idx] = "fa-sort-up";
+                newOrders = this.state.orders.sort(compareValues(key, "asc"));
             }
 
-            if (idx === 1) {
-                newOrders = this.state.orders.sort(compare);
-                console.log(newOrders);
-            }
             this.setState({
                 styleOpen: newStyleOpen,
                 orders: newOrders
@@ -413,11 +441,15 @@ class Orders extends React.Component {
 
             if (check === "fa-sort" || check === "fa-sort-up") {
                 newStyleHistory[idx] = "fa-sort-down";
+                newOrders = this.state.orders.sort(compareValues(key, "desc"));
             } else if (check === "fa-sort-down") {
                 newStyleHistory[idx] = "fa-sort-up";
+                newOrders = this.state.orders.sort(compareValues(key, "asc"));
             }
+
             this.setState({
-                styleHistory: newStyleHistory
+                styleHistory: newStyleHistory,
+                orders: newOrders
             });
         }
     };
@@ -486,7 +518,7 @@ class Orders extends React.Component {
                                     <span>Type</span>
                                     <i
                                         className={`fas ${sO[0]} orders-title`}
-                                        id="0-typeO"
+                                        id="0-side-O"
                                         onClick={this.handleClick}
                                     />
                                 </div>
@@ -494,7 +526,7 @@ class Orders extends React.Component {
                                     <span>Symbol</span>
                                     <i
                                         className={`fas ${sO[1]} orders-title`}
-                                        id="1-symbolO"
+                                        id="1-symbol-O"
                                         onClick={this.handleClick}
                                     />
                                 </div>
@@ -502,7 +534,7 @@ class Orders extends React.Component {
                                     <span>Time</span>
                                     <i
                                         className={`fas ${sO[2]} orders-title`}
-                                        id="2-timeO"
+                                        id="2-time-O"
                                         onClick={this.handleClick}
                                     />
                                 </div>
@@ -510,7 +542,7 @@ class Orders extends React.Component {
                                     <span>Amount</span>
                                     <i
                                         className={`fas ${sO[3]} orders-title`}
-                                        id="3-amountO"
+                                        id="3-orderQty-O"
                                         onClick={this.handleClick}
                                     />
                                 </div>
@@ -518,7 +550,7 @@ class Orders extends React.Component {
                                     <span>Price</span>
                                     <i
                                         className={`fas ${sO[4]} orders-title`}
-                                        id="4-priceO"
+                                        id="4-price-O"
                                         onClick={this.handleClick}
                                     />
                                 </div>
@@ -526,7 +558,7 @@ class Orders extends React.Component {
                                     <span>Status</span>
                                     <i
                                         className={`fas ${sO[5]} orders-title`}
-                                        id="5-statusO"
+                                        id="5-percent-O"
                                         onClick={this.handleClick}
                                     />
                                 </div>
@@ -534,7 +566,7 @@ class Orders extends React.Component {
                                     <span>Total</span>
                                     <i
                                         className={`fas ${sO[6]} orders-title`}
-                                        id="6-totalO"
+                                        id="6-total-O"
                                         onClick={this.handleClick}
                                     />
                                 </div>
@@ -593,7 +625,7 @@ class Orders extends React.Component {
                                     <span>Type</span>
                                     <i
                                         className={`fas ${sH[0]} orders-title`}
-                                        id="0-typeH"
+                                        id="0-side-H"
                                         onClick={this.handleClick}
                                     />
                                 </div>
@@ -601,7 +633,7 @@ class Orders extends React.Component {
                                     <span>Symbol</span>
                                     <i
                                         className={`fas ${sH[1]} orders-title`}
-                                        id="1-symbolH"
+                                        id="1-symbol-H"
                                         onClick={this.handleClick}
                                     />
                                 </div>
@@ -609,7 +641,7 @@ class Orders extends React.Component {
                                     <span>Time</span>
                                     <i
                                         className={`fas ${sH[2]} orders-title`}
-                                        id="2-timeH"
+                                        id="2-time-H"
                                         onClick={this.handleClick}
                                     />
                                 </div>
@@ -617,7 +649,7 @@ class Orders extends React.Component {
                                     <span>Amount</span>
                                     <i
                                         className={`fas ${sH[3]} orders-title`}
-                                        id="3-amountH"
+                                        id="3-orderQty-H"
                                         onClick={this.handleClick}
                                     />
                                 </div>
@@ -625,7 +657,7 @@ class Orders extends React.Component {
                                     <span>Price</span>
                                     <i
                                         className={`fas ${sH[4]} orders-title`}
-                                        id="4-priceH"
+                                        id="4-price-H"
                                         onClick={this.handleClick}
                                     />
                                 </div>
@@ -633,7 +665,7 @@ class Orders extends React.Component {
                                     <span>Status</span>
                                     <i
                                         className={`fas ${sH[5]} orders-title`}
-                                        id="5-statusH"
+                                        id="5-percent-H"
                                         onClick={this.handleClick}
                                     />
                                 </div>
@@ -641,7 +673,7 @@ class Orders extends React.Component {
                                     <span>Total</span>
                                     <i
                                         className={`fas ${sH[6]} orders-title`}
-                                        id="6-totalH"
+                                        id="6-total-H"
                                         onClick={this.handleClick}
                                     />
                                 </div>
