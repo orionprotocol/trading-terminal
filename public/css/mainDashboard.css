@@ -1,0 +1,29 @@
+#general_chart iframe {
+    height: 44vh;
+}
+
+.row {
+    flex-wrap: wrap;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 105vw;
+    height: 20px;
+    background-color: #fafafa;
+    visibility: hidden;
+    z-index: 99;
+}
+
+@media (max-width: 1050px) {
+    .mainContent {
+        margin-top: 55px;
+    }
+    .navbar {
+        visibility: visible;
+    }
+    .sidebar {
+        display: none;
+    }
+}

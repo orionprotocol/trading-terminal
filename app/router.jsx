@@ -1,20 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import MainDasboard from "./client/pages/main_dashboard"
-import Balance from "./client/pages/balances"
-import DepositHistory from "./client/pages/deposit_history"
-import ChartExample from "./client/pages/ChartExample"
-import Modals from "./client/pages/Modals"
+import MainDasboard from "./client/pages/main_dashboard";
+import Balance from "./client/pages/balances";
+import DepositHistory from "./client/pages/deposit_history";
+import ChartExample from "./client/pages/ChartExample";
+import Modals from "./client/pages/Modals";
 
-import Menu from "./client/pages/parts/menu"
+import Menu from "./client/pages/parts/menu";
 
 class Router extends React.Component {
-
     constructor() {
         super();
-        this.state = {}
+        this.state = {};
     }
 
     componentDidMount() {
@@ -32,34 +31,52 @@ class Router extends React.Component {
     render() {
         return (
             <BrowserRouter>
-                <div className="row" >
-                    <Menu/>
-                    <div className="col-md-11" style={{paddingLeft:'20px'}}>
+                <div className="row">
+                    <Menu />
+                    <div
+                        className="col-md-11 mainContent"
+                        style={{ paddingLeft: "20px" }}
+                    >
                         <Switch>
-                            <Route exact path="/"
-                                   render={props => <MainDasboard  {...props}/>}/>
+                            <Route
+                                exact
+                                path="/"
+                                render={props => <MainDasboard {...props} />}
+                            />
                         </Switch>
                         <Switch>
-                            <Route exact path="/balance"
-                                   render={props => <Balance  {...props}/>}/>
+                            <Route
+                                exact
+                                path="/balance"
+                                render={props => <Balance {...props} />}
+                            />
                         </Switch>
                         <Switch>
-                            <Route exact path="/deposit"
-                                   render={props => <DepositHistory  {...props}/>}/>
+                            <Route
+                                exact
+                                path="/deposit"
+                                render={props => <DepositHistory {...props} />}
+                            />
                         </Switch>
                         <Switch>
-                            <Route exact path="/chart"
-                                   render={props => <ChartExample  {...props}/>}/>
+                            <Route
+                                exact
+                                path="/chart"
+                                render={props => <ChartExample {...props} />}
+                            />
                         </Switch>
                         <Switch>
-                            <Route exact path="/modal"
-                                   render={props => <Modals  {...props}/>}/>
+                            <Route
+                                exact
+                                path="/modal"
+                                render={props => <Modals {...props} />}
+                            />
                         </Switch>
                     </div>
                 </div>
             </BrowserRouter>
         );
     }
-};
+}
 
 export default Router;

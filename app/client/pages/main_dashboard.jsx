@@ -965,10 +965,11 @@ class MainDashboard extends React.Component {
                             borderColor: "#edf0f4",
                             borderWidth: "2px",
                             borderStyle: "solid",
-                            height: topHeight,
+                            // height: topHeight,
+                            height: "44vh",
                             backgroundColor: "#fff"
                         }}
-                        className="col-md-2"
+                        className="col-md-2 col-xs-12"
                     >
                         <div
                             style={{
@@ -1012,7 +1013,7 @@ class MainDashboard extends React.Component {
                             </table>
                         </div>
                     </div1>
-                    <div className="col-md-7">
+                    <div className="col-md-7 col-xs-12">
                         <Chart
                             loadChart={true}
                             symbol={this.state.currentSymbol}
@@ -1020,7 +1021,7 @@ class MainDashboard extends React.Component {
                             exchange="all"
                             isModal={false}
                             marginTop="0px"
-                            height={topHeight}
+                            // height={topHeight}
                             id="general_chart"
                         />
                     </div>
@@ -1029,11 +1030,12 @@ class MainDashboard extends React.Component {
                             borderColor: "#edf0f4",
                             borderWidth: "2px",
                             borderStyle: "solid",
-                            height: "50%",
+                            height: "44vh",
+                            // height: "50%",
                             // height: {height},
                             backgroundColor: "#fff"
                         }}
-                        className="col-md-3"
+                        className="col-md-3 col-xs-12"
                     >
                         <OrderBook
                             asks="asks-general"
@@ -1058,14 +1060,14 @@ class MainDashboard extends React.Component {
                     style={{ marginTop: "10px" }}
                 >
                     <div
-                        className="col-md-9"
-                        style={{ height: "100%", marginRight: "10px" }}
+                        className="col-md-9 col-xs-12"
+                        style={{ height: "100%" }}
                     >
                         <Orders orders={this.state.orders} />
                     </div>
                     <div
                         id="order-form"
-                        className="col-md-3"
+                        className="col-md-3 col-xs-12"
                         style={{ padding: "0px", margin: "0px" }}
                     >
                         <OrderForm
