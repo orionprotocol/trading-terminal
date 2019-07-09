@@ -453,6 +453,7 @@ class Orders extends React.Component {
             });
         }
     };
+    
     render() {
         let { orders } = this.state;
         let sO = this.state.styleOpen; // className of Open Orders
@@ -464,7 +465,7 @@ class Orders extends React.Component {
                         id="orders-open-tab"
                         className="col-xs-4 orders-tab orders-tab-active-open"
                     >
-                        <a href="#" id="open-orders-link">
+                        <a href="#" id="open-orders-link" >
                             Open Orders
                         </a>
                     </div>
@@ -482,8 +483,8 @@ class Orders extends React.Component {
                     className="row"
                     style={{
                         backgroundColor: "#fff",
-                        borderRadius: "3px",
-                        height: "300px"
+                        borderRadius: "3px"
+                        // height: "300px"
                     }}
                 >
                     <div className="col-md-12">
@@ -514,7 +515,7 @@ class Orders extends React.Component {
                                     paddingBottom: "8px"
                                 }}
                             >
-                                <div className="col-md-1">
+                                <div className="col-md-1 col-xs-1">
                                     <span>Type</span>
                                     <i
                                         className={`fas ${sO[0]} orders-title`}
@@ -522,7 +523,7 @@ class Orders extends React.Component {
                                         onClick={this.handleClick}
                                     />
                                 </div>
-                                <div className="col-md-1">
+                                <div className="col-md-1 col-xs-2">
                                     <span>Symbol</span>
                                     <i
                                         className={`fas ${sO[1]} orders-title`}
@@ -530,7 +531,7 @@ class Orders extends React.Component {
                                         onClick={this.handleClick}
                                     />
                                 </div>
-                                <div className="col-md-2">
+                                <div className="col-md-2 col-xs-2">
                                     <span>Time</span>
                                     <i
                                         className={`fas ${sO[2]} orders-title`}
@@ -538,7 +539,7 @@ class Orders extends React.Component {
                                         onClick={this.handleClick}
                                     />
                                 </div>
-                                <div className="col-md-2">
+                                <div className="col-md-2 col-xs-2">
                                     <span>Amount</span>
                                     <i
                                         className={`fas ${sO[3]} orders-title`}
@@ -546,7 +547,7 @@ class Orders extends React.Component {
                                         onClick={this.handleClick}
                                     />
                                 </div>
-                                <div className="col-md-2">
+                                <div className="col-md-2 col-xs-1">
                                     <span>Price</span>
                                     <i
                                         className={`fas ${sO[4]} orders-title`}
@@ -554,7 +555,7 @@ class Orders extends React.Component {
                                         onClick={this.handleClick}
                                     />
                                 </div>
-                                <div className="col-md-2">
+                                <div className="col-md-2 col-xs-2">
                                     <span>Status</span>
                                     <i
                                         className={`fas ${sO[5]} orders-title`}
@@ -562,7 +563,7 @@ class Orders extends React.Component {
                                         onClick={this.handleClick}
                                     />
                                 </div>
-                                <div className="col-md-2">
+                                <div className="col-md-2 col-xs-2">
                                     <span>Total</span>
                                     <i
                                         className={`fas ${sO[6]} orders-title`}
@@ -589,8 +590,8 @@ class Orders extends React.Component {
                     style={{
                         backgroundColor: "#fff",
                         borderRadius: "3px",
-                        display: "none",
-                        height: "300px"
+                        display: "none"
+                        // height: "300px"
                     }}
                 >
                     <div className="col-md-12">
@@ -621,7 +622,7 @@ class Orders extends React.Component {
                                     paddingBottom: "8px"
                                 }}
                             >
-                                <div className="col-md-1">
+                                <div className="col-md-1 col-xs-1">
                                     <span>Type</span>
                                     <i
                                         className={`fas ${sH[0]} orders-title`}
@@ -629,7 +630,7 @@ class Orders extends React.Component {
                                         onClick={this.handleClick}
                                     />
                                 </div>
-                                <div className="col-md-1">
+                                <div className="col-md-1 col-xs-2">
                                     <span>Symbol</span>
                                     <i
                                         className={`fas ${sH[1]} orders-title`}
@@ -637,7 +638,7 @@ class Orders extends React.Component {
                                         onClick={this.handleClick}
                                     />
                                 </div>
-                                <div className="col-md-2">
+                                <div className="col-md-2 col-xs-2">
                                     <span>Time</span>
                                     <i
                                         className={`fas ${sH[2]} orders-title`}
@@ -645,7 +646,7 @@ class Orders extends React.Component {
                                         onClick={this.handleClick}
                                     />
                                 </div>
-                                <div className="col-md-2">
+                                <div className="col-md-2 col-xs-2">
                                     <span>Amount</span>
                                     <i
                                         className={`fas ${sH[3]} orders-title`}
@@ -653,7 +654,7 @@ class Orders extends React.Component {
                                         onClick={this.handleClick}
                                     />
                                 </div>
-                                <div className="col-md-2">
+                                <div className="col-md-2 col-xs-1">
                                     <span>Price</span>
                                     <i
                                         className={`fas ${sH[4]} orders-title`}
@@ -661,7 +662,7 @@ class Orders extends React.Component {
                                         onClick={this.handleClick}
                                     />
                                 </div>
-                                <div className="col-md-2">
+                                <div className="col-md-2 col-xs-2">
                                     <span>Status</span>
                                     <i
                                         className={`fas ${sH[5]} orders-title`}
@@ -669,7 +670,7 @@ class Orders extends React.Component {
                                         onClick={this.handleClick}
                                     />
                                 </div>
-                                <div className="col-md-2">
+                                <div className="col-md-2 col-xs-2">
                                     <span>Total</span>
                                     <i
                                         className={`fas ${sH[6]} orders-title`}

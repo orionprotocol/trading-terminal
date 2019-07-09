@@ -1061,7 +1061,11 @@ class MainDashboard extends React.Component {
                 >
                     <div
                         className="col-md-9 col-xs-12"
-                        style={{ height: "100%" }}
+                        style={{
+                            // height: "100%",
+                            overflowX: "scroll",
+                            minWidth: "370px"
+                        }}
                     >
                         <Orders orders={this.state.orders} />
                     </div>

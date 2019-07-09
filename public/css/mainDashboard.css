@@ -14,7 +14,33 @@
     background-color: #fafafa;
     visibility: hidden;
     z-index: 99;
+    display: flex;
+    justify-content: space-between;
 }
+
+.navbar > div {
+    /* background-color: aqua; */
+    width: 45%;
+    padding: 10px;
+}
+
+.navbar > .container-1 > img {
+    position: relative;
+    top: -5px;
+}
+
+.navbar > .container-1 > img,
+.navbar > .container-1 > a {
+    margin: 0 3%;
+}
+
+.navbar > .container-2 {
+    text-align: right;
+}
+
+/* .navbar {
+    margin: 0 10px;
+} */
 
 @media (max-width: 1050px) {
     .mainContent {
