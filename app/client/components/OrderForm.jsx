@@ -17,7 +17,9 @@ class OrderForm extends React.Component {
             ask: "0",
             bid: "0",
             last: "0",
-            totalPrice: 0.0000000001
+            totalPrice: 0.0000000001,
+            orderType: "buy",
+            active: []
         };
         this.clickAsk = this.clickAsk.bind(this);
         this.clickBid = this.clickBid.bind(this);
@@ -268,6 +270,12 @@ class OrderForm extends React.Component {
         );
     }
 
+    handleClick = id => {
+        let active = [];
+        active[id] = true;
+        this.setState({ active });
+    };
+
     render() {
         let pair = this.props.pair;
         let firstSymbol = "";
@@ -308,6 +316,7 @@ class OrderForm extends React.Component {
                                 <a
                                     onClick={() => {
                                         this.props.setSide("buy");
+                                        this.setState({ orderType: "buy" });
                                     }}
                                     href="#"
                                     id="buy-form-link"
@@ -322,6 +331,7 @@ class OrderForm extends React.Component {
                                 <a
                                     onClick={() => {
                                         this.props.setSide("sell");
+                                        this.setState({ orderType: "sell" });
                                     }}
                                     href="#"
                                     id="sell-form-link"
@@ -437,6 +447,28 @@ class OrderForm extends React.Component {
                                                 {firstSymbol}
                                             </div>
                                         </div>
+                                        <div className="row">
+                                            <div
+                                                className="col-md-9 col-xs-9"
+                                                style={{ padding: "0px" }}
+                                            >
+                                                <span className="orderform-label">
+                                                    Available
+                                                </span>
+                                            </div>
+                                            <div
+                                                className="col-md-3 col-xs-3"
+                                                style={{ padding: "0px" }}
+                                            >
+                                                <span className="">
+                                                    0.003{" "}
+                                                    {this.state.orderType ===
+                                                    "buy"
+                                                        ? secondSymbol
+                                                        : firstSymbol}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                     {this.renderPrice(
                                         currentPrice,
@@ -446,6 +478,84 @@ class OrderForm extends React.Component {
                                         lastPrice
                                     )}
                                     <div className="orderform-input-container">
+                                        <div className="row button-container">
+                                            <div
+                                                className="col-md-3 col-xs-3"
+                                                style={{ padding: "0px" }}
+                                            >
+                                                <button
+                                                    onClick={_ =>
+                                                        this.handleClick(0)
+                                                    }
+                                                    className={
+                                                        typeof this.state
+                                                            .active[0] !==
+                                                        "undefined"
+                                                            ? "active"
+                                                            : null
+                                                    }
+                                                >
+                                                    25%
+                                                </button>
+                                            </div>
+                                            <div
+                                                className="col-md-3 col-xs-3"
+                                                style={{ padding: "0px" }}
+                                            >
+                                                <button
+                                                    onClick={_ =>
+                                                        this.handleClick(1)
+                                                    }
+                                                    className={
+                                                        typeof this.state
+                                                            .active[1] !==
+                                                        "undefined"
+                                                            ? "active"
+                                                            : null
+                                                    }
+                                                >
+                                                    50%
+                                                </button>
+                                            </div>
+                                            <div
+                                                className="col-md-3 col-xs-3"
+                                                style={{ padding: "0px" }}
+                                            >
+                                                <button
+                                                    onClick={_ =>
+                                                        this.handleClick(2)
+                                                    }
+                                                    className={
+                                                        typeof this.state
+                                                            .active[2] !==
+                                                        "undefined"
+                                                            ? "active"
+                                                            : null
+                                                    }
+                                                >
+                                                    75%
+                                                </button>
+                                            </div>
+                                            <div
+                                                className="col-md-3 col-xs-3"
+                                                style={{ padding: "0px" }}
+                                            >
+                                                <button
+                                                    onClick={_ =>
+                                                        this.handleClick(3)
+                                                    }
+                                                    className={
+                                                        typeof this.state
+                                                            .active[3] !==
+                                                        "undefined"
+                                                            ? "active"
+                                                            : null
+                                                    }
+                                                >
+                                                    100%
+                                                </button>
+                                            </div>
+                                        </div>
                                         <div className="row">
                                             <div
                                                 className="col-md-12"

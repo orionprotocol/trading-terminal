@@ -1,5 +1,5 @@
 body {
-    font-family: 'Roboto-Regular', sans-serif
+    font-family: "Roboto-Regular", sans-serif;
 }
 
 .orderform-panel > .panel-heading {
@@ -24,7 +24,7 @@ body {
     color: #7f8fa4;
     font-size: 11px;
 }
-.orderform-pointer{
+.orderform-pointer {
     cursor: pointer;
 }
 
@@ -38,21 +38,21 @@ body {
     border: none;
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-.orderform-input:focus{
-    outline:none;
+.orderform-input:focus {
+    outline: none;
 }
 
 .orderform-input-symbol-container {
     height: 28px;
     padding-top: 5px;
     padding-right: 10px;
-    font-family: 'Roboto-Regular',sans-serif;
+    font-family: "Roboto-Regular", sans-serif;
     color: #9ba6b2;
     font-size: 12px;
     background-color: #fafafa;
@@ -67,10 +67,10 @@ input[type=number]::-webkit-outer-spin-button {
     padding-bottom: 20px;
 }
 
-.orderform-button-buy{
+.orderform-button-buy {
     background-color: #1f5af6 !important;
 }
-.orderform-button-sell{
+.orderform-button-sell {
     background-color: #e5494d !important;
 }
 
@@ -85,7 +85,7 @@ input[type=number]::-webkit-outer-spin-button {
     margin-top: 5px;
 }
 
-.orderform-content-container{
+.orderform-content-container {
     padding: 0px;
     border: 1px solid #dae1e9;
 }
@@ -105,4 +105,26 @@ input[type=number]::-webkit-outer-spin-button {
     color: #4e5c6e;
     border-top: 2px solid #1f5af6;
     border-right: 1px solid #edf0f4;
+}
+
+.button-container {
+    /* padding: 1%; */
+    margin: 5% 0;
+    /* background-color: #000; */
+}
+
+.button-container button {
+    background-color: #fff;
+    border: 2px solid #edf0f4;
+    padding: 0 20%;
+    border-radius: 4px;
+}
+
+.button-container button:focus {
+    outline: none;
+}
+
+.button-container .active {
+    border: 1px solid #1f5af6;
+    color: #1f5af6;
 }
