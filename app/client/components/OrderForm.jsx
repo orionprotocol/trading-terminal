@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { MomentJS } from "./../../service/MomentJS";
 import { Toastr } from "./../../service/Toastr";
 import { WavesOrder } from "./../../service/WavesOrder";
+const wc = require("@waves/waves-crypto");
 
 const urlBase = "https://demo.orionprotocol.io";
 
@@ -12,14 +13,18 @@ class OrderForm extends React.Component {
         this.state = {
             buy: {},
             sell: {},
-            firstSymbol: "ETH",
-            secondSymbol: "BTC",
+            firstSymbol: "",
+            secondSymbol: "",
+            symbol: "",
             ask: "0",
             bid: "0",
             last: "0",
             totalPrice: 0.0000000001,
             orderType: "buy",
-            active: []
+            active: [],
+            balances: {},
+            count: 0,
+            available: 0
         };
         this.clickAsk = this.clickAsk.bind(this);
         this.clickBid = this.clickBid.bind(this);
@@ -41,7 +46,78 @@ class OrderForm extends React.Component {
         });
         this.loadTotalCost();
         this.scheduleTotalCost();
+        this.getBalances();
+
+        let e = {
+            target: { value: 0 }
+        };
+        this.props.changeCount(e);
     }
+
+    componentWillReceiveProps = props => {
+        if (props.count) {
+            let count = props.count;
+            if (!props.customCount) {
+                count = parseFloat(this.props.count).toFixed(8);
+            }
+            this.setState({
+                count
+            });
+        }
+
+        if (props.pair) {
+            let { pair } = props;
+            let firstSymbol = "";
+            let secondSymbol = "";
+            let pairs = pair.split("-");
+            firstSymbol = pairs[0];
+            secondSymbol = pairs[1];
+            this.setState({
+                firstSymbol,
+                secondSymbol
+            });
+            let available = 0;
+            if (
+                (this.state.orderType === "buy" &&
+                    this.state.symbol !== secondSymbol) ||
+                this.state.symbol === ""
+            ) {
+                if (this.state.balances[secondSymbol])
+                    available = this.state.balances[secondSymbol];
+                this.setState({ symbol: secondSymbol, available });
+            } else if (
+                this.state.orderType === "sell" &&
+                this.state.symbol !== firstSymbol
+            ) {
+                if (this.state.balances[firstSymbol])
+                    available = this.state.balances[firstSymbol];
+                this.setState({ symbol: firstSymbol, available });
+            }
+        }
+    };
+
+    getBalances = _ => {
+        let seed = localStorage.getItem("seed") || "";
+        let address = wc.address(seed, "T");
+        if (address) {
+            // let url = `${window.location.hostname}`
+            let url = `https://demo.orionprotocol.io:2083/api/balance/${address}`;
+            fetch(url, {
+                credentials: "same-origin"
+            })
+                .then(results => {
+                    return results.json();
+                })
+                .then(data => {
+                    this.setState({ balances: data });
+                    // console.log(this.state.symbol);
+                    // console.log("Balance", data);
+                })
+                .catch(e => {
+                    console.log(e);
+                });
+        }
+    };
 
     clickAsk(value) {
         this.props.changeCurrentPrice(value);
@@ -274,6 +350,45 @@ class OrderForm extends React.Component {
         let active = [];
         active[id] = true;
         this.setState({ active });
+        let amount = 0;
+        switch (id) {
+            case 0:
+                //console.log("25%");
+                amount = this.state.available * 0.25;
+                //console.log(amount);
+                break;
+            case 1:
+                //console.log("50%");
+                amount = this.state.available * 0.5;
+                //console.log(amount);
+                break;
+            case 2:
+                //console.log("75%");
+                amount = this.state.available * 0.75;
+                //console.log(amount);
+                break;
+            case 3:
+                //console.log("100%");
+                //console.log(amount);
+                amount = this.state.available;
+                break;
+            default:
+                break;
+        }
+        let e = {
+            target: { value: amount }
+        };
+        this.props.changeCount(e);
+    };
+
+    handleChangeType = type => {
+        // console.log(type);
+        this.setState({ active: [] });
+        let e = {
+            target: { value: "0" }
+        };
+        //console.log(e);
+        this.props.changeCount(e);
     };
 
     render() {
@@ -285,14 +400,14 @@ class OrderForm extends React.Component {
             firstSymbol = pairs[0];
             secondSymbol = pairs[1];
         }
+
+        //console.log(this.state.firstSymbol, this.state.secondSymbol);
         let lastPrice = this.props.last;
         let ask = this.props.ask;
         let bid = this.props.bid;
 
-        let count = this.props.count;
-        if (!this.props.customCount) {
-            count = parseFloat(this.props.count).toFixed(8);
-        }
+        let { count } = this.state;
+
         let currentPrice = this.props.currentPrice;
         let total = this.props.total.toFixed(8);
         if (this.props.marketType == "market") {
@@ -300,6 +415,17 @@ class OrderForm extends React.Component {
         }
 
         let benefits = this.props.benefits;
+
+        let available = 0;
+        let symbol = "";
+
+        if (this.state.orderType === "buy") symbol = secondSymbol;
+        else symbol = firstSymbol;
+
+        if (this.state.balances[symbol])
+            available = this.state.balances[symbol];
+
+        //console.log(this.state.symbol, this.state.available);
 
         return (
             <div className="row">
@@ -317,6 +443,7 @@ class OrderForm extends React.Component {
                                     onClick={() => {
                                         this.props.setSide("buy");
                                         this.setState({ orderType: "buy" });
+                                        this.handleChangeType("buy");
                                     }}
                                     href="#"
                                     id="buy-form-link"
@@ -332,6 +459,7 @@ class OrderForm extends React.Component {
                                     onClick={() => {
                                         this.props.setSide("sell");
                                         this.setState({ orderType: "sell" });
+                                        this.handleChangeType("sell");
                                     }}
                                     href="#"
                                     id="sell-form-link"
@@ -443,13 +571,18 @@ class OrderForm extends React.Component {
                                                     placeholder="0"
                                                 />
                                             </div>
-                                            <div className="col-md-6 orderform-input-symbol-container">
+                                            <div
+                                                className="col-md-6 orderform-input-symbol-container"
+                                                onClick={_ =>
+                                                    this.handleClick(3)
+                                                }
+                                            >
                                                 {firstSymbol}
                                             </div>
                                         </div>
                                         <div className="row">
                                             <div
-                                                className="col-md-9 col-xs-9"
+                                                className="col-md-6 col-xs-6"
                                                 style={{ padding: "0px" }}
                                             >
                                                 <span className="orderform-label">
@@ -457,15 +590,11 @@ class OrderForm extends React.Component {
                                                 </span>
                                             </div>
                                             <div
-                                                className="col-md-3 col-xs-3"
+                                                className="col-md-6 col-xs-6 text-right"
                                                 style={{ padding: "0px" }}
                                             >
                                                 <span className="">
-                                                    0.003{" "}
-                                                    {this.state.orderType ===
-                                                    "buy"
-                                                        ? secondSymbol
-                                                        : firstSymbol}
+                                                    {available + " " + symbol}
                                                 </span>
                                             </div>
                                         </div>

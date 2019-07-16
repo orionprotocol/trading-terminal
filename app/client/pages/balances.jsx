@@ -44,7 +44,7 @@ class Balance extends React.Component {
         let address = wc.address(seed, "T");
         if (address) {
             // let url = ${window.location.hostname}
-            fetch(`http://demo.orionprotocol.io:3001/api/balance/${address}`, {
+            fetch(`http://demo.orionprotocol.io:2083/api/balance/${address}`, {
                 credentials: "same-origin"
             })
                 .then(results => {

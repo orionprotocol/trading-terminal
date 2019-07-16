@@ -61,6 +61,10 @@ input[type="number"]::-webkit-outer-spin-button {
     text-align: right;
 }
 
+.orderform-input-symbol-container:hover {
+    cursor: pointer;
+}
+
 .orderform-container {
     padding-left: 40px;
     padding-right: 40px;
