@@ -28,6 +28,7 @@
 	},
 	"dependencies": {
 		"@waves/ride-js": "^0.17.4",
+		"@waves/waves-crypto": "^3.0.17",
 		"@waves/waves-transactions": "^3.3.11",
 		"babel-runtime": "^6.23.0",
 		"bitcoin-core": "^2.0.0",
