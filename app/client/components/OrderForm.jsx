@@ -110,8 +110,8 @@ class OrderForm extends React.Component {
                 })
                 .then(data => {
                     this.setState({ balances: data });
-                    // console.log(this.state.symbol);
-                    // console.log("Balance", data);
+                    //console.log(this.state.symbol);
+                    console.log("Balance", data);
                 })
                 .catch(e => {
                     console.log(e);

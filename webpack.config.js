@@ -33,6 +33,9 @@ var defaults = {
 		net: 'empty',
 		tls: 'empty',
 		dns: 'empty'
+	},
+	devServer: {
+		historyApiFallback: true
 	}
 };
 

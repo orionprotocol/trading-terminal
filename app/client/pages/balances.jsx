@@ -44,13 +44,15 @@ class Balance extends React.Component {
         let address = wc.address(seed, "T");
         if (address) {
             // let url = ${window.location.hostname}
-            fetch(`http://demo.orionprotocol.io:2083/api/balance/${address}`, {
+            fetch(`https://demo.orionprotocol.io:2083/api/balance/${address}`, {
                 credentials: "same-origin"
             })
                 .then(results => {
                     return results.json();
                 })
                 .then(data => {
+                    console.log("Balance")
+                    console.log(data)
                     this.setState({ balances: data });
                 });
         }
