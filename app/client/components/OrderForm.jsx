@@ -300,7 +300,7 @@ class OrderForm extends React.Component {
     renderButtons(firstSymbol, pair) {
         let marginTop = "20px";
         if (this.props.marketType == "market") {
-            marginTop = "75px";
+            marginTop = "0px";
         }
         return (
             <div>
@@ -430,7 +430,7 @@ class OrderForm extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-6 orderform">
-                    <div className="panel panel-default orderform-panel">
+                    <div className="custom-panel panel-default orderform-panel">
                         <div
                             className="panel-heading"
                             style={{ padding: "0px" }}

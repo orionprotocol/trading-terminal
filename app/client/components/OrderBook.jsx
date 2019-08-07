@@ -187,7 +187,8 @@ class OrderBook extends React.Component {
                         borderBottomStyle: "solid",
                         borderTopColor: "#edf0f4",
                         borderTopWidth: "1px",
-                        borderTopStyle: "solid"
+                        borderTopStyle: "solid",
+                        marginTop: "8px"
                     }}
                 >
                     <span style={{ color: "#263241" }}>

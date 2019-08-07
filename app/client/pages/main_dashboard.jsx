@@ -958,7 +958,7 @@ class MainDashboard extends React.Component {
                     fontWeight: 200
                 }}
             >
-                <div className="row row-eq-height">
+                <div className="row row-eq-height" style={{marginTop: "2px"}}>
                     <div1
                         id="pairs"
                         style={{
@@ -966,7 +966,7 @@ class MainDashboard extends React.Component {
                             borderWidth: "2px",
                             borderStyle: "solid",
                             // height: topHeight,
-                            height: "44vh",
+                            height: "44.4vh",
                             backgroundColor: "#fff"
                         }}
                         className="col-md-2 col-xs-12"
@@ -1013,7 +1013,7 @@ class MainDashboard extends React.Component {
                             </table>
                         </div>
                     </div1>
-                    <div className="col-md-7 col-xs-12">
+                    <div className="col-md-7 col-xs-12" style={{padding: "0 2px"}}>
                         <Chart
                             loadChart={true}
                             symbol={this.state.currentSymbol}
@@ -1030,7 +1030,7 @@ class MainDashboard extends React.Component {
                             borderColor: "#edf0f4",
                             borderWidth: "2px",
                             borderStyle: "solid",
-                            height: "44vh",
+                            height: "44.4vh",
                             // height: "50%",
                             // height: {height},
                             backgroundColor: "#fff"
@@ -1057,14 +1057,13 @@ class MainDashboard extends React.Component {
                 </div>
                 <div
                     className="row row-eq-height"
-                    style={{ marginTop: "10px" }}
+                    style={{ marginTop: "3px" }}
                 >
                     <div
                         className="col-md-9 col-xs-12"
                         style={{
-                            // height: "100%",
-                            overflowX: "scroll",
-                            minWidth: "370px"
+                            marginRight: "4px",
+                            width: "74.6%"
                         }}
                     >
                         <Orders orders={this.state.orders} />

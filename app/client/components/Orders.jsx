@@ -459,7 +459,7 @@ class Orders extends React.Component {
         let sO = this.state.styleOpen; // className of Open Orders
         let sH = this.state.styleHistory; // className of Order History
         return (
-            <div className="panel panel-default orderform-panel">
+            <div className="custom-panel panel-default orderform-panel">
                 <div className="panel-heading" style={{ padding: "0px" }}>
                     <div
                         id="orders-open-tab"
@@ -483,8 +483,8 @@ class Orders extends React.Component {
                     className="row"
                     style={{
                         backgroundColor: "#fff",
-                        borderRadius: "3px"
-                        // height: "300px"
+                        borderRadius: "3px",
+                        height: "54vh"
                     }}
                 >
                     <div className="col-md-12">
@@ -510,7 +510,7 @@ class Orders extends React.Component {
                                     borderTopWidth: "1px",
                                     color: "#7f8fa4",
                                     fontFamily: "'Roboto-Regular',sans-serif'",
-                                    fontSize: "13px",
+                                    fontSize: "12px",
                                     paddingTop: "8px",
                                     paddingBottom: "8px"
                                 }}
@@ -590,8 +590,8 @@ class Orders extends React.Component {
                     style={{
                         backgroundColor: "#fff",
                         borderRadius: "3px",
-                        display: "none"
-                        // height: "300px"
+                        display: "none",
+                        height: "54vh"
                     }}
                 >
                     <div className="col-md-12">
@@ -617,7 +617,7 @@ class Orders extends React.Component {
                                     borderTopWidth: "1px",
                                     color: "#7f8fa4",
                                     fontFamily: "'Roboto-Regular',sans-serif'",
-                                    fontSize: "13px",
+                                    fontSize: "12px",
                                     paddingTop: "8px",
                                     paddingBottom: "8px"
                                 }}

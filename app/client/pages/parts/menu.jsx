@@ -92,12 +92,12 @@ class Menu extends React.Component {
                     style={{
                         // display: "none",
                         backgroundColor: "#fff",
-                        height: "100%",
+                        height: "100vh",
                         padding: "0px",
                         width: "90px",
                         minHeight: "100%",
-                        marginBottom: "-9999px",
-                        paddingBottom: "9999px",
+                        // marginBottom: "-9999px",
+                        // paddingBottom: "9999px",
                         overflow: "hidden"
                     }}
                 >
