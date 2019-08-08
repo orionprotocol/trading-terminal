@@ -488,7 +488,7 @@ class Orders extends React.Component {
                     }}
                 >
                     <div className="col-md-12">
-                        <div style={{ padding: "10px" }}>
+                        <div style={{ padding: "0px 10px 5px 10px" }}>
                             <span
                                 style={{
                                     color: "#4e5c6e",
@@ -515,61 +515,79 @@ class Orders extends React.Component {
                                     paddingBottom: "8px"
                                 }}
                             >
-                                <div className="col-md-1 col-xs-1">
-                                    <span>Type</span>
-                                    <i
-                                        className={`fas ${sO[0]} orders-title`}
-                                        id="0-side-O"
-                                        onClick={this.handleClick}
-                                    />
+                                <div className="col-md-1 col-xs-1 customCol">
+                                    <span>
+                                        Type
+                                        <i
+                                            className={`fas ${sO[0]} orders-title`}
+                                            id="0-side-O"
+                                            onClick={this.handleClick}
+                                        />
+                                    </span>  
+
                                 </div>
-                                <div className="col-md-1 col-xs-2">
-                                    <span>Symbol</span>
-                                    <i
-                                        className={`fas ${sO[1]} orders-title`}
-                                        id="1-symbol-O"
-                                        onClick={this.handleClick}
-                                    />
+                                <div className="col-md-2 col-xs-2 customCol">
+                                    <span>
+                                        Symbol
+                                        <i
+                                            className={`fas ${sO[1]} orders-title`}
+                                            id="1-symbol-O"
+                                            onClick={this.handleClick}
+                                        /> 
+                                    </span>
                                 </div>
-                                <div className="col-md-2 col-xs-2">
-                                    <span>Time</span>
-                                    <i
-                                        className={`fas ${sO[2]} orders-title`}
-                                        id="2-time-O"
-                                        onClick={this.handleClick}
-                                    />
+                                <div className="col-md-2 col-xs-2 customCol">
+                                    <span>
+                                        Time 
+                                        <i
+                                            className={`fas ${sO[2]} orders-title`}
+                                            id="2-time-O"
+                                            onClick={this.handleClick}
+                                        />
+                                    </span>
+                                    
                                 </div>
-                                <div className="col-md-2 col-xs-2">
-                                    <span>Amount</span>
-                                    <i
-                                        className={`fas ${sO[3]} orders-title`}
-                                        id="3-orderQty-O"
-                                        onClick={this.handleClick}
-                                    />
+                                <div className="col-md-2 col-xs-2 customCol">
+                                    <span>
+                                        Amount
+                                        <i
+                                            className={`fas ${sO[3]} orders-title`}
+                                            id="3-orderQty-O"
+                                            onClick={this.handleClick}
+                                        />
+                                    </span>
+                                   
                                 </div>
-                                <div className="col-md-2 col-xs-1">
-                                    <span>Price</span>
-                                    <i
-                                        className={`fas ${sO[4]} orders-title`}
-                                        id="4-price-O"
-                                        onClick={this.handleClick}
-                                    />
+                                <div className="col-md-2 col-xs-1 customCol">
+                                    <span>
+                                        Price
+                                        <i
+                                            className={`fas ${sO[4]} orders-title`}
+                                            id="4-price-O"
+                                            onClick={this.handleClick}
+                                        />
+                                    </span>
+                                    
                                 </div>
-                                <div className="col-md-2 col-xs-2">
-                                    <span>Status</span>
-                                    <i
-                                        className={`fas ${sO[5]} orders-title`}
-                                        id="5-percent-O"
-                                        onClick={this.handleClick}
-                                    />
+                                <div className="col-md-2 col-xs-2 customCol">
+                                    <span>
+                                        Status
+                                        <i
+                                            className={`fas ${sO[5]} orders-title`}
+                                            id="5-percent-O"
+                                            onClick={this.handleClick}
+                                        />
+                                    </span>
                                 </div>
-                                <div className="col-md-2 col-xs-2">
-                                    <span>Total</span>
-                                    <i
-                                        className={`fas ${sO[6]} orders-title`}
-                                        id="6-total-O"
-                                        onClick={this.handleClick}
-                                    />
+                                <div className="col-md-1 col-xs-1 customCol">
+                                    <span>
+                                        Total
+                                        <i
+                                            className={`fas ${sO[6]} orders-title`}
+                                            id="6-total-O"
+                                            onClick={this.handleClick}
+                                        />
+                                    </span>
                                 </div>
                             </div>
                             <div
@@ -595,7 +613,7 @@ class Orders extends React.Component {
                     }}
                 >
                     <div className="col-md-12">
-                        <div style={{ padding: "10px" }}>
+                        <div style={{ padding: "0px 10px 5px 10px" }}>
                             <span
                                 style={{
                                     color: "#4e5c6e",
@@ -622,61 +640,75 @@ class Orders extends React.Component {
                                     paddingBottom: "8px"
                                 }}
                             >
-                                <div className="col-md-1 col-xs-1">
-                                    <span>Type</span>
-                                    <i
-                                        className={`fas ${sH[0]} orders-title`}
-                                        id="0-side-H"
-                                        onClick={this.handleClick}
-                                    />
+                                <div className="col-md-1 col-xs-1 customCol">
+                                    <span >
+                                        Type
+                                        <i
+                                            className={`fas ${sH[0]} orders-title`}
+                                            id="0-side-H"
+                                            onClick={this.handleClick}
+                                        />
+                                    </span>
                                 </div>
-                                <div className="col-md-1 col-xs-2">
-                                    <span>Symbol</span>
-                                    <i
-                                        className={`fas ${sH[1]} orders-title`}
-                                        id="1-symbol-H"
-                                        onClick={this.handleClick}
-                                    />
+                                <div className="col-md-2 col-xs-2 customCol">
+                                    <span>
+                                        Symbol
+                                        <i
+                                            className={`fas ${sH[1]} orders-title`}
+                                            id="1-symbol-H"
+                                            onClick={this.handleClick}
+                                        />
+                                    </span>
                                 </div>
-                                <div className="col-md-2 col-xs-2">
-                                    <span>Time</span>
-                                    <i
-                                        className={`fas ${sH[2]} orders-title`}
-                                        id="2-time-H"
-                                        onClick={this.handleClick}
-                                    />
+                                <div className="col-md-2 col-xs-2 customCol">
+                                    <span>
+                                        Time
+                                        <i
+                                            className={`fas ${sH[2]} orders-title`}
+                                            id="2-time-H"
+                                            onClick={this.handleClick}
+                                        />
+                                    </span>
                                 </div>
-                                <div className="col-md-2 col-xs-2">
-                                    <span>Amount</span>
-                                    <i
-                                        className={`fas ${sH[3]} orders-title`}
-                                        id="3-orderQty-H"
-                                        onClick={this.handleClick}
-                                    />
+                                <div className="col-md-2 col-xs-2 customCol">
+                                    <span>
+                                        Amount
+                                        <i
+                                            className={`fas ${sH[3]} orders-title`}
+                                            id="3-orderQty-H"
+                                            onClick={this.handleClick}
+                                        />
+                                    </span>
                                 </div>
-                                <div className="col-md-2 col-xs-1">
-                                    <span>Price</span>
-                                    <i
-                                        className={`fas ${sH[4]} orders-title`}
-                                        id="4-price-H"
-                                        onClick={this.handleClick}
-                                    />
+                                <div className="col-md-2 col-xs-1 customCol">
+                                    <span>
+                                        Price
+                                        <i
+                                            className={`fas ${sH[4]} orders-title`}
+                                            id="4-price-H"
+                                            onClick={this.handleClick}
+                                        />
+                                    </span>
                                 </div>
-                                <div className="col-md-2 col-xs-2">
-                                    <span>Status</span>
-                                    <i
-                                        className={`fas ${sH[5]} orders-title`}
-                                        id="5-percent-H"
-                                        onClick={this.handleClick}
-                                    />
+                                <div className="col-md-2 col-xs-2 customCol">
+                                    <span>
+                                        Status
+                                        <i
+                                            className={`fas ${sH[5]} orders-title`}
+                                            id="5-percent-H"
+                                            onClick={this.handleClick}
+                                        />
+                                    </span>
                                 </div>
-                                <div className="col-md-2 col-xs-2">
-                                    <span>Total</span>
-                                    <i
-                                        className={`fas ${sH[6]} orders-title`}
-                                        id="6-total-H"
-                                        onClick={this.handleClick}
-                                    />
+                                <div className="col-md-1 col-xs-1 customCol">
+                                    <span>
+                                        Total
+                                        <i
+                                            className={`fas ${sH[6]} orders-title`}
+                                            id="6-total-H"
+                                            onClick={this.handleClick}
+                                        />
+                                    </span>
                                 </div>
                             </div>
                             <div

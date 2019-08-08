@@ -31,7 +31,7 @@ class Router extends React.Component {
 	render() {
 		return (
 			<BrowserRouter>
-				<div className="row" style={{ marginRight: '-39px' }}>
+				<div className="row customRow">
 					<Menu />
 					<div className="col-md-11 mainContent" style={{ paddingLeft: '20px' }}>
 						<Switch>

@@ -1,6 +1,24 @@
 .row-eq-height {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display:         flex;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+}
+
+.customCol {
+	padding: 0 !important;
+	padding-left: 10px !important;
+}
+
+@media (max-width: 1300px) {
+	.customBtn {
+		padding: 0.2vw 0.5vw;
+		margin: 3px 10px;
+	}
+}
+
+@media (min-width: 1522px) {
+	.customRow {
+		margin-right: -39px;
+	}
 }

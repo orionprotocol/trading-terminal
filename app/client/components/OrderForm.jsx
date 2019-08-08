@@ -472,7 +472,7 @@ class OrderForm extends React.Component {
                             <div className="row">
                                 <div className="col-lg-12">
                                     <div style={{ display: "block" }}>
-                                        <div style={{ marginTop: "15px" }}>
+                                        <div style={{ marginTop: "5px" }}>
                                             <div className="row">
                                                 <div
                                                     className="col-md-6"
@@ -713,7 +713,7 @@ class OrderForm extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div style={{ padding: "10px" }}>
+                                <div style={{ padding: "5px" }}>
                                     <div
                                         className="row"
                                         style={{ fontSize: "11px" }}

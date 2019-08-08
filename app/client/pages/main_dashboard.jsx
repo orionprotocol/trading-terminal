@@ -981,8 +981,7 @@ class MainDashboard extends React.Component {
                         >
                             <div className="row">
                                 <div
-                                    className="col-md-3"
-                                    style={{ paddingTop: "8px" }}
+                                    className="col-xs-1 col-md-3"
                                 >
                                     <span
                                         style={{
@@ -993,13 +992,13 @@ class MainDashboard extends React.Component {
                                         WatchList
                                     </span>
                                 </div>
-                                <div className="col-md-6 col-md-offset-1">
+                                <div className="col-xs-1 col-md-6 col-md-offset-1">
                                     <button
                                         style={{
                                             borderRadius: "25px",
                                             backgroundColor: "rgb(31, 90, 246)"
                                         }}
-                                        className="btn btn-primary"
+                                        className="btn btn-primary customBtn"
                                         onClick={this.showModal}
                                     >
                                         Aggregated
