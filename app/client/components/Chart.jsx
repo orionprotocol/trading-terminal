@@ -174,7 +174,7 @@ class Chart extends React.Component {
         const symbol = this.props.symbol;
         let setState = this.setState.bind(this);
         const exchange = this.props.exchange;
-        console.log("ID " + id);
+        console.log("ID " + id, "Height: " + height);
         const DISABLED_FEATURES = [
             "header_screenshot",
             "header_symbol_search",

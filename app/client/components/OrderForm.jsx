@@ -55,6 +55,7 @@ class OrderForm extends React.Component {
     }
 
     componentWillReceiveProps = props => {
+       
         if (props.count) {
             let count = props.count;
             if (!props.customCount) {
@@ -65,6 +66,8 @@ class OrderForm extends React.Component {
             });
         }
 
+       
+
         if (props.pair) {
             let { pair } = props;
             let firstSymbol = "";
@@ -72,22 +75,36 @@ class OrderForm extends React.Component {
             let pairs = pair.split("-");
             firstSymbol = pairs[0];
             secondSymbol = pairs[1];
+            
+            //if(props.pair !== this.props.pair || firstSymbol !== this.state.firstSymbol || secondSymbol !== this.state.secondSymbol){
+            if(firstSymbol !== this.state.firstSymbol ){
+                this.setState({count: 0})
+                //document.getElementById("count").value = ""
+                console.log("Cambio de par");
+                console.log(firstSymbol, this.state.firstSymbol)
+            }
+
             this.setState({
                 firstSymbol,
                 secondSymbol
             });
+
             let available = 0;
             if (
-                (this.state.orderType === "buy" &&
-                    this.state.symbol !== secondSymbol) ||
-                this.state.symbol === ""
+                //(
+                this.state.orderType === "buy" 
+                // &&
+                //     this.state.symbol !== secondSymbol) ||
+                // this.state.symbol === ""
             ) {
+                
                 if (this.state.balances[secondSymbol])
                     available = this.state.balances[secondSymbol];
                 this.setState({ symbol: secondSymbol, available });
             } else if (
-                this.state.orderType === "sell" &&
-                this.state.symbol !== firstSymbol
+                this.state.orderType === "sell" 
+                // &&
+                // this.state.symbol !== firstSymbol
             ) {
                 if (this.state.balances[firstSymbol])
                     available = this.state.balances[firstSymbol];
@@ -109,9 +126,17 @@ class OrderForm extends React.Component {
                     return results.json();
                 })
                 .then(data => {
-                    this.setState({ balances: data });
+                    //-----------------------------------------------------------------------------------------------------------------------------
+                    const data2 = {
+                        WAVES: 1022.94965621,
+                        BTC: 4.38999847
+                    }
+                    this.setState({ balances: data2 });
+                    //this.setState({ balances: data });
                     //console.log(this.state.symbol);
-                    console.log("Balance", data);
+                    //console.log("Balance", data);
+                    console.log("Balance2", data2);
+                    //-----------------------------------------------------------------------------------------------------------------------------
                 })
                 .catch(e => {
                     console.log(e);
@@ -165,7 +190,7 @@ class OrderForm extends React.Component {
             this.props.count,
             seed
         );
-        console.log(WavesOrder.orionUrl);
+        //console.log(WavesOrder.orionUrl);
         fetch(`${WavesOrder.orionUrl}/api/order`, {
             credentials: "same-origin",
             method: "POST",
@@ -217,6 +242,7 @@ class OrderForm extends React.Component {
                     return results.json();
                 })
                 .then(data => {
+                    
                     this.setState({
                         totalPrice: data.totalPrice,
                         totalCost: data.totalCost
@@ -346,35 +372,35 @@ class OrderForm extends React.Component {
         );
     }
 
-    handleClick = id => {
+    handleClick = (id, firstSymbol, symbol) => {
+        
         let active = [];
         active[id] = true;
         this.setState({ active });
         let amount = 0;
         switch (id) {
             case 0:
-                //console.log("25%");
                 amount = this.state.available * 0.25;
-                //console.log(amount);
                 break;
             case 1:
-                //console.log("50%");
                 amount = this.state.available * 0.5;
-                //console.log(amount);
                 break;
             case 2:
-                //console.log("75%");
                 amount = this.state.available * 0.75;
-                //console.log(amount);
                 break;
             case 3:
-                //console.log("100%");
-                //console.log(amount);
                 amount = this.state.available;
                 break;
             default:
                 break;
         }
+
+        if(firstSymbol !== symbol){
+            //console.log(amount)
+            amount = amount / this.state.totalPrice;
+            amount = amount.toFixed(8);
+            //console.log(amount, this.state.totalPrice)
+        } 
         let e = {
             target: { value: amount }
         };
@@ -390,6 +416,12 @@ class OrderForm extends React.Component {
         //console.log(e);
         this.props.changeCount(e);
     };
+
+    handleChange = e => {
+        let newState = this.state;
+        newState[e.target.id] = e.target.value;
+        this.setState(newState)
+    }
 
     render() {
         let pair = this.props.pair;
@@ -408,11 +440,14 @@ class OrderForm extends React.Component {
 
         let { count } = this.state;
 
+        if(Number(count) === 0) console.log("Count = 0")
+
         let currentPrice = this.props.currentPrice;
         let total = this.props.total.toFixed(8);
         if (this.props.marketType == "market") {
             total = this.state.totalCost;
         }
+        
 
         let benefits = this.props.benefits;
 
@@ -430,7 +465,7 @@ class OrderForm extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-6 orderform">
-                    <div className="custom-panel panel-default orderform-panel">
+                    <div className="custom-panel panel-default orderform-panel" style={{height: "41.4vh"}}>
                         <div
                             className="panel-heading"
                             style={{ padding: "0px" }}
@@ -469,7 +504,11 @@ class OrderForm extends React.Component {
                             </div>
                         </div>
                         <div className="orderform-container">
-                            <div className="row">
+                            <div className="row" style={{
+                                overflowY: 'scroll',
+                                height: '34vh',
+                                overflowX: 'hidden'
+                            }}>
                                 <div className="col-lg-12">
                                     <div style={{ display: "block" }}>
                                         <div style={{ marginTop: "5px" }}>
@@ -561,13 +600,14 @@ class OrderForm extends React.Component {
                                                 <input
                                                     type="number"
                                                     name="count"
-                                                    id="amount"
+                                                    id="count"
                                                     tabIndex="1"
                                                     className="orderform-input"
                                                     value={count}
-                                                    onChange={
-                                                        this.props.changeCount
-                                                    }
+                                                    onChange={ e => {
+                                                        this.handleChange(e)
+                                                        this.props.changeCount(e)
+                                                    }}
                                                     placeholder="0"
                                                 />
                                             </div>
@@ -614,7 +654,7 @@ class OrderForm extends React.Component {
                                             >
                                                 <button
                                                     onClick={_ =>
-                                                        this.handleClick(0)
+                                                        this.handleClick(0, firstSymbol, symbol)
                                                     }
                                                     className={
                                                         typeof this.state
@@ -633,7 +673,7 @@ class OrderForm extends React.Component {
                                             >
                                                 <button
                                                     onClick={_ =>
-                                                        this.handleClick(1)
+                                                        this.handleClick(1, firstSymbol, symbol)
                                                     }
                                                     className={
                                                         typeof this.state
@@ -652,7 +692,7 @@ class OrderForm extends React.Component {
                                             >
                                                 <button
                                                     onClick={_ =>
-                                                        this.handleClick(2)
+                                                        this.handleClick(2, firstSymbol, symbol)
                                                     }
                                                     className={
                                                         typeof this.state
@@ -671,7 +711,7 @@ class OrderForm extends React.Component {
                                             >
                                                 <button
                                                     onClick={_ =>
-                                                        this.handleClick(3)
+                                                        this.handleClick(3, firstSymbol, symbol)
                                                     }
                                                     className={
                                                         typeof this.state

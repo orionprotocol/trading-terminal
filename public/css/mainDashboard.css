@@ -1,41 +1,41 @@
 #general_chart iframe {
-    height: 44vh;
+	height: 56.4vh;
 }
 
 .row {
-    flex-wrap: wrap;
+	flex-wrap: wrap;
 }
 
 .navbar {
-    position: fixed;
-    top: 0;
-    width: 105vw;
-    height: 20px;
-    background-color: #fafafa;
-    visibility: hidden;
-    z-index: 99;
-    display: flex;
-    justify-content: space-between;
+	position: fixed;
+	top: 0;
+	width: 105vw;
+	height: 20px;
+	background-color: #fafafa;
+	visibility: hidden;
+	z-index: 99;
+	display: flex;
+	justify-content: space-between;
 }
 
 .navbar > div {
-    /* background-color: aqua; */
-    width: 45%;
-    padding: 10px;
+	/* background-color: aqua; */
+	width: 45%;
+	padding: 10px;
 }
 
 .navbar > .container-1 > img {
-    position: relative;
-    top: -5px;
+	position: relative;
+	top: -5px;
 }
 
 .navbar > .container-1 > img,
 .navbar > .container-1 > a {
-    margin: 0 3%;
+	margin: 0 3%;
 }
 
 .navbar > .container-2 {
-    text-align: right;
+	text-align: right;
 }
 
 /* .navbar {
@@ -43,13 +43,13 @@
 } */
 
 @media (max-width: 1050px) {
-    .mainContent {
-        margin-top: 55px;
-    }
-    .navbar {
-        visibility: visible;
-    }
-    .sidebar {
-        display: none;
-    }
+	.mainContent {
+		margin-top: 55px;
+	}
+	.navbar {
+		visibility: visible;
+	}
+	.sidebar {
+		display: none;
+	}
 }

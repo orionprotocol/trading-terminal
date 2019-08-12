@@ -130,15 +130,16 @@ class MainDashboard extends React.Component {
                 this.setState(
                     { count: e.target.value, customCount: true },
                     () => {
-                        this.recalculateTotal();
-                        this.loadBenefits();
+                        // this.recalculateTotal();
+                        // this.loadBenefits();
                     }
                 );
             }
         } else {
             this.setState({ count: e.target.value, customCount: false }, () => {
-                this.recalculateTotal();
-                this.loadBenefits();
+                console.log("Hola 2")
+                // this.recalculateTotal();
+                // this.loadBenefits();
             });
         }
     }
@@ -243,6 +244,7 @@ class MainDashboard extends React.Component {
                 return results.json();
             })
             .then(data => {
+                //console.log("Benefits: ", data)
                 this.setState({ benefits: data });
             });
     }
@@ -902,16 +904,18 @@ class MainDashboard extends React.Component {
     }
 
     changeCurrentPrice(e) {
-        if (e.target.value >= 0) {
-            this.setState({ currentPrice: e.target.value }, () => {
-                this.recalculateTotal();
-            });
-        }
+        console.log("Change price")
+        // if (e.target.value >= 0) {
+        //     this.setState({ currentPrice: e.target.value }, () => {
+        //         this.recalculateTotal();
+        //     });
+        // }
     }
 
     recalculateTotal() {
-        let total = this.state.count * this.state.currentPrice;
-        this.setState({ total: total });
+        console.log("Computing...")
+        // let total = this.state.count * this.state.currentPrice;
+        // this.setState({ total });
     }
 
     renderChart(
@@ -958,7 +962,7 @@ class MainDashboard extends React.Component {
                     fontWeight: 200
                 }}
             >
-                <div className="row row-eq-height" style={{marginTop: "2px"}}>
+                <div className="row row-eq-height" style={{marginTop: "2px", height: "57vh"}}>
                     <div1
                         id="pairs"
                         style={{
@@ -966,7 +970,7 @@ class MainDashboard extends React.Component {
                             borderWidth: "2px",
                             borderStyle: "solid",
                             // height: topHeight,
-                            height: "44.4vh",
+                            height: "57vh",
                             backgroundColor: "#fff"
                         }}
                         className="col-md-2 col-xs-12"
@@ -1020,7 +1024,7 @@ class MainDashboard extends React.Component {
                             exchange="all"
                             isModal={false}
                             marginTop="0px"
-                            // height={topHeight}
+                            // height="500"
                             id="general_chart"
                         />
                     </div>
@@ -1029,7 +1033,7 @@ class MainDashboard extends React.Component {
                             borderColor: "#edf0f4",
                             borderWidth: "2px",
                             borderStyle: "solid",
-                            height: "44.4vh",
+                            height: "57vh",
                             // height: "50%",
                             // height: {height},
                             backgroundColor: "#fff"

@@ -67,7 +67,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .orderform-container {
 	padding-left: 40px;
-	padding-right: 40px;
+	padding-right: 30px;
 	padding-bottom: 16px;
 }
 
@@ -149,13 +149,13 @@ input[type="number"]::-webkit-outer-spin-button {
 @media (min-width: 1270px) {
 	#asks-general,
 	#bids-general {
-		height: 13vh !important;
+		height: 19vh !important;
 	}
 }
 
 @media (min-width: 1900px) {
 	#asks-general,
 	#bids-general {
-		height: 16vh !important;
+		height: 22vh !important;
 	}
 }

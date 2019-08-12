@@ -484,7 +484,7 @@ class Orders extends React.Component {
                     style={{
                         backgroundColor: "#fff",
                         borderRadius: "3px",
-                        height: "54vh"
+                        height: "41.4vh"
                     }}
                 >
                     <div className="col-md-12">
@@ -609,7 +609,7 @@ class Orders extends React.Component {
                         backgroundColor: "#fff",
                         borderRadius: "3px",
                         display: "none",
-                        height: "54vh"
+                        height: "41.4vh"
                     }}
                 >
                     <div className="col-md-12">
