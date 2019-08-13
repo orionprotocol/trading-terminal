@@ -143,13 +143,20 @@ input[type="number"]::-webkit-outer-spin-button {
 
 #asks-general,
 #bids-general {
-	height: 11vh !important;
+	height: 19vh !important;
 }
 
-@media (min-width: 1270px) {
+/* @media (min-width: 1270px) {
 	#asks-general,
 	#bids-general {
 		height: 19vh !important;
+	}
+} */
+
+@media (min-width: 1293px) {
+	#asks-general,
+	#bids-general {
+		height: 20vh !important;
 	}
 }
 

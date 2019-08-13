@@ -130,16 +130,15 @@ class MainDashboard extends React.Component {
                 this.setState(
                     { count: e.target.value, customCount: true },
                     () => {
-                        // this.recalculateTotal();
-                        // this.loadBenefits();
+                        this.recalculateTotal();
+                        this.loadBenefits();
                     }
                 );
             }
         } else {
             this.setState({ count: e.target.value, customCount: false }, () => {
-                console.log("Hola 2")
-                // this.recalculateTotal();
-                // this.loadBenefits();
+                this.recalculateTotal();
+                this.loadBenefits();
             });
         }
     }

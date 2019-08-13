@@ -65,9 +65,7 @@ class OrderForm extends React.Component {
                 count
             });
         }
-
        
-
         if (props.pair) {
             let { pair } = props;
             let firstSymbol = "";
@@ -76,13 +74,14 @@ class OrderForm extends React.Component {
             firstSymbol = pairs[0];
             secondSymbol = pairs[1];
             
-            //if(props.pair !== this.props.pair || firstSymbol !== this.state.firstSymbol || secondSymbol !== this.state.secondSymbol){
-            if(firstSymbol !== this.state.firstSymbol ){
-                this.setState({count: 0})
-                //document.getElementById("count").value = ""
-                console.log("Cambio de par");
-                console.log(firstSymbol, this.state.firstSymbol)
-            }
+            // if(props.pair !== this.props.pair ){
+            //     let e = {
+            //         target: { value: 0 }
+            //     };
+            //     this.props.changeCount(e);
+            //     console.log("Cambio de par");
+               
+            // }
 
             this.setState({
                 firstSymbol,
@@ -90,22 +89,12 @@ class OrderForm extends React.Component {
             });
 
             let available = 0;
-            if (
-                //(
-                this.state.orderType === "buy" 
-                // &&
-                //     this.state.symbol !== secondSymbol) ||
-                // this.state.symbol === ""
-            ) {
+            if ( this.state.orderType === "buy" ) {
                 
                 if (this.state.balances[secondSymbol])
                     available = this.state.balances[secondSymbol];
                 this.setState({ symbol: secondSymbol, available });
-            } else if (
-                this.state.orderType === "sell" 
-                // &&
-                // this.state.symbol !== firstSymbol
-            ) {
+            } else if ( this.state.orderType === "sell" ) {
                 if (this.state.balances[firstSymbol])
                     available = this.state.balances[firstSymbol];
                 this.setState({ symbol: firstSymbol, available });
@@ -126,17 +115,7 @@ class OrderForm extends React.Component {
                     return results.json();
                 })
                 .then(data => {
-                    //-----------------------------------------------------------------------------------------------------------------------------
-                    const data2 = {
-                        WAVES: 1022.94965621,
-                        BTC: 4.38999847
-                    }
-                    this.setState({ balances: data2 });
-                    //this.setState({ balances: data });
-                    //console.log(this.state.symbol);
-                    //console.log("Balance", data);
-                    console.log("Balance2", data2);
-                    //-----------------------------------------------------------------------------------------------------------------------------
+                    this.setState({ balances: data });
                 })
                 .catch(e => {
                     console.log(e);
@@ -336,7 +315,7 @@ class OrderForm extends React.Component {
                     style={{ marginTop: marginTop }}
                 >
                     <div className="row">
-                        <div className="col-md-12" style={{ padding: "0px" }}>
+                        <div className="col-md-12" style={{ padding: "0px", marginTop: "12px" }}>
                             <button
                                 onClick={() => {
                                     this.postOrder(pair, "buy");
@@ -355,7 +334,7 @@ class OrderForm extends React.Component {
                     style={{ marginTop: marginTop, display: "none" }}
                 >
                     <div className="row">
-                        <div className="col-md-12" style={{ padding: "0px" }}>
+                        <div className="col-md-12" style={{ padding: "0px", marginTop: "12px"  }}>
                             <button
                                 onClick={() => {
                                     this.postOrder(pair, "sell");
@@ -395,16 +374,19 @@ class OrderForm extends React.Component {
                 break;
         }
 
-        if(firstSymbol !== symbol){
-            //console.log(amount)
-            amount = amount / this.state.totalPrice;
-            amount = amount.toFixed(8);
-            //console.log(amount, this.state.totalPrice)
-        } 
-        let e = {
-            target: { value: amount }
-        };
-        this.props.changeCount(e);
+        setTimeout(() => {
+            if(firstSymbol !== symbol){
+                //console.log(amount)
+                amount = amount / this.state.totalPrice;
+                amount = amount.toFixed(8);
+                //console.log(amount, this.state.totalPrice)
+            } 
+            let e = {
+                target: { value: amount }
+            };
+            this.props.changeCount(e);
+        }, 500);
+
     };
 
     handleChangeType = type => {
@@ -439,8 +421,6 @@ class OrderForm extends React.Component {
         let bid = this.props.bid;
 
         let { count } = this.state;
-
-        if(Number(count) === 0) console.log("Count = 0")
 
         let currentPrice = this.props.currentPrice;
         let total = this.props.total.toFixed(8);
@@ -753,6 +733,9 @@ class OrderForm extends React.Component {
                                         </div>
                                     </div>
                                 </div>
+
+                                {this.renderButtons(firstSymbol, pair)}
+
                                 <div style={{ padding: "5px" }}>
                                     <div
                                         className="row"
@@ -867,7 +850,7 @@ class OrderForm extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                {this.renderButtons(firstSymbol, pair)}
+                               
                             </div>
                         </div>
                     </div>
