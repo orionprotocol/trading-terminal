@@ -483,12 +483,12 @@ class OrderForm extends React.Component {
                                 </a>
                             </div>
                         </div>
-                        <div className="orderform-container">
-                            <div className="row" style={{
+                        <div className="orderform-container" style={{
                                 overflowY: 'scroll',
                                 height: '34vh',
                                 overflowX: 'hidden'
                             }}>
+                            <div className="row" >
                                 <div className="col-lg-12">
                                     <div style={{ display: "block" }}>
                                         <div style={{ marginTop: "5px" }}>
