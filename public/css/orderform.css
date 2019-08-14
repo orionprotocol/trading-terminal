@@ -140,29 +140,3 @@ input[type="number"]::-webkit-outer-spin-button {
 	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
-
-#asks-general,
-#bids-general {
-	height: 19vh !important;
-}
-
-/* @media (min-width: 1270px) {
-	#asks-general,
-	#bids-general {
-		height: 19vh !important;
-	}
-} */
-
-@media (min-width: 1293px) {
-	#asks-general,
-	#bids-general {
-		height: 20vh !important;
-	}
-}
-
-@media (min-width: 1900px) {
-	#asks-general,
-	#bids-general {
-		height: 22vh !important;
-	}
-}

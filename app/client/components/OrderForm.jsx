@@ -315,7 +315,7 @@ class OrderForm extends React.Component {
                     style={{ marginTop: marginTop }}
                 >
                     <div className="row">
-                        <div className="col-md-12" style={{ padding: "0px", marginTop: "12px" }}>
+                        <div className="col-md-12" style={{ padding: "0 16px;", marginTop: "12px" }}>
                             <button
                                 onClick={() => {
                                     this.postOrder(pair, "buy");
@@ -334,7 +334,7 @@ class OrderForm extends React.Component {
                     style={{ marginTop: marginTop, display: "none" }}
                 >
                     <div className="row">
-                        <div className="col-md-12" style={{ padding: "0px", marginTop: "12px"  }}>
+                        <div className="col-md-12" style={{ padding: "0 16px;", marginTop: "12px"  }}>
                             <button
                                 onClick={() => {
                                     this.postOrder(pair, "sell");

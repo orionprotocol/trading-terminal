@@ -21,7 +21,7 @@
 .navbar > div {
 	/* background-color: aqua; */
 	width: 45%;
-	padding: 10px;
+	padding: 6px;
 }
 
 .navbar > .container-1 > img {
@@ -36,11 +36,29 @@
 
 .navbar > .container-2 {
 	text-align: right;
+	padding-right: 30px;
+	padding-top: 10px;
 }
 
 /* .navbar {
     margin: 0 10px;
 } */
+
+.navbar .icon-active {
+	background-color: rgb(31, 90, 246);
+	text-align: center;
+	padding: 3px 5px;
+	font-size: 20px !important;
+	border-radius: 10%;
+	top: -4px;
+	position: relative;
+}
+
+@media (max-width: 991px) {
+	#pairs {
+		height: 28vh !important;
+	}
+}
 
 @media (max-width: 1050px) {
 	.mainContent {

@@ -1,61 +1,78 @@
 #suborders {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid #dee2e6;
-    border-spacing: 1px;
-    fontsize: 13px;
-    margin-bottom: 15px;
-    text-align: center;
+	width: 100%;
+	border-collapse: collapse;
+	border: 1px solid #dee2e6;
+	border-spacing: 1px;
+	fontsize: 13px;
+	margin-bottom: 15px;
+	text-align: center;
 }
 
 #suborders td {
-    border: 1px solid #dee2e6;
+	border: 1px solid #dee2e6;
 }
 
 #suborders th {
-    border-collapse: collapse;
-    border: 1px solid #dee2e6;
-    border-spacing: 1px;
-    fontsize: 13px;
-    text-align: center;
-    width: 25%;
-    padding: 5px;
+	border-collapse: collapse;
+	border: 1px solid #dee2e6;
+	border-spacing: 1px;
+	fontsize: 13px;
+	text-align: center;
+	width: 25%;
+	padding: 5px;
 }
 
 .orders-row {
-    font-size: 12px;
-    color: #2d2d2d;
-    font-family: Roboto, Helvetica Neue, sans-serif;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    cursor: pointer;
+	font-size: 12px;
+	color: #2d2d2d;
+	font-family: Roboto, Helvetica Neue, sans-serif;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	cursor: pointer;
 }
 
 .orders-table-hide {
-    display: none;
+	display: none;
 }
 
 .orders-tab-active-open {
-    color: #4e5c6e;
-    border-top: 2px solid #1f5af6;
-    border-right: 1px solid #edf0f4;
+	color: #4e5c6e;
+	border-top: 2px solid #1f5af6;
+	border-right: 1px solid #edf0f4;
 }
 
 .orders-tab-active-history {
-    color: #4e5c6e;
-    border-top: 2px solid #1f5af6;
-    border-left: 1px solid #edf0f4;
+	color: #4e5c6e;
+	border-top: 2px solid #1f5af6;
+	border-left: 1px solid #edf0f4;
 }
 
 .orders-tab {
-    height: 40px;
-    padding-top: 5px;
+	height: 40px;
+	padding-top: 5px;
 }
 
 .orders-title {
-    margin-left: 4px;
+	margin-left: 4px;
 }
 
 .orders-title:hover {
-    cursor: pointer;
+	cursor: pointer;
+}
+
+#orders2 {
+	padding-right: 19px;
+}
+
+@media (max-width: 991px) {
+	#orders-open-container,
+	#orders-history-container {
+		min-width: 600px;
+		overflow-x: scroll;
+		padding-left: 10px;
+	}
+
+	#orders2 {
+		margin-right: 3px;
+	}
 }

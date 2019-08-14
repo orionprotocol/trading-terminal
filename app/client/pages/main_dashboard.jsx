@@ -961,7 +961,7 @@ class MainDashboard extends React.Component {
                     fontWeight: 200
                 }}
             >
-                <div className="row row-eq-height" style={{marginTop: "2px", height: "57vh"}}>
+                <div className="row customRow2" style={{marginTop: "2px", height: "57vh"}}>
                     <div1
                         id="pairs"
                         style={{
@@ -984,7 +984,8 @@ class MainDashboard extends React.Component {
                         >
                             <div className="row">
                                 <div
-                                    className="col-xs-1 col-md-3"
+                                    className="col-xs-2 col-md-3"
+                                    style={{padding: "0.3vw"}}
                                 >
                                     <span
                                         style={{
@@ -995,7 +996,7 @@ class MainDashboard extends React.Component {
                                         WatchList
                                     </span>
                                 </div>
-                                <div className="col-xs-1 col-md-6 col-md-offset-1">
+                                <div className="col-xs-2 col-md-6 col-md-offset-1">
                                     <button
                                         style={{
                                             borderRadius: "25px",
@@ -1010,7 +1011,7 @@ class MainDashboard extends React.Component {
                             </div>
                         </div>
                         <div>
-                            <table style={{ width: "100%", color: "#263241" }}>
+                            <table style={{ width: "100%", color: "#263241", overflowY: "scroll", overflowX: "hidden" }}>
                                 <tbody>{this.renderPairs()}</tbody>
                             </table>
                         </div>
@@ -1058,15 +1059,13 @@ class MainDashboard extends React.Component {
                     </div>
                 </div>
                 <div
-                    className="row row-eq-height"
+                    className="row customRow2"
                     style={{ marginTop: "3px" }}
                 >
                     <div
+                        id="orders2"
                         className="col-md-9 col-xs-12"
-                        style={{
-                            marginRight: "4px",
-                            width: "74.6%"
-                        }}
+                        
                     >
                         <Orders orders={this.state.orders} />
                     </div>

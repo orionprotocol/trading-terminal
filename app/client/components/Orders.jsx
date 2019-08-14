@@ -459,7 +459,7 @@ class Orders extends React.Component {
         let sO = this.state.styleOpen; // className of Open Orders
         let sH = this.state.styleHistory; // className of Order History
         return (
-            <div className="custom-panel panel-default orderform-panel">
+            <div className="custom-panel panel-default orderform-panel customPanel">
                 <div className="panel-heading" style={{ padding: "0px" }}>
                     <div
                         id="orders-open-tab"
@@ -484,7 +484,7 @@ class Orders extends React.Component {
                     style={{
                         backgroundColor: "#fff",
                         borderRadius: "3px",
-                        height: "41.4vh"
+                        height: "41.4vh",
                     }}
                 >
                     <div className="col-md-12">

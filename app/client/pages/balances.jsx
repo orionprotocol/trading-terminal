@@ -51,8 +51,6 @@ class Balance extends React.Component {
                     return results.json();
                 })
                 .then(data => {
-                    console.log("Balance")
-                    console.log(data)
                     this.setState({ balances: data });
                 });
         }
