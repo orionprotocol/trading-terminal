@@ -445,7 +445,7 @@ class OrderForm extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-6 orderform">
-                    <div className="custom-panel panel-default orderform-panel" style={{height: "41.4vh"}}>
+                    <div className="custom-panel panel-default orderform-panel" style={{height: "41.4vh", marginTop: "-1px"}}>
                         <div
                             className="panel-heading"
                             style={{ padding: "0px" }}
