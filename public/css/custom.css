@@ -10,9 +10,27 @@
 	padding-left: 10px !important;
 }
 
-@media (max-width: 768px) {
+@media (width: 768px) {
 	.customPanel {
-		width: 53.9vh !important;
+		width: 72.4vh !important;
+	}
+}
+
+@media (max-width: 767px) {
+	.customPanel {
+		width: 54.2vh !important;
+	}
+}
+
+@media (max-height: 1024) {
+	.customPanel {
+		width: 72.7vh !important;
+	}
+}
+
+@media (max-width: 376px) and (min-height: 812px) {
+	.customPanel {
+		width: 44.4vh !important;
 	}
 }
 
@@ -21,7 +39,7 @@
 		width: 97vw;
 	}
 	.customPanel {
-		width: 54vh;
+		width: 100vh;
 		overflow-x: scroll;
 		margin-left: -13px;
 		margin-bottom: 4px;

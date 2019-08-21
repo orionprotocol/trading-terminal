@@ -140,3 +140,13 @@ input[type="number"]::-webkit-outer-spin-button {
 	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
+
+#order-form {
+	width: 24.75%;
+}
+
+@media (max-width: 992px) {
+	#order-form {
+		width: 99.3%;
+	}
+}

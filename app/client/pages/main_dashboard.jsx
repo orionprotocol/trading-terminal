@@ -1072,7 +1072,7 @@ class MainDashboard extends React.Component {
                     <div
                         id="order-form"
                         className="col-md-3 col-xs-12"
-                        style={{ padding: "0px", margin: "0px",marginLeft: "2px", width: "24.75%" }}
+                        style={{ padding: "0px", margin: "0px",marginLeft: "2px" }}
                     >
                         <OrderForm
                             ref={orderForm => (this.orderForm = orderForm)}
