@@ -5,7 +5,7 @@ import { Toastr } from "./../../service/Toastr";
 import { WavesOrder } from "./../../service/WavesOrder";
 const wc = require("@waves/waves-crypto");
 
-const urlBase = "https://demo.orionprotocol.io";
+const urlBase = "https://demo.orionprotocol.io:8443";
 
 class OrderForm extends React.Component {
     constructor() {
@@ -55,7 +55,7 @@ class OrderForm extends React.Component {
     }
 
     componentWillReceiveProps = props => {
-       
+
         if (props.count) {
             let count = props.count;
             if (!props.customCount) {
@@ -65,7 +65,7 @@ class OrderForm extends React.Component {
                 count
             });
         }
-       
+
         if (props.pair) {
             let { pair } = props;
             let firstSymbol = "";
@@ -73,14 +73,14 @@ class OrderForm extends React.Component {
             let pairs = pair.split("-");
             firstSymbol = pairs[0];
             secondSymbol = pairs[1];
-            
+
             // if(props.pair !== this.props.pair ){
             //     let e = {
             //         target: { value: 0 }
             //     };
             //     this.props.changeCount(e);
             //     console.log("Cambio de par");
-               
+
             // }
 
             this.setState({
@@ -90,7 +90,7 @@ class OrderForm extends React.Component {
 
             let available = 0;
             if ( this.state.orderType === "buy" ) {
-                
+
                 if (this.state.balances[secondSymbol])
                     available = this.state.balances[secondSymbol];
                 this.setState({ symbol: secondSymbol, available });
@@ -221,7 +221,7 @@ class OrderForm extends React.Component {
                     return results.json();
                 })
                 .then(data => {
-                    
+
                     this.setState({
                         totalPrice: data.totalPrice,
                         totalCost: data.totalCost
@@ -352,7 +352,7 @@ class OrderForm extends React.Component {
     }
 
     handleClick = (id, firstSymbol, symbol) => {
-        
+
         let active = [];
         active[id] = true;
         this.setState({ active });
@@ -380,7 +380,7 @@ class OrderForm extends React.Component {
                 amount = amount / this.state.totalPrice;
                 amount = amount.toFixed(8);
                 //console.log(amount, this.state.totalPrice)
-            } 
+            }
             let e = {
                 target: { value: amount }
             };
@@ -427,7 +427,7 @@ class OrderForm extends React.Component {
         if (this.props.marketType == "market") {
             total = this.state.totalCost;
         }
-        
+
 
         let benefits = this.props.benefits;
 
@@ -850,7 +850,7 @@ class OrderForm extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                               
+
                             </div>
                         </div>
                     </div>
