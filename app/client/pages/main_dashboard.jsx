@@ -9,7 +9,7 @@ import { Modal } from "react-bootstrap";
 import { Toastr } from "../../service/Toastr";
 
 const FULL_HEIGHT = 430;
-const urlBase = "https://demo.orionprotocol.io:8443";
+const urlBase = "https://demo.orionprotocol.io";
 
 class MainDashboard extends React.Component {
     constructor() {
@@ -878,7 +878,7 @@ class MainDashboard extends React.Component {
 
     //TODO:on page close disconect
     connect() {
-        let url = `wss://demo.orionprotocol.io:8443/{SYMBOL}`.replace(
+        let url = `wss://demo.orionprotocol.io/{SYMBOL}`.replace(
             "{SYMBOL}",
             this.state.currentSymbol
         );

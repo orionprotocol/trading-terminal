@@ -5,7 +5,7 @@ import { Toastr } from "./../../service/Toastr";
 import { WavesOrder } from "./../../service/WavesOrder";
 const wc = require("@waves/waves-crypto");
 
-const urlBase = "https://demo.orionprotocol.io:8443";
+const urlBase = "https://demo.orionprotocol.io";
 
 class OrderForm extends React.Component {
     constructor() {
