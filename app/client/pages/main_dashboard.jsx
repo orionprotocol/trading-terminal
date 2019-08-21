@@ -9,7 +9,7 @@ import { Modal } from "react-bootstrap";
 import { Toastr } from "../../service/Toastr";
 
 const FULL_HEIGHT = 430;
-const urlBase = "https://demo.orionprotocol.io";
+const urlBase = "https://demo.orionprotocol.io/backend";
 
 class MainDashboard extends React.Component {
     constructor() {
@@ -156,7 +156,7 @@ class MainDashboard extends React.Component {
     }
 
     loadAllPairs() {
-        let url = urlBase + "/pairs/list";
+        let url = urlBase + "/api/v1/pairs/list";
         fetch(url, {
             credentials: "same-origin"
         })
@@ -232,7 +232,7 @@ class MainDashboard extends React.Component {
     loadBenefits() {
         let url =
             urlBase +
-            "/order-benefits?symbol={symbol}&ordQty={ordQty}&side={side}"
+            "/api/v1/order-benefits?symbol={symbol}&ordQty={ordQty}&side={side}"
                 .replace("{symbol}", this.state.currentSymbol)
                 .replace("{ordQty}", this.state.count)
                 .replace("{side}", this.state.side);
@@ -253,7 +253,7 @@ class MainDashboard extends React.Component {
         if (address) {
             let url =
                 urlBase +
-                "/orderHistory?symbol=" +
+                "/api/v1/orderHistory?symbol=" +
                 symbol +
                 "&address=" +
                 address;
@@ -878,7 +878,7 @@ class MainDashboard extends React.Component {
 
     //TODO:on page close disconect
     connect() {
-        let url = `wss://demo.orionprotocol.io/{SYMBOL}`.replace(
+        let url = `wss://demo.orionprotocol.io/backend/{SYMBOL}`.replace(
             "{SYMBOL}",
             this.state.currentSymbol
         );
