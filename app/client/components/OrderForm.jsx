@@ -281,7 +281,7 @@ class OrderForm extends React.Component {
                         </div>
                     </div>
                     <div className="row orderform-content-container">
-                        <div className="col-md-6">
+                        <div className="col-xs-6">
                             <input
                                 type="number"
                                 name="price"
@@ -293,7 +293,7 @@ class OrderForm extends React.Component {
                                 placeholder="0"
                             />
                         </div>
-                        <div className="col-md-6 orderform-input-symbol-container">
+                        <div className="col-xs-6 orderform-input-symbol-container">
                             {secondSymbol}
                         </div>
                     </div>
@@ -445,7 +445,7 @@ class OrderForm extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-6 orderform">
-                    <div className="custom-panel panel-default orderform-panel" style={{height: "41.4vh", marginTop: "-1px"}}>
+                    <div className="custom-panel panel-default orderform-panel custom-panel2">
                         <div
                             className="panel-heading"
                             style={{ padding: "0px" }}
@@ -483,11 +483,7 @@ class OrderForm extends React.Component {
                                 </a>
                             </div>
                         </div>
-                        <div className="orderform-container" style={{
-                                overflowY: 'scroll',
-                                height: '34vh',
-                                overflowX: 'hidden'
-                            }}>
+                        <div className="orderform-container">
                             <div className="row" >
                                 <div className="col-lg-12">
                                     <div style={{ display: "block" }}>
@@ -576,7 +572,7 @@ class OrderForm extends React.Component {
                                             </div>
                                         </div>
                                         <div className="row orderform-content-container">
-                                            <div className="col-md-6">
+                                            <div className="col-xs-6">
                                                 <input
                                                     type="number"
                                                     name="count"
@@ -592,7 +588,7 @@ class OrderForm extends React.Component {
                                                 />
                                             </div>
                                             <div
-                                                className="col-md-6 orderform-input-symbol-container"
+                                                className="col-xs-6 orderform-input-symbol-container"
                                                 onClick={_ =>
                                                     this.handleClick(3)
                                                 }
@@ -716,7 +712,7 @@ class OrderForm extends React.Component {
                                             </div>
                                         </div>
                                         <div className="row orderform-content-container">
-                                            <div className="col-md-6">
+                                            <div className="col-xs-6">
                                                 <input
                                                     type="number"
                                                     name="total"
@@ -727,7 +723,7 @@ class OrderForm extends React.Component {
                                                     placeholder="0"
                                                 />
                                             </div>
-                                            <div className="col-md-6 orderform-input-symbol-container">
+                                            <div className="col-xs-6 orderform-input-symbol-container">
                                                 {secondSymbol}
                                             </div>
                                         </div>
@@ -742,7 +738,7 @@ class OrderForm extends React.Component {
                                         style={{ fontSize: "11px" }}
                                     >
                                         <div
-                                            className="col-md-4"
+                                            className="col-xs-4"
                                             style={{
                                                 padding: "0px",
                                                 textAlign: "center",
@@ -779,7 +775,7 @@ class OrderForm extends React.Component {
                                             </div>
                                         </div>
                                         <div
-                                            className="col-md-4"
+                                            className="col-xs-4"
                                             style={{
                                                 padding: "0px",
                                                 textAlign: "center",
@@ -815,7 +811,7 @@ class OrderForm extends React.Component {
                                             </div>
                                         </div>
                                         <div
-                                            className="col-md-4"
+                                            className="col-xs-4"
                                             style={{
                                                 padding: "0px",
                                                 textAlign: "center",

@@ -145,8 +145,26 @@ input[type="number"]::-webkit-outer-spin-button {
 	width: 24.75%;
 }
 
+.orderform-container {
+	overflow: hidden scroll;
+	height: 34vh;
+}
+
+.custom-panel2 {
+	height: 41.4vh;
+	margin-top: -1px;
+}
+
 @media (max-width: 992px) {
 	#order-form {
 		width: 99.3%;
+	}
+	.orderform-container {
+		overflow: visible;
+		height: 54vh;
+	}
+	.custom-panel2 {
+		height: 55.4vh;
+		margin-top: -1px;
 	}
 }

@@ -198,6 +198,7 @@ class Orders extends React.Component {
     componentDidMount = () => {
         // alert("Mounted");
         // let orders = this.computeOrders(ordersTest);
+        // console.log(orders)
         // this.setState({
         //     orders
         // });
