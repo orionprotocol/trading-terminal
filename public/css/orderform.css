@@ -20,6 +20,12 @@ body {
 	width: 100%;
 }
 
+@media (max-width: 991px) {
+	.orderform {
+		width: 99.5%;
+	}
+}
+
 .orderform-label {
 	color: #7f8fa4;
 	font-size: 11px;
@@ -168,7 +174,7 @@ input[type="number"]::-webkit-outer-spin-button {
 	}
 	.orderform-container {
 		overflow: visible;
-		height: 54vh;
+		height: 60vh;
 	}
 	.custom-panel2 {
 		/* height: 55.4vh; */

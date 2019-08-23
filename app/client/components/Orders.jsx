@@ -197,11 +197,11 @@ class Orders extends React.Component {
 
     componentDidMount = () => {
         // alert("Mounted");
-        let orders = this.computeOrders(ordersTest);
-        console.log(orders)
-        this.setState({
-            orders
-        });
+        // let orders = this.computeOrders(ordersTest);
+        // console.log(orders)
+        // this.setState({
+        //     orders
+        // });
     };
 
     computeOrders = orders =>
@@ -216,12 +216,12 @@ class Orders extends React.Component {
         });
 
     componentWillReceiveProps = props => {
-        // if (props.orders) {
-        //     let orders = this.computeOrders(props.orders);
-        //     this.setState({
-        //         orders
-        //     });
-        // }
+        if (props.orders) {
+            let orders = this.computeOrders(props.orders);
+            this.setState({
+                orders
+            });
+        }
     };
 
     renderSubOrders(subOrders, order) {
@@ -310,10 +310,10 @@ class Orders extends React.Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {/* {this.renderSubOrders(
+                                        {this.renderSubOrders(
                                             orders[i].subOrders,
                                             orders[i]
-                                        )} */}
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
@@ -380,10 +380,10 @@ class Orders extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {/* {this.renderSubOrders(
+                                    {this.renderSubOrders(
                                         orders[i].subOrders,
                                         orders[i]
-                                    )} */}
+                                    )}
                                 </tbody>
                             </table>
                         </div>

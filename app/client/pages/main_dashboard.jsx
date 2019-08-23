@@ -595,7 +595,7 @@ class MainDashboard extends React.Component {
                     divExchanges.push(
                         <div
                             key={key}
-                            className="col-md-1"
+                            className="col-xs-1"
                             style={{ paddingLeft: "5px" }}
                         >
                             <img
