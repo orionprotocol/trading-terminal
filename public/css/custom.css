@@ -7,30 +7,34 @@
 
 .customCol {
 	padding: 0 !important;
-	padding-left: 10px !important;
+	/* padding-left: 10px !important; */
 }
 
-@media (width: 768px) {
+.customPanel {
+	width: 100%;
+}
+
+@media (max-width: 376px) {
 	.customPanel {
-		width: 72.4vh !important;
+		width: 108.5%;
 	}
 }
 
-@media (max-width: 767px) {
+@media (max-width: 414px) and (min-width: 377px) {
 	.customPanel {
-		width: 54.2vh !important;
+		width: 107.5%;
 	}
 }
 
-@media (max-height: 1024) {
+@media (max-width: 825px) and (min-width: 415px) {
 	.customPanel {
-		width: 72.7vh !important;
+		width: 103.5%;
 	}
 }
 
-@media (max-width: 376px) and (min-height: 812px) {
+@media (max-width: 991px) and (min-width: 826px) {
 	.customPanel {
-		width: 44.4vh !important;
+		width: 102.5%;
 	}
 }
 
@@ -39,7 +43,6 @@
 		width: 97vw;
 	}
 	.customPanel {
-		width: 100vh;
 		overflow-x: scroll;
 		margin-left: -13px;
 		margin-bottom: 4px;

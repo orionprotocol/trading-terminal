@@ -197,11 +197,11 @@ class Orders extends React.Component {
 
     componentDidMount = () => {
         // alert("Mounted");
-        // let orders = this.computeOrders(ordersTest);
-        // console.log(orders)
-        // this.setState({
-        //     orders
-        // });
+        let orders = this.computeOrders(ordersTest);
+        console.log(orders)
+        this.setState({
+            orders
+        });
     };
 
     computeOrders = orders =>
@@ -209,19 +209,19 @@ class Orders extends React.Component {
             let total = order.price * order.orderQty;
             let orderQty = order.orderQty;
             let filledQty = order.filledQty;
-            let percent = parseFloat((filledQty * 100) / orderQty).toFixed(4);
+            let percent = parseFloat((filledQty * 100) / orderQty).toFixed(2);
             order.total = total;
             order.percent = percent;
             return order;
         });
 
     componentWillReceiveProps = props => {
-        if (props.orders) {
-            let orders = this.computeOrders(props.orders);
-            this.setState({
-                orders
-            });
-        }
+        // if (props.orders) {
+        //     let orders = this.computeOrders(props.orders);
+        //     this.setState({
+        //         orders
+        //     });
+        // }
     };
 
     renderSubOrders(subOrders, order) {
@@ -281,19 +281,19 @@ class Orders extends React.Component {
                         }}
                     >
                         <div className="row orders-row">
-                            <div className="col-md-1">
+                            <div className="col-md-1 col-xs-1">
                                 <span style={{ color: styleSide }}>{side}</span>
                             </div>
-                            <div className="col-md-1">{orders[i].symbol}</div>
-                            <div className="col-md-2">{orders[i].time}</div>
-                            <div className="col-md-2">
+                            <div className="col-md-2 col-xs-2">{orders[i].symbol}</div>
+                            <div className="col-md-2 col-xs-2">{orders[i].time}</div>
+                            <div className="col-md-2 col-xs-2">
                                 {parseFloat(orders[i].orderQty).toFixed(8)}
                             </div>
-                            <div className="col-md-2">
+                            <div className="col-md-2 col-xs-2">
                                 {parseFloat(orders[i].price).toFixed(8)}
                             </div>
-                            <div className="col-md-2">{orders[i].percent}%</div>
-                            <div className="col-md-2">
+                            <div className="col-md-2 col-xs-1">{orders[i].percent}%</div>
+                            <div className="col-md-1 col-xs-1">
                                 {parseFloat(orders[i].total).toFixed(8)}
                             </div>
                         </div>
@@ -310,10 +310,10 @@ class Orders extends React.Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.renderSubOrders(
+                                        {/* {this.renderSubOrders(
                                             orders[i].subOrders,
                                             orders[i]
-                                        )}
+                                        )} */}
                                     </tbody>
                                 </table>
                             </div>
@@ -349,21 +349,21 @@ class Orders extends React.Component {
                     }}
                 >
                     <div className="row orders-row">
-                        <div className="col-md-1">
+                        <div className="col-md-1 col-xs-1">
                             <span style={{ color: styleSide }}>{side}</span>
                         </div>
-                        <div className="col-md-1">{orders[i].symbol}</div>
-                        <div className="col-md-2">
+                        <div className="col-md-2 col-xs-2">{orders[i].symbol}</div>
+                        <div className="col-md-2 col-xs-2">
                             {new Date().toLocaleString()}
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-md-2 col-xs-2">
                             {parseFloat(orders[i].orderQty).toFixed(8)}
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-md-2 col-xs-2">
                             {parseFloat(orders[i].price).toFixed(8)}
                         </div>
-                        <div className="col-md-2">{orders[i].percent}%</div>
-                        <div className="col-md-2">
+                        <div className="col-md-2 col-xs-1">{orders[i].percent}%</div>
+                        <div className="col-md-1 col-xs-1">
                             {parseFloat(orders[i].total).toFixed(8)}
                         </div>
                     </div>
@@ -380,10 +380,10 @@ class Orders extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.renderSubOrders(
+                                    {/* {this.renderSubOrders(
                                         orders[i].subOrders,
                                         orders[i]
-                                    )}
+                                    )} */}
                                 </tbody>
                             </table>
                         </div>
@@ -560,7 +560,7 @@ class Orders extends React.Component {
                                     </span>
                                    
                                 </div>
-                                <div className="col-md-2 col-xs-1 customCol">
+                                <div className="col-md-2 col-xs-2 customCol">
                                     <span>
                                         Price
                                         <i
@@ -571,7 +571,7 @@ class Orders extends React.Component {
                                     </span>
                                     
                                 </div>
-                                <div className="col-md-2 col-xs-2 customCol">
+                                <div className="col-md-2 col-xs-1 customCol">
                                     <span>
                                         Status
                                         <i
@@ -581,7 +581,7 @@ class Orders extends React.Component {
                                         />
                                     </span>
                                 </div>
-                                <div className="col-md-1 col-xs-1 customCol">
+                                <div className="col-md-1 col-xs-1 customCol" style={{ paddingLeft: "10px !important"}}>
                                     <span>
                                         Total
                                         <i
@@ -596,7 +596,7 @@ class Orders extends React.Component {
                                 style={{
                                     overflowY: "scroll",
                                     overflowX: "hidden",
-                                    maxHeight: "225px"
+                                    maxHeight: "200px"
                                 }}
                             >
                                 {this.renderOpenOrders(orders)}
@@ -683,7 +683,7 @@ class Orders extends React.Component {
                                         />
                                     </span>
                                 </div>
-                                <div className="col-md-2 col-xs-1 customCol">
+                                <div className="col-md-2 col-xs-2 customCol">
                                     <span>
                                         Price
                                         <i
@@ -693,7 +693,7 @@ class Orders extends React.Component {
                                         />
                                     </span>
                                 </div>
-                                <div className="col-md-2 col-xs-2 customCol">
+                                <div className="col-md-2 col-xs-1 customCol">
                                     <span>
                                         Status
                                         <i
@@ -703,7 +703,7 @@ class Orders extends React.Component {
                                         />
                                     </span>
                                 </div>
-                                <div className="col-md-1 col-xs-1 customCol">
+                                <div className="col-md-1 col-xs-1 customCol" style={{ paddingLeft: "10px !important"}}>
                                     <span>
                                         Total
                                         <i
@@ -718,7 +718,7 @@ class Orders extends React.Component {
                                 style={{
                                     overflowY: "scroll",
                                     overflowX: "hidden",
-                                    maxHeight: "225px"
+                                    maxHeight: "200px"
                                 }}
                             >
                                 {this.renderHistoryOrders(orders)}

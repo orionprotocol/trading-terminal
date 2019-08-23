@@ -155,6 +155,13 @@ input[type="number"]::-webkit-outer-spin-button {
 	margin-top: -1px;
 }
 
+@media (max-width: 380px) {
+	.custom-panel2 {
+		height: 62vh !important;
+		margin-top: -1px;
+	}
+}
+
 @media (max-width: 992px) {
 	#order-form {
 		width: 99.3%;
@@ -164,7 +171,8 @@ input[type="number"]::-webkit-outer-spin-button {
 		height: 54vh;
 	}
 	.custom-panel2 {
-		height: 55.4vh;
+		/* height: 55.4vh; */
+		height: 100%;
 		margin-top: -1px;
 	}
 }

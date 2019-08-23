@@ -249,7 +249,7 @@ class OrderForm extends React.Component {
                         <div className="col-md-1" style={{ padding: "0px" }}>
                             <span className="orderform-label">Price</span>
                         </div>
-                        <div className="col-md-offset-6 col-md-1">
+                        <div className="col-md-offset-6 col-xs-1">
                             <span
                                 onClick={() => {
                                     this.clickAsk(ask);
@@ -259,7 +259,7 @@ class OrderForm extends React.Component {
                                 Ask
                             </span>
                         </div>
-                        <div className="col-md-1">
+                        <div className="col-xs-1">
                             <span
                                 onClick={() => {
                                     this.clickBid(bid);
@@ -269,7 +269,7 @@ class OrderForm extends React.Component {
                                 Bid
                             </span>
                         </div>
-                        <div className="col-md-1">
+                        <div className="col-xs-1">
                             <span
                                 onClick={() => {
                                     this.clickLast(lastPrice);
