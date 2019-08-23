@@ -490,7 +490,7 @@ class OrderForm extends React.Component {
                                         <div style={{ marginTop: "5px" }}>
                                             <div className="row">
                                                 <div
-                                                    className="col-md-6"
+                                                    className="col-xs-6"
                                                     style={{ padding: "0px" }}
                                                 >
                                                     <div className="form-check form-check-inline">
@@ -524,7 +524,7 @@ class OrderForm extends React.Component {
                                                     </div>
                                                 </div>
                                                 <div
-                                                    className="col-md-6"
+                                                    className="col-xs-6"
                                                     style={{ padding: "0px" }}
                                                 >
                                                     <div className="form-check form-check-inline">

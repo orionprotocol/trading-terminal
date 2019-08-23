@@ -517,7 +517,7 @@ class Orders extends React.Component {
                                     paddingBottom: "8px"
                                 }}
                             >
-                                <div className="col-md-1 col-xs-1 customCol">
+                                <div className="col-md-1 col-xs-1 customCol pdl">
                                     <span>
                                         Type
                                         <i
@@ -581,7 +581,7 @@ class Orders extends React.Component {
                                         />
                                     </span>
                                 </div>
-                                <div className="col-md-1 col-xs-1 customCol" style={{ paddingLeft: "10px !important"}}>
+                                <div className="col-md-1 col-xs-1 customCol pdl">
                                     <span>
                                         Total
                                         <i
@@ -643,7 +643,7 @@ class Orders extends React.Component {
                                     paddingBottom: "8px"
                                 }}
                             >
-                                <div className="col-md-1 col-xs-1 customCol">
+                                <div className="col-md-1 col-xs-1 customCol pdl">
                                     <span >
                                         Type
                                         <i
@@ -703,7 +703,7 @@ class Orders extends React.Component {
                                         />
                                     </span>
                                 </div>
-                                <div className="col-md-1 col-xs-1 customCol" style={{ paddingLeft: "10px !important"}}>
+                                <div className="col-md-1 col-xs-1 customCol pdl">
                                     <span>
                                         Total
                                         <i
