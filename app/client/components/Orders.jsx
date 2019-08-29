@@ -198,11 +198,11 @@ class Orders extends React.Component {
 
     componentDidMount = () => {
         // alert("Mounted");
-        let orders = this.computeOrders(ordersTest);
+        //let orders = this.computeOrders(ordersTest);
         //console.log(orders)
-        this.setState({
-            orders
-        });
+        // this.setState({
+        //     orders
+        // });
     };
 
     computeOrders = orders =>
@@ -217,12 +217,12 @@ class Orders extends React.Component {
         });
 
     componentWillReceiveProps = props => {
-        // if (props.orders) {
-        //     let orders = this.computeOrders(props.orders);
-        //     this.setState({
-        //         orders
-        //     });
-        // }
+        if (props.orders) {
+            let orders = this.computeOrders(props.orders);
+            this.setState({
+                orders
+            });
+        }
     };
 
     renderSubOrders(subOrders, order) {
@@ -274,7 +274,8 @@ class Orders extends React.Component {
                 //     4
                 // );
 
-                let date = moment(orders[i].time, 'DD/MM/YYYY, HH:mm:ss').format('MM-DD HH:mm:ss')
+                //let date = moment(orders[i].time, 'DD/MM/YYYY, HH:mm:ss').format('MM-DD HH:mm:ss')
+                let date = moment.unix(orders[i].time).format('MM-DD HH:mm:ss')
 
                 renderOrders.push(
                     <div
@@ -314,10 +315,10 @@ class Orders extends React.Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {/* {this.renderSubOrders(
+                                        {this.renderSubOrders(
                                             orders[i].subOrders,
                                             orders[i]
-                                        )} */}
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
@@ -345,7 +346,8 @@ class Orders extends React.Component {
             // let filledQty = orders[i].filledQty;
             // let percent = (filledQty * 100) / orderQty;
 
-            let date = moment(orders[i].time, 'DD/MM/YYYY, HH:mm:ss').format('MM-DD HH:mm:ss')
+            //let date = moment(orders[i].time, 'DD/MM/YYYY, HH:mm:ss').format('MM-DD HH:mm:ss')
+            let date = moment.unix(orders[i].time).format('MM-DD HH:mm:ss')
 
             renderOrders.push(
                 <div
@@ -387,10 +389,10 @@ class Orders extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {/* {this.renderSubOrders(
+                                    {this.renderSubOrders(
                                         orders[i].subOrders,
                                         orders[i]
-                                    )} */}
+                                    )}
                                 </tbody>
                             </table>
                         </div>
