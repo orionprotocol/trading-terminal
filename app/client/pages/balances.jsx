@@ -86,10 +86,8 @@ class Balance extends React.Component {
                         <td>
                             <div className="row" style={{ marginLeft: "5px" }}>
                                 <div
-                                    className="col-md-6"
+                                    className="col-md-6 col-xs-6 balanceIcon"
                                     style={{
-                                        width: "30px",
-                                        height: "30px",
                                         backgroundSize: "100% 100%",
                                         backgroundImage: "url({image})".replace(
                                             "{image}",
@@ -98,7 +96,7 @@ class Balance extends React.Component {
                                     }}
                                 />
                                 <div
-                                    className="col-md-6"
+                                    className="col-md-6 col-xs-6 balanceText"
                                     style={{ paddingTop: "5px" }}
                                 >
                                     {key}
@@ -133,15 +131,14 @@ class Balance extends React.Component {
         let address = localStorage.getItem("address") || "";
         return (
             <div
+                className="balanceContent"
                 style={{
-                    paddingRight: "20px",
-                    paddingLeft: "10px",
-                    paddingTop: "5px",
                     height: windowHeight
                 }}
             >
-                <div style={{ backgroundColor: "#fff", marginTop: "20px" }}>
+                <div style={{ backgroundColor: "#fff", marginTop: "20px" }} className="balanceContent2">
                     <table
+                        class="table"
                         id="balance"
                         style={{
                             width: "100%",

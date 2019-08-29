@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { MomentJS } from "./../../service/MomentJS";
 import { Toastr } from "./../../service/Toastr";
+import moment from "moment";
 
 const ordersTest = [
     {
@@ -11,7 +12,7 @@ const ordersTest = [
         orderQty: 0.0023,
         side: "buy",
         filledQty: 0.00098,
-        time: new Date().toLocaleString(),
+        time: moment().format('DD/MM/YYYY, HH:mm:ss'),
         symbol: "XRP/BTC"
     },
     {
@@ -21,7 +22,7 @@ const ordersTest = [
         orderQty: 0.0029,
         side: "sell",
         filledQty: 0.00076,
-        time: new Date().toLocaleString(),
+        time: moment().format('DD/MM/YYYY, HH:mm:ss'),
         symbol: "WAVES/BTC"
     },
     {
@@ -31,7 +32,7 @@ const ordersTest = [
         orderQty: 0.0023,
         side: "buy",
         filledQty: 0.00098,
-        time: new Date().toLocaleString(),
+        time: moment().format('DD/MM/YYYY, HH:mm:ss'),
         symbol: "ETH/BTC"
     },
     {
@@ -41,7 +42,7 @@ const ordersTest = [
         orderQty: 0.0023,
         side: "buy",
         filledQty: 0.00098,
-        time: new Date().toLocaleString(),
+        time: moment().format('DD/MM/YYYY, HH:mm:ss'),
         symbol: "XRP/BTC"
     },
     {
@@ -51,7 +52,7 @@ const ordersTest = [
         orderQty: 0.0029,
         side: "sell",
         filledQty: 0.00076,
-        time: new Date().toLocaleString(),
+        time: moment().format('DD/MM/YYYY, HH:mm:ss'),
         symbol: "WAVES/BTC"
     },
     {
@@ -61,7 +62,7 @@ const ordersTest = [
         orderQty: 0.0023,
         side: "buy",
         filledQty: 0.00098,
-        time: new Date().toLocaleString(),
+        time: moment().format('DD/MM/YYYY, HH:mm:ss'),
         symbol: "ETH/BTC"
     },
     {
@@ -71,7 +72,7 @@ const ordersTest = [
         orderQty: 0.0023,
         side: "buy",
         filledQty: 0.00098,
-        time: new Date().toLocaleString(),
+        time: moment().format('DD/MM/YYYY, HH:mm:ss'),
         symbol: "XRP/BTC"
     },
     {
@@ -81,7 +82,7 @@ const ordersTest = [
         orderQty: 0.0029,
         side: "sell",
         filledQty: 0.00076,
-        time: new Date().toLocaleString(),
+        time: moment().format('DD/MM/YYYY, HH:mm:ss'),
         symbol: "WAVES/BTC"
     },
     {
@@ -91,7 +92,7 @@ const ordersTest = [
         orderQty: 0.0023,
         side: "buy",
         filledQty: 0.00098,
-        time: new Date().toLocaleString(),
+        time: moment().format('DD/MM/YYYY, HH:mm:ss'),
         symbol: "ETH/BTC"
     },
     {
@@ -101,7 +102,7 @@ const ordersTest = [
         orderQty: 0.0023,
         side: "buy",
         filledQty: 0.00098,
-        time: new Date().toLocaleString(),
+        time: moment().format('DD/MM/YYYY, HH:mm:ss'),
         symbol: "XRP/BTC"
     },
     {
@@ -111,7 +112,7 @@ const ordersTest = [
         orderQty: 0.0029,
         side: "sell",
         filledQty: 0.00076,
-        time: new Date().toLocaleString(),
+        time: moment().format('DD/MM/YYYY, HH:mm:ss'),
         symbol: "WAVES/BTC"
     },
     {
@@ -121,7 +122,7 @@ const ordersTest = [
         orderQty: 0.0023,
         side: "buy",
         filledQty: 0.00098,
-        time: new Date().toLocaleString(),
+        time: moment().format('DD/MM/YYYY, HH:mm:ss'),
         symbol: "ETH/BTC"
     }
 ];
@@ -197,11 +198,11 @@ class Orders extends React.Component {
 
     componentDidMount = () => {
         // alert("Mounted");
-        // let orders = this.computeOrders(ordersTest);
-        // console.log(orders)
-        // this.setState({
-        //     orders
-        // });
+        let orders = this.computeOrders(ordersTest);
+        //console.log(orders)
+        this.setState({
+            orders
+        });
     };
 
     computeOrders = orders =>
@@ -216,12 +217,12 @@ class Orders extends React.Component {
         });
 
     componentWillReceiveProps = props => {
-        if (props.orders) {
-            let orders = this.computeOrders(props.orders);
-            this.setState({
-                orders
-            });
-        }
+        // if (props.orders) {
+        //     let orders = this.computeOrders(props.orders);
+        //     this.setState({
+        //         orders
+        //     });
+        // }
     };
 
     renderSubOrders(subOrders, order) {
@@ -237,10 +238,10 @@ class Orders extends React.Component {
                         {subOrders[i].id}
                     </td>
                     <td style={{ width: "20%", padding: "5px" }}>
-                        {parseFloat(subOrders[i].subOrdQty).toFixed(8)}
+                        {parseFloat(subOrders[i].subOrdQty)}
                     </td>
                     <td style={{ width: "20%", padding: "5px" }}>
-                        {parseFloat(subOrders[i].price).toFixed(8)}
+                        {parseFloat(subOrders[i].price)}
                     </td>
                     <td style={{ width: "20%", padding: "5px" }}>
                         {subOrders[i].status}
@@ -272,6 +273,9 @@ class Orders extends React.Component {
                 // let percent = parseFloat((filledQty * 100) / orderQty).toFixed(
                 //     4
                 // );
+
+                let date = moment(orders[i].time, 'DD/MM/YYYY, HH:mm:ss').format('MM-DD HH:mm:ss')
+
                 renderOrders.push(
                     <div
                         id={rowId}
@@ -285,16 +289,16 @@ class Orders extends React.Component {
                                 <span style={{ color: styleSide }}>{side}</span>
                             </div>
                             <div className="col-md-2 col-xs-2">{orders[i].symbol}</div>
-                            <div className="col-md-2 col-xs-2">{orders[i].time}</div>
+                            <div className="col-md-2 col-xs-2">{date}</div>
                             <div className="col-md-2 col-xs-2">
-                                {parseFloat(orders[i].orderQty).toFixed(8)}
+                                {parseFloat(orders[i].orderQty)}
                             </div>
                             <div className="col-md-2 col-xs-2">
-                                {parseFloat(orders[i].price).toFixed(8)}
+                                {parseFloat(orders[i].price)}
                             </div>
                             <div className="col-md-2 col-xs-1">{orders[i].percent}%</div>
                             <div className="col-md-1 col-xs-1">
-                                {parseFloat(orders[i].total).toFixed(8)}
+                                {parseFloat(orders[i].total)}
                             </div>
                         </div>
                         <div id={tableId} className="row orders-table-hide">
@@ -310,10 +314,10 @@ class Orders extends React.Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.renderSubOrders(
+                                        {/* {this.renderSubOrders(
                                             orders[i].subOrders,
                                             orders[i]
-                                        )}
+                                        )} */}
                                     </tbody>
                                 </table>
                             </div>
@@ -340,6 +344,9 @@ class Orders extends React.Component {
             // let orderQty = orders[i].orderQty;
             // let filledQty = orders[i].filledQty;
             // let percent = (filledQty * 100) / orderQty;
+
+            let date = moment(orders[i].time, 'DD/MM/YYYY, HH:mm:ss').format('MM-DD HH:mm:ss')
+
             renderOrders.push(
                 <div
                     id={rowId}
@@ -354,17 +361,17 @@ class Orders extends React.Component {
                         </div>
                         <div className="col-md-2 col-xs-2">{orders[i].symbol}</div>
                         <div className="col-md-2 col-xs-2">
-                            {new Date().toLocaleString()}
+                            {date}
                         </div>
                         <div className="col-md-2 col-xs-2">
-                            {parseFloat(orders[i].orderQty).toFixed(8)}
+                            {parseFloat(orders[i].orderQty)}
                         </div>
                         <div className="col-md-2 col-xs-2">
-                            {parseFloat(orders[i].price).toFixed(8)}
+                            {parseFloat(orders[i].price)}
                         </div>
                         <div className="col-md-2 col-xs-1">{orders[i].percent}%</div>
                         <div className="col-md-1 col-xs-1">
-                            {parseFloat(orders[i].total).toFixed(8)}
+                            {parseFloat(orders[i].total)}
                         </div>
                     </div>
                     <div id={tableId} className="row orders-table-hide">
@@ -380,10 +387,10 @@ class Orders extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {this.renderSubOrders(
+                                    {/* {this.renderSubOrders(
                                         orders[i].subOrders,
                                         orders[i]
-                                    )}
+                                    )} */}
                                 </tbody>
                             </table>
                         </div>

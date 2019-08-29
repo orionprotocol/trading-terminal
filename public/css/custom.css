@@ -54,6 +54,10 @@
 		margin-bottom: 4px;
 		margin-top: 4px;
 	}
+
+	.customCol {
+		text-align: center;
+	}
 }
 
 @media (max-width: 1300px) {
