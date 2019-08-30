@@ -219,9 +219,13 @@ class Orders extends React.Component {
     componentWillReceiveProps = props => {
         if (props.orders) {
             let orders = this.computeOrders(props.orders);
-            this.setState({
-                orders
-            });
+            //console.log(orders);
+            if(JSON.stringify(orders) !== JSON.stringify(this.state.orders)){
+                this.setState({
+                    orders
+                });
+            }
+            
         }
     };
 
@@ -275,7 +279,8 @@ class Orders extends React.Component {
                 // );
 
                 //let date = moment(orders[i].time, 'DD/MM/YYYY, HH:mm:ss').format('MM-DD HH:mm:ss')
-                let date = moment.unix(orders[i].time).format('MM-DD HH:mm:ss')
+                let timestamp = Number(String(orders[i].time).substring(0, 10))
+                let date = moment.unix(timestamp).format('MM-DD HH:mm:ss')
 
                 renderOrders.push(
                     <div
@@ -346,8 +351,9 @@ class Orders extends React.Component {
             // let filledQty = orders[i].filledQty;
             // let percent = (filledQty * 100) / orderQty;
 
-            //let date = moment(orders[i].time, 'DD/MM/YYYY, HH:mm:ss').format('MM-DD HH:mm:ss')
-            let date = moment.unix(orders[i].time).format('MM-DD HH:mm:ss')
+            
+            let timestamp = Number(String(orders[i].time).substring(0, 10))
+            let date = moment.unix(timestamp).format('MM-DD HH:mm:ss')
 
             renderOrders.push(
                 <div

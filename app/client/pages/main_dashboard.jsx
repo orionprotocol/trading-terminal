@@ -652,11 +652,11 @@ class MainDashboard extends React.Component {
     }
 
     handleNewExchangeData(data) {
-        console.log("AGGREGATED ASKS " + JSON.stringify(data.aggregatedAsks));
-        console.log("AGGREGATED BIDS " + JSON.stringify(data.aggregatedBids));
+        // console.log("AGGREGATED ASKS " + JSON.stringify(data.aggregatedAsks));
+        // console.log("AGGREGATED BIDS " + JSON.stringify(data.aggregatedBids));
 
-        console.log("EXCHANGE ASKS " + JSON.stringify(data.exchangeAsks));
-        console.log("EXCHANGE BIDS " + JSON.stringify(data.exchangeBids));
+        // console.log("EXCHANGE ASKS " + JSON.stringify(data.exchangeAsks));
+        // console.log("EXCHANGE BIDS " + JSON.stringify(data.exchangeBids));
         let aggregatedData = {
             asks: data.aggregatedAsks,
             bids: data.aggregatedBids
@@ -890,7 +890,12 @@ class MainDashboard extends React.Component {
         this.setState({ ws: ws });
         let handleNewData = this.handleNewExchangeData;
         ws.onmessage = function(data) {
+            console.log("new data, orderbook socket")
             handleNewData(JSON.parse(data.data));
+        };
+        ws.onclose = _ => {
+            this.disconnect();
+            this.connect();
         };
         console.log("Connected to " + url);
     }
