@@ -10,10 +10,21 @@
 	padding-right: 0 !important;
 	padding-bottom: 0 !important;
 	padding-left: 0;
+	text-align: right;
 }
 
 .pdl {
 	padding-left: 10px !important;
+}
+
+@media (min-width: 991px) {
+	.pdr {
+		padding-right: 35px !important;
+	}
+
+	.pdr2 {
+		padding-right: 20px !important;
+	}
 }
 
 .customPanel {

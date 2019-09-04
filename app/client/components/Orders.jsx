@@ -127,6 +127,15 @@ const ordersTest = [
     }
 ];
 
+function round(value, precision) {
+    if (Number.isInteger(precision)) {
+      var shift = Math.pow(10, precision);
+      return Math.round(value * shift) / shift;
+    } else {
+      return Math.round(value);
+    }
+  }
+
 function compareValues(key, order = "asc") {
     try {
         return function(a, b) {
@@ -291,20 +300,22 @@ class Orders extends React.Component {
                         }}
                     >
                         <div className="row orders-row">
-                            <div className="col-md-1 col-xs-1">
+                            <div className="col-md-1 col-xs-1 customCol">
                                 <span style={{ color: styleSide }}>{side}</span>
                             </div>
-                            <div className="col-md-2 col-xs-2">{orders[i].symbol}</div>
-                            <div className="col-md-2 col-xs-2">{date}</div>
-                            <div className="col-md-2 col-xs-2">
-                                {parseFloat(orders[i].orderQty)}
+                            <div className="col-md-2 col-xs-2 customCol">{orders[i].symbol}</div>
+                            <div className="col-md-2 col-xs-2 customCol">{date}</div>
+                            <div className="col-md-2 col-xs-2 customCol">
+                                {round(parseFloat(orders[i].orderQty), 8)}
                             </div>
-                            <div className="col-md-2 col-xs-2">
-                                {parseFloat(orders[i].price)}
+                            <div className="col-md-2 col-xs-2 customCol">
+                                {round(parseFloat(orders[i].price), 8)}
                             </div>
-                            <div className="col-md-2 col-xs-1">{orders[i].percent}%</div>
-                            <div className="col-md-1 col-xs-1">
-                                {parseFloat(orders[i].total)}
+                            <div className="col-md-1 col-xs-1 customCol">
+                                {round(parseFloat(orders[i].percent), 8)}%
+                            </div>
+                            <div className="col-md-2 col-xs-1 customCol pdr2">
+                                {round(parseFloat(orders[i].total), 8)}
                             </div>
                         </div>
                         <div id={tableId} className="row orders-table-hide">
@@ -364,22 +375,22 @@ class Orders extends React.Component {
                     }}
                 >
                     <div className="row orders-row">
-                        <div className="col-md-1 col-xs-1">
+                        <div className="col-md-1 col-xs-1 customCol">
                             <span style={{ color: styleSide }}>{side}</span>
                         </div>
-                        <div className="col-md-2 col-xs-2">{orders[i].symbol}</div>
-                        <div className="col-md-2 col-xs-2">
-                            {date}
+                        <div className="col-md-2 col-xs-2 customCol">{orders[i].symbol}</div>
+                        <div className="col-md-2 col-xs-2 customCol">{date}</div>
+                        <div className="col-md-2 col-xs-2 customCol">
+                            {round(parseFloat(orders[i].orderQty), 8)}
                         </div>
-                        <div className="col-md-2 col-xs-2">
-                            {parseFloat(orders[i].orderQty)}
+                        <div className="col-md-2 col-xs-2 customCol">
+                            {round(parseFloat(orders[i].price), 8)}
                         </div>
-                        <div className="col-md-2 col-xs-2">
-                            {parseFloat(orders[i].price)}
+                        <div className="col-md-1 col-xs-1 customCol">
+                            {round(parseFloat(orders[i].percent), 8)}%
                         </div>
-                        <div className="col-md-2 col-xs-1">{orders[i].percent}%</div>
-                        <div className="col-md-1 col-xs-1">
-                            {parseFloat(orders[i].total)}
+                        <div className="col-md-2 col-xs-1 customCol pdr2">
+                            {round(parseFloat(orders[i].total), 8)}
                         </div>
                     </div>
                     <div id={tableId} className="row orders-table-hide">
@@ -564,7 +575,7 @@ class Orders extends React.Component {
                                     </span>
                                     
                                 </div>
-                                <div className="col-md-2 col-xs-2 customCol">
+                                <div className="col-md-2 col-xs-2 customCol" style={{marginLeft: "-7px"}}>
                                     <span>
                                         Amount
                                         <i
@@ -586,7 +597,7 @@ class Orders extends React.Component {
                                     </span>
                                     
                                 </div>
-                                <div className="col-md-2 col-xs-1 customCol">
+                                <div className="col-md-1 col-xs-1 customCol">
                                     <span>
                                         Status
                                         <i
@@ -596,7 +607,7 @@ class Orders extends React.Component {
                                         />
                                     </span>
                                 </div>
-                                <div className="col-md-1 col-xs-1 customCol pdl">
+                                <div className="col-md-2 col-xs-1 customCol pdl pdr">
                                     <span>
                                         Total
                                         <i
@@ -608,11 +619,7 @@ class Orders extends React.Component {
                                 </div>
                             </div>
                             <div
-                                style={{
-                                    overflowY: "scroll",
-                                    overflowX: "hidden",
-                                    maxHeight: "200px"
-                                }}
+                                className="orders-container"
                             >
                                 {this.renderOpenOrders(orders)}
                             </div>
@@ -688,7 +695,7 @@ class Orders extends React.Component {
                                         />
                                     </span>
                                 </div>
-                                <div className="col-md-2 col-xs-2 customCol">
+                                <div className="col-md-2 col-xs-2 customCol" style={{marginLeft: "-7px"}}>
                                     <span>
                                         Amount
                                         <i
@@ -708,7 +715,7 @@ class Orders extends React.Component {
                                         />
                                     </span>
                                 </div>
-                                <div className="col-md-2 col-xs-1 customCol">
+                                <div className="col-md-1 col-xs-1 customCol">
                                     <span>
                                         Status
                                         <i
@@ -718,7 +725,7 @@ class Orders extends React.Component {
                                         />
                                     </span>
                                 </div>
-                                <div className="col-md-1 col-xs-1 customCol pdl">
+                                <div className="col-md-2 col-xs-1 customCol pdl pdr">
                                     <span>
                                         Total
                                         <i
@@ -730,11 +737,7 @@ class Orders extends React.Component {
                                 </div>
                             </div>
                             <div
-                                style={{
-                                    overflowY: "scroll",
-                                    overflowX: "hidden",
-                                    maxHeight: "200px"
-                                }}
+                                className="orders-container"
                             >
                                 {this.renderHistoryOrders(orders)}
                             </div>

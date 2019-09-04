@@ -882,27 +882,31 @@ class MainDashboard extends React.Component {
             "{SYMBOL}",
             this.state.currentSymbol
         );
+
         // let url = `ws://demo.orionprotocol.io/{SYMBOL}`.replace(
         //     "{SYMBOL}",
         //     this.state.currentSymbol
         // );
-        let ws = new WebSocket(url);
-        this.setState({ ws: ws });
+        //let ws = new WebSocket(url);
+        let ws = new window.WebsocketHeartbeatJs({
+            url,
+            pingTimeout: 5000, 
+            pongTimeout: 5000,
+        });
+        this.setState({ ws });
         let handleNewData = this.handleNewExchangeData;
         ws.onmessage = function(data) {
-            console.log("new data, orderbook socket")
+            // console.log("new data, orderbook socket")
             handleNewData(JSON.parse(data.data));
         };
-        ws.onclose = _ => {
-            this.disconnect();
-            this.connect();
-        };
+        
         console.log("Connected to " + url);
     }
 
     disconnect() {
         if (this.state.ws != null) {
-            this.state.ws.close();
+            this.state.ws.close()
+            this.setState({ ws: null });    
         }
         console.log("Disconnected");
     }
