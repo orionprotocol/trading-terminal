@@ -175,6 +175,10 @@ class Orders extends React.Component {
             currentPrice: "0",
             count: "0",
             total: "0",
+            keyO: "time",
+            keyH: "time",
+            sortO: "desc",
+            sortH: "desc",
             styleOpen: [
                 "fa-sort",
                 "fa-sort",
@@ -193,7 +197,8 @@ class Orders extends React.Component {
                 "fa-sort",
                 "fa-sort"
             ],
-            orders: []
+            orders: [],
+            currentOrders: "open"
         };
         this.renderOpenOrders = this.renderOpenOrders.bind(this);
         this.renderSubOrders = this.renderSubOrders.bind(this);
@@ -228,12 +233,19 @@ class Orders extends React.Component {
     componentWillReceiveProps = props => {
         if (props.orders) {
             let orders = this.computeOrders(props.orders);
-            //console.log(orders);
-            if(JSON.stringify(orders) !== JSON.stringify(this.state.orders)){
-                this.setState({
-                    orders
-                });
+            let { keyH, keyO, sortH, sortO } = this.state
+            let newOrders = []
+
+            if(this.state.currentOrders === "open"){
+                newOrders = orders.sort(compareValues(keyO, sortO));
+            }else if (this.state.currentOrders === "history"){
+                newOrders = orders.sort(compareValues(keyH, sortH));
             }
+            
+            this.setState({
+                orders: newOrders
+            });
+            
             
         }
     };
@@ -443,11 +455,18 @@ class Orders extends React.Component {
 
             if (check === "fa-sort" || check === "fa-sort-up") {
                 newStyleOpen[idx] = "fa-sort-down";
-
                 newOrders = this.state.orders.sort(compareValues(key, "desc"));
+                this.setState({
+                    keyO: key,
+                    sortO: "desc"
+                })
             } else if (check === "fa-sort-down") {
                 newStyleOpen[idx] = "fa-sort-up";
                 newOrders = this.state.orders.sort(compareValues(key, "asc"));
+                this.setState({
+                    keyO: key,
+                    sortO: "asc"
+                })
             }
 
             this.setState({
@@ -469,9 +488,17 @@ class Orders extends React.Component {
             if (check === "fa-sort" || check === "fa-sort-up") {
                 newStyleHistory[idx] = "fa-sort-down";
                 newOrders = this.state.orders.sort(compareValues(key, "desc"));
+                this.setState({
+                    keyH: key,
+                    sortH: "desc"
+                })
             } else if (check === "fa-sort-down") {
                 newStyleHistory[idx] = "fa-sort-up";
                 newOrders = this.state.orders.sort(compareValues(key, "asc"));
+                this.setState({
+                    keyH: key,
+                    sortH: "asc"
+                })
             }
 
             this.setState({
@@ -480,6 +507,8 @@ class Orders extends React.Component {
             });
         }
     };
+
+    handleOrderType = type => this.setState({ currentOrders: type})
     
     render() {
         let { orders } = this.state;
@@ -492,15 +521,15 @@ class Orders extends React.Component {
                         id="orders-open-tab"
                         className="col-xs-4 orders-tab orders-tab-active-open"
                     >
-                        <a href="#" id="open-orders-link" >
+                        <a href="#" id="open-orders-link" onClick={_ => this.handleOrderType("open")}>
                             Open Orders
                         </a>
                     </div>
-                    <div
+                    <div 
                         id="orders-history-tab"
                         className="col-xs-4 orders-tab"
                     >
-                        <a href="#" id="history-orders-link">
+                        <a href="#" id="history-orders-link" onClick={_ => this.handleOrderType("history")}>
                             Order History
                         </a>
                     </div>
@@ -571,6 +600,7 @@ class Orders extends React.Component {
                                             className={`fas ${sO[2]} orders-title`}
                                             id="2-time-O"
                                             onClick={this.handleClick}
+                                            style={{paddingRight: "6px"}}
                                         />
                                     </span>
                                     
@@ -692,6 +722,7 @@ class Orders extends React.Component {
                                             className={`fas ${sH[2]} orders-title`}
                                             id="2-time-H"
                                             onClick={this.handleClick}
+                                            style={{paddingRight: "6px"}}
                                         />
                                     </span>
                                 </div>
