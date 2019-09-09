@@ -17,9 +17,12 @@
 	padding-left: 10px !important;
 }
 
+.icon-cancel {
+	padding-right: 3px;
+}
 @media (min-width: 991px) {
 	.pdr {
-		padding-right: 35px !important;
+		padding-right: 10px !important;
 	}
 
 	.pdr2 {

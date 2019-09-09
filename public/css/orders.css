@@ -73,7 +73,7 @@
 @media (max-width: 991px) {
 	#orders-open-container,
 	#orders-history-container {
-		min-width: 600px;
+		min-width: 700px;
 		overflow-x: scroll;
 		padding-left: 10px;
 	}

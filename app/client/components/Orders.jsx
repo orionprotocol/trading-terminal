@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import { MomentJS } from "./../../service/MomentJS";
 import { Toastr } from "./../../service/Toastr";
 import moment from "moment";
+import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from "constants";
+import ProgressBar from './ProgressBar.jsx'
 
 const ordersTest = [
     {
@@ -160,6 +162,8 @@ function compareValues(key, order = "asc") {
     }
 }
 
+const urlBase = "https://demo.orionprotocol.io/backend"
+
 class Orders extends React.Component {
     constructor() {
         super();
@@ -241,7 +245,7 @@ class Orders extends React.Component {
             }else if (this.state.currentOrders === "history"){
                 newOrders = orders.sort(compareValues(keyH, sortH));
             }
-            
+            //console.log(orders)
             this.setState({
                 orders: newOrders
             });
@@ -315,7 +319,7 @@ class Orders extends React.Component {
                             <div className="col-md-1 col-xs-1 customCol">
                                 <span style={{ color: styleSide }}>{side}</span>
                             </div>
-                            <div className="col-md-2 col-xs-2 customCol">{orders[i].symbol}</div>
+                            <div className="col-md-1 col-xs-1 customCol">{orders[i].symbol}</div>
                             <div className="col-md-2 col-xs-2 customCol">{date}</div>
                             <div className="col-md-2 col-xs-2 customCol">
                                 {round(parseFloat(orders[i].orderQty), 8)}
@@ -323,11 +327,22 @@ class Orders extends React.Component {
                             <div className="col-md-2 col-xs-2 customCol">
                                 {round(parseFloat(orders[i].price), 8)}
                             </div>
-                            <div className="col-md-1 col-xs-1 customCol">
-                                {round(parseFloat(orders[i].percent), 8)}%
+                            <div className="col-md-2 col-xs-1 customCol">
+                                <ProgressBar reading={{
+                                    value: round(parseFloat(orders[i].percent), 2),
+                                    color: 'rgb(31, 90, 246)'
+                                }}/>
+                                {/* {round(parseFloat(orders[i].percent), 8)}% */}
                             </div>
-                            <div className="col-md-2 col-xs-1 customCol pdr2">
+                            <div className="col-md-1 col-xs-1 customCol pdr2">
                                 {round(parseFloat(orders[i].total), 8)}
+                            </div>
+                            <div className="col-md-1 col-xs-1 customCol pdr2" onClick={_ => this.handleClickCancel(orders[i])}>
+                                <i
+                                    className={`fas fa-times icon-cancel`}
+                                    
+                                />
+                                Cancel
                             </div>
                         </div>
                         <div id={tableId} className="row orders-table-hide">
@@ -390,7 +405,7 @@ class Orders extends React.Component {
                         <div className="col-md-1 col-xs-1 customCol">
                             <span style={{ color: styleSide }}>{side}</span>
                         </div>
-                        <div className="col-md-2 col-xs-2 customCol">{orders[i].symbol}</div>
+                        <div className="col-md-1 col-xs-1 customCol">{orders[i].symbol}</div>
                         <div className="col-md-2 col-xs-2 customCol">{date}</div>
                         <div className="col-md-2 col-xs-2 customCol">
                             {round(parseFloat(orders[i].orderQty), 8)}
@@ -398,11 +413,21 @@ class Orders extends React.Component {
                         <div className="col-md-2 col-xs-2 customCol">
                             {round(parseFloat(orders[i].price), 8)}
                         </div>
-                        <div className="col-md-1 col-xs-1 customCol">
-                            {round(parseFloat(orders[i].percent), 8)}%
+                        <div className="col-md-2 col-xs-1 customCol">
+                            <ProgressBar reading={{
+                                value: round(parseFloat(orders[i].percent), 2),
+                                color: 'rgb(31, 90, 246)'
+                            }}/>
+                            {/* {round(parseFloat(orders[i].percent), 8)}% */}
                         </div>
-                        <div className="col-md-2 col-xs-1 customCol pdr2">
+                        <div className="col-md-1 col-xs-1 customCol pdr2">
                             {round(parseFloat(orders[i].total), 8)}
+                        </div>
+                        <div className="col-md-1 col-xs-1 customCol pdr2" onClick={_ => this.handleClickCancel(orders[i])}>
+                            <i
+                                className={`fas fa-times icon-cancel`}
+                            />
+                            Cancel
                         </div>
                     </div>
                     <div id={tableId} className="row orders-table-hide">
@@ -509,6 +534,41 @@ class Orders extends React.Component {
     };
 
     handleOrderType = type => this.setState({ currentOrders: type})
+
+    handleClickCancelAll = () => {
+        alert('cancel all orders')
+    }
+
+    handleClickCancel = order => {
+
+        let data = {
+            symbol: order.symbol,
+            ordId: order.id,
+            clientOrdId: order.clientOrderId
+        }
+
+        console.log(order, data);
+
+        fetch(`${urlBase}/api/v1/order`, {
+                method: 'DELETE',
+                credentials: "same-origin",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+        })
+            .then(results => {
+                console.log(results)
+                return results.text();
+            })
+            .then(data => {
+                console.log(data);
+            })
+            .catch(e => {
+                console.log(e);
+            })
+    }
     
     render() {
         let { orders } = this.state;
@@ -583,7 +643,7 @@ class Orders extends React.Component {
                                     </span>  
 
                                 </div>
-                                <div className="col-md-2 col-xs-2 customCol">
+                                <div className="col-md-1 col-xs-1 customCol">
                                     <span>
                                         Symbol
                                         <i
@@ -627,7 +687,7 @@ class Orders extends React.Component {
                                     </span>
                                     
                                 </div>
-                                <div className="col-md-1 col-xs-1 customCol">
+                                <div className="col-md-2 col-xs-1 customCol">
                                     <span>
                                         Status
                                         <i
@@ -637,7 +697,7 @@ class Orders extends React.Component {
                                         />
                                     </span>
                                 </div>
-                                <div className="col-md-2 col-xs-1 customCol pdl pdr">
+                                <div className="col-md-1 col-xs-1 customCol pdl pdr2">
                                     <span>
                                         Total
                                         <i
@@ -645,6 +705,16 @@ class Orders extends React.Component {
                                             id="6-total-O"
                                             onClick={this.handleClick}
                                         />
+                                    </span>
+                                </div>
+                                <div className="col-md-1 col-xs-2 customCol pdl pdr">
+                                    <span>
+                                        <i
+                                            className={`fas fa-times orders-title icon-cancel`}
+                                            onClick={this.handleClickCancelAll}
+                                        />
+                                        Cancel All
+                                        
                                     </span>
                                 </div>
                             </div>
@@ -705,7 +775,7 @@ class Orders extends React.Component {
                                         />
                                     </span>
                                 </div>
-                                <div className="col-md-2 col-xs-2 customCol">
+                                <div className="col-md-1 col-xs-1 customCol">
                                     <span>
                                         Symbol
                                         <i
@@ -746,7 +816,7 @@ class Orders extends React.Component {
                                         />
                                     </span>
                                 </div>
-                                <div className="col-md-1 col-xs-1 customCol">
+                                <div className="col-md-2 col-xs-1 customCol">
                                     <span>
                                         Status
                                         <i
@@ -756,7 +826,7 @@ class Orders extends React.Component {
                                         />
                                     </span>
                                 </div>
-                                <div className="col-md-2 col-xs-1 customCol pdl pdr">
+                                <div className="col-md-1 col-xs-1 customCol pdl pdr2">
                                     <span>
                                         Total
                                         <i
@@ -764,6 +834,15 @@ class Orders extends React.Component {
                                             id="6-total-H"
                                             onClick={this.handleClick}
                                         />
+                                    </span>
+                                </div>
+                                <div className="col-md-1 col-xs-2 customCol pdl pdr">
+                                    <span>
+                                        <i
+                                            className={`fas fa-times orders-title icon-cancel`}
+                                            onClick={this.handleClickCancelAll}
+                                        />
+                                        Cancel All
                                     </span>
                                 </div>
                             </div>
