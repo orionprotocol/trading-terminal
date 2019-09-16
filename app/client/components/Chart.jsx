@@ -185,7 +185,13 @@ class Chart extends React.Component {
             "volume_force_overlay"
         ];
 
-        const overrides = { ...overridesResult, ...themeConf.OVERRIDES };
+        const overrides = { ...overridesResult, ...themeConf.OVERRIDES,
+            "mainSeriesProperties.priceAxisProperties.autoScale": false,
+            "mainSeriesProperties.priceAxisProperties.autoScaleDisabled": true,
+            "paneProperties.axisProperties.autoScale": false,
+            "paneProperties.axisProperties.lockScale": true,
+            // "paneProperties.topMargin": "100"
+        };
         const studies_overrides = {
             ...getStudiesOverrides({ volume0, volume1 }),
             ...themeConf.STUDIES_OVERRIDES

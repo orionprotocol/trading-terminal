@@ -67,7 +67,15 @@
 .orders-container {
 	overflow-y: scroll;
 	overflow-x: hidden;
-	max-height: 200px;
+	max-height: 205px;
+}
+
+@media (max-width: 375px) and (max-height: 812px) {
+	.orders-container {
+		overflow-y: scroll;
+		overflow-x: hidden;
+		max-height: 285px;
+	}
 }
 
 @media (max-width: 991px) {
