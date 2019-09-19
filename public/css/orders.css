@@ -70,6 +70,24 @@
 	max-height: 205px;
 }
 
+@media (min-height: 812px) {
+	.orders-container {
+		max-height: 29vh;
+	}
+}
+
+@media (min-height: 1110px) {
+	.orders-container {
+		max-height: 30vh;
+	}
+}
+
+@media (min-height: 1238px) {
+	.orders-container {
+		max-height: 31vh;
+	}
+}
+
 @media (max-width: 375px) and (max-height: 812px) {
 	.orders-container {
 		overflow-y: scroll;
