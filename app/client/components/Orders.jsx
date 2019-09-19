@@ -311,32 +311,35 @@ class Orders extends React.Component {
                     <div
                         id={rowId}
                         key={i}
-                        onClick={() => {
-                            this.switchTable(tableId);
-                        }}
                     >
                         <div className="row orders-row">
-                            <div className="col-md-1 col-xs-1 customCol">
-                                <span style={{ color: styleSide }}>{side}</span>
+                            <div  
+                                onClick={() => {
+                                this.switchTable(tableId);
+                            }}>
+                                <div className="col-md-1 col-xs-1 customCol">
+                                    <span style={{ color: styleSide }}>{side}</span>
+                                </div>
+                                <div className="col-md-1 col-xs-1 customCol">{orders[i].symbol}</div>
+                                <div className="col-md-2 col-xs-2 customCol">{date}</div>
+                                <div className="col-md-2 col-xs-2 customCol">
+                                    {round(parseFloat(orders[i].orderQty), 8)}
+                                </div>
+                                <div className="col-md-2 col-xs-2 customCol">
+                                    {round(parseFloat(orders[i].price), 8)}
+                                </div>
+                                <div className="col-md-2 col-xs-1 customCol">
+                                    <ProgressBar reading={{
+                                        value: round(parseFloat(orders[i].percent), 2),
+                                        color: 'rgb(31, 90, 246)'
+                                    }}/>
+                                    {/* {round(parseFloat(orders[i].percent), 8)}% */}
+                                </div>
+                                <div className="col-md-1 col-xs-1 customCol pdr2">
+                                    {round(parseFloat(orders[i].total), 8)}
+                                </div>
                             </div>
-                            <div className="col-md-1 col-xs-1 customCol">{orders[i].symbol}</div>
-                            <div className="col-md-2 col-xs-2 customCol">{date}</div>
-                            <div className="col-md-2 col-xs-2 customCol">
-                                {round(parseFloat(orders[i].orderQty), 8)}
-                            </div>
-                            <div className="col-md-2 col-xs-2 customCol">
-                                {round(parseFloat(orders[i].price), 8)}
-                            </div>
-                            <div className="col-md-2 col-xs-1 customCol">
-                                <ProgressBar reading={{
-                                    value: round(parseFloat(orders[i].percent), 2),
-                                    color: 'rgb(31, 90, 246)'
-                                }}/>
-                                {/* {round(parseFloat(orders[i].percent), 8)}% */}
-                            </div>
-                            <div className="col-md-1 col-xs-1 customCol pdr2">
-                                {round(parseFloat(orders[i].total), 8)}
-                            </div>
+                            
                             <div className="col-md-1 col-xs-1 customCol pdr2" onClick={_ => this.handleClickCancel(orders[i])}>
                                 <i
                                     className={`fas fa-times icon-cancel`}
@@ -397,32 +400,36 @@ class Orders extends React.Component {
                 <div
                     id={rowId}
                     key={i}
-                    onClick={() => {
-                        this.switchTable(tableId);
-                    }}
                 >
                     <div className="row orders-row">
-                        <div className="col-md-1 col-xs-1 customCol">
-                            <span style={{ color: styleSide }}>{side}</span>
+                        <div
+                            onClick={() => {
+                                this.switchTable(tableId);
+                            }}
+                        >
+                            <div className="col-md-1 col-xs-1 customCol">
+                                <span style={{ color: styleSide }}>{side}</span>
+                            </div>
+                            <div className="col-md-1 col-xs-1 customCol">{orders[i].symbol}</div>
+                            <div className="col-md-2 col-xs-2 customCol">{date}</div>
+                            <div className="col-md-2 col-xs-2 customCol">
+                                {round(parseFloat(orders[i].orderQty), 8)}
+                            </div>
+                            <div className="col-md-2 col-xs-2 customCol">
+                                {round(parseFloat(orders[i].price), 8)}
+                            </div>
+                            <div className="col-md-2 col-xs-1 customCol">
+                                <ProgressBar reading={{
+                                    value: round(parseFloat(orders[i].percent), 2),
+                                    color: 'rgb(31, 90, 246)'
+                                }}/>
+                                {/* {round(parseFloat(orders[i].percent), 8)}% */}
+                            </div>
+                            <div className="col-md-1 col-xs-1 customCol pdr2">
+                                {round(parseFloat(orders[i].total), 8)}
+                            </div>
                         </div>
-                        <div className="col-md-1 col-xs-1 customCol">{orders[i].symbol}</div>
-                        <div className="col-md-2 col-xs-2 customCol">{date}</div>
-                        <div className="col-md-2 col-xs-2 customCol">
-                            {round(parseFloat(orders[i].orderQty), 8)}
-                        </div>
-                        <div className="col-md-2 col-xs-2 customCol">
-                            {round(parseFloat(orders[i].price), 8)}
-                        </div>
-                        <div className="col-md-2 col-xs-1 customCol">
-                            <ProgressBar reading={{
-                                value: round(parseFloat(orders[i].percent), 2),
-                                color: 'rgb(31, 90, 246)'
-                            }}/>
-                            {/* {round(parseFloat(orders[i].percent), 8)}% */}
-                        </div>
-                        <div className="col-md-1 col-xs-1 customCol pdr2">
-                            {round(parseFloat(orders[i].total), 8)}
-                        </div>
+                        
                         <div className="col-md-1 col-xs-1 customCol pdr2" onClick={_ => this.handleClickCancel(orders[i])}>
                             <i
                                 className={`fas fa-times icon-cancel`}
@@ -559,13 +566,14 @@ class Orders extends React.Component {
                 body: JSON.stringify(data)
         })
             .then(results => {
-                console.log(results)
                 return results.text();
             })
             .then(data => {
+                Toastr.showError("Error to cancel order");
                 console.log(data);
             })
             .catch(e => {
+                Toastr.showError("Error to cancel order");
                 console.log(e);
             })
     }
