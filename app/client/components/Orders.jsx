@@ -566,11 +566,20 @@ class Orders extends React.Component {
                 body: JSON.stringify(data)
         })
             .then(results => {
-                return results.text();
+                return results.json();
             })
+
             .then(data => {
-                Toastr.showError("Error to cancel order");
-                console.log(data);
+                
+
+                if(data.code === "1201"){
+                    Toastr.showSuccess(data.message);
+                }else{
+                    Toastr.showError("Error to cancel order");
+                    console.log(data);
+                }
+               
+               
             })
             .catch(e => {
                 Toastr.showError("Error to cancel order");
