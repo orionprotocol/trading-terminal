@@ -73,7 +73,7 @@ class OrderBook extends React.Component {
                     </div>
                     <div className="col-md-2">
                         <span
-                            id={alignId}
+                            // id={alignId}
                             style={{ color: "#4e5c6e", cursor: "pointer" }}
                             className="glyphicon glyphicon glyphicon-sort"
                             aria-hidden="true"

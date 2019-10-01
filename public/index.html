@@ -143,4 +143,24 @@ desired effect
             // $("#orders-history-container").height(form - 25);
         });
     </script>
+
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript">
+        new TradingView.widget(
+            {
+                "width": 878,
+                "height": 430,
+                "symbol": "XRP-BTC",
+                "interval": "D",
+                "timezone": "Etc/UTC",
+                "theme": "Light",
+                "style": "1",
+                "locale": "en",
+                "toolbar_bg": "#f1f3f6",
+                "enable_publishing": false,
+                "allow_symbol_change": true,
+                "container_id": "tradingview_2a134"
+            }
+        );
+    </script>
 </html>

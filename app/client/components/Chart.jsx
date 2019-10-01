@@ -198,7 +198,7 @@ class Chart extends React.Component {
         };
         const toolbar_bg = themeConf.toolbarBg;
         const custom_css_url = themeConf.customCssUrl;
-
+        console.log(symbol, exchange)
         var widget = (window[id] = new TradingView.widget({
             // debug: true, // uncomment this line to see Library errors and warnings in the console
             locale: "en",
