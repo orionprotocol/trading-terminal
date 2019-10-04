@@ -207,7 +207,6 @@ class Chart extends React.Component {
             width: "100%",
             height: height,
             interval: "30",
-
             container_id: id,
             //	BEWARE: no trailing slash is expected in feed URL
             datafeed: new CandlesService(exchange),

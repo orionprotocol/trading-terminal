@@ -8,6 +8,16 @@ const wc = require("@waves/waves-crypto");
 import ReactDOM from "react-dom";
 import { Toastr } from "../../service/Toastr";
 
+// const checkBalance = () => {
+// 	wan3.eth.getBalance(wan3.eth.accounts[0], function(err, result) {
+// 		if (err != null) {
+// 			console.log('Warn err: ', err);
+// 		}
+// 		let balances = [ result.c[0] / 10000 ];
+// 		console.log('WAN', balances[0]);
+// 	});
+// };
+
 class Balance extends React.Component {
     constructor() {
         super();
