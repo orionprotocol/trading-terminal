@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
+const exchangeArtifact = require('./Exchange.json');
 
 const isInstalled = () => {
 	if (typeof wan3 !== 'undefined') {
@@ -66,6 +67,13 @@ class Router extends React.Component {
 						}
 					});
 				}, 500);
+
+				console.log('---------------------------------------------------------------');
+				const exchange = window.wan3.eth
+					.contract(exchangeArtifact.abi)
+					.at('0x68906c3327833808FAe401b96b4A6EBBa8Bf0EA7');
+				console.log('------------------------------------------------------t');
+				console.log('exchange', exchange);
 			}
 		}
 	};

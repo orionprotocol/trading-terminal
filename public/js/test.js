@@ -21,15 +21,15 @@ console.log('Hello Wanmask');
 // 	});
 // };
 
-const checkBalance = () => {
-	wan3.eth.getBalance(wan3.eth.accounts[0], function(err, result) {
-		if (err != null) {
-			console.log('Warn err: ', err);
-		}
-		let balances = [ result.c[0] / 10000 ];
-		console.log('WAN', balances[0]);
-	});
-};
+// const checkBalance = () => {
+// 	wan3.eth.getBalance(wan3.eth.accounts[0], function(err, result) {
+// 		if (err != null) {
+// 			console.log('Warn err: ', err);
+// 		}
+// 		let balances = [ result.c[0] / 10000 ];
+// 		console.log('WAN', balances[0]);
+// 	});
+// };
 
 // //isInstalled();
 // isLocked();
