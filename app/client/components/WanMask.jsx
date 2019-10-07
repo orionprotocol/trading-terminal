@@ -1,6 +1,10 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
-const exchangeArtifact = require('./Exchange.json');
+const exchangeArtifact = require('../../../public/json/Exchange.json');
+
+const contractAddress = '0x68906c3327833808FAe401b96b4A6EBBa8Bf0EA7';
+let exchange = null;
+let currentAccount = null;
 
 const isInstalled = () => {
 	if (typeof wan3 !== 'undefined') {
@@ -37,7 +41,7 @@ const isLocked = () =>
 // 	});
 // };
 
-class Router extends React.Component {
+class WanMask extends React.Component {
 	constructor() {
 		super();
 		this.state = {
@@ -54,24 +58,29 @@ class Router extends React.Component {
 			if (islocked) {
 				this.setState({ modalLock: true });
 			} else {
+				currentAccount = localStorage.getItem('currentAccount');
+
 				setInterval(() => {
 					window.wan3.eth.getAccounts((err, accounts) => {
 						if (err != null) {
 							console.log('Wan err: ', err);
 						} else if (accounts.length === 0) {
 						} else {
-							let currentAccount = localStorage.getItem('currentAccount');
 							if (currentAccount !== accounts[0]) {
-								localStorage.setItem('currentAccount', accounts[0]);
+								currentAccount = accounts[0];
+								localStorage.setItem('currentAccount', currentAccount);
 							}
 						}
 					});
 				}, 500);
 
 				console.log('---------------------------------------------------------------');
-				const exchange = window.wan3.eth
-					.contract(exchangeArtifact.abi)
-					.at('0x68906c3327833808FAe401b96b4A6EBBa8Bf0EA7');
+				exchange = window.wan3.eth.contract(exchangeArtifact.abi).at(contractAddress);
+				// exchange.assetBalances.call(
+				// 	'0x1e7b4238bab7d3f5e8d09a18b44c295228b80643',
+				// 	'0x0000000000000000000000000000000000000000',
+				// 	(err, res) => console.log(String(res))
+				// );
 				console.log('------------------------------------------------------t');
 				console.log('exchange', exchange);
 			}
@@ -145,4 +154,4 @@ class Router extends React.Component {
 	};
 }
 
-export default Router;
+export default WanMask;

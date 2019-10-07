@@ -129,6 +129,11 @@ class Balance extends React.Component {
                                 Withdraw
                             </button>
                         </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                     </tr>
                 );
             }
@@ -146,7 +151,7 @@ class Balance extends React.Component {
                     height: windowHeight
                 }}
             >
-                <div style={{ backgroundColor: "#fff", marginTop: "20px" }} className="balanceContent2">
+                <div style={{ backgroundColor: "#fff", marginTop: "20px", overflowX: "scroll" }} className="balanceContent2">
                     <table
                         class="table"
                         id="balance"
@@ -161,6 +166,11 @@ class Balance extends React.Component {
                             <td>Balance</td>
                             <td>Deposit</td>
                             <td>Withdraw</td>
+                            <td>Asset</td>
+                            <td>Wallet Balance</td>
+                            <td>Contract Balance</td>
+                            <td>In Open Orders</td>
+                            <td>Actions</td>
                         </thead>
                         <tbody>{this.renderBalances()}</tbody>
                     </table>

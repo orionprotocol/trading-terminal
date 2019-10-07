@@ -7,7 +7,7 @@ import Balance from './client/pages/balances';
 import DepositHistory from './client/pages/deposit_history';
 import ChartExample from './client/pages/ChartExample';
 import Modals from './client/pages/Modals';
-import CheckWanMask from './client/components/CheckWanMask.jsx';
+import WanMask from './client/components/WanMask.jsx';
 
 import Menu from './client/pages/parts/menu';
 
@@ -39,7 +39,7 @@ class Router extends React.Component {
 				</BrowserRouter>
 
 				<div>
-					<CheckWanMask />
+					<WanMask />
 				</div>
 			</div>
 		);
