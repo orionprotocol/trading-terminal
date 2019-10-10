@@ -43,27 +43,34 @@ const deposit = (currency, amount, currentAccount) =>
 	new Promise((resolve, reject) => {
 		currency = currency.toLowerCase();
 
-		tokens[currency].approve(exchange.address, wan3.toWei(amount), { from: currentAccount }, (err, res) => {
-			if (err) reject(err);
+		if (currency === 'wan') {
+			exchange.depositWan.sendTransaction({ from: currentAccount, value: wan3.toWei(amount) }, (err, res) => {
+				if (err) reject(err);
+				resolve(res);
+			});
+		} else {
+			tokens[currency].approve(exchange.address, wan3.toWei(amount), { from: currentAccount }, (err, res) => {
+				if (err) reject(err);
 
-			const res1 = res;
-			console.log('approve: ', res);
+				const res1 = res;
+				console.log('approve: ', res);
 
-			setTimeout(() => {
-				exchange.depositAsset(
-					tokens[currency].address,
-					wan3.toWei(amount),
-					{ from: currentAccount },
-					(err, res) => {
-						if (err) reject(err);
+				setTimeout(() => {
+					exchange.depositAsset(
+						tokens[currency].address,
+						wan3.toWei(amount),
+						{ from: currentAccount },
+						(err, res) => {
+							if (err) reject(err);
 
-						console.log('deposit: ', res);
+							console.log('deposit: ', res);
 
-						resolve([ res1, res ]);
-					}
-				);
-			}, 1000);
-		});
+							resolve([ res1, res ]);
+						}
+					);
+				}, 1000);
+			});
+		}
 	});
 
 const withdraw = (currency, amount, currentAccount) =>

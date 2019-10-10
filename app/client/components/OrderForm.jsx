@@ -3,6 +3,9 @@ import ReactDOM from "react-dom";
 import { MomentJS } from "./../../service/MomentJS";
 import { Toastr } from "./../../service/Toastr";
 import { WavesOrder } from "./../../service/WavesOrder";
+import tokens from '../components/tokens.js'
+import { getBalance } from '../components/wanmask.js'
+
 const wc = require("@waves/waves-crypto");
 
 const urlBase = "https://demo.orionprotocol.io/backend";
@@ -46,12 +49,23 @@ class OrderForm extends React.Component {
         });
         this.loadTotalCost();
         this.scheduleTotalCost();
-        this.getBalances();
+        // this.getBalances();
+        this.loadWanchainBalances()
 
         let e = {
             target: { value: 0 }
         };
         this.props.changeCount(e);
+    }
+
+    loadWanchainBalances = async _ => {
+        let balances = {}
+        const currentAccount = localStorage.getItem('currentAccount')
+
+        tokens.forEach( async token => {
+            balances[token] = Number(await getBalance(token, currentAccount))
+            this.setState({ balances })
+        })
     }
 
     componentWillReceiveProps = props => {

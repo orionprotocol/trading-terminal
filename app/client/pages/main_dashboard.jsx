@@ -19,7 +19,7 @@ class MainDashboard extends React.Component {
         console.log("TABLE HEIGHT " + tableHeight);
         this.state = {
             pairs: [],
-            currentSymbol: "XRP-BTC",
+            currentSymbol: "WAN-ETH",
             ws: null,
             data: {
                 lastPrice: 0,
@@ -148,10 +148,15 @@ class MainDashboard extends React.Component {
     }
 
     componentDidMount() {
-        this.loadAllPairs();
+        // this.loadAllPairs();
         const formHeight = document.getElementById("order-form").clientHeight;
         this.setState({
-            formHeight: formHeight
+            formHeight: formHeight,
+            pairs: [
+                'WBTC-WETH',
+                'WETH-WAN',
+                'WBTC-WAN'
+            ]
         });
     }
 

@@ -8,6 +8,7 @@ const wc = require("@waves/waves-crypto");
 import ReactDOM from "react-dom";
 import { Toastr } from "../../service/Toastr";
 import { getBalance, deposit, withdraw } from '../components/wanmask.js'
+import tokens from '../components/tokens.js'
 import { balance } from "@waves/waves-transactions/dist/nodeInteraction";
 
 // const checkBalance = () => {
@@ -20,11 +21,6 @@ import { balance } from "@waves/waves-transactions/dist/nodeInteraction";
 // 	});
 // };
 
-const tokens = [
-    'WETH',
-    'WBTC'
-]
-
 class Balance extends React.Component {
     constructor() {
         super();
@@ -33,6 +29,7 @@ class Balance extends React.Component {
             balances: {
                 WBTC: 0,
                 WETH: 0,
+                WAN: 0
             },
             amount: 0,
             option: '',
@@ -62,10 +59,10 @@ class Balance extends React.Component {
         //     this.loadBalance();
         // }, 1000);
 
-        this.loadWanchainBalance()
+        this.loadWanchainBalances()
     }
 
-    loadWanchainBalance = async _ => {
+    loadWanchainBalances = async _ => {
         let balances = {}
         const currentAccount = localStorage.getItem('currentAccount')
 
@@ -103,6 +100,12 @@ class Balance extends React.Component {
                 return "img/ethereum.svg";
             case "xrp":
                 return "img/ripple.svg";
+            case "weth":
+                return "img/weth.png";
+            case "wbtc":
+                return "img/wbtc.png";
+            case "wan":
+                return "img/wan.png";
         }
     }
 
@@ -182,15 +185,24 @@ class Balance extends React.Component {
     toggleModal = (option = '', cur = '') => this.setState({modal: !this.state.modal, option, currentCurrency: cur})
 
     handleClick = async _ => {
-        const { option, currentCurrency, amount } = this.state
+        const { option, currentCurrency, amount, balances } = this.state
         const currentAccount = localStorage.getItem('currentAccount')
 
         if( option === 'Deposit' ){
             let res = await deposit(currentCurrency, amount, currentAccount)
             console.log(res)
+            Toastr.showSuccess("Successful Deposit");
         }else if (option === 'Withdraw'){
-            let res = await withdraw(currentCurrency, amount, currentAccount)
-            console.log(res)
+            
+            if(Number(amount) >  Number(balances[currentCurrency])){
+                Toastr.showError("Insufficient balance");
+                return
+            }else{
+                let res = await withdraw(currentCurrency, amount, currentAccount)
+                console.log(res)
+                Toastr.showSuccess("Successful Withdrawal");
+            }
+           
         }
         this.toggleModal()
     }
