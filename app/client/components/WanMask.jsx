@@ -1,9 +1,6 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
-const exchangeArtifact = require('../../../public/json/Exchange.json');
 
-const contractAddress = '0x68906c3327833808FAe401b96b4A6EBBa8Bf0EA7';
-let exchange = null;
 let currentAccount = null;
 
 const isInstalled = () => {
@@ -74,15 +71,15 @@ class WanMask extends React.Component {
 					});
 				}, 500);
 
-				console.log('---------------------------------------------------------------');
-				exchange = window.wan3.eth.contract(exchangeArtifact.abi).at(contractAddress);
-				// exchange.assetBalances.call(
-				// 	'0x1e7b4238bab7d3f5e8d09a18b44c295228b80643',
-				// 	'0x0000000000000000000000000000000000000000',
-				// 	(err, res) => console.log(String(res))
-				// );
-				console.log('------------------------------------------------------t');
-				console.log('exchange', exchange);
+				// console.log('---------------------------------------------------------------');
+				// exchange = window.wan3.eth.contract(exchangeArtifact.abi).at(contractAddress);
+				// // exchange.assetBalances.call(
+				// // 	'0x1e7b4238bab7d3f5e8d09a18b44c295228b80643',
+				// // 	'0x0000000000000000000000000000000000000000',
+				// // 	(err, res) => console.log(String(res))
+				// // );
+				// console.log('------------------------------------------------------t');
+				// console.log('exchange', exchange);
 			}
 		}
 	};

@@ -7,6 +7,8 @@ const wc = require("@waves/waves-crypto");
 
 import ReactDOM from "react-dom";
 import { Toastr } from "../../service/Toastr";
+import { getBalance, deposit, withdraw } from '../components/wanmask.js'
+import { balance } from "@waves/waves-transactions/dist/nodeInteraction";
 
 // const checkBalance = () => {
 // 	wan3.eth.getBalance(wan3.eth.accounts[0], function(err, result) {
@@ -18,11 +20,23 @@ import { Toastr } from "../../service/Toastr";
 // 	});
 // };
 
+const tokens = [
+    'WETH',
+    'WBTC'
+]
+
 class Balance extends React.Component {
     constructor() {
         super();
         this.state = {
-            balances: {}
+            modal: false,
+            balances: {
+                WBTC: 0,
+                WETH: 0,
+            },
+            amount: 0,
+            option: '',
+            currentCurrency: ''
         };
 
         this.loadBalance = this.loadBalance.bind(this);
@@ -38,15 +52,27 @@ class Balance extends React.Component {
     }
 
     componentDidMount() {
-        orion.btcSwap.settings.network = regtestUtils.network;
-        orion.btcSwap.settings.client = {
-            unspents: regtestUtils.unspents,
-            calcFee: regtestUtils.calcFee,
-            getBalance: regtestUtils.getBalance
-        };
-        setInterval(() => {
-            this.loadBalance();
-        }, 1000);
+        // orion.btcSwap.settings.network = regtestUtils.network;
+        // orion.btcSwap.settings.client = {
+        //     unspents: regtestUtils.unspents,
+        //     calcFee: regtestUtils.calcFee,
+        //     getBalance: regtestUtils.getBalance
+        // };
+        // setInterval(() => {
+        //     this.loadBalance();
+        // }, 1000);
+
+        this.loadWanchainBalance()
+    }
+
+    loadWanchainBalance = async _ => {
+        let balances = {}
+        const currentAccount = localStorage.getItem('currentAccount')
+
+        tokens.forEach( async token => {
+            balances[token] = await getBalance(token, currentAccount)
+            this.setState({ balances })
+        })
     }
 
     loadBalance() {
@@ -61,6 +87,7 @@ class Balance extends React.Component {
                     return results.json();
                 })
                 .then(data => {
+                    console.log(data)
                     this.setState({ balances: data });
                 });
         }
@@ -83,6 +110,13 @@ class Balance extends React.Component {
         if (key.toLowerCase() == "btc") {
             window.location.href = "/deposit";
         }
+    }
+
+    handleChange = e => {
+        let newState = this.state
+        newState[e.target.id] = e.target.value
+
+        this.setState(newState)
     }
 
     renderBalances() {
@@ -118,27 +152,47 @@ class Balance extends React.Component {
                         </td>
                         <td>
                             <button
-                                onClick={() => this.showDeposit(key)}
+                                // onClick={() => this.showDeposit(key)}
+                                onClick={() => this.toggleModal('Deposit', key)}
                                 className="btn  balance-btn"
                             >
                                 Deposit
                             </button>
                         </td>
                         <td>
-                            <button className="btn balance-btn">
+                            <button className="btn balance-btn"
+                                onClick={() => this.toggleModal('Withdraw', key)}
+
+                            >
                                 Withdraw
                             </button>
                         </td>
+                        {/* <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
+                        <td></td> */}
                     </tr>
                 );
             }
         }
         return renderedBalances;
+    }
+
+    toggleModal = (option = '', cur = '') => this.setState({modal: !this.state.modal, option, currentCurrency: cur})
+
+    handleClick = async _ => {
+        const { option, currentCurrency, amount } = this.state
+        const currentAccount = localStorage.getItem('currentAccount')
+
+        if( option === 'Deposit' ){
+            let res = await deposit(currentCurrency, amount, currentAccount)
+            console.log(res)
+        }else if (option === 'Withdraw'){
+            let res = await withdraw(currentCurrency, amount, currentAccount)
+            console.log(res)
+        }
+        this.toggleModal()
     }
 
     render() {
@@ -166,29 +220,36 @@ class Balance extends React.Component {
                             <td>Balance</td>
                             <td>Deposit</td>
                             <td>Withdraw</td>
-                            <td>Asset</td>
+                            {/* <td>Asset</td>
                             <td>Wallet Balance</td>
                             <td>Contract Balance</td>
                             <td>In Open Orders</td>
-                            <td>Actions</td>
+                            <td>Actions</td> */}
                         </thead>
                         <tbody>{this.renderBalances()}</tbody>
                     </table>
                 </div>
-                <Modal show={this.state.modal} onHide={this.closeModal}>
-                    <Modal.Header closeButton>
+                <Modal show={this.state.modal} onHide={this.toggleModal}>
+                    <Modal.Header>
                         <Modal.Title />
                     </Modal.Header>
                     <Modal.Body>
                         <div style={{ backgroundColor: "#fff" }}>
-                            <div style={{ padding: "20px" }}>
-                                <div>
-                                    <div>
-                                        <span style={{ fontSize: "15px" }}>
-                                            Copy and share your address
-                                        </span>
+                            <div>
+                                <div className="container" style={{ width: '100%'}}>
+                                    <div className="row" style={{ marginBottom: '10px'}}>
+                                        <div className="col-12">
+
+                                            <div className="col-md-12 text-center">
+                                                <h3 style={{ color: '#656d75' }}>
+                                                    {this.state.option} Amount
+                                                </h3>
+                                            </div>
+                                        </div>
+                                       
                                     </div>
-                                    <div style={{ marginTop: "5px" }}>
+                                    
+                                    <div className="row" style={{ marginBottom: '10px'}}>
                                         <div
                                             style={{
                                                 backgroundColor: "#f8f9fb",
@@ -196,81 +257,24 @@ class Balance extends React.Component {
                                                 padding: "15px",
                                                 borderRadius: "4px"
                                             }}
+                                            className="col-12 text-center"
                                         >
-                                            <span
-                                                style={{
-                                                    fontFamily:
-                                                        "'Roboto-Regular',sans-serif",
-                                                    fontSize: "17px"
-                                                }}
-                                            >
-                                                {address}
-                                            </span>
+                                            <input type="number" id="amount" onChange={this.handleChange}/>
                                         </div>
                                     </div>
-                                </div>
-                                <div style={{ marginTop: "30px" }}>
+                                    
                                     <div
-                                        style={{
-                                            textTransform: "text-transform",
-                                            width: "100%",
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                            whiteSpace: "nowrap",
-                                            boxSizing: "border-box"
-                                        }}
-                                    >
-                                        <span
-                                            style={{
-                                                color: "#2d2d2d",
-                                                fontSize: "13px"
-                                            }}
-                                        >
-                                            ИЛИ
-                                        </span>
-                                    </div>
+                                        className="row"
+                                        style={{ marginBottom: '20px'}}
+									>
+										<div className="col-md-12 text-center">
+											<button className="btn btn-primary" onClick={this.handleClick}>
+												Send
+											</button>
+										</div>
+									</div>
                                 </div>
-                                <div style={{ marginTop: "20px" }}>
-                                    <div
-                                        style={{
-                                            textTransform: "text-transform",
-                                            width: "100%",
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                            whiteSpace: "nowrap",
-                                            boxSizing: "border-box"
-                                        }}
-                                    >
-                                        <span
-                                            style={{
-                                                color: "#2d2d2d",
-                                                fontSize: "15px"
-                                            }}
-                                        >
-                                            Scan QR-code
-                                        </span>
-                                    </div>
-                                </div>
-                                <div style={{ marginTop: "40px" }}>
-                                    <div
-                                        style={{
-                                            textTransform: "text-transform",
-                                            width: "100%",
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            justifyContent: "center",
-                                            alignItems: "center",
-                                            whiteSpace: "nowrap",
-                                            boxSizing: "border-box"
-                                        }}
-                                    >
-                                        <QRCode value="34nvJWRGAnd2mh1qkHsBoPk6SvP4CPCKxK" />
-                                    </div>
-                                </div>
+                            
                             </div>
                         </div>
                     </Modal.Body>
