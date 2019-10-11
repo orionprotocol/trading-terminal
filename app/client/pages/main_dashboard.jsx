@@ -19,7 +19,7 @@ class MainDashboard extends React.Component {
         console.log("TABLE HEIGHT " + tableHeight);
         this.state = {
             pairs: [],
-            currentSymbol: "WAN-ETH",
+            currentSymbol: "WBTC-WETH",
             ws: null,
             data: {
                 lastPrice: 0,
@@ -369,8 +369,8 @@ class MainDashboard extends React.Component {
 
     changeCurrentSymbol(symbol) {
         this.setState({ currentSymbol: symbol }, () => {
-            this.disconnect();
-            this.connect();
+            // this.disconnect();
+            // this.connect();
             this.loadOrderHistory(symbol);
             this.loadBenefits();
             this.loadOrderBooks();

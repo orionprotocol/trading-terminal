@@ -4,10 +4,9 @@ import { MomentJS } from "./../../service/MomentJS";
 import { Toastr } from "./../../service/Toastr";
 import { WavesOrder } from "./../../service/WavesOrder";
 import tokens from '../components/tokens.js'
-import { getBalance } from '../components/wanmask.js'
+import { getBalance, WETH, WBTC, hashOrder, signOrder, tokensAddress } from './wanmask.js'
 
 const wc = require("@waves/waves-crypto");
-
 const urlBase = "https://demo.orionprotocol.io/backend";
 
 class OrderForm extends React.Component {
@@ -149,67 +148,123 @@ class OrderForm extends React.Component {
         this.props.changeCurrentPrice(value);
     }
 
-    postOrder(symbol, side) {
-        console.log("POST " + this.props.count);
-        if (!this.props.count || this.props.count == 0) {
-            Toastr.showError("Amount is empty");
-            return;
-        }
-        let address = localStorage.getItem("address") || "";
-        if (!address) {
-            Toastr.showError("Please set your address in settings");
-            return;
-        }
-        let price = this.props.currentPrice;
-        if (this.props.marketType == "market") {
-            price =
-                side === "buy"
-                    ? Number(this.state.totalPrice * (1.01).toFixed(8))
-                    : Number(this.state.totalPrice * (0.99).toFixed(8));
+    postOrder = async (symbol, side) => {
+
+        console.log(symbol, side)
+        const nowTimestamp = Date.now();
+        const currentAccount = localStorage.getItem('currentAccount');
+        const secondAddress = '0x1e7b4238bab7d3f5e8d09a18b44c295228b80643';
+        // baseAsset, es el que el cliente tiene; quoteAsset, es el activo que quiere
+        // en compra tiene c2 y quiere c1
+        // en venta tiene c1 y quiere c2 
+        const symbols = symbol.split('-')
+
+        if(side === 'buy'){
+
+            const buyOrder = {
+                senderAddress: currentAccount, //accounts[1],
+                matcherAddress: secondAddress, // accounts[0],
+                baseAsset: tokensAddress[symbols[1].toUpperCase()],
+                quotetAsset: tokensAddress[symbols[0].toUpperCase()], 
+                matcherFeeAsset: tokensAddress[symbols[1].toUpperCase()],
+                amount: 150000000,
+                price: 2100000,
+                matcherFee: 350000,
+                nonce: nowTimestamp,
+                expiration: nowTimestamp + 29 * 24 * 60 * 60,
+                side: true //true = buy, false = sell
+            };
+
+            let signature1 = await signOrder(buyOrder);
+            console.log('----- Message: ', hashOrder(buyOrder));
+            console.log('----- Signature: ', signature1);
+            console.log('----- Signed By: ', buyOrder.senderAddress);
+            console.log('----- Buy Order Struct: \n', buyOrder);
+
+        }else if(side === 'sell'){
+
+            const sellOrder = {
+                senderAddress: currentAccount, //accounts[1],
+                matcherAddress: secondAddress, // accounts[0],
+                baseAsset: tokensAddress[symbols[0].toUpperCase()],
+                quotetAsset: tokensAddress[symbols[1].toUpperCase()], 
+                matcherFeeAsset: tokensAddress[symbols[0].toUpperCase()],
+                amount: 150000000,
+                price: 2100000,
+                matcherFee: 350000,
+                nonce: nowTimestamp,
+                expiration: nowTimestamp + 29 * 24 * 60 * 60,
+                side: false //true = buy, false = sell
+            };
+
+            let signature2 = await signOrder(sellOrder);
+            console.log('----- Message: ', hashOrder(sellOrder));
+            console.log('----- Signature: ', signature2);
+            console.log('----- Signed By: ', sellOrder.senderAddress);
+            console.log('----- Sell Order Struct: \n', sellOrder);
+
         }
 
-        if (this.props.marketType == "limit") {
-            if (!this.props.currentPrice || this.props.currentPrice == 0) {
-                Toastr.showError("Price is empty");
-                return;
-            }
-        }
+        // console.log("POST " + this.props.count);
+        // if (!this.props.count || this.props.count == 0) {
+        //     Toastr.showError("Amount is empty");
+        //     return;
+        // }
+        // let address = localStorage.getItem("address") || "";
+        // if (!address) {
+        //     Toastr.showError("Please set your address in settings");
+        //     return;
+        // }
+        // let price = this.props.currentPrice;
+        // if (this.props.marketType == "market") {
+        //     price =
+        //         side === "buy"
+        //             ? Number(this.state.totalPrice * (1.01).toFixed(8))
+        //             : Number(this.state.totalPrice * (0.99).toFixed(8));
+        // }
 
-        let seed = localStorage.getItem("seed") || "";
-        const wavesOrder = WavesOrder.toWavesOrder(
-            symbol,
-            side,
-            price,
-            this.props.count,
-            seed
-        );
-        //console.log(WavesOrder.orionUrl);
-        fetch(`${WavesOrder.orionUrl}/api/order`, {
-            credentials: "same-origin",
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(wavesOrder)
-        })
-            .then(results => {
-                return results.json();
-            })
-            .then(data => {
-                if (data.code && data.code == "1010") {
-                    Toastr.showError(
-                        "No brokers were found to execute your order"
-                    );
-                    return;
-                } else if (data.code && data.code == "1000") {
-                    Toastr.showError("Not enough tradable balance.");
-                    return;
-                } else {
-                    Toastr.showSuccess("Order has been created");
-                    this.props.loadOrderHistory(this.props.pair);
-                }
-            });
+        // if (this.props.marketType == "limit") {
+        //     if (!this.props.currentPrice || this.props.currentPrice == 0) {
+        //         Toastr.showError("Price is empty");
+        //         return;
+        //     }
+        // }
+
+        // let seed = localStorage.getItem("seed") || "";
+        // const wavesOrder = WavesOrder.toWavesOrder(
+        //     symbol,
+        //     side,
+        //     price,
+        //     this.props.count,
+        //     seed
+        // );
+        // //console.log(WavesOrder.orionUrl);
+        // fetch(`${WavesOrder.orionUrl}/api/order`, {
+        //     credentials: "same-origin",
+        //     method: "POST",
+        //     headers: {
+        //         Accept: "application/json",
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify(wavesOrder)
+        // })
+        //     .then(results => {
+        //         return results.json();
+        //     })
+        //     .then(data => {
+        //         if (data.code && data.code == "1010") {
+        //             Toastr.showError(
+        //                 "No brokers were found to execute your order"
+        //             );
+        //             return;
+        //         } else if (data.code && data.code == "1000") {
+        //             Toastr.showError("Not enough tradable balance.");
+        //             return;
+        //         } else {
+        //             Toastr.showSuccess("Order has been created");
+        //             this.props.loadOrderHistory(this.props.pair);
+        //         }
+        //     });
     }
 
     scheduleTotalCost() {

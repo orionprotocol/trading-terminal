@@ -9,11 +9,14 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 const exchange = window.wan3.eth.contract(exchangeArtifact.abi).at(contractAddress);
 const wbtc = window.wan3.eth.contract(tokenArtifact.abi).at(WBTC);
 const weth = window.wan3.eth.contract(tokenArtifact.abi).at(WETH);
+const web3 = new Web3();
 
 const tokensAddress = {
+	WAN: ZERO_ADDRESS,
 	WBTC,
 	WETH
 };
+
 const tokens = {
 	wbtc,
 	weth
@@ -77,14 +80,65 @@ const withdraw = (currency, amount, currentAccount) =>
 	new Promise((resolve, reject) => {
 		currency = currency.toLowerCase();
 
-		exchange.withdraw(tokens[currency].address, wan3.toWei(amount), { from: currentAccount }, (err, res) => {
+		if (currency === 'wan') {
+			exchange.withdraw(ZERO_ADDRESS, wan3.toWei(amount), { from: currentAccount }, (err, res) => {
+				if (err) reject(err);
+				resolve(res);
+			});
+		} else {
+			exchange.withdraw(tokens[currency].address, wan3.toWei(amount), { from: currentAccount }, (err, res) => {
+				if (err) reject(err);
+				resolve(res);
+			});
+		}
+	});
+
+// === Hash Order=== //
+
+const hashOrder = orderInfo => {
+	let message = new Web3().utils.soliditySha3(
+		3,
+		orderInfo.senderAddress,
+		orderInfo.matcherAddress,
+		orderInfo.baseAsset,
+		orderInfo.quotetAsset,
+		orderInfo.matcherFeeAsset,
+		orderInfo.amount,
+		orderInfo.price,
+		orderInfo.matcherFee,
+		orderInfo.nonce,
+		orderInfo.expiration,
+		orderInfo.side
+	);
+
+	return message;
+};
+
+// === SIGN ORDER === //
+
+const signOrder = orderInfo =>
+	new Promise((resolve, reject) => {
+		let message = hashOrder(orderInfo);
+		//Wanmask
+		window.wan3.eth.sign(orderInfo.senderAddress, message, (err, res) => {
 			if (err) reject(err);
 			resolve(res);
 		});
+
+		//Web3 v1
+		//let signedMessage = await web3.eth.sign(message, orderInfo.senderAddress);
+
+		//Web3 v0.2
+		//   let signedMessage = await web3.eth.sign(sender, message);
 	});
 
 module.exports = {
 	getBalance,
 	deposit,
-	withdraw
+	withdraw,
+	hashOrder,
+	signOrder,
+	WETH,
+	WBTC,
+	tokensAddress
 };
