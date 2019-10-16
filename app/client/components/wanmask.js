@@ -1,6 +1,6 @@
 const exchangeArtifact = require('../../../public/json/Exchange.json');
 const tokenArtifact = require('../../../public/json/WETH.json');
-const contractAddress = '0x3F4BDC2dfBa3d148728dF5e313fe377D2A4e97E2';
+const contractAddress = '0x4899AEE8d0C0b35bC3DC6057D2a9F68730B5C3cb';
 const WBTC = '0xe5aF2Cd77ba717055Df4a59921C809ab2cd891C3';
 const WETH = '0xB4a3F5b8D096aA03808853Db807f1233a2515dF2';
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';

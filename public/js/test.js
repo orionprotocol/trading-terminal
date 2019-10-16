@@ -1,6 +1,7 @@
 // console.log('Hello Wanmask');
 // //let contractAddress = '0x68906c3327833808FAe401b96b4A6EBBa8Bf0EA7'; // Exchange OLD
-// let contractAddress = '0x3F4BDC2dfBa3d148728dF5e313fe377D2A4e97E2';
+// // let contractAddress = '0x3F4BDC2dfBa3d148728dF5e313fe377D2A4e97E2';
+// let contractAddress = '0x4899AEE8d0C0b35bC3DC6057D2a9F68730B5C3cb';
 
 // const myAddress = '0x102b9e62b9a42270be1009a8ad352392fbafc417';
 // const secondAddress = '0x1e7b4238bab7d3f5e8d09a18b44c295228b80643';
@@ -126,7 +127,7 @@
 // 	// 	console.log(res);
 // 	// });
 
-// 	// exchange.withdraw(ZERO_ADDRESS, wan3.toWei('21'), { from: currentAccount }, (err, res) => {
+// 	// exchange.withdraw(ZERO_ADDRESS, wan3.toWei('1'), (err, res) => {
 // 	// 	console.log(res);
 // 	// });
 
