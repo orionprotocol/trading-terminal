@@ -22,6 +22,23 @@ const tokens = {
 	weth
 };
 
+const getWalletBalance = (currency, currentAccount) =>
+	new Promise((resolve, reject) => {
+		currency = currency.toLowerCase();
+
+		if (currency === 'wan') {
+			wan3.eth.getBalance(currentAccount, (err, res) => {
+				if (err) reject(err);
+				resolve(wan3.fromWei(String(res)));
+			});
+		} else {
+			tokens[currency].balanceOf(currentAccount, (err, res) => {
+				if (err) reject(err);
+				resolve(wan3.fromWei(String(res)));
+			});
+		}
+	});
+
 const getBalance = (currency, currentAccount) =>
 	new Promise((resolve, reject) => {
 		currency = currency.toUpperCase();
@@ -140,5 +157,6 @@ module.exports = {
 	signOrder,
 	WETH,
 	WBTC,
-	tokensAddress
+	tokensAddress,
+	getWalletBalance
 };

@@ -7,7 +7,7 @@ const wc = require("@waves/waves-crypto");
 
 import ReactDOM from "react-dom";
 import { Toastr } from "../../service/Toastr";
-import { getBalance, deposit, withdraw } from '../components/wanmask.js'
+import { getBalance, deposit, withdraw, getWalletBalance } from '../components/wanmask.js'
 import tokens from '../components/tokens.js'
 import { balance } from "@waves/waves-transactions/dist/nodeInteraction";
 
@@ -26,6 +26,11 @@ class Balance extends React.Component {
         super();
         this.state = {
             modal: false,
+            walletBalances: {
+                WBTC: 0,
+                WETH: 0,
+                WAN: 0
+            },
             balances: {
                 WBTC: 0,
                 WETH: 0,
@@ -60,6 +65,17 @@ class Balance extends React.Component {
         // }, 1000);
 
         this.loadWanchainBalances()
+        this.loadWalletBalance()
+    }
+
+    loadWalletBalance = async () => {
+        let walletBalances = {}
+        let currentAccount = localStorage.getItem('currentAccount');
+
+        tokens.forEach( async token => {
+            walletBalances[token] = await getWalletBalance(token, currentAccount)
+            this.setState({ walletBalances })
+        })
     }
 
     loadWanchainBalances = async _ => {
@@ -123,7 +139,7 @@ class Balance extends React.Component {
     }
 
     renderBalances() {
-        const balances = this.state.balances;
+        const { balances, walletBalances } = this.state;
         let renderedBalances = [];
         for (let key in balances) {
             if (balances.hasOwnProperty(key)) {
@@ -149,6 +165,9 @@ class Balance extends React.Component {
                                     {key}
                                 </div>
                             </div>
+                        </td>
+                        <td>
+                            <b>{walletBalances[key]}</b>
                         </td>
                         <td>
                             <b>{balances[key]}</b>
@@ -229,6 +248,7 @@ class Balance extends React.Component {
                     >
                         <thead>
                             <td>Asset</td>
+                            <td>Wallet Balance</td>
                             <td>Balance</td>
                             <td>Deposit</td>
                             <td>Withdraw</td>

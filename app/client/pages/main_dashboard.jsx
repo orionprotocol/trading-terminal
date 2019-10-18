@@ -19,7 +19,7 @@ class MainDashboard extends React.Component {
         console.log("TABLE HEIGHT " + tableHeight);
         this.state = {
             pairs: [],
-            currentSymbol: "XRP-BTC",
+            currentSymbol: "ETH-BTC",
             ws: null,
             data: {
                 lastPrice: 0,
@@ -148,18 +148,16 @@ class MainDashboard extends React.Component {
     }
 
     componentDidMount() {
-        this.loadAllPairs();
+        // this.loadAllPairs();
         const formHeight = document.getElementById("order-form").clientHeight;
         this.setState({
             formHeight: formHeight,
-            // pairs: [
-            //     'ETH-BTC',
-            //     // 'WAN-ETH',
-            //     // 'WAN-BTC'
-            // ]
+            pairs: [
+                'ETH-BTC',
+                // 'WAN-ETH',
+                // 'WAN-BTC'
+            ]
         });
-
-        // this.connect();
     }
 
     loadAllPairs() {
@@ -1402,4 +1400,4 @@ class MainDashboard extends React.Component {
         );
     }
 }
-export default MainDashb
+export default MainDashboard

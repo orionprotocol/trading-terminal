@@ -84,27 +84,27 @@
 // 	wbtc = window.wan3.eth.contract(abi).at(WBTC);
 // 	weth = window.wan3.eth.contract(abi).at(WETH);
 
-// 	exchange.getBalance.call(ZERO_ADDRESS, currentAccount, (err, res) => {
-// 		console.log('------ WAN: ', wan3.fromWei(String(res)));
-// 	});
+// 	// exchange.getBalance.call(ZERO_ADDRESS, currentAccount, (err, res) => {
+// 	// 	console.log('------ WAN: ', wan3.fromWei(String(res)));
+// 	// });
 
-// 	exchange.getBalance.call(WBTC, currentAccount, (err, res) => {
-// 		console.log('------ WBTC: ', wan3.fromWei(String(res)));
-// 	});
+// 	// exchange.getBalance.call(WBTC, currentAccount, (err, res) => {
+// 	// 	console.log('------ WBTC: ', wan3.fromWei(String(res)));
+// 	// });
 
-// 	exchange.getBalance.call(WETH, currentAccount, (err, res) => {
-// 		console.log('------ WETH: ', wan3.fromWei(String(res)));
-// 	});
+// 	// exchange.getBalance.call(WETH, currentAccount, (err, res) => {
+// 	// 	console.log('------ WETH: ', wan3.fromWei(String(res)));
+// 	// });
 
 // 	//-----------------------------------------------
-// 	console.log(
-// 		'--- exchange.address:',
-// 		exchange.address,
-// 		' -- wbtc.address:',
-// 		wbtc.address,
-// 		' -- weth.address:',
-// 		weth.address
-// 	);
+// 	// console.log(
+// 	// 	'--- exchange.address:',
+// 	// 	exchange.address,
+// 	// 	' -- wbtc.address:',
+// 	// 	wbtc.address,
+// 	// 	' -- weth.address:',
+// 	// 	weth.address
+// 	// );
 
 // 	//---------------------- Depositar al exchange -----------------------------------------------------
 
@@ -188,15 +188,21 @@
 // // WBTC - 0xe5aF2Cd77ba717055Df4a59921C809ab2cd891C3
 // // WETH - 0xB4a3F5b8D096aA03808853Db807f1233a2515dF2
 
+// // wan3.eth.getBalance(wan3.eth.accounts[0], function(err, result) {
+// // 	console.log(wan3.fromWei(String(result)));
+// // });
 // // const checkBalance = () => {
 // // 	wan3.eth.getBalance(wan3.eth.accounts[0], function(err, result) {
 // // 		if (err != null) {
 // // 			console.log('Warn err: ', err);
 // // 		}
-// // 		// let balances = [ result.c[0] / 10000 ];
-// // 		// console.log(balances);
 // // 		console.log(result);
 // // 	});
 // // };
 
 // // checkBalance();
+
+// //------------------------------- Balances Tokens ---------------------------------------
+
+// // weth.balanceOf("0x102b9e62b9a42270be1009a8ad352392fbafc417", (err, res) => {console.log(wan3.fromWei(String(res)))})
+// // wbtc.balanceOf("0x102b9e62b9a42270be1009a8ad352392fbafc417", (err, res) => {console.log(wan3.fromWei(String(res)))})
