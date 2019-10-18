@@ -19,7 +19,7 @@ class MainDashboard extends React.Component {
         console.log("TABLE HEIGHT " + tableHeight);
         this.state = {
             pairs: [],
-            currentSymbol: "WBTC-WETH",
+            currentSymbol: "XRP-BTC",
             ws: null,
             data: {
                 lastPrice: 0,
@@ -148,16 +148,18 @@ class MainDashboard extends React.Component {
     }
 
     componentDidMount() {
-        // this.loadAllPairs();
+        this.loadAllPairs();
         const formHeight = document.getElementById("order-form").clientHeight;
         this.setState({
             formHeight: formHeight,
-            pairs: [
-                'WBTC-WETH',
-                'WETH-WAN',
-                'WBTC-WAN'
-            ]
+            // pairs: [
+            //     'ETH-BTC',
+            //     // 'WAN-ETH',
+            //     // 'WAN-BTC'
+            // ]
         });
+
+        // this.connect();
     }
 
     loadAllPairs() {
@@ -369,8 +371,8 @@ class MainDashboard extends React.Component {
 
     changeCurrentSymbol(symbol) {
         this.setState({ currentSymbol: symbol }, () => {
-            // this.disconnect();
-            // this.connect();
+            this.disconnect();
+            this.connect();
             this.loadOrderHistory(symbol);
             this.loadBenefits();
             this.loadOrderBooks();
@@ -1400,4 +1402,4 @@ class MainDashboard extends React.Component {
         );
     }
 }
-export default MainDashboard;
+export default MainDashb
