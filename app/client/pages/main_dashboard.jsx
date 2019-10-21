@@ -155,7 +155,10 @@ class MainDashboard extends React.Component {
             pairs: [
                 'ETH-BTC',
                 // 'WAN-ETH',
-                // 'WAN-BTC'
+                // 'WAN-BTC',
+                // 'WBTC-WAN',
+                // 'WETH-WAN',
+                // 'WBTC-WETH'
             ]
         });
     }
