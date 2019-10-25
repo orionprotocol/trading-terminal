@@ -156,9 +156,9 @@ class MainDashboard extends React.Component {
                 'ETH-BTC',
                 // 'WAN-ETH',
                 // 'WAN-BTC',
-                // 'WBTC-WAN',
-                // 'WETH-WAN',
-                // 'WBTC-WETH'
+                'WBTC-WAN',
+                'WETH-WAN',
+                'WBTC-WETH'
             ]
         });
     }

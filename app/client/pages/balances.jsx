@@ -9,17 +9,8 @@ import ReactDOM from "react-dom";
 import { Toastr } from "../../service/Toastr";
 import { getBalance, deposit, withdraw, getWalletBalance } from '../components/wanmask.js'
 import tokens from '../components/tokens.js'
+import { getBalances } from "../../service/OrionWanchain";
 import { balance } from "@waves/waves-transactions/dist/nodeInteraction";
-
-// const checkBalance = () => {
-// 	wan3.eth.getBalance(wan3.eth.accounts[0], function(err, result) {
-// 		if (err != null) {
-// 			console.log('Warn err: ', err);
-// 		}
-// 		let balances = [ result.c[0] / 10000 ];
-// 		console.log('WAN', balances[0]);
-// 	});
-// };
 
 class Balance extends React.Component {
     constructor() {
@@ -53,7 +44,7 @@ class Balance extends React.Component {
             "EBJDs3MRUiK35xbj59ejsf5Z4wH9oz6FuHvSCHVQqZHS";
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         // orion.btcSwap.settings.network = regtestUtils.network;
         // orion.btcSwap.settings.client = {
         //     unspents: regtestUtils.unspents,
@@ -64,29 +55,49 @@ class Balance extends React.Component {
         //     this.loadBalance();
         // }, 1000);
 
-        this.loadWanchainBalances()
-        this.loadWalletBalance()
+        // this.loadWanchainBalances()
+        // this.loadWalletBalance()
+
+        this.loadOrionWanchainBalances()
     }
 
-    loadWalletBalance = async () => {
-        let walletBalances = {}
+    loadOrionWanchainBalances = async _ => {
+        
         let currentAccount = localStorage.getItem('currentAccount');
+        const balances = await getBalances(currentAccount)
+        let walletBalances = {}
+        let contractBalances = {}
 
-        tokens.forEach( async token => {
-            walletBalances[token] = await getWalletBalance(token, currentAccount)
-            this.setState({ walletBalances })
-        })
+        for(let currency in balances.contractbalances){
+            contractBalances[currency] = wan3.fromWei(balances.contractbalances[currency])
+            this.setState({ balances: contractBalances })
+        }
+
+        for(let currency in balances.walletBalances){
+            walletBalances[currency] = wan3.fromWei(balances.walletBalances[currency])
+            this.setState({ walletBalances: walletBalances })
+        }
     }
 
-    loadWanchainBalances = async _ => {
-        let balances = {}
-        const currentAccount = localStorage.getItem('currentAccount')
+    // loadWalletBalance = async () => {
+    //     let walletBalances = {}
+    //     let currentAccount = localStorage.getItem('currentAccount');
 
-        tokens.forEach( async token => {
-            balances[token] = await getBalance(token, currentAccount)
-            this.setState({ balances })
-        })
-    }
+    //     tokens.forEach( async token => {
+    //         walletBalances[token] = await getWalletBalance(token, currentAccount)
+    //         this.setState({ walletBalances })
+    //     })
+    // }
+
+    // loadWanchainBalances = async _ => {
+    //     let balances = {}
+    //     const currentAccount = localStorage.getItem('currentAccount')
+
+    //     tokens.forEach( async token => {
+    //         balances[token] = await getBalance(token, currentAccount)
+    //         this.setState({ balances })
+    //     })
+    // }
 
     loadBalance() {
         let seed = localStorage.getItem("seed") || "";
