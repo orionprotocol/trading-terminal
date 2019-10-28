@@ -206,3 +206,16 @@
 
 // // weth.balanceOf("0x102b9e62b9a42270be1009a8ad352392fbafc417", (err, res) => {console.log(wan3.fromWei(String(res)))})
 // // wbtc.balanceOf("0x102b9e62b9a42270be1009a8ad352392fbafc417", (err, res) => {console.log(wan3.fromWei(String(res)))})
+
+console.log('--------- test socket.io ----------------------------------------');
+
+var socket = io.connect('http://localhost:3002');
+
+socket.on('connect', data => {
+	console.log('Connected');
+});
+
+socket.on('balanceChange', function(data) {
+	console.log('Balance Change: ', data);
+	socket.emit('balanceChange', 'received balance change');
+});

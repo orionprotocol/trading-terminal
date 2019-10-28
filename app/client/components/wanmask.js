@@ -1,14 +1,15 @@
 const exchangeArtifact = require('../../../public/json/Exchange.json');
-const tokenArtifact = require('../../../public/json/WETH.json');
-const contractAddress = '0x4899AEE8d0C0b35bC3DC6057D2a9F68730B5C3cb';
-const WBTC = '0xe5aF2Cd77ba717055Df4a59921C809ab2cd891C3';
-const WETH = '0xB4a3F5b8D096aA03808853Db807f1233a2515dF2';
+const WETHArtifact = require('../../../public/json/WETH.json');
+const WBTCArtifact = require('../../../public/json/WBTC.json');
+const contractAddress = exchangeArtifact.networks['3'].address;
+const WBTC = WBTCArtifact.networks['3'].address;
+const WETH = WETHArtifact.networks['3'].address;
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 //let currentAccount = null;
 
 const exchange = window.wan3.eth.contract(exchangeArtifact.abi).at(contractAddress);
-const wbtc = window.wan3.eth.contract(tokenArtifact.abi).at(WBTC);
-const weth = window.wan3.eth.contract(tokenArtifact.abi).at(WETH);
+const wbtc = window.wan3.eth.contract(WBTCArtifact.abi).at(WBTC);
+const weth = window.wan3.eth.contract(WETHArtifact.abi).at(WETH);
 const web3 = new Web3();
 
 const tokensAddress = {
@@ -18,6 +19,7 @@ const tokensAddress = {
 };
 
 const tokens = {
+	// Contracts
 	wbtc,
 	weth
 };
