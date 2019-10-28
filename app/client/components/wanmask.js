@@ -65,6 +65,12 @@ const deposit = (currency, amount, currentAccount) =>
 	new Promise((resolve, reject) => {
 		currency = currency.toLowerCase();
 
+		if (currency === 'btc') {
+			currency = 'wbtc';
+		} else if (currency == 'eth') {
+			currency = 'weth';
+		}
+
 		if (currency === 'wan') {
 			exchange.depositWan.sendTransaction({ from: currentAccount, value: wan3.toWei(amount) }, (err, res) => {
 				if (err) reject(err);
@@ -98,6 +104,12 @@ const deposit = (currency, amount, currentAccount) =>
 const withdraw = (currency, amount, currentAccount) =>
 	new Promise((resolve, reject) => {
 		currency = currency.toLowerCase();
+
+		if (currency === 'btc') {
+			currency = 'wbtc';
+		} else if (currency == 'eth') {
+			currency = 'weth';
+		}
 
 		if (currency === 'wan') {
 			exchange.withdraw(ZERO_ADDRESS, wan3.toWei(amount), { from: currentAccount }, (err, res) => {

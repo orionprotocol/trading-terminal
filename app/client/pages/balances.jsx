@@ -12,19 +12,25 @@ import tokens from '../components/tokens.js'
 import { getBalances } from "../../service/OrionWanchain";
 import { balance } from "@waves/waves-transactions/dist/nodeInteraction";
 
+const URL_SOCKET = 'http://localhost:3002'
+
+const
+    io = require("socket.io-client"),
+    socket = io.connect(URL_SOCKET);
+
 class Balance extends React.Component {
     constructor() {
         super();
         this.state = {
             modal: false,
             walletBalances: {
-                WBTC: 0,
-                WETH: 0,
+                BTC: 0,
+                ETH: 0,
                 WAN: 0
             },
             balances: {
-                WBTC: 0,
-                WETH: 0,
+                BTC: 0,
+                ETH: 0,
                 WAN: 0
             },
             amount: 0,
@@ -59,6 +65,42 @@ class Balance extends React.Component {
         // this.loadWalletBalance()
 
         this.loadOrionWanchainBalances()
+        this.connect()
+    }
+
+    connect = _ => {
+        
+        let currentAccount = localStorage.getItem('currentAccount');
+
+        socket.on('connect', data => {
+            console.log('Connected');
+        });
+        
+        socket.on('balanceChange', data => {
+            console.log('Balance Change: ', data);
+
+            if( wan3.toChecksumAddress(data.user) === wan3.toChecksumAddress(currentAccount)){
+                let balances = this.state.balances
+                let walletBalances = this.state.walletBalances
+
+                if( data.asset === 'WETH'){
+                    balances['ETH'] = data.newBalance
+                    walletBalances['ETH'] = data.newWalletBalance
+                }else if(data.asset === 'WBTC'){
+                    balances['BTC'] = data.newBalance
+                    walletBalances['BTC'] = data.newWalletBalance
+                }else{
+                    balances[data.asset] = data.newBalance
+                    walletBalances[data.asset] = data.newWalletBalance
+                }
+                
+                this.setState({ balances, walletBalances })
+
+                console.log('Balances updated...');
+            }
+
+            socket.emit('balanceChange', 'received balance change');
+        });
     }
 
     loadOrionWanchainBalances = async _ => {
@@ -69,12 +111,24 @@ class Balance extends React.Component {
         let contractBalances = {}
 
         for(let currency in balances.contractbalances){
-            contractBalances[currency] = wan3.fromWei(balances.contractbalances[currency])
+            if( currency === 'WBTC'){
+                contractBalances['BTC'] = wan3.fromWei(balances.contractbalances[currency])
+            }else if( currency === 'WETH'){
+                contractBalances['ETH'] = wan3.fromWei(balances.contractbalances[currency])
+            }else{
+                contractBalances[currency] = wan3.fromWei(balances.contractbalances[currency])
+            }
             this.setState({ balances: contractBalances })
         }
 
         for(let currency in balances.walletBalances){
-            walletBalances[currency] = wan3.fromWei(balances.walletBalances[currency])
+            if( currency === 'WBTC'){
+                walletBalances['BTC'] = wan3.fromWei(balances.walletBalances[currency])
+            }else if( currency === 'WETH'){
+                walletBalances['ETH'] = wan3.fromWei(balances.walletBalances[currency])
+            }else{
+                walletBalances[currency] = wan3.fromWei(balances.walletBalances[currency])
+            }
             this.setState({ walletBalances: walletBalances })
         }
     }
@@ -216,6 +270,7 @@ class Balance extends React.Component {
 
     handleClick = async _ => {
         const { option, currentCurrency, amount, balances } = this.state
+        console.log(currentCurrency);
         const currentAccount = localStorage.getItem('currentAccount')
 
         if( option === 'Deposit' ){

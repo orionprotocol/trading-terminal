@@ -7,6 +7,12 @@ import { WanchainOrder } from "./../../service/WanchainOrder";
 import tokens from '../components/tokens.js'
 import { getBalances } from "../../service/OrionWanchain";
 
+const URL_SOCKET = 'http://localhost:3002'
+
+const
+    io = require("socket.io-client"),
+    socket = io.connect(URL_SOCKET);
+
 const wc = require("@waves/waves-crypto");
 const urlBase = "https://demo.orionprotocol.io/backend";
 
@@ -56,6 +62,37 @@ class OrderForm extends React.Component {
             target: { value: 0 }
         };
         this.props.changeCount(e);
+        this.connect()
+    }
+
+    connect = _ => {
+        
+        let currentAccount = localStorage.getItem('currentAccount');
+
+        socket.on('connect', data => {
+            console.log('Connected');
+        });
+        
+        socket.on('balanceChange', data => {
+            console.log('Balance Change: ', data);
+
+            if( wan3.toChecksumAddress(data.user) === wan3.toChecksumAddress(currentAccount)){
+                let balances = this.state.balances
+
+                 if( data.asset === 'WETH'){
+                    balances['ETH'] = data.newBalance
+                }else if(data.asset === 'WBTC'){
+                    balances['BTC'] = data.newBalance
+                }else{
+                    balances[data.asset] = data.newBalance
+                }
+
+                this.setState({ balances })
+                console.log('Balances updated...');
+            }
+
+            socket.emit('balanceChange', 'received balance change');
+        });
     }
 
     loadOrionWanchainBalances = async _ => {
@@ -65,7 +102,14 @@ class OrderForm extends React.Component {
         let contractBalances = {}
 
         for(let currency in balances.contractbalances){
-            contractBalances[currency] = wan3.fromWei(balances.contractbalances[currency])
+            if( currency === 'WBTC'){
+                contractBalances['BTC'] = wan3.fromWei(balances.contractbalances[currency])
+            }else if( currency === 'WETH'){
+                contractBalances['ETH'] = wan3.fromWei(balances.contractbalances[currency])
+            }else{
+                contractBalances[currency] = wan3.fromWei(balances.contractbalances[currency])
+            }
+            
             this.setState({ balances: contractBalances })
         }
     }
@@ -153,7 +197,7 @@ class OrderForm extends React.Component {
 
     postOrder = async (symbol, side) => {
 
-        console.log(symbol, side)
+        if( symbol === 'ETH-BTC' ) symbol = 'WETH-WBTC'
         const symbols = symbol.split('-')
         const price = this.props.currentPrice;
         const amount = this.props.count;

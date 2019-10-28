@@ -44,6 +44,7 @@
 		"react-router-dom": "^4.2.2",
 		"rxjs": "^6.4.0",
 		"rxjs-compat": "^6.4.0",
+		"socket.io-client": "^2.3.0",
 		"vex-dialog": "^1.0.7",
 		"vex-js": "^4.0.1"
 	}
