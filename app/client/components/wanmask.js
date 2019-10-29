@@ -156,7 +156,7 @@ const signOrder = orderInfo =>
 	new Promise((resolve, reject) => {
 		let message = hashOrder(orderInfo);
 		//Wanmask
-		window.wan3.eth.sign(orderInfo.senderAddress, message, (err, res) => {
+		window.wan3.personal.sign(message, orderInfo.senderAddress, (err, res) => {
 			if (err) reject(err);
 			resolve(res);
 		});

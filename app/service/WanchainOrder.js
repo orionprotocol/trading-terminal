@@ -10,7 +10,7 @@ class WanchainOrder {
 	static defaultMatcherFee = 300000;
 	static defaultExpiration = 29 * 24 * 60 * 60 * 1000;
 	static matcherPublicKey = '0x1e7b4238bab7d3f5e8d09a18b44c295228b80643';
-	static orionUrl = `http://${window.location.hostname}:3001`;
+	static orionUrl = `https://${window.location.hostname}:2083`;
 	// static orionUrl = "https://demo.orionprotocol.io:2083";
 	// baseAsset, es el que el cliente tiene; quoteAsset, es el activo que quiere
 	// en compra tiene c2 y quiere c1
@@ -25,20 +25,15 @@ class WanchainOrder {
 
 		side = side.toLowerCase();
 
-		if (side === 'buy') {
-			baseAsset = tokensAddress[symbols[1].toUpperCase()];
-			quoteAsset = tokensAddress[symbols[0].toUpperCase()];
-		} else if (side === 'sell') {
-			baseAsset = tokensAddress[symbols[1].toUpperCase()];
-			quoteAsset = tokensAddress[symbols[0].toUpperCase()];
-		}
+		baseAsset = tokensAddress[symbols[0].toUpperCase()];
+		quoteAsset = tokensAddress[symbols[1].toUpperCase()];
 
 		const order = {
 			senderAddress: senderAddress,
 			matcherAddress: WanchainOrder.matcherPublicKey,
 			baseAsset: baseAsset,
 			quoteAsset: quoteAsset,
-			matcherFeeAsset: baseAsset,
+			matcherFeeAsset: side === 'buy' ? quoteAsset : baseAsset,
 			amount: Assets.toLongValue(amount),
 			price: Assets.toLongValue(price),
 			matcherFee: 300000,
@@ -49,16 +44,12 @@ class WanchainOrder {
 
 		let signedOrder = await signOrder(order);
 
-		// order.signature = signedOrder;
+		order.signature = signedOrder;
 
 		console.log(order);
 		console.log('----- Message: ', hashOrder(order));
 		console.log('----- Signature: ', signedOrder);
 		console.log('----- Signed By: ', senderAddress);
-
-		console.log('Validating....');
-
-		console.log(await validateSolidity(order, signedOrder));
 
 		fetch(`${WanchainOrder.orionUrl}/api/order`, {
 			credentials: 'same-origin',
