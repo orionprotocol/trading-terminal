@@ -1034,6 +1034,7 @@ class MainDashboard extends React.Component {
                         </div>
                     </div1>
                     <div className="col-md-7 col-xs-12" style={{padding: "0 2px"}}>
+                        {/* Main Chart */}
                         <Chart
                             loadChart={true}
                             symbol={this.state.currentSymbol}
