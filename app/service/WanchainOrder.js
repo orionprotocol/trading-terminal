@@ -1,7 +1,7 @@
 import { hashOrder, signOrder, tokensAddress } from '../client/components/wanmask.js';
 
 const Assets = {
-	toLongValue: function(val, decimals) {
+	toLongValue: function(val, decimals = 8) {
 		return Number((Number(val) * Math.pow(10, decimals)).toFixed(0));
 	}
 };
@@ -41,9 +41,9 @@ class WanchainOrder {
 			matcherFeeAsset: baseAsset,
 			amount: Assets.toLongValue(amount),
 			price: Assets.toLongValue(price),
-			matcherFee: 350000000,
+			matcherFee: 300000,
 			nonce: nowTimestamp,
-			expiration: nowTimestamp + 29 * 24 * 60 * 60,
+			expiration: nowTimestamp + 29 * 24 * 60 * 60 * 1000,
 			side: side //true = buy, false = sell
 		};
 

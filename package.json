@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"dev": "webpack-dev-server --content-base public/",
+		"dev": "webpack && webpack-dev-server --content-base public/",
 		"build": "webpack",
 		"watch": "webpack -d --watch"
 	},
