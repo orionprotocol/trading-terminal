@@ -197,44 +197,39 @@ class OrderForm extends React.Component {
 
     postOrder = async (symbol, side) => {
 
-        if( symbol === 'ETH-BTC' ) symbol = 'WETH-WBTC'
-        const symbols = symbol.split('-')
-        const price = this.props.currentPrice;
+        if( symbol === 'ETH-BTC' ) symbol = 'WETH-WBTC';
+        const symbols = symbol.split('-');
+
+        console.log("POST " + this.props.count);
+        if (!this.props.count || this.props.count === 0) {
+            Toastr.showError("Amount is empty");
+            return;
+        }
         const amount = this.props.count;
+
+        let price = this.props.currentPrice;
+        if (this.props.marketType === "market") {
+            price =
+                side === "buy"
+                    ? Number(this.state.totalPrice * (1.01).toFixed(8))
+                    : Number(this.state.totalPrice * (0.99).toFixed(8));
+        }
+
+        if (this.props.marketType === "limit") {
+            if (!this.props.currentPrice || this.props.currentPrice === 0) {
+                Toastr.showError("Price is empty");
+                return;
+            }
+        }
 
         const wanchainOrder = await WanchainOrder.toWanchainOrder(
             symbols,
             side,
             price,
             amount
-        )
+        );
 
         console.log("Finish: ", wanchainOrder);
-        
-        // console.log("POST " + this.props.count);
-        // if (!this.props.count || this.props.count == 0) {
-        //     Toastr.showError("Amount is empty");
-        //     return;
-        // }
-        // let address = localStorage.getItem("address") || "";
-        // if (!address) {
-        //     Toastr.showError("Please set your address in settings");
-        //     return;
-        // }
-        // let price = this.props.currentPrice;
-        // if (this.props.marketType == "market") {
-        //     price =
-        //         side === "buy"
-        //             ? Number(this.state.totalPrice * (1.01).toFixed(8))
-        //             : Number(this.state.totalPrice * (0.99).toFixed(8));
-        // }
-
-        // if (this.props.marketType == "limit") {
-        //     if (!this.props.currentPrice || this.props.currentPrice == 0) {
-        //         Toastr.showError("Price is empty");
-        //         return;
-        //     }
-        // }
 
         // let seed = localStorage.getItem("seed") || "";
         // const wavesOrder = WavesOrder.toWavesOrder(

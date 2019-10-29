@@ -5,6 +5,7 @@ const contractAddress = exchangeArtifact.networks['3'].address;
 const WBTC = WBTCArtifact.networks['3'].address;
 const WETH = WETHArtifact.networks['3'].address;
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+const Long = require("long");
 //let currentAccount = null;
 
 const exchange = window.wan3.eth.contract(exchangeArtifact.abi).at(contractAddress);
@@ -124,22 +125,26 @@ const withdraw = (currency, amount, currentAccount) =>
 		}
 	});
 
-// === Hash Order=== //
+// === Hash Order=== //// CONVERT LONG TO BYTES
+const longToBytes = long => {
+	return new Web3().utils.bytesToHex(Long.fromNumber(long).toBytesBE());
+};
 
+// === GET ORDER HASH=== //
 const hashOrder = orderInfo => {
 	let message = new Web3().utils.soliditySha3(
-		3,
+		"0x03",
 		orderInfo.senderAddress,
 		orderInfo.matcherAddress,
 		orderInfo.baseAsset,
-		orderInfo.quotetAsset,
+		orderInfo.quoteAsset,
 		orderInfo.matcherFeeAsset,
-		orderInfo.amount,
-		orderInfo.price,
-		orderInfo.matcherFee,
-		orderInfo.nonce,
-		orderInfo.expiration,
-		orderInfo.side
+		longToBytes(orderInfo.amount),
+		longToBytes(orderInfo.price),
+		longToBytes(orderInfo.matcherFee),
+		longToBytes(orderInfo.nonce),
+		longToBytes(orderInfo.expiration),
+		orderInfo.side === "buy" ? "0x00" : "0x01"
 	);
 
 	return message;

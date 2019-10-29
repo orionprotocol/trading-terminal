@@ -1,6 +1,10 @@
 import { hashOrder, signOrder, tokensAddress } from '../client/components/wanmask.js';
 
-const Assets = {};
+const Assets = {
+	toLongValue: function(val, decimals) {
+		return Number((Number(val) * Math.pow(10, decimals)).toFixed(0));
+	}
+};
 
 class WanchainOrder {
 	static defaultMatcherFee = 300000;
@@ -15,7 +19,7 @@ class WanchainOrder {
 	static async toWanchainOrder(symbols, side, price, amount) {
 		const senderAddress = localStorage.getItem('currentAccount');
 		let baseAsset,
-			quotetAsset = null;
+			quoteAsset = null;
 		const nowTimestamp = Date.now();
 		let sideBoolean = false;
 
@@ -23,25 +27,24 @@ class WanchainOrder {
 
 		if (side === 'buy') {
 			baseAsset = tokensAddress[symbols[1].toUpperCase()];
-			quotetAsset = tokensAddress[symbols[0].toUpperCase()];
-			sideBoolean = true;
+			quoteAsset = tokensAddress[symbols[0].toUpperCase()];
 		} else if (side === 'sell') {
 			baseAsset = tokensAddress[symbols[1].toUpperCase()];
-			quotetAsset = tokensAddress[symbols[0].toUpperCase()];
+			quoteAsset = tokensAddress[symbols[0].toUpperCase()];
 		}
 
 		const order = {
 			senderAddress: senderAddress,
 			matcherAddress: WanchainOrder.matcherPublicKey,
 			baseAsset: baseAsset,
-			quotetAsset: quotetAsset,
+			quoteAsset: quoteAsset,
 			matcherFeeAsset: baseAsset,
-			amount: amount,
-			price: price,
+			amount: Assets.toLongValue(amount),
+			price: Assets.toLongValue(price),
 			matcherFee: 350000000,
 			nonce: nowTimestamp,
 			expiration: nowTimestamp + 29 * 24 * 60 * 60,
-			side: sideBoolean //true = buy, false = sell
+			side: side //true = buy, false = sell
 		};
 
 		let signedOrder = await signOrder(order);
@@ -60,7 +63,7 @@ class WanchainOrder {
 				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ order })
+			body: JSON.stringify(order)
 		})
 			.then(results => {
 				return results.json();
