@@ -1035,7 +1035,7 @@ class MainDashboard extends React.Component {
                     </div1>
                     <div className="col-md-7 col-xs-12" style={{padding: "0 2px"}}>
                         {/* Main Chart */}
-                        <Chart
+                        {/* <Chart
                             loadChart={true}
                             symbol={this.state.currentSymbol}
                             modal={false}
@@ -1045,7 +1045,7 @@ class MainDashboard extends React.Component {
                             // height="500"
                             id="general_chart"
                         />
-                        <div id="tradingview_2a134"></div>
+                        <div id="tradingview_2a134"></div> */}
                     </div>
                     <div
                         style={{

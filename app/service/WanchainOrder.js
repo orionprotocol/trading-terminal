@@ -1,4 +1,4 @@
-import { hashOrder, signOrder, tokensAddress } from '../client/components/wanmask.js';
+import { hashOrder, signOrder, tokensAddress, validateSolidity } from '../client/components/wanmask.js';
 
 const Assets = {
 	toLongValue: function(val, decimals = 8) {
@@ -49,12 +49,16 @@ class WanchainOrder {
 
 		let signedOrder = await signOrder(order);
 
-		order.signature = signedOrder;
+		// order.signature = signedOrder;
 
 		console.log(order);
 		console.log('----- Message: ', hashOrder(order));
 		console.log('----- Signature: ', signedOrder);
 		console.log('----- Signed By: ', senderAddress);
+
+		console.log('Validating....');
+
+		console.log(await validateSolidity(order, signedOrder));
 
 		fetch(`${WanchainOrder.orionUrl}/api/order`, {
 			credentials: 'same-origin',

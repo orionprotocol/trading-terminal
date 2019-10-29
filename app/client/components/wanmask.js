@@ -1,3 +1,4 @@
+const web3 = require('web3');
 const exchangeArtifact = require('../../../public/json/Exchange.json');
 const WETHArtifact = require('../../../public/json/WETH.json');
 const WBTCArtifact = require('../../../public/json/WBTC.json');
@@ -11,7 +12,6 @@ const Long = require('long');
 const exchange = window.wan3.eth.contract(exchangeArtifact.abi).at(contractAddress);
 const wbtc = window.wan3.eth.contract(WBTCArtifact.abi).at(WBTC);
 const weth = window.wan3.eth.contract(WETHArtifact.abi).at(WETH);
-const web3 = require('web3');
 
 const tokensAddress = {
 	WAN: ZERO_ADDRESS,
@@ -168,6 +168,29 @@ const signOrder = orderInfo =>
 		//   let signedMessage = await web3.eth.sign(sender, message);
 	});
 
+// === GET SIGATURE OBJECT === //
+function getSignatureObj(signature) {
+	const netId = 3;
+	signature = signature.substr(2); //remove 0x
+	const r = '0x' + signature.slice(0, 64);
+	const s = '0x' + signature.slice(64, 128);
+	let v = web3.utils.hexToNumber('0x' + signature.slice(128, 130)); //gwan
+	if (netId !== 3) v += 27; //ganache
+	return { v, r, s };
+}
+
+const validateSolidity = (orderInfo, signature) =>
+	new Promise((resolve, reject) => {
+		//Validate in smart contract
+		console.log('getSignatureObj', getSignatureObj(signature));
+		console.log('exchange', exchange);
+
+		exchange.isValidSignature.call(orderInfo, getSignatureObj(signature), (err, res) => {
+			if (err) reject(err);
+			resolve(res);
+		});
+	});
+
 module.exports = {
 	getBalance,
 	deposit,
@@ -177,5 +200,7 @@ module.exports = {
 	WETH,
 	WBTC,
 	tokensAddress,
-	getWalletBalance
+	getWalletBalance,
+	getSignatureObj,
+	validateSolidity
 };
