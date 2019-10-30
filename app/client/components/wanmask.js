@@ -79,12 +79,21 @@ const deposit = (currency, amount, currentAccount) =>
 		}
 
 		if (currency === 'wan') {
-			let response = await exchange.methods
+			console.log('deposit WAN .....');
+			exchange.methods
 				.depositWan()
-				.send({ from: currentAccount, value: web3.utils.toWei(amount) });
-
-			resolve(response);
+				.send({ from: currentAccount, value: web3.utils.toWei(amount) }, (err, res) => {
+					if (err) reject(err);
+					console.log('deposit: ', res);
+					resolve(res);
+				});
 		} else {
+			let newAmount = web3.utils.toWei(amount);
+
+			if (currency === 'wbtc') {
+				newAmount = Number(amount) * 100000000;
+			}
+
 			tokens[currency].methods
 				.approve(contractAddress, web3.utils.toWei(amount))
 				.send({ from: currentAccount }, (err, res) => {
@@ -95,7 +104,7 @@ const deposit = (currency, amount, currentAccount) =>
 
 					setTimeout(() => {
 						exchange.methods
-							.depositAsset(tokensAddress[currency.toUpperCase()], web3.utils.toWei(amount))
+							.depositAsset(tokensAddress[currency.toUpperCase()], newAmount)
 							.send({ from: currentAccount }, (err, res) => {
 								if (err) reject(err);
 
@@ -126,8 +135,14 @@ const withdraw = (currency, amount, currentAccount) =>
 					resolve(res);
 				});
 		} else {
+			let newAmount = web3.utils.toWei(amount);
+
+			if (currency === 'wbtc') {
+				newAmount = Number(amount) * 100000000;
+			}
+
 			exchange.methods
-				.withdraw(tokensAddress[currency.toUpperCase()], web3.utils.toWei(amount))
+				.withdraw(tokensAddress[currency.toUpperCase()], newAmount)
 				.send({ from: currentAccount }, (err, res) => {
 					if (err) reject(err);
 					resolve(res);

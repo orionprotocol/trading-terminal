@@ -82,15 +82,14 @@ class Balance extends React.Component {
             if( wan3.toChecksumAddress(data.user) === wan3.toChecksumAddress(currentAccount)){
                 let balances = this.state.balances
                 let walletBalances = this.state.walletBalances
-
                 if( data.asset === 'WETH'){
-                    balances['ETH'] = data.newBalance
+                    balances['ETH'] = Number(data.newBalance) * 10000000000
                     walletBalances['ETH'] = data.newWalletBalance
                 }else if(data.asset === 'WBTC'){
-                    balances['BTC'] = data.newBalance
+                    balances['BTC'] = Number(data.newBalance)
                     walletBalances['BTC'] = data.newWalletBalance
                 }else{
-                    balances[data.asset] = data.newBalance
+                    balances[data.asset] = Number(data.newBalance) * 10000000000
                     walletBalances[data.asset] = data.newWalletBalance
                 }
                 
@@ -112,18 +111,18 @@ class Balance extends React.Component {
 
         for(let currency in balances.contractbalances){
             if( currency === 'WBTC'){
-                contractBalances['BTC'] = wan3.fromWei(balances.contractbalances[currency])
+                contractBalances['BTC'] = Number(balances.contractbalances[currency]) / 100000000
             }else if( currency === 'WETH'){
-                contractBalances['ETH'] = wan3.fromWei(balances.contractbalances[currency])
+                contractBalances['ETH'] =  Number(balances.contractbalances[currency]) / 100000000
             }else{
-                contractBalances[currency] = wan3.fromWei(balances.contractbalances[currency])
+                contractBalances[currency] =  Number(balances.contractbalances[currency]) / 100000000
             }
             this.setState({ balances: contractBalances })
         }
 
         for(let currency in balances.walletBalances){
             if( currency === 'WBTC'){
-                walletBalances['BTC'] = wan3.fromWei(balances.walletBalances[currency])
+                walletBalances['BTC'] = Number(balances.walletBalances[currency]) / 100000000
             }else if( currency === 'WETH'){
                 walletBalances['ETH'] = wan3.fromWei(balances.walletBalances[currency])
             }else{
