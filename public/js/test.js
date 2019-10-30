@@ -1,4 +1,4 @@
-// console.log('Hello Wanmask');
+//console.log('---------------------- Test --------------------');
 // //let contractAddress = '0x68906c3327833808FAe401b96b4A6EBBa8Bf0EA7'; // Exchange OLD
 // // let contractAddress = '0x3F4BDC2dfBa3d148728dF5e313fe377D2A4e97E2';
 // let contractAddress = '0x4899AEE8d0C0b35bC3DC6057D2a9F68730B5C3cb';
@@ -9,6 +9,7 @@
 // const WETH = '0xB4a3F5b8D096aA03808853Db807f1233a2515dF2';
 // var exchange = null;
 // const web3 = new Web3();
+// const web3 = new Web3(window.wan3.currentProvider);
 // const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 // var abi = null;
 // let currentAccount = localStorage.getItem('currentAccount');
@@ -22,7 +23,8 @@
 
 // fetch('/json/Exchange.json').then(data => data.json()).then(async res => {
 // 	exchangeArtifact = res;
-// 	exchange = window.wan3.eth.contract(exchangeArtifact.abi).at(contractAddress);
+// 	// exchange = window.wan3.eth.contract(exchangeArtifact.abi).at(exchangeArtifact.networks['3'].address);
+// 	exchange = new web3.eth.Contract(exchangeArtifact.abi, exchangeArtifact.networks['3'].address);
 // });
 
 // // === Hash Order=== //

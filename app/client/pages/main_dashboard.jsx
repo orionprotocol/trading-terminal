@@ -148,7 +148,7 @@ class MainDashboard extends React.Component {
     }
 
     componentDidMount() {
-        // this.loadAllPairs();
+        this.loadAllPairs();
         const formHeight = document.getElementById("order-form").clientHeight;
         this.setState({
             formHeight: formHeight,
@@ -172,7 +172,11 @@ class MainDashboard extends React.Component {
                 return results.json();
             })
             .then(data => {
-                this.setState({ pairs: data, currentSymbol: data[0] }, () => {
+                const pairs = [
+                    'ETH-BTC'
+                ]
+                //this.setState({ pairs, currentSymbol: data[0] }, () => {
+                this.setState({ pairs, currentSymbol: pairs[0] }, () => {
                     this.loadBenefits();
                     this.connect();
                     this.loadOrderHistory(data[0]);
@@ -1035,7 +1039,7 @@ class MainDashboard extends React.Component {
                     </div1>
                     <div className="col-md-7 col-xs-12" style={{padding: "0 2px"}}>
                         {/* Main Chart */}
-                        {/* <Chart
+                        <Chart
                             loadChart={true}
                             symbol={this.state.currentSymbol}
                             modal={false}
@@ -1045,7 +1049,7 @@ class MainDashboard extends React.Component {
                             // height="500"
                             id="general_chart"
                         />
-                        <div id="tradingview_2a134"></div> */}
+                        <div id="tradingview_2a134"></div>
                     </div>
                     <div
                         style={{

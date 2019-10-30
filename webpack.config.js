@@ -3,7 +3,7 @@ var path = require('path');
 var defaults = {
 	// mode: 'production',
 	mode: 'development',
-	entry: './app/index.jsx',
+	entry: [ './app/index.jsx' ],
 	output: {
 		path: path.join(__dirname, './public/js'),
 		filename: 'bundle.js'

@@ -1,4 +1,6 @@
-const web3 = require('web3');
+// const web3 = require('web3');
+const Web3 = require('web3');
+const web3 = new Web3(window.wan3.currentProvider);
 const exchangeArtifact = require('../../../public/json/Exchange.json');
 const WETHArtifact = require('../../../public/json/WETH.json');
 const WBTCArtifact = require('../../../public/json/WBTC.json');
@@ -9,9 +11,13 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 const Long = require('long');
 //let currentAccount = null;
 
-const exchange = window.wan3.eth.contract(exchangeArtifact.abi).at(contractAddress);
-const wbtc = window.wan3.eth.contract(WBTCArtifact.abi).at(WBTC);
-const weth = window.wan3.eth.contract(WETHArtifact.abi).at(WETH);
+// const exchange = wan3.eth.contract(exchangeArtifact.abi).at(contractAddress);
+// const wbtc = wan3.eth.contract(WBTCArtifact.abi).at(WBTC);
+// const weth = wan3.eth.contract(WETHArtifact.abi).at(WETH);
+
+const exchange = new web3.eth.Contract(exchangeArtifact.abi, contractAddress);
+const wbtc = new web3.eth.Contract(WBTCArtifact.abi, WBTC);
+const weth = new web3.eth.Contract(WETHArtifact.abi, WETH);
 
 const tokensAddress = {
 	WAN: ZERO_ADDRESS,
@@ -25,45 +31,45 @@ const tokens = {
 	weth
 };
 
-const getWalletBalance = (currency, currentAccount) =>
-	new Promise((resolve, reject) => {
-		currency = currency.toLowerCase();
+// const getWalletBalance = (currency, currentAccount) =>
+// 	new Promise((resolve, reject) => {
+// 		currency = currency.toLowerCase();
 
-		if (currency === 'wan') {
-			wan3.eth.getBalance(currentAccount, (err, res) => {
-				if (err) reject(err);
-				resolve(wan3.fromWei(String(res)));
-			});
-		} else {
-			tokens[currency].balanceOf(currentAccount, (err, res) => {
-				if (err) reject(err);
-				resolve(wan3.fromWei(String(res)));
-			});
-		}
-	});
+// 		if (currency === 'wan') {
+// 			web3.eth.getBalance(currentAccount, (err, res) => {
+// 				if (err) reject(err);
+// 				resolve(web3.utils.fromWei(String(res)));
+// 			});
+// 		} else {
+// 			tokens[currency].balanceOf(currentAccount, (err, res) => {
+// 				if (err) reject(err);
+// 				resolve(web3.utils.fromWei(String(res)));
+// 			});
+// 		}
+// 	});
 
-const getBalance = (currency, currentAccount) =>
-	new Promise((resolve, reject) => {
-		currency = currency.toUpperCase();
+// const getBalance = (currency, currentAccount) =>
+// 	new Promise((resolve, reject) => {
+// 		currency = currency.toUpperCase();
 
-		switch (currency) {
-			case 'WAN':
-				exchange.getBalance.call(ZERO_ADDRESS, currentAccount, (err, res) => {
-					if (err) reject(err);
-					resolve(wan3.fromWei(String(res)));
-				});
-				break;
-			default:
-				exchange.getBalance.call(tokensAddress[currency], currentAccount, (err, res) => {
-					if (err) reject(err);
-					resolve(wan3.fromWei(String(res)));
-				});
-				break;
-		}
-	});
+// 		switch (currency) {
+// 			case 'WAN':
+// 				exchange.getBalance.call(ZERO_ADDRESS, currentAccount, (err, res) => {
+// 					if (err) reject(err);
+// 					resolve(web3.utils.fromWei(String(res)));
+// 				});
+// 				break;
+// 			default:
+// 				exchange.getBalance.call(tokensAddress[currency], currentAccount, (err, res) => {
+// 					if (err) reject(err);
+// 					resolve(web3.utils.fromWei(String(res)));
+// 				});
+// 				break;
+// 		}
+// 	});
 
 const deposit = (currency, amount, currentAccount) =>
-	new Promise((resolve, reject) => {
+	new Promise(async (resolve, reject) => {
 		currency = currency.toLowerCase();
 
 		if (currency === 'btc') {
@@ -73,37 +79,37 @@ const deposit = (currency, amount, currentAccount) =>
 		}
 
 		if (currency === 'wan') {
-			exchange.depositWan.sendTransaction({ from: currentAccount, value: wan3.toWei(amount) }, (err, res) => {
-				if (err) reject(err);
-				resolve(res);
-			});
+			let response = await exchange.methods
+				.depositWan()
+				.send({ from: currentAccount, value: web3.utils.toWei(amount) });
+
+			resolve(response);
 		} else {
-			tokens[currency].approve(exchange.address, wan3.toWei(amount), { from: currentAccount }, (err, res) => {
-				if (err) reject(err);
+			tokens[currency].methods
+				.approve(contractAddress, web3.utils.toWei(amount))
+				.send({ from: currentAccount }, (err, res) => {
+					if (err) reject(err);
 
-				const res1 = res;
-				console.log('approve: ', res);
+					const res1 = res;
+					console.log('approve: ', res);
 
-				setTimeout(() => {
-					exchange.depositAsset(
-						tokens[currency].address,
-						wan3.toWei(amount),
-						{ from: currentAccount },
-						(err, res) => {
-							if (err) reject(err);
+					setTimeout(() => {
+						exchange.methods
+							.depositAsset(tokensAddress[currency.toUpperCase()], web3.utils.toWei(amount))
+							.send({ from: currentAccount }, (err, res) => {
+								if (err) reject(err);
 
-							console.log('deposit: ', res);
+								console.log('deposit: ', res);
 
-							resolve([ res1, res ]);
-						}
-					);
-				}, 1000);
-			});
+								resolve([ res1, res ]);
+							});
+					}, 1000);
+				});
 		}
 	});
 
 const withdraw = (currency, amount, currentAccount) =>
-	new Promise((resolve, reject) => {
+	new Promise(async (resolve, reject) => {
 		currency = currency.toLowerCase();
 
 		if (currency === 'btc') {
@@ -113,15 +119,19 @@ const withdraw = (currency, amount, currentAccount) =>
 		}
 
 		if (currency === 'wan') {
-			exchange.withdraw(ZERO_ADDRESS, wan3.toWei(amount), { from: currentAccount }, (err, res) => {
-				if (err) reject(err);
-				resolve(res);
-			});
+			exchange.methods
+				.withdraw(ZERO_ADDRESS, web3.utils.toWei(amount))
+				.send({ from: currentAccount }, (err, res) => {
+					if (err) reject(err);
+					resolve(res);
+				});
 		} else {
-			exchange.withdraw(tokens[currency].address, wan3.toWei(amount), { from: currentAccount }, (err, res) => {
-				if (err) reject(err);
-				resolve(res);
-			});
+			exchange.methods
+				.withdraw(tokensAddress[currency.toUpperCase()], web3.utils.toWei(amount))
+				.send({ from: currentAccount }, (err, res) => {
+					if (err) reject(err);
+					resolve(res);
+				});
 		}
 	});
 
@@ -156,7 +166,14 @@ const signOrder = orderInfo =>
 	new Promise((resolve, reject) => {
 		let message = hashOrder(orderInfo);
 		//Wanmask
-		window.wan3.personal.sign(message, orderInfo.senderAddress, (err, res) => {
+		// web3.eth.sign(orderInfo.senderAddress, message, (err, res) => {
+		// 	if (err) reject(err);
+		// 	resolve(res);
+		// });
+
+		//
+
+		web3.eth.personal.sign(message, orderInfo.senderAddress, (err, res) => {
 			if (err) reject(err);
 			resolve(res);
 		});
@@ -180,19 +197,30 @@ function getSignatureObj(signature) {
 }
 
 const validateSolidity = (orderInfo, signature) =>
-	new Promise((resolve, reject) => {
+	new Promise(async (resolve, reject) => {
 		//Validate in smart contract
-		console.log('getSignatureObj', getSignatureObj(signature));
-		console.log('exchange', exchange);
 
-		exchange.isValidSignature.call(orderInfo, getSignatureObj(signature), (err, res) => {
-			if (err) reject(err);
-			resolve(res);
-		});
+		// const exchange2 = web3.eth.contract(exchangeArtifact.abi, contractAddress);
+		// console.log('exchange2', exchange2);
+
+		// exchange.isValidSignature.call(orderInfo, getSignatureObj(signature), (err, res) => {
+		// 	if (err) reject(err);
+		// 	resolve(res);
+		// });
+
+		//------------- Felipe
+
+		// const web3 = new Web3(web3.currentProvider);
+		// const exchange2 = web3.eth.contract(exchangeArtifact.abi).at(contractAddress);
+		// console.log(exchange2);
+
+		let response = await exchange.methods.isValidSignature(orderInfo, getSignatureObj(signature)).call();
+
+		resolve(response);
 	});
 
 module.exports = {
-	getBalance,
+	// getBalance,
 	deposit,
 	withdraw,
 	hashOrder,
@@ -200,7 +228,7 @@ module.exports = {
 	WETH,
 	WBTC,
 	tokensAddress,
-	getWalletBalance,
+	// getWalletBalance,
 	getSignatureObj,
 	validateSolidity
 };
