@@ -83,13 +83,13 @@ class Balance extends React.Component {
                 let balances = this.state.balances
                 let walletBalances = this.state.walletBalances
                 if( data.asset === 'WETH'){
-                    balances['ETH'] = Number(data.newBalance) * 10000000000
+                    balances['ETH'] = Number(data.newBalance) * 1000000000000000000
                     walletBalances['ETH'] = data.newWalletBalance
                 }else if(data.asset === 'WBTC'){
-                    balances['BTC'] = Number(data.newBalance)
+                    balances['BTC'] = Number(data.newBalance) * 100000000
                     walletBalances['BTC'] = data.newWalletBalance
                 }else{
-                    balances[data.asset] = Number(data.newBalance) * 10000000000
+                    balances[data.asset] = Number(data.newBalance) * 1000000000000000000
                     walletBalances[data.asset] = data.newWalletBalance
                 }
                 
@@ -110,23 +110,27 @@ class Balance extends React.Component {
         let contractBalances = {}
 
         for(let currency in balances.contractbalances){
+         
+
             if( currency === 'WBTC'){
-                contractBalances['BTC'] = Number(balances.contractbalances[currency]) / 100000000
+                contractBalances['BTC'] = balances.contractbalances[currency]
             }else if( currency === 'WETH'){
-                contractBalances['ETH'] =  Number(balances.contractbalances[currency]) / 100000000
+                contractBalances['ETH'] =  balances.contractbalances[currency]
             }else{
-                contractBalances[currency] =  Number(balances.contractbalances[currency]) / 100000000
+                contractBalances[currency] = balances.contractbalances[currency]
             }
             this.setState({ balances: contractBalances })
         }
 
         for(let currency in balances.walletBalances){
+          
+
             if( currency === 'WBTC'){
-                walletBalances['BTC'] = Number(balances.walletBalances[currency]) / 100000000
+                walletBalances['BTC'] = balances.walletBalances[currency]
             }else if( currency === 'WETH'){
-                walletBalances['ETH'] = wan3.fromWei(balances.walletBalances[currency])
+                walletBalances['ETH'] = balances.walletBalances[currency]
             }else{
-                walletBalances[currency] = wan3.fromWei(balances.walletBalances[currency])
+                walletBalances[currency] = balances.walletBalances[currency]
             }
             this.setState({ walletBalances: walletBalances })
         }

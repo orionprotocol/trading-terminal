@@ -7,7 +7,6 @@ const getBalances = address =>
 				return results.json();
 			})
 			.then(data => {
-				console.log('balances: ', data);
 				resolve(data);
 			})
 			.catch(err => reject(err));

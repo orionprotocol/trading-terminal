@@ -94,26 +94,27 @@ const deposit = (currency, amount, currentAccount) =>
 				newAmount = Number(amount) * 100000000;
 			}
 
-			tokens[currency].methods
-				.approve(contractAddress, web3.utils.toWei(amount))
-				.send({ from: currentAccount }, (err, res) => {
-					if (err) reject(err);
+			console.log(newAmount);
 
-					const res1 = res;
-					console.log('approve: ', res);
+			tokens[currency].methods.approve(contractAddress, newAmount).send({ from: currentAccount }, (err, res) => {
+				if (err) reject(err);
 
-					setTimeout(() => {
-						exchange.methods
-							.depositAsset(tokensAddress[currency.toUpperCase()], newAmount)
-							.send({ from: currentAccount }, (err, res) => {
-								if (err) reject(err);
+				const res1 = res;
+				console.log('approve: ', res);
 
-								console.log('deposit: ', res);
+				setTimeout(() => {
+					console.log(newAmount);
+					exchange.methods
+						.depositAsset(tokensAddress[currency.toUpperCase()], newAmount)
+						.send({ from: currentAccount }, (err, res) => {
+							if (err) reject(err);
 
-								resolve([ res1, res ]);
-							});
-					}, 1000);
-				});
+							console.log('deposit: ', res);
+
+							resolve([ res1, res ]);
+						});
+				}, 1000);
+			});
 		}
 	});
 

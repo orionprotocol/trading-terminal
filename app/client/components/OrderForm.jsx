@@ -80,11 +80,11 @@ class OrderForm extends React.Component {
                 let balances = this.state.balances
 
                 if( data.asset === 'WETH'){
-                    balances['ETH'] = Number(data.newBalance) * 10000000000
+                    balances['ETH'] = Number(data.newBalance) * 1000000000000000000
                 }else if(data.asset === 'WBTC'){
-                    balances['BTC'] = Number(data.newBalance)
+                    balances['BTC'] = Number(data.newBalance) * 100000000
                 }else{
-                    balances[data.asset] = Number(data.newBalance) * 10000000000
+                    balances[data.asset] = Number(data.newBalance) * 1000000000000000000
                 }
 
                 this.setState({ balances })
@@ -103,11 +103,11 @@ class OrderForm extends React.Component {
 
         for(let currency in balances.contractbalances){
             if( currency === 'WBTC'){
-                contractBalances['BTC'] = Number(balances.contractbalances[currency]) / 100000000
+                contractBalances['BTC'] = balances.contractbalances[currency]
             }else if( currency === 'WETH'){
-                contractBalances['ETH'] =  Number(balances.contractbalances[currency]) / 100000000
+                contractBalances['ETH'] =  balances.contractbalances[currency]
             }else{
-                contractBalances[currency] =  Number(balances.contractbalances[currency]) / 100000000
+                contractBalances[currency] = balances.contractbalances[currency]
             }
             
             this.setState({ balances: contractBalances })
