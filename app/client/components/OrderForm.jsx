@@ -6,8 +6,7 @@ import { WavesOrder } from "./../../service/WavesOrder";
 import { WanchainOrder } from "./../../service/WanchainOrder";
 import tokens from '../components/tokens.js'
 import { getBalances } from "../../service/OrionWanchain";
-
-const URL_SOCKET = `https://${window.location.hostname}:2083`;
+import { URL_SOCKET } from '../../constants.js';
 
 const
     io = require("socket.io-client"),
@@ -69,12 +68,13 @@ class OrderForm extends React.Component {
         
         let currentAccount = localStorage.getItem('currentAccount');
 
-        socket.on('connect', data => {
+        socket.on('connect', _ => {
             console.log('Connected');
+            socket.emit('clientAddress', wan3.toChecksumAddress(currentAccount))
         });
         
         socket.on('balanceChange', data => {
-            console.log('Balance Change: ', data);
+            // console.log('Balance Change: ', data);
 
             if( wan3.toChecksumAddress(data.user) === wan3.toChecksumAddress(currentAccount)){
                 let balances = this.state.balances
@@ -220,6 +220,42 @@ class OrderForm extends React.Component {
                 Toastr.showError("Price is empty");
                 return;
             }
+        }
+
+        // buy validate symbols[1] balance
+        // sell validate symbols[0] balance
+
+        if( side === 'buy'){
+
+            if(symbols[1] === 'WBTC'){
+
+                if(Number(this.state.totalCost) > Number(this.state.balances['BTC'])){
+                    Toastr.showError("Balances insufficient");
+                    return 
+                }
+                
+            }else{
+                if(Number(this.state.totalCost) > Number(this.state.balances[symbols[1]])){
+                    Toastr.showError("Balances insufficient");
+                    return 
+                }
+            }
+            
+
+        }else if( side === 'sell' ){
+
+            if(symbols[0] === 'WETH'){
+                if(Number(amount) > Number(this.state.balances['ETH'])){
+                    Toastr.showError("Balances insufficient");
+                    return 
+                }
+            }else{
+                if(Number(amount) > Number(this.state.balances[symbols[0]])){
+                    Toastr.showError("Balances insufficient");
+                    return 
+                }
+            }
+            
         }
 
         const wanchainOrder = await WanchainOrder.toWanchainOrder(

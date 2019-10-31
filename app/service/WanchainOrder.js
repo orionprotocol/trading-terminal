@@ -1,4 +1,6 @@
 import { hashOrder, signOrder, tokensAddress, validateSolidity } from '../client/components/wanmask.js';
+import { orionUrl } from '../constants.js';
+import { Toastr } from './Toastr';
 
 const Assets = {
 	toLongValue: function(val, decimals = 8) {
@@ -10,8 +12,8 @@ class WanchainOrder {
 	static defaultMatcherFee = 300000;
 	static defaultExpiration = 29 * 24 * 60 * 60 * 1000;
 	static matcherPublicKey = '0x43064dc5a24570dac874dc8cdd18089cd64e4988';
-	static orionUrl = `https://${window.location.hostname}/wanchain`;
-	// static orionUrl = "https://demo.orionprotocol.io:2083";
+	static orionUrl = orionUrl;
+	// static orionUrl = `https://${window.location.hostname}/wanchain`;
 	// baseAsset, es el que el cliente tiene; quoteAsset, es el activo que quiere
 	// en compra tiene c2 y quiere c1
 	// en venta tiene c1 y quiere c2
@@ -46,41 +48,41 @@ class WanchainOrder {
 
 		order.signature = signedOrder;
 
-		console.log(order);
-		console.log('----- Message: ', hashOrder(order));
-		console.log('----- Signature: ', signedOrder);
-		console.log('----- Signed By: ', senderAddress);
+		// console.log(order);
+		// console.log('----- Message: ', hashOrder(order));
+		// console.log('----- Signature: ', signedOrder);
+		// console.log('----- Signed By: ', senderAddress);
 
 		let validation = await validateSolidity(order, signedOrder);
-		console.log('validation: ', validation);
 
-		fetch(`${WanchainOrder.orionUrl}/api/order`, {
-			credentials: 'same-origin',
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(order)
-		})
-			.then(results => {
-				return results.json();
+		if (validation) {
+			fetch(`${WanchainOrder.orionUrl}/api/order`, {
+				credentials: 'same-origin',
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(order)
 			})
-			.then(data => {
-				console.log(data);
-				// if (data.code && data.code == "1010") {
-				// 	Toastr.showError(
-				// 		"No brokers were found to execute your order"
-				// 	);
-				// 	return;
-				// } else if (data.code && data.code == "1000") {
-				// 	Toastr.showError("Not enough tradable balance.");
-				// 	return;
-				// } else {
-				// 	Toastr.showSuccess("Order has been created");
-				// 	this.props.loadOrderHistory(this.props.pair);
-				// }
-			});
+				.then(results => {
+					return results.json();
+				})
+				.then(data => {
+					// console.log(data);
+					if (data.code !== undefined) {
+						Toastr.showError(data.msg);
+					} else {
+						Toastr.showSuccess('Order has been created');
+						// this.props.loadOrderHistory(this.props.pair);
+					}
+				})
+				.catch(e => {
+					console.log('Error to submit order: ', e);
+				});
+		} else {
+			Toastr.showError('Order validation failed');
+		}
 
 		return signedOrder;
 	}

@@ -1,4 +1,4 @@
-const orionUrl = `https://${window.location.hostname}/wanchain`;
+import { orionUrl } from '../constants.js';
 
 const getBalances = address =>
 	new Promise((resolve, reject) => {

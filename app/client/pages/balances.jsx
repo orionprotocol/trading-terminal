@@ -11,8 +11,7 @@ import { getBalance, deposit, withdraw, getWalletBalance } from '../components/w
 import tokens from '../components/tokens.js'
 import { getBalances } from "../../service/OrionWanchain";
 import { balance } from "@waves/waves-transactions/dist/nodeInteraction";
-
-const URL_SOCKET = `https://${window.location.hostname}:2083`;
+import { URL_SOCKET } from '../../constants.js';
 
 const
     io = require("socket.io-client"),
@@ -72,12 +71,13 @@ class Balance extends React.Component {
         
         let currentAccount = localStorage.getItem('currentAccount');
 
-        socket.on('connect', data => {
+        socket.on('connect', _ => {
             console.log('Connected');
+            socket.emit('clientAddress', wan3.toChecksumAddress(currentAccount))
         });
         
         socket.on('balanceChange', data => {
-            console.log('Balance Change: ', data);
+            // console.log('Balance Change: ', data);
 
             if( wan3.toChecksumAddress(data.user) === wan3.toChecksumAddress(currentAccount)){
                 let balances = this.state.balances
@@ -278,7 +278,7 @@ class Balance extends React.Component {
 
         if( option === 'Deposit' ){
             let res = await deposit(currentCurrency, amount, currentAccount)
-            console.log(res)
+            // console.log(res)
             Toastr.showSuccess("Successful Deposit");
         }else if (option === 'Withdraw'){
             
@@ -287,7 +287,7 @@ class Balance extends React.Component {
                 return
             }else{
                 let res = await withdraw(currentCurrency, amount, currentAccount)
-                console.log(res)
+                // console.log(res)
                 Toastr.showSuccess("Successful Withdrawal");
             }
            

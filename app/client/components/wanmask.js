@@ -79,12 +79,12 @@ const deposit = (currency, amount, currentAccount) =>
 		}
 
 		if (currency === 'wan') {
-			console.log('deposit WAN .....');
+			// console.log('deposit WAN .....');
 			exchange.methods
 				.depositWan()
 				.send({ from: currentAccount, value: web3.utils.toWei(amount) }, (err, res) => {
 					if (err) reject(err);
-					console.log('deposit: ', res);
+					// console.log('deposit: ', res);
 					resolve(res);
 				});
 		} else {
@@ -94,22 +94,19 @@ const deposit = (currency, amount, currentAccount) =>
 				newAmount = Number(amount) * 100000000;
 			}
 
-			console.log(newAmount);
-
 			tokens[currency].methods.approve(contractAddress, newAmount).send({ from: currentAccount }, (err, res) => {
 				if (err) reject(err);
 
 				const res1 = res;
-				console.log('approve: ', res);
+				// console.log('approve: ', res);
 
 				setTimeout(() => {
-					console.log(newAmount);
 					exchange.methods
 						.depositAsset(tokensAddress[currency.toUpperCase()], newAmount)
 						.send({ from: currentAccount }, (err, res) => {
 							if (err) reject(err);
 
-							console.log('deposit: ', res);
+							// console.log('deposit: ', res);
 
 							resolve([ res1, res ]);
 						});
