@@ -7,7 +7,7 @@ import { WanchainOrder } from "./../../service/WanchainOrder";
 import tokens from '../components/tokens.js'
 import { getBalances } from "../../service/OrionWanchain";
 
-const URL_SOCKET = 'http://localhost:3002'
+const URL_SOCKET = `https://${window.location.hostname}:2083`;
 
 const
     io = require("socket.io-client"),

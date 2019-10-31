@@ -1,4 +1,4 @@
-const orionUrl = 'http://localhost:3001';
+const orionUrl = `https://${window.location.hostname}/wanchain`;
 
 const getBalances = address =>
 	new Promise((resolve, reject) => {

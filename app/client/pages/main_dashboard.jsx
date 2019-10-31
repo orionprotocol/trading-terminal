@@ -261,7 +261,7 @@ class MainDashboard extends React.Component {
     }
 
     loadOrderHistory(symbol) {
-        let address = localStorage.getItem("address") || "";
+        let address = localStorage.getItem('currentAccount') || "";
         if (address) {
             let url =
                 urlBase +

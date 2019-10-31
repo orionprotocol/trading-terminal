@@ -32,8 +32,7 @@ class WavesOrder {
     static defaultMatcherFee = 300000;
     static defaultExpiration = 29 * 24 * 60 * 60 * 1000;
     static matcherPublicKey = "8QUAqtTckM5B8gvcuP7mMswat9SjKUuafJMusEoSn1Gy";
-    //static orionUrl = `http://${window.location.hostname}:3001`;
-    static orionUrl = "https://demo.orionprotocol.io:2083";
+    static orionUrl = `https://${window.location.hostname}/wanchain`;
 
     static toWavesOrder(symbol, side, price, amount, seed) {
         const assetPair = Assets.toAssetPair(symbol);

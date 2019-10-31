@@ -12,7 +12,7 @@ import tokens from '../components/tokens.js'
 import { getBalances } from "../../service/OrionWanchain";
 import { balance } from "@waves/waves-transactions/dist/nodeInteraction";
 
-const URL_SOCKET = 'http://localhost:3002'
+const URL_SOCKET = `https://${window.location.hostname}:2083`;
 
 const
     io = require("socket.io-client"),

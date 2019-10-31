@@ -9,9 +9,8 @@ const Assets = {
 class WanchainOrder {
 	static defaultMatcherFee = 300000;
 	static defaultExpiration = 29 * 24 * 60 * 60 * 1000;
-	static matcherPublicKey = '0x1e7b4238bab7d3f5e8d09a18b44c295228b80643';
-	// static orionUrl = `https://${window.location.hostname}:2083`;
-	static orionUrl = `http://${window.location.hostname}:3001`;
+	static matcherPublicKey = '0x43064dc5a24570dac874dc8cdd18089cd64e4988';
+	static orionUrl = `https://${window.location.hostname}/wanchain`;
 	// static orionUrl = "https://demo.orionprotocol.io:2083";
 	// baseAsset, es el que el cliente tiene; quoteAsset, es el activo que quiere
 	// en compra tiene c2 y quiere c1
