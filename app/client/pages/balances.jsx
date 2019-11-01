@@ -307,7 +307,7 @@ class Balance extends React.Component {
             >
                 <div style={{ backgroundColor: "#fff", marginTop: "20px", overflowX: "scroll" }} className="balanceContent2">
                     <table
-                        class="table"
+                        className="table"
                         id="balance"
                         style={{
                             width: "100%",
@@ -316,16 +316,18 @@ class Balance extends React.Component {
                         }}
                     >
                         <thead>
-                            <td>Asset</td>
-                            <td>Wallet Balance</td>
-                            <td>Balance</td>
-                            <td>Deposit</td>
-                            <td>Withdraw</td>
-                            {/* <td>Asset</td>
-                            <td>Wallet Balance</td>
-                            <td>Contract Balance</td>
-                            <td>In Open Orders</td>
-                            <td>Actions</td> */}
+                            <tr>
+                                <td>Asset</td>
+                                <td>Wallet Balance</td>
+                                <td>Balance</td>
+                                <td>Deposit</td>
+                                <td>Withdraw</td>
+                                {/* <td>Asset</td>
+                                <td>Wallet Balance</td>
+                                <td>Contract Balance</td>
+                                <td>In Open Orders</td>
+                                <td>Actions</td> */}
+                            </tr>
                         </thead>
                         <tbody>{this.renderBalances()}</tbody>
                     </table>

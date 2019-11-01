@@ -5,6 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "webpack-dev-server --content-base public/ --open",
+		"dev2": "webpack-dev-server --content-base public/ --open --host 0.0.0.0",
 		"build": "webpack",
 		"watch": "webpack -d --watch"
 	},

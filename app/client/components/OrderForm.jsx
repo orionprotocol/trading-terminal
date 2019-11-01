@@ -32,7 +32,9 @@ class OrderForm extends React.Component {
             active: [],
             balances: {},
             count: 0,
-            available: 0
+            available: 0,
+            total: '',
+            totalCost: ''
         };
         this.clickAsk = this.clickAsk.bind(this);
         this.clickBid = this.clickBid.bind(this);
@@ -200,8 +202,8 @@ class OrderForm extends React.Component {
         if( symbol === 'ETH-BTC' ) symbol = 'WETH-WBTC';
         const symbols = symbol.split('-');
 
-        console.log("POST " + this.props.count);
-        if (!this.props.count || this.props.count === 0) {
+        // console.log("POST " + this.props.count);
+        if (!this.props.count || this.props.count == 0) {
             Toastr.showError("Amount is empty");
             return;
         }
@@ -421,7 +423,7 @@ class OrderForm extends React.Component {
                     style={{ marginTop: marginTop }}
                 >
                     <div className="row">
-                        <div className="col-md-12" style={{ padding: "0 16px;", marginTop: "12px" }}>
+                        <div className="col-md-12" style={{ padding: "0 16px", marginTop: "12px" }}>
                             <button
                                 onClick={() => {
                                     this.postOrder(pair, "buy");
@@ -440,7 +442,7 @@ class OrderForm extends React.Component {
                     style={{ marginTop: marginTop, display: "none" }}
                 >
                     <div className="row">
-                        <div className="col-md-12" style={{ padding: "0 16px;", marginTop: "12px"  }}>
+                        <div className="col-md-12" style={{ padding: "0 16px", marginTop: "12px"  }}>
                             <button
                                 onClick={() => {
                                     this.postOrder(pair, "sell");
@@ -615,7 +617,6 @@ class OrderForm extends React.Component {
                                                                     .marketType ===
                                                                 "market"
                                                             }
-                                                            value="option1"
                                                         />
                                                         <label
                                                             style={{
@@ -649,7 +650,6 @@ class OrderForm extends React.Component {
                                                                     .marketType ===
                                                                 "limit"
                                                             }
-                                                            value="option2"
                                                         />
                                                         <label
                                                             style={{
@@ -827,6 +827,7 @@ class OrderForm extends React.Component {
                                                     className="orderform-input"
                                                     value={total}
                                                     placeholder="0"
+                                                    onChange={_ => null}
                                                 />
                                             </div>
                                             <div className="col-xs-6 orderform-input-symbol-container">

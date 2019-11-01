@@ -1,6 +1,6 @@
-// const web3 = require('web3');
 const Web3 = require('web3');
 const web3 = new Web3(window.wan3.currentProvider);
+// const web3 = new Web3();
 const exchangeArtifact = require('../../../public/json/Exchange.json');
 const WETHArtifact = require('../../../public/json/WETH.json');
 const WBTCArtifact = require('../../../public/json/WBTC.json');
@@ -10,10 +10,6 @@ const WETH = WETHArtifact.networks['3'].address;
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 const Long = require('long');
 //let currentAccount = null;
-
-// const exchange = wan3.eth.contract(exchangeArtifact.abi).at(contractAddress);
-// const wbtc = wan3.eth.contract(WBTCArtifact.abi).at(WBTC);
-// const weth = wan3.eth.contract(WETHArtifact.abi).at(WETH);
 
 const exchange = new web3.eth.Contract(exchangeArtifact.abi, contractAddress);
 const wbtc = new web3.eth.Contract(WBTCArtifact.abi, WBTC);

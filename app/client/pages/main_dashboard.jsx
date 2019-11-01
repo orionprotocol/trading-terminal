@@ -16,7 +16,7 @@ class MainDashboard extends React.Component {
         super();
         let height = window.innerHeight;
         let tableHeight = (height / 2 / 3).toFixed(0) + "px";
-        console.log("TABLE HEIGHT " + tableHeight);
+        // console.log("TABLE HEIGHT " + tableHeight);
         this.state = {
             pairs: [],
             currentSymbol: "ETH-BTC",
@@ -483,7 +483,7 @@ class MainDashboard extends React.Component {
 
     renderSize(data, exchange) {
         if (exchange == "binance" && data.dynamic != 0) {
-            console.log("EXCHANGE " + exchange + " DYNAMIC " + data.dynamic);
+            // console.log("EXCHANGE " + exchange + " DYNAMIC " + data.dynamic);
         }
         let colorClassName = "exchange-size-default-color";
         if (!data.dynamic) {
@@ -924,7 +924,7 @@ class MainDashboard extends React.Component {
     }
 
     changeCurrentPrice(e) {
-        console.log("Change price")
+        // console.log("Change price")
         // if (e.target.value >= 0) {
         //     this.setState({ currentPrice: e.target.value }, () => {
         //         this.recalculateTotal();
@@ -933,7 +933,7 @@ class MainDashboard extends React.Component {
     }
 
     recalculateTotal() {
-        console.log("Computing...")
+        // console.log("Computing...")
         // let total = this.state.count * this.state.currentPrice;
         // this.setState({ total });
     }
@@ -983,7 +983,7 @@ class MainDashboard extends React.Component {
                 }}
             >
                 <div className="row customRow2" style={{marginTop: "2px", height: "57vh"}}>
-                    <div1
+                    <div
                         id="pairs"
                         style={{
                             borderColor: "#edf0f4",
@@ -1036,7 +1036,7 @@ class MainDashboard extends React.Component {
                                 <tbody>{this.renderPairs()}</tbody>
                             </table>
                         </div>
-                    </div1>
+                    </div>
                     <div className="col-md-7 col-xs-12" style={{padding: "0 2px"}}>
                         {/* Main Chart */}
                         <Chart

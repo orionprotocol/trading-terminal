@@ -1,5 +1,5 @@
-let env = 'prod';
-// let env = 'dev';
+// let env = 'prod';
+let env = 'dev';
 
 let URL_SOCKET = '';
 let orionUrl = '';
