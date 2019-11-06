@@ -1,8 +1,9 @@
-// let env = 'prod';
 let env = 'dev';
 
 let URL_SOCKET = '';
 let orionUrl = '';
+
+if (window.location.hostname !== 'localhost') env = 'prod';
 
 if (env === 'prod') {
 	URL_SOCKET = `https://${window.location.hostname}:2083`;

@@ -19,6 +19,10 @@ class WanchainOrder {
 	// en venta tiene c1 y quiere c2
 
 	static async toWanchainOrder(symbols, side, price, amount) {
+		if (wan3.eth.accounts[0] == null) {
+			return;
+		}
+
 		const senderAddress = localStorage.getItem('currentAccount');
 		let baseAsset,
 			quoteAsset = null;
@@ -71,6 +75,7 @@ class WanchainOrder {
 				.then(data => {
 					// console.log(data);
 					if (data.code !== undefined) {
+						console.log(data);
 						Toastr.showError(data.msg);
 					} else {
 						Toastr.showSuccess('Order has been created');
@@ -81,6 +86,7 @@ class WanchainOrder {
 					console.log('Error to submit order: ', e);
 				});
 		} else {
+			console.log('Order validation failed', validation);
 			Toastr.showError('Order validation failed');
 		}
 
