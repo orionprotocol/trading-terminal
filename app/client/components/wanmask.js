@@ -95,26 +95,31 @@ if (window.wan3) {
 					newAmount = Number(amount) * 100000000;
 				}
 
-				tokens[currency].methods
-					.approve(contractAddress, newAmount)
-					.send({ from: currentAccount }, (err, res) => {
-						if (err) reject(err);
+				try {
+					tokens[currency].methods
+						.approve(contractAddress, newAmount)
+						.send({ from: currentAccount }, (err, res) => {
+							if (err) reject(err);
 
-						const res1 = res;
-						// console.log('approve: ', res);
+							const res1 = res;
+							// console.log('approve: ', res);
 
-						setTimeout(() => {
-							exchange.methods
-								.depositAsset(tokensAddress[currency.toUpperCase()], newAmount)
-								.send({ from: currentAccount }, (err, res) => {
-									if (err) reject(err);
+							setTimeout(() => {
+								exchange.methods
+									.depositAsset(tokensAddress[currency.toUpperCase()], newAmount)
+									.send({ from: currentAccount }, (err, res) => {
+										if (err) reject(err);
 
-									// console.log('deposit: ', res);
+										// console.log('deposit: ', res);
 
-									resolve([ res1, res ]);
-								});
-						}, 1000);
-					});
+										resolve([ res1, res ]);
+									});
+							}, 1000);
+						});
+				} catch (e) {
+					Toastr.showError('Invalid amount, ' + newAmount);
+					console.log('decimals error: ', newAmount);
+				}
 			}
 		});
 
@@ -142,12 +147,17 @@ if (window.wan3) {
 					newAmount = Number(amount) * 100000000;
 				}
 
-				exchange.methods
-					.withdraw(tokensAddress[currency.toUpperCase()], newAmount)
-					.send({ from: currentAccount }, (err, res) => {
-						if (err) reject(err);
-						resolve(res);
-					});
+				try {
+					exchange.methods
+						.withdraw(tokensAddress[currency.toUpperCase()], newAmount)
+						.send({ from: currentAccount }, (err, res) => {
+							if (err) reject(err);
+							resolve(res);
+						});
+				} catch (e) {
+					Toastr.showError('Invalid amount, ' + newAmount);
+					console.log('decimals error: ', newAmount);
+				}
 			}
 		});
 

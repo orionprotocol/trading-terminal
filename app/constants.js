@@ -13,6 +13,8 @@ if (env === 'prod') {
 	orionUrl = `http://${window.location.hostname}:3001`;
 }
 
+// orionUrl = `https://demo.orionprotocol.io/wanchain`;
+
 module.exports = {
 	URL_SOCKET,
 	orionUrl
