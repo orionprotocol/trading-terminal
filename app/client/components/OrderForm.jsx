@@ -80,15 +80,13 @@ class OrderForm extends React.Component {
 
             if( wan3.toChecksumAddress(data.user) === wan3.toChecksumAddress(currentAccount)){
                 let balances = this.state.balances
-
                 if( data.asset === 'WETH'){
-                    balances['ETH'] = Number(data.newBalance) * 1000000000000000000
+                    balances['ETH'] = data.newBalance
                 }else if(data.asset === 'WBTC'){
-                    balances['BTC'] = Number(data.newBalance) * 100000000
+                    balances['BTC'] = data.newBalance
                 }else{
-                    balances[data.asset] = Number(data.newBalance) * 1000000000000000000
+                    balances[data.asset] = data.newBalance
                 }
-
                 this.setState({ balances })
                 console.log('Balances updated...');
             }

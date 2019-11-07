@@ -78,23 +78,40 @@ class Balance extends React.Component {
         
         socket.on('balanceChange', data => {
             // console.log('Balance Change: ', data);
+                        
+            // if( wan3.toChecksumAddress(data.user) === wan3.toChecksumAddress(currentAccount)){
+            //     let balances = this.state.balances
+            //     let walletBalances = this.state.walletBalances
+            //     if( data.asset === 'WETH'){
+            //         balances['ETH'] = Number(data.newBalance) * 1000000000000000000
+            //         walletBalances['ETH'] = data.newWalletBalance
+            //     }else if(data.asset === 'WBTC'){
+            //         balances['BTC'] = Number(data.newBalance) * 100000000
+            //         walletBalances['BTC'] = data.newWalletBalance
+            //     }else{
+            //         balances[data.asset] = Number(data.newBalance) * 1000000000000000000
+            //         walletBalances[data.asset] = data.newWalletBalance
+            //     }
+                
+            //     this.setState({ balances, walletBalances })
+
+            //     console.log('Balances updated...');
+            // }
 
             if( wan3.toChecksumAddress(data.user) === wan3.toChecksumAddress(currentAccount)){
                 let balances = this.state.balances
                 let walletBalances = this.state.walletBalances
                 if( data.asset === 'WETH'){
-                    balances['ETH'] = Number(data.newBalance) * 1000000000000000000
+                    balances['ETH'] = data.newBalance
                     walletBalances['ETH'] = data.newWalletBalance
                 }else if(data.asset === 'WBTC'){
-                    balances['BTC'] = Number(data.newBalance) * 100000000
+                    balances['BTC'] = data.newBalance
                     walletBalances['BTC'] = data.newWalletBalance
                 }else{
-                    balances[data.asset] = Number(data.newBalance) * 1000000000000000000
+                    balances[data.asset] = data.newBalance
                     walletBalances[data.asset] = data.newWalletBalance
                 }
-                
                 this.setState({ balances, walletBalances })
-
                 console.log('Balances updated...');
             }
 
