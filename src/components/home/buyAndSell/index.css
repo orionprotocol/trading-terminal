@@ -1,0 +1,53 @@
+.buy-tab,.sell-tab{
+    text-align: center;
+    width: 50%;
+    float: left;
+    cursor: pointer;
+    padding: 15px 0px;
+    font-weight: 600;
+    border-bottom: 1px solid #F1F1F2;
+}
+.buy-tab.active{
+    border-bottom: 1px solid rgb(0,187,255);
+    background-color: rgba(211, 244, 255, 0.198);
+    color:rgb(0,187,255);
+    
+}
+.sell-tab.active{
+    border-bottom: 1px solid rgb(255, 99, 85);
+    background-color: rgba(230, 155, 148, 0.137);
+    color:rgb(255, 99, 85);
+    
+}
+
+.ant-col.ant-col-12.sell-tab , .ant-col.ant-col-12.buy-tab{
+    padding: 0px !important
+}
+.buttons-options{
+    padding: 10px 0px;
+    text-align: center;
+    width: 50%;
+    float: left;
+    
+}
+
+.sell-buy-button{
+    background-color: transparent;
+    padding: 3px 4em;
+    font-size: 10px;
+    border-radius: 6%;
+    border: none;
+    box-shadow: 0 0 0 #F4F4F4;
+    outline: none;
+    cursor: pointer;
+}
+.sell-buy-button.active{
+    background-color: transparent;
+    padding: 3px 4em;
+    font-size: 10px;
+    border-radius: 6%;
+    border: 1px solid #EFEFF0;
+    box-shadow: 1px 1px 1px #F4F4F4;
+    outline: none;
+    cursor: pointer;
+}
