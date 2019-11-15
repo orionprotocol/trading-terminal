@@ -1,4 +1,4 @@
-import React, {Fragment,useState,useEffet} from 'react'
+import React, {Fragment} from 'react'
 import { Table } from 'antd';
 import './index.css'
 export default function PriceTable () {
@@ -69,62 +69,41 @@ export default function PriceTable () {
           sortDirections: ['descend', 'ascend'],
         }, */
       ];
-    let pricetable='price-table'
 let dummyDate=Date.now()
-      const data = [
-        {
-          key: '1',
-          type: 'sell',
-          pair: 'ETH/BTC',
-          time: dummyDate,
-          amount: 0.004422124,
-          price: 0.000042142,
-          status: (<span style={{color:'#FDCD6F'}}> Filled </span>),
-          total: 1.4422124,
-        },
-        {
-            key: '1',
-            type: 'sell',
-            pair: 'ETH/BTC',
-            time: dummyDate,
-            amount: 0.004422124,
-            price: 0.000042142,
-            status: (<span style={{color:'#5DCD91'}}> Open </span>),
-            total: 1.4422124,
-          },
-          {
-            key: '1',
-            type: 'sell',
-            pair: 'ETH/BTC',
-            time: dummyDate,
-            amount: 0.004422124,
-            price: 0.000042142,
-            status: (<span style={{color:'#F65375'}}> Cancel </span>),
-            total: 1.4422124,
-          },
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#FDCD6F'}}> Filled </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#5DCD91'}}> Open </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#F65375'}}> Cancel </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#FDCD6F'}}> Filled </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#5DCD91'}}> Open </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#F65375'}}> Cancel </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#FDCD6F'}}> Filled </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#5DCD91'}}> Open </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#F65375'}}> Cancel </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#FDCD6F'}}> Filled </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#5DCD91'}}> Open </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#F65375'}}> Cancel </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#FDCD6F'}}> Filled </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#5DCD91'}}> Open </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#F65375'}}> Cancel </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#FDCD6F'}}> Filled </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#5DCD91'}}> Open </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#F65375'}}> Cancel </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#FDCD6F'}}> Filled </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#5DCD91'}}> Open </span>),total: 1.4422124},
-          {key: '1',type: 'sell',pair: 'ETH/BTC',time: dummyDate,amount: 0.004422124,price: 0.000042142,status: (<span style={{color:'#F65375'}}> Cancel </span>),total: 1.4422124},
-       
-      ];
+const data = [];
+for (let i = 0; i < 100; i++) {
+  data.push( {
+    key: `${i}A`,
+    type: 'sell',
+    pair: 'ETH/BTC',
+    time: dummyDate,
+    amount: 0.004422124,
+    price: 0.000042142,
+    status: (<span style={{color:'#FDCD6F'}}> Filled </span>),
+    total: 1.4422124,
+  },
+  {
+      key: `${i}B`,
+      type: 'sell',
+      pair: 'ETH/BTC',
+      time: dummyDate,
+      amount: 0.004422124,
+      price: 0.000042142,
+      status: (<span style={{color:'#5DCD91'}}> Open </span>),
+      total: 1.4422124,
+    },
+    {
+      key: `${i}C`,
+      type: 'sell',
+      pair: 'ETH/BTC',
+      time: dummyDate,
+      amount: 0.004422124,
+      price: 0.000042142,
+      status: (<span style={{color:'#F65375'}}> Cancel </span>),
+      total: 1.4422124,
+    },);
+}
+      
 
       function onChange(pagination, filters, sorter, extra) {
         console.log('params', pagination, filters, sorter, extra);

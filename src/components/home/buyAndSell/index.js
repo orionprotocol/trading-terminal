@@ -1,24 +1,30 @@
-import React, {Fragment,useState,useEffect} from 'react'
-import {Row,Col, Layout,Card, Icon,Select } from 'antd'
+import React, {Fragment,useState} from 'react'
+
 import './index.css'
+import BuyAndSellForm from './form'
+
+
 export default function BuyAndSell(){
-const [activeTab,setActiveTab]=useState({buy:'buy-tab active',sell:'sell-tab'})
-const [activeButton,setActiveButton]=useState({left:'sell-buy-button active',rigth:'sell-buy-button'})
+const [activeTab,setActiveTab]=useState({buy:'buy-tab active',sell:'sell-tab',type:'buy'})
+const [activeButton,setActiveButton]=useState({left:'market-button active',rigth:'limit-order-button',type:'market'})
+    
     return(
         <Fragment>
-          
-           
-                <div className={activeTab.buy} onClick={()=>setActiveTab({buy:'buy-tab active',sell:'sell-tab'})}  >Buy</div>
-
-                <div className={activeTab.sell} onClick={()=>setActiveTab({buy:'buy-tab',sell:'sell-tab active'})} >Sell</div>
-
+                <div>
+                    <div className={activeTab.buy} onClick={()=>setActiveTab({buy:'buy-tab active',sell:'sell-tab',type:'buy'})}  >Buy</div>
+                    <div className={activeTab.sell} onClick={()=>setActiveTab({buy:'buy-tab',sell:'sell-tab active',type:'sell'})} >Sell</div>
+                </div>
+                <div>
                     <div className='buttons-options'>
-                        <button className={activeButton.left} onClick={()=>setActiveButton({left:'sell-buy-button active',rigth:'sell-buy-button'})}>Market</button>
+                        <button className={activeButton.left} onClick={()=>setActiveButton({left:'market-button active',rigth:'limit-order-button',type:'market'})}>Market</button>
                     </div>
                     <div className='buttons-options'>
-                        <button className={activeButton.rigth} onClick={()=>setActiveButton({left:'sell-buy-button',rigth:'sell-buy-button active'})}>Limit order</button>
+                        <button className={activeButton.rigth} onClick={()=>setActiveButton({left:'market-button',rigth:'limit-order-button active',type:'limit-order'})}>Limit order</button>
                     </div>
-         dfafd
+                </div>
+                <div className="buy-and-sell-form">
+                    <BuyAndSellForm type={{trade:activeTab.type,selection:activeButton.type}}/>
+                </div>
         </Fragment>
     )
 }

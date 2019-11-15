@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 import {Switch, Route } from 'react-router-dom';
 import Sidebar from './components/sidebar';
 
-
 const PrincipalRouter = () => {
   return(
     <Fragment>
