@@ -80,13 +80,13 @@
 }
 .percent-buttons {
 	margin-top: 20px;
-	display: flex;
-	/* justify-content: start; */
+	display: flexbox;
+	justify-content: flex-start; 
 }
 .percent-button {
 	cursor: pointer;
 	height: 35px;
-	width: 48%;
+	width: 47%;
 	font-size: 15px;
 	color: #706e7e;
 	border-radius: 5px;

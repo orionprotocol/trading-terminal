@@ -4,17 +4,22 @@ import PriceTable from './priceTable';
 import BuyAndSell from './buyAndSell';
 import CommonInfo from './commonInfo';
 import TradingViewWidget, { Themes, BarStyles } from 'react-tradingview-widget';
-
+import useWindowDimensions from '../utils/useWindowDimensions'
+import OrderBookBids from './orderBookBids'
+import OrderBookAsk from './orderBookAsk'
+import './index.css'
 const { Content } = Layout;
 const { Option } = Select;
 
+
 export default function Home() {
+	
+
 	let d = new Date();
 	let dateTopriceCard = `${d.getDate()}.${d.getMonth()}.${d.getFullYear()}`;
 	function handleChange(value) {
 		console.log(`selected ${value}`);
 	}
-
 	let chartContainerWidth = document.getElementById('chartContainer');
 	let charContainerHeight = document.getElementById('chartContainer');
 	let tradingChart = null;
@@ -35,6 +40,10 @@ export default function Home() {
 		);
 	}
 
+	const { height, width } = useWindowDimensions(document.getElementById('chartContainer'),'cabra');
+	
+	console.log(height, width)
+
 	return (
 		<Fragment>
 			<Layout className="father" style={{ backgroundColor: '#fff' }}>
@@ -47,6 +56,7 @@ export default function Home() {
 										<CommonInfo />
 									</Card>
 								</Col>
+								
 								<Col span={24}>
 									<Card className="buy-and-sell-card">
 										<BuyAndSell />
@@ -127,7 +137,13 @@ export default function Home() {
 							<Row gutter={[ 8, 8 ]}>
 								<Col span={24}>
 									<Card className="common-info-card" style={{ height: '97vh' }}>
-										<p style={{ fontSize: '10px', fontWeight: '600' }}>ORDER BOOK</p>
+									<p style={{ fontSize: '10px', fontWeight: '600' }}>ORDER BOOK</p>
+										<OrderBookBids/>
+										<div className="order-books-lastprice">
+											<span className='last-price-number' >0.0174</span>
+											<span className='last-price'>Last price</span>
+										</div>
+										<OrderBookAsk/>
 									</Card>
 								</Col>
 							</Row>
