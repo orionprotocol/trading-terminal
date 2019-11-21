@@ -12,7 +12,7 @@ const Sockets = props => {
 
 	socket.on('connect', _ => {
 		console.log('Connected....................................');
-		socket.emit('clientAddress', window.wan3.toChecksumAddress(address));
+		// socket.emit('clientAddress', window.wan3.toChecksumAddress(address));
 	});
 
 	socket.on('balanceChange', data => {
