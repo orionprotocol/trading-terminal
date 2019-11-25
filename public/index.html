@@ -27,11 +27,34 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:500,600,700&amp;display=swap" rel="stylesheet">
       <link href="./libs/css/vendor.min.css" rel="stylesheet">
       <link href="./css/style.css" rel="stylesheet">
-    <title>Orion | Tranding Terminal</title>
+    <title>Orion</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script
+        type="text/javascript"
+        src="js/charting_library/charting_library.min.js"
+    ></script>
+
+    <script
+        type="text/javascript"
+        src="js/datafeeds/udf/dist/polyfills.js"
+    ></script>
+    <script
+        type="text/javascript"
+        src="js/datafeeds/udf/dist/bundle.js"
+    ></script>
+    <script
+        type="text/javascript"
+        src="js/datafeeds/udf/lib/dex-history.js"
+    ></script>
     <div id="root"></div>
+
+    <!-- Chart -->
+    <div style="visibility: hidden" id="chart-data" data-exchange="all" data-symbol="ETH-BTC"></div>
+    <!-- <script src="js/chart/renderChart.js" ></script>
+    <script src="js/chart/index.js" ></script> -->
+    <!-- End Chart -->
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

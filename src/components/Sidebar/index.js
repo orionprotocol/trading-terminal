@@ -18,7 +18,7 @@ const Sidebar = _ => {
 			</div>
 			<div className="sidebar-wrapper js-sidebar-wrapper">
 				<div className="sidebar-content">
-					<a className="logo" href>
+					<a className="logo" href="/">
 						<img src="./img/logo.png" alt="home" />
 					</a>
 					<div className="links">
