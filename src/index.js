@@ -4,11 +4,25 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import balances from './reducers/balances.js';
+import general from './reducers/general.js';
+import 'antd/dist/antd.css';
+
+const reducer = combineReducers({
+	balances,
+	general
+});
+
+const store = createStore(reducer);
 
 ReactDOM.render(
-	<Router>
-		<App />
-	</Router>,
+	<Provider store={store}>
+		<Router>
+			<App />
+		</Router>
+	</Provider>,
 	document.getElementById('root')
 );
 

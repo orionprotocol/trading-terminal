@@ -1,31 +1,31 @@
 import React, { useState, useEffect } from 'react';
 
-function chooseOrderBookLine(data, type) {
-	if (type === 'asks') {
-		// let price = data.price;
-		// let count = 0;
-		// let total = 0;
-		// let asks = this.state.data.asks;
-		// for (let i = 0; i < asks.length; i++) {
-		// 	if (asks[i].price <= price) {
-		// 		count = count + asks[i].size;
-		// 		total = total + asks[i].total;
-		// 	}
-		// }
-		// if (this.state.customCount) {
-		// 	this.setState({ currentPrice: price, total: total }, () => {
-		// 		this.loadBenefits();
-		// 	});
-		// } else {
-		// 	this.setState({ currentPrice: price, count: count, total: total }, () => {
-		// 		this.loadBenefits();
-		// 	});
-		// }
+// function chooseOrderBookLine(data, type) {
+// 	if (type === 'asks') {
+// 		// let price = data.price;
+// 		// let count = 0;
+// 		// let total = 0;
+// 		// let asks = this.state.data.asks;
+// 		// for (let i = 0; i < asks.length; i++) {
+// 		// 	if (asks[i].price <= price) {
+// 		// 		count = count + asks[i].size;
+// 		// 		total = total + asks[i].total;
+// 		// 	}
+// 		// }
+// 		// if (this.state.customCount) {
+// 		// 	this.setState({ currentPrice: price, total: total }, () => {
+// 		// 		this.loadBenefits();
+// 		// 	});
+// 		// } else {
+// 		// 	this.setState({ currentPrice: price, count: count, total: total }, () => {
+// 		// 		this.loadBenefits();
+// 		// 	});
+// 		// }
 
-		// $('#buy-form-link').trigger('click');
-		return;
-	}
-}
+// 		// $('#buy-form-link').trigger('click');
+// 		return;
+// 	}
+// }
 
 function calculateTotalAsks(array) {
 	for (let i = array.length - 1; i >= 0; i--) {
@@ -58,42 +58,12 @@ function renderAsks(data) {
 			for (let j = 0; j < exchanges.length; j++) {
 				let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
 				let key = 'asks' + i + '' + j;
-				imgExchanges.push(<img key={key} style={{ height: '15px', width: '15px' }} src={imagePath} />);
+				imgExchanges.push(
+					<img key={key} style={{ height: '15px', width: '15px' }} src={imagePath} alt={exchanges[j]} />
+				);
 			}
 			renderData.push(
-				// <tr
-				//     onClick={() => {
-				//         chooseOrderBookLine(asks[i], "asks");
-				//     }}
-				//     style={{ lineHeight: "20px" }}
-				//     key={key}
-				// >
-				//     <td style={{ width: "27%" }}>
-				//         {asks[i].price.toFixed(8)}
-				//     </td>
-				//     {this.renderSize(asks[i], exchange)}
-				//     <td style={{ width: "27%" }}>
-				//         <div
-				//             style={{
-				//                 width: "100%",
-				//                 paddingTop: "1px",
-				//                 paddingBottom: "1px"
-				//             }}
-				//         >
-				//             <div
-				//                 style={{
-				//                     width: percentStyle,
-				//                     backgroundColor: "#FCECEC"
-				//                 }}
-				//             >
-				//                 {asks[i].total.toFixed(9)}
-				//             </div>
-				//         </div>
-				//     </td>
-				//     {this.renderOrderbookExchange(modal, divExchanges)}
-				// </tr>
-
-				<div className="order">
+				<div className="order" key={key}>
 					{/* TOTAL - Max width 100% */}
 					<span className="progress-light l-red" style={{ width: percentStyle }} />
 					{/* Max width 27% */}

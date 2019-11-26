@@ -1,11 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
 import TopMenu from '../components/TopMenu'
 import IndexNav from '../components/IndexNav'
 import Sidebar from '../components/Sidebar'
 import OrderBooks from '../components/OrderBooks';
 import Orders from '../components/Orders'
+// import { setSymbol } from '../chartData';
 
 function Home() {
+    // const { symbol } = useSelector(state => state.general);
+	const dispatch = useDispatch();
+
+    const setSymbol = useCallback(data => dispatch({ type: 'SetSymbol', payload: data }), [ dispatch ]);
+
+    // console.log('home symbol', symbol)
 
     useEffect(() => {
 
@@ -15,6 +24,10 @@ function Home() {
         }
 
     }, [])
+
+    const handleClick = symbol => {
+		setSymbol(symbol);
+	};
 
 	return (
 		<div className="">
@@ -329,10 +342,12 @@ function Home() {
                     </div>
                     <div className="center-panel js-panel">
                         <div className="image js-chart js-panel-item">
-                            {/* <img src="./img/graph.jpg" alt="home"/> */}
-                            <div id="chart-container" style={{ height: '56.5vh' }}></div>
+                            <button onClick={_ => handleClick('XRP-BTC')}>XRP-BTC</button>
+                            <button onClick={_ => handleClick('ETH-BTC')}>ETH-BTC</button>
+                            <div id="chart-container" style={{ height: '56.5vh' }}>
+                               
+                            </div>
                         </div>
-                    
                         <Orders/>
                     </div>
                     <OrderBooks/>

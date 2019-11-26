@@ -1,56 +1,68 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import WebsocketHeartbeatJs from 'websocket-heartbeat-js';
 
-const io = require('socket.io-client'),
-	socket = io.connect(process.env.REACT_APP_SOCKET_URL);
+// const io = require('socket.io-client'),
+// 	socket = io.connect(process.env.REACT_APP_SOCKET_URL);
 
 const Sockets = props => {
-	const balances = useSelector(state => state.balances);
+	// const balances = useSelector(state => state.balances);
+	const { symbol } = useSelector(state => state.general);
+	const [ websocket, setWS ] = useState(null);
 	const dispatch = useDispatch();
-	const setBalances = useCallback(data => dispatch({ type: 'SetBalances', payload: data }), [ dispatch ]);
-	let address = localStorage.getItem('currentAccount');
+	// const setBalances = useCallback(data => dispatch({ type: 'SetBalances', payload: data }), [ dispatch ]);
+	const setOrdersBooks = useCallback(data => dispatch({ type: 'SetOrdersBooks', payload: data }), [ dispatch ]);
+	// let address = localStorage.getItem('currentAccount');
 
-	const ws = WebsocketHeartbeatJs({
-		url: 'wss://demo.orionprotocol.io/backend/ETH-XRP',
-		pingTimeout: 5000,
-		pongTimeout: 5000
-	});
+	useEffect(
+		_ => {
+			// console.log('New balances', balances);
 
-	ws.onopen = () => {
-		console.log('open connection');
-	};
+			// ---------------------------------------- Orion Backend Sockets Aks - Bids ---------------
 
-	ws.onmessage = e => {
-		console.log('new message', e);
-	};
+			if (websocket !== null) {
+				websocket.close();
+				setWS(null);
+			}
 
-	ws.onreconnect = () => {
-		console.log('reconnecting');
-	};
+			const urlWS = `wss://demo.orionprotocol.io/backend/${symbol}`;
 
-	socket.on('connect', _ => {
-		console.log('Connected....................................');
-		// socket.emit('clientAddress', window.wan3.toChecksumAddress(address));
-	});
+			const ws = new window.WebsocketHeartbeatJs({
+				url: urlWS,
+				pingTimeout: 5000,
+				pongTimeout: 5000
+			});
 
-	socket.on('balanceChange', data => {
-		console.log(data);
+			setWS(ws);
 
-		if (window.wan3.toChecksumAddress(data.user) === window.wan3.toChecksumAddress(address)) {
-			balances.contractbalances[data.asset] = data.newBalance;
-			balances.walletBalances[data.asset] = data.newWalletBalance;
-			setBalances(balances);
+			ws.onmessage = function(data) {
+				setOrdersBooks(JSON.parse(data.data));
+			};
 
-			console.log('Balances updated...');
-		}
+			// ws.close();
 
-		socket.emit('balanceChange', 'received balance change');
-	});
+			// --------------------- Orion-Wanchain Sockets -----------------------------------------------------
 
-	useEffect(_ => {
-		console.log('New balances', balances);
-	});
+			// socket.on('connect', _ => {
+			// 	console.log('Connected....................................');
+			// 	// socket.emit('clientAddress', window.wan3.toChecksumAddress(address));
+			// });
+
+			// socket.on('balanceChange', data => {
+			// 	console.log(data);
+
+			// 	if (window.wan3.toChecksumAddress(data.user) === window.wan3.toChecksumAddress(address)) {
+			// 		balances.contractbalances[data.asset] = data.newBalance;
+			// 		balances.walletBalances[data.asset] = data.newWalletBalance;
+			// 		setBalances(balances);
+
+			// 		console.log('Balances updated...');
+			// 	}
+
+			// 	socket.emit('balanceChange', 'received balance change');
+			// });
+		},
+		[ symbol ]
+	);
 
 	return <div />;
 };

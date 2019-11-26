@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Router from './Router';
+import Services from './services';
+
 function App() {
-	return <Router />;
+	return (
+		<Fragment>
+			<Services />
+			<Router />
+		</Fragment>
+	);
 }
 
 export default App;
