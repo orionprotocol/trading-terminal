@@ -3,18 +3,39 @@ import axios from 'axios';
 import Bids from './Bids';
 import Asks from './Asks';
 import { useSelector } from 'react-redux';
+import './index.css';
 
 const urlBase = process.env.REACT_APP_BACKEND;
+
+function sortAsks(a, b) {
+	if (a.price > b.price) {
+		return 1;
+	}
+	if (a.price < b.price) {
+		return -1;
+	}
+	return 0;
+}
+
+function sortBids(a, b) {
+	if (a.price > b.price) {
+		return -1;
+	}
+	if (a.price < b.price) {
+		return 1;
+	}
+	return 0;
+}
 
 function updateOrderBookData(data, exchange, stateData, callback) {
 	const asks = data.asks;
 	let stateAsks = stateData.asks;
 	for (let i = 0; i < asks.length; i++) {
 		let exchanges = asks[i].exchanges || [];
-		if (exchange != 'all') {
+		if (exchange !== 'all') {
 			let needExchange = false;
 			for (let k = 0; k < exchanges.length; k++) {
-				if (exchanges[k] == exchange) {
+				if (exchanges[k] === exchange) {
 					needExchange = true;
 				}
 			}
@@ -24,8 +45,8 @@ function updateOrderBookData(data, exchange, stateData, callback) {
 		}
 		let updated = false;
 		for (let j = 0; j < stateAsks.length; j++) {
-			if (asks[i].price == stateAsks[j].price) {
-				if (parseFloat(asks[i].size) == 0) {
+			if (asks[i].price === stateAsks[j].price) {
+				if (parseFloat(asks[i].size) === 0) {
 					stateAsks.splice(j, 1);
 				} else {
 					stateAsks[j].dynamic = 0;
@@ -41,21 +62,21 @@ function updateOrderBookData(data, exchange, stateData, callback) {
 				break;
 			}
 		}
-		if (!updated && asks[i].size != 0) {
+		if (!updated && asks[i].size !== 0) {
 			asks[i].dynamic = 1;
 			stateAsks.push(asks[i]);
 		}
 	}
-	stateAsks = stateAsks.sort(this.sortAsks).slice(0, 20);
-	stateAsks = stateAsks.sort(this.sortBids);
+	stateAsks = stateAsks.sort(sortAsks).slice(0, 20);
+	stateAsks = stateAsks.sort(sortBids);
 	const bids = data.bids;
 	let stateBids = stateData.bids;
 	for (let i = 0; i < bids.length; i++) {
 		let exchanges = bids[i].exchanges || [];
-		if (exchange != 'all') {
+		if (exchange !== 'all') {
 			let needExchange = false;
 			for (let k = 0; k < exchanges.length; k++) {
-				if (exchanges[k] == exchange) {
+				if (exchanges[k] === exchange) {
 					needExchange = true;
 				}
 			}
@@ -65,8 +86,8 @@ function updateOrderBookData(data, exchange, stateData, callback) {
 		}
 		let updated = false;
 		for (let j = 0; j < stateBids.length; j++) {
-			if (bids[i].price == stateBids[j].price) {
-				if (parseFloat(bids[i].size) == 0) {
+			if (bids[i].price === stateBids[j].price) {
+				if (parseFloat(bids[i].size) === 0) {
 					stateBids.splice(j, 1);
 				} else {
 					stateBids[j].dynamic = 0;
@@ -82,7 +103,7 @@ function updateOrderBookData(data, exchange, stateData, callback) {
 				break;
 			}
 		}
-		if (!updated && bids[i].size != 0) {
+		if (!updated && bids[i].size !== 0) {
 			bids[i].dynamic = 1;
 			stateBids.push(bids[i]);
 		}
@@ -90,18 +111,19 @@ function updateOrderBookData(data, exchange, stateData, callback) {
 	const maxBid = stateBids.reduce(function(prev, current) {
 		return prev.price > current.price ? prev : current;
 	});
-	stateBids = stateBids.sort(this.sortBids).slice(0, 20);
+	stateBids = stateBids.sort(sortBids).slice(0, 20);
 	let lastPriceStyle = '#e5494d';
 	if (maxBid.price > data.lastPrice) {
 		lastPriceStyle = '#2051d3';
 	}
 	callback(stateAsks, stateBids, maxBid, lastPriceStyle);
 }
+
 const OrderBooks = props => {
 	const { symbol, ordersBooks } = useSelector(state => state.general);
 	// const newData = useSelector(state => state.general);
 	// console.log('general', general);
-	const [ state, setState ] = useState({});
+	const [ state, setState ] = useState({ data: { lastPrice: 0 } });
 	// const currentSymbol = 'ETH-BTC';
 	// All exchanges
 
@@ -143,12 +165,9 @@ const OrderBooks = props => {
 				urlBase +
 				'/api/v1/orderBook?symbol={SYMBOL}&depth={DEPTH}'.replace('{SYMBOL}', symbol).replace('{DEPTH}', depth);
 
-			axios.get(url).then(async res => {
-				// console.log('loadSnapshot', res.data);
+			axios.get(url).then(res => {
 				const { data } = res;
-				// console.log('setData', data);
-				// await setState({ ...state, hola: 'Juan' });
-				await setState({
+				setState({
 					...state,
 					data: {
 						...data,
@@ -158,17 +177,25 @@ const OrderBooks = props => {
 						bid: data.bids[0].price
 					}
 				});
+
+				setTimeout(() => {
+					const div = document.querySelector('.orders');
+					div.scrollTop = div.scrollHeight;
+				}, 10);
 			});
 		}
 	};
 
 	useEffect(
 		_ => {
-			console.log('loadSnapshot', symbol);
+			// console.log('loadSnapshot', symbol);
 			loadSnapshot(symbol, 20);
 		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ symbol ]
 	);
+
+	// console.log(state);
 
 	useEffect(
 		_ => {
@@ -199,11 +226,21 @@ const OrderBooks = props => {
 					// 		bid: this.state.data.bids[0].price
 					// 	}
 					// });
-					console.log('updateOrderBookData', asks, bids, maxBid, lastPriceStyle);
+					// console.log('updateOrderBookData', asks, bids, maxBid, lastPriceStyle);
+					setState({
+						...state,
+						data: {
+							...state.data,
+							asks,
+							bids,
+							lastPrice: maxBid.price
+						}
+					});
 				});
-				console.log(aggregatedData);
+				// console.log(aggregatedData);
 			}
 		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ ordersBooks ]
 	);
 
@@ -212,7 +249,7 @@ const OrderBooks = props => {
 	return (
 		<div className="right-panel js-panel">
 			<div className="js-panel-item js-orderbook">
-				<Bids data={state.data} />
+				<Bids data={state.data} lastPrice={state.data.lastPrice} />
 				<Asks data={state.data} />
 			</div>
 		</div>

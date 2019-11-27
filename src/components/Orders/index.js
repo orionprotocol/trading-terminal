@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Row, Col, Icon, Select, Card, Layout } from 'antd';
+import { Row, Col, Icon, Select, Layout } from 'antd';
 // import OrdersTable from './OrdersTable';
 import './index.css';
 import './OrdersTable/index.css'

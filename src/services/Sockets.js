@@ -38,8 +38,6 @@ const Sockets = props => {
 				setOrdersBooks(JSON.parse(data.data));
 			};
 
-			// ws.close();
-
 			// --------------------- Orion-Wanchain Sockets -----------------------------------------------------
 
 			// socket.on('connect', _ => {
@@ -61,6 +59,7 @@ const Sockets = props => {
 			// 	socket.emit('balanceChange', 'received balance change');
 			// });
 		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ symbol ]
 	);
 

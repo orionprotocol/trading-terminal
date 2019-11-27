@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import {  useDispatch } from 'react-redux';
 
 import TopMenu from '../components/TopMenu'
 import IndexNav from '../components/IndexNav'

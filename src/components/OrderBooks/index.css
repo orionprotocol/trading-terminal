@@ -1,0 +1,7 @@
+.js-exch-drop {
+	display: none !important;
+}
+
+.js-exch-drop.active {
+	display: block !important;
+}

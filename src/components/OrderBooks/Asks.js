@@ -27,6 +27,16 @@ import React, { useState, useEffect } from 'react';
 // 	}
 // }
 
+function handleExchanges(e) {
+	const cl = e.target.classList;
+	const idDiv = 'div-' + cl[cl.length - 1];
+	const div = document.querySelector('#' + idDiv);
+	if (div) div.classList.toggle('active');
+
+	const drop = document.querySelector('#drop-' + cl[cl.length - 1]);
+	if (drop) drop.classList.toggle('active');
+}
+
 function calculateTotalAsks(array) {
 	for (let i = array.length - 1; i >= 0; i--) {
 		if (i + 1 >= array.length) {
@@ -55,11 +65,56 @@ function renderAsks(data) {
 			const percent = calculatePercent(maxAsk.total, asks[i].total).toFixed(6);
 			let percentStyle = percent + '%';
 			let imgExchanges = [];
-			for (let j = 0; j < exchanges.length; j++) {
-				let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
-				let key = 'asks' + i + '' + j;
-				imgExchanges.push(
-					<img key={key} style={{ height: '15px', width: '15px' }} src={imagePath} alt={exchanges[j]} />
+			let arrow = null;
+			let exchangesExtras = null;
+
+			if (exchanges.length < 3) {
+				imgExchanges = [];
+				for (let j = 0; j < exchanges.length; j++) {
+					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
+					// let key = 'asks' + i + '' + j;
+					imgExchanges.push(
+						<img
+							key={'ask' + key}
+							className={'ask-' + key}
+							style={{ height: '15px', width: '15px' }}
+							src={imagePath}
+							alt={exchanges[j]}
+						/>
+					);
+				}
+			} else {
+				imgExchanges = [];
+				let extras = [];
+				for (let j = 0; j < 2; j++) {
+					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
+					imgExchanges.push(
+						<img
+							key={key}
+							style={{ height: '15px', width: '15px' }}
+							className={'ask-' + key}
+							src={imagePath}
+							alt={exchanges[j]}
+						/>
+					);
+				}
+
+				// if (imgExchanges.length > 2) console.log(imgExchanges, exchanges);
+
+				for (let j = 2; j < exchanges.length; j++) {
+					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
+					extras.push(
+						<div className="drop">
+							<img src={imagePath} alt={exchanges[j]} />
+							<span>{exchanges[j]}</span>
+						</div>
+					);
+				}
+				arrow = <img className={`arrow ask-${key}`} src="./img/arrow-down.svg" alt="home" />;
+				exchangesExtras = (
+					<div className="exch-drop js-exch-drop" id={'drop-ask-' + key}>
+						{extras}
+					</div>
 				);
 			}
 			renderData.push(
@@ -72,24 +127,11 @@ function renderAsks(data) {
 					<span className="cell">{asks[i].size.toFixed(3)}</span>
 					<span className="cell">{asks[i].total.toFixed(8)}</span>
 					<div className="cell exch">
-						<div className="exch-content js-exch-content">
+						<div className="exch-content js-exch-content" id={'div-ask-' + key} onClick={handleExchanges}>
 							{imgExchanges}
-							<img className="arrow" src="./img/arrow-down.svg" alt="home" />
+							{arrow}
 						</div>
-						<div className="exch-drop js-exch-drop">
-							<div className="drop">
-								<img src="./img/bitcoin.png" alt="home" />
-								<span>Exchange 1</span>
-							</div>
-							<div className="drop">
-								<img src="./img/eth.png" alt="home" />
-								<span>Exchange 2</span>
-							</div>
-							<div className="drop">
-								<img src="./img/bitcoin.png" alt="home" />
-								<span>Exchange 3</span>
-							</div>
-						</div>
+						{exchangesExtras}
 					</div>
 				</div>
 			);
@@ -104,6 +146,7 @@ const Asks = props => {
 	useEffect(
 		_ => {
 			if (props.data) {
+				// setAsks(null);
 				setAsks(renderAsks(props.data));
 			}
 		},

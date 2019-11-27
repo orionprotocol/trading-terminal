@@ -71,6 +71,16 @@ function calculatePercent(max, value) {
 // 	);
 // }
 
+function handleExchanges(e) {
+	const cl = e.target.classList;
+	const idDiv = 'div-' + cl[cl.length - 1];
+	const div = document.querySelector('#' + idDiv);
+	if (div) div.classList.toggle('active');
+
+	const drop = document.querySelector('#drop-' + cl[cl.length - 1]);
+	if (drop) drop.classList.toggle('active');
+}
+
 function renderBids(data) {
 	let renderData = [];
 	let key = 0;
@@ -85,11 +95,53 @@ function renderBids(data) {
 			const percent = calculatePercent(maxBid.total, bids[i].total).toFixed(6);
 			let percentStyle = percent + '%';
 			let imgExchanges = [];
-			for (let j = 0; j < exchanges.length; j++) {
-				let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
-				let key = i + '' + j;
-				imgExchanges.push(
-					<img key={key} style={{ height: '15px', width: '15px' }} src={imagePath} alt={exchanges[j]} />
+			let arrow = null;
+			let exchangesExtras = null;
+
+			if (exchanges.length < 3) {
+				for (let j = 0; j < exchanges.length; j++) {
+					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
+					// let key = i + '' + j;
+					imgExchanges.push(
+						<img
+							key={key}
+							style={{ height: '15px', width: '15px' }}
+							className={'bid-' + key}
+							src={imagePath}
+							alt={exchanges[j]}
+						/>
+					);
+				}
+			} else {
+				let extras = [];
+				for (let j = 0; j < 2; j++) {
+					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
+					imgExchanges.push(
+						<img
+							key={key}
+							style={{ height: '15px', width: '15px' }}
+							className={'bid-' + key}
+							src={imagePath}
+							alt={exchanges[j]}
+						/>
+					);
+				}
+
+				for (let j = 2; j < exchanges.length; j++) {
+					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
+					extras.push(
+						<div className="drop">
+							<img src={imagePath} alt={exchanges[j]} />
+							<span>{exchanges[j]}</span>
+						</div>
+					);
+				}
+
+				arrow = <img className={`arrow bid-${key}`} src="./img/arrow-down.svg" alt="home" />;
+				exchangesExtras = (
+					<div className="exch-drop js-exch-drop" id={'drop-bid-' + key}>
+						{extras}
+					</div>
 				);
 			}
 
@@ -103,24 +155,11 @@ function renderBids(data) {
 					<span className="cell">{bids[i].size.toFixed(3)}</span>
 					<span className="cell">{bids[i].total.toFixed(8)}</span>
 					<div className="cell exch">
-						<div className="exch-content js-exch-content">
+						<div className={`exch-content js-exch-content`} onClick={handleExchanges} id={'div-bid-' + key}>
 							{imgExchanges}
-							<img className="arrow" src="./img/arrow-down.svg" alt="home" />
+							{arrow}
 						</div>
-						<div className="exch-drop js-exch-drop">
-							<div className="drop">
-								<img src="./img/bitcoin.png" alt="home" />
-								<span>Exchange 1</span>
-							</div>
-							<div className="drop">
-								<img src="./img/eth.png" alt="home" />
-								<span>Exchange 2</span>
-							</div>
-							<div className="drop">
-								<img src="./img/bitcoin.png" alt="home" />
-								<span>Exchange 3</span>
-							</div>
-						</div>
+						{exchangesExtras}
 					</div>
 				</div>
 			);
@@ -152,7 +191,7 @@ const Bids = props => {
 			</div>
 			<div className="orders">{bids}</div>
 			<div className="last-price">
-				<span className="cell">0,0174</span>
+				<span className="cell">{props.lastPrice}</span>
 				<span className="last">Last Price</span>
 			</div>
 		</div>
