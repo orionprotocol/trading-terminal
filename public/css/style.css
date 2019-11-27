@@ -12,7 +12,7 @@ body {
   line-height: 12px;
   color: rgba(20, 16, 41, 0.6);
   font-weight: 500;
-  background: rgba(20, 16, 41, 0.02);
+  background: rgba(20, 16, 41, 0.02) !important;
 }
 
 body.dark {
@@ -309,7 +309,7 @@ a:active {
 
 .my-container {
   margin: 0 auto;
-  padding: 0 30px;
+  padding: 0 10px;
   width: 100%;
 }
 
@@ -405,7 +405,8 @@ a:active {
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  margin: 10px 0 17px 0;
+  /* margin: 10px 0 17px 0; */
+  margin: 10px 0 5px 0;
 }
 
 .index .common-info .price .last-price {
@@ -511,12 +512,13 @@ a:active {
 }
 
 .index .common-info .table .line:not(:last-child) {
-  margin-bottom: 9px;
+  /* margin-bottom: 9px; */
 }
 
 .index .common-info .table .line .title {
   color: rgba(20, 16, 41, 0.4);
   line-height: 24px;
+  margin-top: -16px;
 }
 
 .index .common-info .table .line .value {
@@ -532,7 +534,7 @@ a:active {
 
 .index .left-panel {
   height: calc(100vh - 27px);
-  overflow-y: auto;
+  /* overflow-y: auto; */
   margin: -1px;
   padding: 1px;
   border-radius: 4px;
@@ -631,7 +633,8 @@ a:active {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  margin-bottom: 25px;
+  /* margin-bottom: 25px; */
+  margin-bottom: 17px;
 }
 
 .index .left-panel .buy-sell .main-content .big-toggler button {

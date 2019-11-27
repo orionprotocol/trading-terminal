@@ -1,0 +1,7 @@
+.wrapper-pair.js-wrapper-pair.active {
+	display: block;
+}
+
+.wrapper-pair.js-wrapper-pair {
+	display: hidden;
+}

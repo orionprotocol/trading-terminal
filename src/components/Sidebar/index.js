@@ -12,7 +12,6 @@ const Sidebar = _ => {
 	};
 	return (
 		<div onMouseLeave={onMouseLeave} onMouseOver={onMouseOver}>
-			<div className="wrapper-pair js-wrapper-pair" />
 			<div className="sidebar-line js-sidebar-line">
 				<div className="line" />
 			</div>

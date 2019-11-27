@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import Bids from './Bids';
 import Asks from './Asks';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import './index.css';
 
 const urlBase = process.env.REACT_APP_BACKEND;
@@ -30,6 +30,7 @@ function sortBids(a, b) {
 function updateOrderBookData(data, exchange, stateData, callback) {
 	const asks = data.asks;
 	let stateAsks = stateData.asks;
+	if (!stateAsks || !asks) return;
 	for (let i = 0; i < asks.length; i++) {
 		let exchanges = asks[i].exchanges || [];
 		if (exchange !== 'all') {
@@ -123,7 +124,9 @@ const OrderBooks = props => {
 	const { symbol, ordersBooks } = useSelector(state => state.general);
 	// const newData = useSelector(state => state.general);
 	// console.log('general', general);
+	const dispatch = useDispatch();
 	const [ state, setState ] = useState({ data: { lastPrice: 0 } });
+	const setLastPrice = useCallback(data => dispatch({ type: 'SetLastPrice', payload: data }), [ dispatch ]);
 	// const currentSymbol = 'ETH-BTC';
 	// All exchanges
 
@@ -236,6 +239,8 @@ const OrderBooks = props => {
 							lastPrice: maxBid.price
 						}
 					});
+
+					setLastPrice(maxBid.price);
 				});
 				// console.log(aggregatedData);
 			}

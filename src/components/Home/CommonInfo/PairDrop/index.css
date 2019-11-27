@@ -1,0 +1,16 @@
+.pair-drop.js-pair-drop {
+	display: none;
+}
+
+.pair-drop.js-pair-drop.active {
+	display: block !important;
+}
+
+.index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell .img {
+	width: 20px;
+	height: 20px;
+}
+
+.index .left-panel .pair-select .pair-drop .pair-table .lines .line:hover {
+	cursor: pointer;
+}
