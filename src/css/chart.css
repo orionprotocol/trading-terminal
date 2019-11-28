@@ -1,0 +1,19 @@
+#chart-container {
+	height: 56.5vh;
+}
+
+@media (max-width: 1300px) {
+	.image.js-chart.js-panel-item {
+		/* display: none; */
+	}
+	#chart-container {
+		position: absolute;
+		top: 35vh;
+		left: 3vh;
+		width: 93vw;
+		visibility: hidden;
+		/* display: none; */
+		height: 60vh;
+		/* background-color: aqua; */
+	}
+}

@@ -4968,7 +4968,7 @@ a:active {
   }
 
   .index .left-panel .buy-sell {
-    display: none;
+    /* display: none; */
     width: 50%;
   }
 
@@ -5015,7 +5015,7 @@ a:active {
   }
 
   .index .center-panel .image {
-    display: none;
+    /* display: none; */
     height: 472px;
   }
 
@@ -5049,7 +5049,7 @@ a:active {
   }
 
   .index .right-panel .js-orderbook {
-    display: none;
+    /* display: none; */
   }
 
   .index .right-panel .order-book {

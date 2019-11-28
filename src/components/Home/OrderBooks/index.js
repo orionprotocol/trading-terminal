@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import Bids from './Bids';
 import Asks from './Asks';
-import { useSelector, useDispatch } from 'react-redux';
 import './index.css';
 
 const urlBase = process.env.REACT_APP_BACKEND;
@@ -183,7 +183,7 @@ const OrderBooks = props => {
 
 				setTimeout(() => {
 					const div = document.querySelector('.orders');
-					div.scrollTop = div.scrollHeight;
+					if (div) div.scrollTop = div.scrollHeight;
 				}, 10);
 			});
 		}
@@ -229,7 +229,7 @@ const OrderBooks = props => {
 	// console.log(state);
 
 	return (
-		<div className="right-panel js-panel">
+		<div className="right-panel js-panel active">
 			<div className="js-panel-item js-orderbook">
 				<Bids data={state.data} lastPrice={state.data.lastPrice} />
 				<Asks data={state.data} />

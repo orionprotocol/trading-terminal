@@ -27,6 +27,5 @@ document.addEventListener('DOMContentLoaded', _ => {
 	observer.observe(dataChart, {
 		attributes: true //configure it to listen to attribute changes
 	});
-
 	renderChart(width, height, exchange, symbol);
 });
