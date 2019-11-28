@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ExchangeImg from './ExchangeImg';
 
 function calculateTotalBids(array) {
 	for (let i = 0; i < array.length; i++) {
@@ -101,13 +102,12 @@ function renderBids(data) {
 			if (exchanges.length < 3) {
 				for (let j = 0; j < exchanges.length; j++) {
 					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
-					// let key = i + '' + j;
 					imgExchanges.push(
-						<img
+						<ExchangeImg
 							key={key}
-							style={{ height: '15px', width: '15px' }}
 							className={'bid-' + key}
-							src={imagePath}
+							style={{ height: '15px', width: '15px' }}
+							imagePath={imagePath}
 							alt={exchanges[j]}
 						/>
 					);
@@ -117,11 +117,11 @@ function renderBids(data) {
 				for (let j = 0; j < 2; j++) {
 					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
 					imgExchanges.push(
-						<img
+						<ExchangeImg
 							key={key}
-							style={{ height: '15px', width: '15px' }}
 							className={'bid-' + key}
-							src={imagePath}
+							style={{ height: '15px', width: '15px' }}
+							imagePath={imagePath}
 							alt={exchanges[j]}
 						/>
 					);

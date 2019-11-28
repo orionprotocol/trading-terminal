@@ -198,8 +198,6 @@ const OrderBooks = props => {
 		[ symbol ]
 	);
 
-	// console.log(state);
-
 	useEffect(
 		_ => {
 			if (ordersBooks) {
@@ -209,27 +207,6 @@ const OrderBooks = props => {
 				};
 
 				updateOrderBookData(aggregatedData, 'all', state.data, (asks, bids, maxBid, lastPriceStyle) => {
-					// this.handleJqeuryScroll(
-					// 	"#asks-general",
-					// 	"#bids-general",
-					// 	"orderbook-general"
-					// );
-					// this.handleJqeuryScroll(
-					// 	"#modal-asks-general",
-					// 	"#modal-bids-general",
-					// 	"modal-orderbook-general"
-					// );
-					// this.setState({
-					// 	data: {
-					// 		asks: asks,
-					// 		bids: bids,
-					// 		lastPrice: maxBid.price,
-					// 		lastPriceStyle: lastPriceStyle,
-					// 		ask: this.state.data.asks[this.state.data.asks.length - 1].price,
-					// 		bid: this.state.data.bids[0].price
-					// 	}
-					// });
-					// console.log('updateOrderBookData', asks, bids, maxBid, lastPriceStyle);
 					setState({
 						...state,
 						data: {

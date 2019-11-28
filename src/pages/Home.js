@@ -1,5 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
 
 import TopMenu from '../components/TopMenu';
 import IndexNav from '../components/IndexNav';
@@ -11,9 +10,9 @@ import CommonInfo from '../components/Home/CommonInfo';
 
 function Home() {
 	// const { symbol } = useSelector(state => state.general);
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
 
-	const setSymbol = useCallback(data => dispatch({ type: 'SetSymbol', payload: data }), [ dispatch ]);
+	// const setSymbol = useCallback(data => dispatch({ type: 'SetSymbol', payload: data }), [ dispatch ]);
 
 	// console.log('home symbol', symbol)
 
@@ -24,9 +23,9 @@ function Home() {
 		}
 	}, []);
 
-	const handleClick = symbol => {
-		setSymbol(symbol);
-	};
+	// const handleClick = symbol => {
+	// 	setSymbol(symbol);
+	// };
 
 	return (
 		<div className="">

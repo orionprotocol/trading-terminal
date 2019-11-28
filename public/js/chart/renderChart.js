@@ -147,11 +147,11 @@ const overridesResult = getOverrides(up, down);
 
 const overrides = {
 	...overridesResult,
-	...themeConf.OVERRIDES,
-	'mainSeriesProperties.priceAxisProperties.autoScale': false,
-	'mainSeriesProperties.priceAxisProperties.autoScaleDisabled': true,
-	'paneProperties.axisProperties.autoScale': false,
-	'paneProperties.axisProperties.lockScale': true
+	...themeConf.OVERRIDES
+	// 'mainSeriesProperties.priceAxisProperties.autoScale': false,
+	// 'mainSeriesProperties.priceAxisProperties.autoScaleDisabled': true,
+	// 'paneProperties.axisProperties.autoScale': false,
+	// 'paneProperties.axisProperties.lockScale': true
 };
 
 const studies_overrides = {
