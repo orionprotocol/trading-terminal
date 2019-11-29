@@ -159,7 +159,11 @@ const studies_overrides = {
 	...themeConf.STUDIES_OVERRIDES
 };
 
-const renderChart = (width, height, exchange, symbol) =>
+const renderChart = (exchange, symbol) => {
+	const element = document.querySelector('#chart-container');
+	const width = element.offsetWidth - 5;
+	const height = element.offsetHeight - 5;
+
 	new TradingView.widget({
 		width: width,
 		height: height,
@@ -178,3 +182,4 @@ const renderChart = (width, height, exchange, symbol) =>
 		// style: '2',
 		theme: 'Light'
 	});
+};

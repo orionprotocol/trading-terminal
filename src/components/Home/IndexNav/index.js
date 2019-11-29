@@ -3,18 +3,19 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const IndexNav = _ => {
 	const { pair, exchange, chart, history, orderbook } = useSelector(state => state.responsive.home);
+	const { symbol } = useSelector(state => state.general);
 	const [ classes, setClasses ] = useState([]);
 	const dispatch = useDispatch();
 
-	const setActive = useCallback(_ => dispatch({ type: 'SetHomeActive' }), [ dispatch ]);
+	const setActive = useCallback(payload => dispatch({ type: 'SetHomeActive', payload }), [ dispatch ]);
 	const setPair = useCallback(_ => dispatch({ type: 'SetHomePair' }), [ dispatch ]);
 	const setExchange = useCallback(_ => dispatch({ type: 'SetHomeExchange' }), [ dispatch ]);
 	const setChart = useCallback(_ => dispatch({ type: 'SetHomeChart' }), [ dispatch ]);
 	const setHistory = useCallback(_ => dispatch({ type: 'SetHomeHistory' }), [ dispatch ]);
 	const setOrderbook = useCallback(_ => dispatch({ type: 'SetHomeOrderbook' }), [ dispatch ]);
+	const setSymbol = useCallback(payload => dispatch({ type: 'SetSymbol', payload }), [ dispatch ]);
 
 	const update = _ => {
-		setActive();
 		setPair();
 		let orderbook = document.querySelector('.right-panel.js-panel');
 		if (orderbook) orderbook.classList.add('active');
@@ -22,12 +23,16 @@ const IndexNav = _ => {
 
 	useEffect(_ => {
 		window.addEventListener('resize', _ => {
-			if (window.innerWidth < 1300) {
+			if (window.innerWidth < 1130) {
+				setActive(true);
 				update();
+			} else {
+				setActive(false);
 			}
 		});
-		if (window.innerWidth < 1300) {
+		if (window.innerWidth < 1130) {
 			update();
+			setActive(true);
 		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -42,14 +47,21 @@ const IndexNav = _ => {
 				orderbook ? 'active' : ''
 			];
 			setClasses(newClasses);
+
+			const div = document.querySelector('#chart-container');
+			if (div) {
+				if (chart) {
+					div.style.visibility = 'visible';
+					setSymbol(symbol);
+				} else div.style.visibility = 'hidden';
+			}
 		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ pair, exchange, chart, history, orderbook ]
 	);
 
 	const handleChart = _ => {
 		setChart();
-		const div = document.querySelector('#chart-container');
-		div.style.visibility = 'visible';
 	};
 
 	return (

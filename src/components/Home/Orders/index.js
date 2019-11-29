@@ -21,7 +21,6 @@ const Orders = _ => {
 				<Content style={{ margin: '10px 15px 0 0', overflow: 'initial' }}>
 					<Row gutter={[ 8, 8 ]}>
 						<Col span={24}>
-							
 								<Row style={{ padding: '10px' }}>
 									<Col span={6}>
 										<button className="price-card-button">Orders</button>

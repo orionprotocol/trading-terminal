@@ -9,13 +9,11 @@ const initialState = {
 	}
 };
 
-export default (state = initialState, { type }) => {
-	const div = document.querySelector('#chart-container');
+export default (state = initialState, { type, ...action }) => {
 	switch (type) {
 		case 'SetHomeActive':
-			return { ...state, home: { ...state.home, active: !state.home.active } };
+			return { ...state, home: { ...state.home, active: action.payload } };
 		case 'SetHomePair':
-			div.style.visibility = 'hidden';
 			return {
 				...state,
 				home: {
@@ -28,7 +26,6 @@ export default (state = initialState, { type }) => {
 				}
 			};
 		case 'SetHomeExchange':
-			div.style.visibility = 'hidden';
 			return {
 				...state,
 				home: {
@@ -53,7 +50,6 @@ export default (state = initialState, { type }) => {
 				}
 			};
 		case 'SetHomeHistory':
-			div.style.visibility = 'hidden';
 			return {
 				...state,
 				home: {
@@ -66,7 +62,6 @@ export default (state = initialState, { type }) => {
 				}
 			};
 		case 'SetHomeOrderbook':
-			div.style.visibility = 'hidden';
 			return {
 				...state,
 				home: {

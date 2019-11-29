@@ -4618,7 +4618,7 @@ a:active {
   }
 
   .index .center-panel .table-content {
-    height: calc(40vh - 84px);
+    /* height: calc(40vh - 84px); */
   }
 
   .index .left-panel .pair-select .link {

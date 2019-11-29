@@ -8,34 +8,35 @@ import OrderBooks from '../components/Home/OrderBooks';
 import Orders from '../components/Home/Orders';
 import CommonInfo from '../components/Home/CommonInfo';
 import Exchange from '../components/Home/Exchange';
-// import { setSymbol } from '../chartData';
 
 function addClass() {
-	let e = document.querySelector('.js-panel');
+	let e = document.querySelector('.left-panel.js-panel');
+	if (e) e.classList.add('active');
+
+	let orderbook = document.querySelector('.right-panel.js-panel');
+	if (orderbook) orderbook.classList.add('active');
+}
+
+function removeClass() {
+	let e = document.querySelector('.left-panel.js-panel');
 	if (e) e.classList.remove('active');
 
-	let orderbook = document.querySelector('.right-panel.js-panel.active');
+	let orderbook = document.querySelector('.right-panel.js-panel');
 	if (orderbook) orderbook.classList.remove('active');
 }
 
 function Home() {
-	const { orderbook, active, pair, exchange } = useSelector(state => state.responsive.home);
-	// const dispatch = useDispatch();
-
-	// const setSymbol = useCallback(data => dispatch({ type: 'SetSymbol', payload: data }), [ dispatch ]);
-
-	// console.log('home symbol', symbol)
+	const { orderbook, active, pair, exchange, chart } = useSelector(state => state.responsive.home);
 
 	useEffect(() => {
 		window.addEventListener('resize', _ => {
-			if (window.innerWidth > 1130) addClass();
+			if (window.innerWidth > 1130) removeClass();
+			else addClass();
 		});
 
-		if (window.innerWidth > 1130) addClass();
+		if (window.innerWidth > 1130) removeClass();
+		else addClass();
 	}, []);
-	// const handleClick = symbol => {
-	// 	setSymbol(symbol);
-	// };
 
 	return (
 		<div className="">
@@ -48,26 +49,20 @@ function Home() {
 
 				<div className="my-container">
 					<div className="my-row">
-						<div className="left-panel js-panel active">
+						<div className="left-panel js-panel">
 							{!active || (active && pair) ? <CommonInfo /> : null}
 
 							{!active || (active && exchange) ? <Exchange /> : null}
 						</div>
-						<div className="center-panel js-panel">
-							{!active ? (
+						{!active || (active && chart) ? (
+							<div className="center-panel js-panel">
 								<div className="image js-chart js-panel-item">
 									<div id="chart-container" />
 								</div>
-							) : null}
 
-							{active ? (
-								<div className="image js-chart js-panel-item">
-									<div id="chart-container" />
-								</div>
-							) : null}
-
-							{active ? null : <Orders />}
-						</div>
+								{active ? null : <Orders />}
+							</div>
+						) : null}
 
 						{!active || (active && orderbook) ? <OrderBooks /> : null}
 					</div>
