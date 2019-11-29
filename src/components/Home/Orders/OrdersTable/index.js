@@ -69,7 +69,7 @@ export default function PriceTable() {
           sortDirections: ['descend', 'ascend'],
         }, */
 	];
-	let dummyDate = Date.now();
+	let dummyDate = '09.09.2019 12:42:4';
 	const data = [];
 	for (let i = 0; i < 5; i++) {
 		data.push(
@@ -107,11 +107,20 @@ export default function PriceTable() {
 	}
 
 	function onChange(pagination, filters, sorter, extra) {
-		console.log('params', pagination, filters, sorter, extra);
+		// console.log('params', pagination, filters, sorter, extra);
 	}
 	return (
 		<Fragment>
-			<Table pagination={false} columns={columns} dataSource={data} onChange={onChange} />
+			<Table
+				scroll={{ y: 165 }}
+				pagination={false}
+				columns={columns}
+				dataSource={data}
+				onChange={onChange}
+				size="small"
+				bordered={false}
+				expandedRowRender={<p>sss</p>}
+			/>
 		</Fragment>
 	);
 }

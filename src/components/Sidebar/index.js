@@ -1,14 +1,36 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './index.css';
 
 const Sidebar = _ => {
+	const dispatch = useDispatch();
+	const setMode = useCallback(payload => dispatch({ type: 'SetMode', payload }), [ dispatch ]);
+	const { mode } = useSelector(state => state.general);
+
 	const onMouseOver = _ => {
 		document.querySelector('.js-sidebar-wrapper').classList.add('open');
 	};
 
 	const onMouseLeave = _ => {
 		document.querySelector('.js-sidebar-wrapper').classList.remove('open');
+	};
+
+	const handleMode = _ => {
+		const moon = document.querySelector('#moon');
+		moon.classList.toggle('active');
+
+		const toggle = document.querySelector('.index');
+		toggle.classList.toggle('dark-mode');
+
+		const toggle2 = document.querySelector('.toggler.js-toggler-dark-mode');
+		toggle2.classList.toggle('active');
+
+		const orders = document.querySelector('.father.orders');
+		orders.classList.toggle('dark-mode');
+
+		if (mode === 'Light') setMode('Dark');
+		else if (mode === 'Dark') setMode('Light');
 	};
 	return (
 		<div onMouseLeave={onMouseLeave} onMouseOver={onMouseOver}>
@@ -21,13 +43,13 @@ const Sidebar = _ => {
 						<img src="./img/logo.png" alt="home" />
 					</a>
 					<div className="links">
-						<div className="dark-mode">
+						<div className="dark-mode" id="moon">
 							<div className="night">
 								<img src="./img/night.png" alt="home" />
 							</div>
 							<div className="text mode-toggler">
 								<span>Dark Mode</span>
-								<div className="toggler js-toggler-dark-mode">
+								<div className="toggler js-toggler-dark-mode" onClick={handleMode}>
 									<div className="toggler-way" />
 									<div className="toggler-circle" />
 								</div>

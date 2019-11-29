@@ -51,6 +51,11 @@ function calculatePercent(max, value) {
 	return 100 * value / max;
 }
 
+function calculatePercent27(value) {
+	value = Number(value.substring(0, value.length - 1));
+	return 27 * value / 100;
+}
+
 const Asks = props => {
 	const [ asks, setAsks ] = useState();
 
@@ -74,10 +79,11 @@ const Asks = props => {
 				if (exchanges.length < 3) {
 					imgExchanges = [];
 					for (let j = 0; j < exchanges.length; j++) {
+						let time = new Date().getTime();
 						let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
 						imgExchanges.push(
 							<ExchangeImg
-								key={'ask' + key}
+								key={'ask3e3' + key + time + j}
 								id={key + j}
 								className={'ask-' + key}
 								style={{ height: '15px', width: '15px' }}
@@ -89,10 +95,11 @@ const Asks = props => {
 				} else {
 					imgExchanges = [];
 					for (let j = 0; j < 2; j++) {
+						let time = new Date().getTime();
 						let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
 						imgExchanges.push(
 							<ExchangeImg
-								key={'ask' + key}
+								key={'ask33wr8' + key + time + j}
 								id={key + j}
 								className={'ask-' + key}
 								style={{ height: '15px', width: '15px' }}
@@ -104,9 +111,10 @@ const Asks = props => {
 
 					let extras = [];
 					for (let j = 2; j < exchanges.length; j++) {
+						let time = new Date().getTime();
 						let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
 						extras.push(
-							<div className="drop">
+							<div className="drop" key={j + time + 'dasks'}>
 								<img src={imagePath} alt={exchanges[j]} />
 								<span>{exchanges[j]}</span>
 							</div>
@@ -119,12 +127,14 @@ const Asks = props => {
 						</div>
 					);
 				}
+				let time = new Date().getTime();
+				let percentStyle27 = calculatePercent27(percentStyle) + '%';
 				renderData.push(
-					<div className="order" key={key}>
+					<div className="order" key={key + time}>
 						{/* TOTAL - Max width 100% */}
 						<span className="progress-light l-red" style={{ width: percentStyle }} />
 						{/* Max width 27% */}
-						<span className="progress-light d-red" style={{ width: '1%' }} />
+						<span className="progress-light d-red" style={{ width: percentStyle27 }} />
 						<span className="cell emp">{asks[i].price.toFixed(8)}</span>
 						<span className="cell">{asks[i].size.toFixed(3)}</span>
 						<span className="cell">{asks[i].total.toFixed(8)}</span>

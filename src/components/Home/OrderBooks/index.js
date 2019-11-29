@@ -182,7 +182,7 @@ const OrderBooks = props => {
 				});
 
 				setTimeout(() => {
-					const div = document.querySelector('.orders');
+					const div = document.querySelector('.orders.bids');
 					if (div) div.scrollTop = div.scrollHeight;
 				}, 10);
 			});

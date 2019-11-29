@@ -2,6 +2,7 @@ const element = document.querySelector('#chart-data');
 
 const initialState = {
 	symbol: 'ETH-BTC',
+	mode: 'Light',
 	symbolA: 'ETH',
 	symbolB: 'BTC',
 	lastPrice: 0,
@@ -15,6 +16,9 @@ const initialState = {
 export default (state = initialState, { type, ...action }) => {
 	let newSymbol = '';
 	switch (type) {
+		case 'SetMode':
+			element.dataset.mode = action.payload;
+			return { ...state, mode: action.payload };
 		case 'SetChange':
 			return { ...state, change: action.payload };
 		case 'SetHigh':

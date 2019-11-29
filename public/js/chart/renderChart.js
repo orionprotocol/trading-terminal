@@ -1,7 +1,7 @@
 const state = {
 	themesConf: {
-		themes: [ 'default', 'black' ],
-		default: {
+		themes: [ 'light', 'dark' ],
+		light: {
 			tradingView: {
 				candles: {
 					blue: {
@@ -43,7 +43,7 @@ const state = {
 			TokenChangeModalCtrl: { seriesColor: '#5a81ea' },
 			bgColor: '#2d2d2d'
 		},
-		black: {
+		dark: {
 			tradingView: {
 				candles: {
 					blue: {
@@ -59,10 +59,12 @@ const state = {
 						volume1: 'rgba(0,200,0,0.3)'
 					}
 				},
-				toolbarBg: '#2d2d2d',
+				// toolbarBg: '#2d2d2d',
+				toolbarBg: '#2a2a41',
 				customCssUrl: '/tradingview-style/dark-style.css',
 				OVERRIDES: {
-					'paneProperties.background': '#2d2d2d',
+					// 'paneProperties.background': '#2d2d2d',
+					'paneProperties.background': '#2a2a41',
 					'scalesProperties.lineColor': '#424242',
 					'scalesProperties.textColor': '#8c8c8c',
 					'paneProperties.gridProperties.color': '#424242',
@@ -91,75 +93,75 @@ const state = {
 	}
 };
 
-const themeConf = state.themesConf.default.tradingView;
+const renderChart = (exchange, symbol, mode) => {
+	let themeConf = {};
+	let modeLow = mode.toLowerCase();
 
-// const overrides = { ...overridesResult, ...themeConf.OVERRIDES,
-// 	"mainSeriesProperties.priceAxisProperties.autoScale": false,
-// 	"mainSeriesProperties.priceAxisProperties.autoScaleDisabled": true,
-// 	"paneProperties.axisProperties.autoScale": false,
-// 	"paneProperties.axisProperties.lockScale": true,
-// 	// "paneProperties.topMargin": "100"
-// };
+	if (modeLow === 'light') {
+		themeConf = state.themesConf.light.tradingView;
+	} else if (modeLow === 'dark') {
+		themeConf = state.themesConf.dark.tradingView;
+	}
 
-const custom_css_url = themeConf.customCssUrl;
-const toolbar_bg = themeConf.toolbarBg;
-const DISABLED_FEATURES = [
-	'header_screenshot',
-	'header_symbol_search',
-	'symbol_search_hot_key',
-	'display_market_status',
-	'control_bar',
-	'timeframes_toolbar',
-	'volume_force_overlay'
-];
+	const custom_css_url = themeConf.customCssUrl;
+	const toolbar_bg = themeConf.toolbarBg;
+	const DISABLED_FEATURES = [
+		'header_screenshot',
+		'header_symbol_search',
+		'symbol_search_hot_key',
+		'display_market_status',
+		'control_bar',
+		'timeframes_toolbar',
+		'volume_force_overlay'
+	];
 
-const getOverrides = (candleUpColor, candleDownColor) => {
-	return {
-		'mainSeriesProperties.candleStyle.upColor': candleUpColor,
-		'mainSeriesProperties.candleStyle.downColor': candleDownColor,
-		'mainSeriesProperties.candleStyle.drawBorder': false,
-		'mainSeriesProperties.hollowCandleStyle.upColor': candleUpColor,
-		'mainSeriesProperties.hollowCandleStyle.downColor': candleDownColor,
-		'mainSeriesProperties.hollowCandleStyle.drawBorder': false,
-		'mainSeriesProperties.barStyle.upColor': candleUpColor,
-		'mainSeriesProperties.barStyle.downColor': candleDownColor,
-		'mainSeriesProperties.haStyle.upColor': candleUpColor,
-		'mainSeriesProperties.haStyle.downColor': candleDownColor,
-		'mainSeriesProperties.haStyle.drawBorder': false,
-		'mainSeriesProperties.lineStyle.color': candleUpColor,
-		'mainSeriesProperties.areaStyle.color1': candleUpColor,
-		'mainSeriesProperties.areaStyle.color2': candleUpColor,
-		'mainSeriesProperties.areaStyle.linecolor': candleUpColor,
-		volumePaneSize: 'tiny'
+	const getOverrides = (candleUpColor, candleDownColor) => {
+		return {
+			'mainSeriesProperties.candleStyle.upColor': candleUpColor,
+			'mainSeriesProperties.candleStyle.downColor': candleDownColor,
+			'mainSeriesProperties.candleStyle.drawBorder': false,
+			'mainSeriesProperties.hollowCandleStyle.upColor': candleUpColor,
+			'mainSeriesProperties.hollowCandleStyle.downColor': candleDownColor,
+			'mainSeriesProperties.hollowCandleStyle.drawBorder': false,
+			'mainSeriesProperties.barStyle.upColor': candleUpColor,
+			'mainSeriesProperties.barStyle.downColor': candleDownColor,
+			'mainSeriesProperties.haStyle.upColor': candleUpColor,
+			'mainSeriesProperties.haStyle.downColor': candleDownColor,
+			'mainSeriesProperties.haStyle.drawBorder': false,
+			'mainSeriesProperties.lineStyle.color': candleUpColor,
+			'mainSeriesProperties.areaStyle.color1': candleUpColor,
+			'mainSeriesProperties.areaStyle.color2': candleUpColor,
+			'mainSeriesProperties.areaStyle.linecolor': candleUpColor,
+			volumePaneSize: 'tiny'
+		};
 	};
-};
 
-const { upColor: up, downColor: down, volume0, volume1 } = themeConf.candles.blue;
+	const { upColor: up, downColor: down, volume0, volume1 } = themeConf.candles.blue;
 
-const getStudiesOverrides = ({ volume0, volume1 }) => {
-	return {
-		'volume.volume.color.0': volume0,
-		'volume.volume.color.1': volume1
+	const getStudiesOverrides = ({ volume0, volume1 }) => {
+		return {
+			'volume.volume.color.0': volume0,
+			'volume.volume.color.1': volume1
+		};
 	};
-};
 
-const overridesResult = getOverrides(up, down);
+	const overridesResult = getOverrides(up, down);
 
-const overrides = {
-	...overridesResult,
-	...themeConf.OVERRIDES
-	// 'mainSeriesProperties.priceAxisProperties.autoScale': false,
-	// 'mainSeriesProperties.priceAxisProperties.autoScaleDisabled': true,
-	// 'paneProperties.axisProperties.autoScale': false,
-	// 'paneProperties.axisProperties.lockScale': true
-};
+	const overrides = {
+		...overridesResult,
+		...themeConf.OVERRIDES,
+		// 'mainSeriesProperties.priceAxisProperties.autoScale': false,
+		// 'mainSeriesProperties.priceAxisProperties.autoScaleDisabled': true,
+		// 'paneProperties.axisProperties.autoScale': false,
+		// 'paneProperties.axisProperties.lockScale': true
+		'mainSeriesProperties.style': 2
+	};
 
-const studies_overrides = {
-	...getStudiesOverrides({ volume0, volume1 }),
-	...themeConf.STUDIES_OVERRIDES
-};
+	const studies_overrides = {
+		...getStudiesOverrides({ volume0, volume1 }),
+		...themeConf.STUDIES_OVERRIDES
+	};
 
-const renderChart = (exchange, symbol) => {
 	const element = document.querySelector('#chart-container');
 	const width = element.offsetWidth - 5;
 	const height = element.offsetHeight - 5;
@@ -179,7 +181,10 @@ const renderChart = (exchange, symbol) => {
 		toolbar_bg,
 		disabled_features: DISABLED_FEATURES,
 		studies_overrides,
+		favorites: {
+			chartTypes: [ 'Line' ]
+		},
 		// style: '2',
-		theme: 'Light'
+		theme: mode
 	});
 };

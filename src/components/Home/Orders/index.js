@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Row, Col, Icon, Select, Layout } from 'antd';
 // import OrdersTable from './OrdersTable';
 import './index.css';
-import './OrdersTable/index.css'
+import './OrdersTable/index.css';
 
 const { Option } = Select;
 const { Content } = Layout;
@@ -17,64 +17,62 @@ const Orders = _ => {
 
 	return (
 		<Fragment>
-			<Layout className="father" style={{ backgroundColor: '#fff' }}>
+			<Layout className="father orders">
 				<Content style={{ margin: '10px 15px 0 0', overflow: 'initial' }}>
 					<Row gutter={[ 8, 8 ]}>
 						<Col span={24}>
-								<Row style={{ padding: '10px' }}>
-									<Col span={6}>
-										<button className="price-card-button">Orders</button>
-										<button className="price-card-button" style={{ border: 'none !important' }}>
-											History
-										</button>
-									</Col>
-									<Col span={8} style={{ marginTop: '3px' }}>
-										<span>
-											{dateTopriceCard} <Icon type="calendar" />
-										</span>
-										<span className="price-card-date-line">
-											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										</span>
-										<span style={{ marginLeft: '30px' }}>
-											{dateTopriceCard} <Icon type="calendar" />
-										</span>
-									</Col>
-									<Col span={10}>
-										<Select
-											className="price-card-selector"
-											defaultValue="ETH"
-											style={{ width: 80, padding: 0, border: 'none' }}
-											onChange={handleChange}
-										>
-											<Option value="ETH">ETH</Option>
-											<Option value="ETH">ETH</Option>
-										</Select>
-										/
-										<Select
-											className="price-card-selector"
-											defaultValue="BTC"
-											style={{ width: 80, padding: 0, border: 'none' }}
-											onChange={handleChange}
-										>
-											<Option value="BTC">BTC</Option>
-											<Option value="ETH">ETH</Option>
-										</Select>
-										<Select
-											className="price-card-selector"
-											defaultValue="ALL"
-											style={{ width: 80, padding: 0, border: 'none' }}
-											onChange={handleChange}
-										>
-											<Option value="ALL">ALL</Option>
-											<Option value="ALL">ALL</Option>
-										</Select>
-									</Col>
-								</Row>
-							
+							<Row style={{ paddingTop: '5px', paddingLeft: '15px' }}>
+								<Col span={6}>
+									<button className="price-card-button">Orders</button>
+									<button className="price-card-button" style={{ border: 'none !important' }}>
+										History
+									</button>
+								</Col>
+								<Col span={8} style={{ marginTop: '3px' }}>
+									<span>
+										{dateTopriceCard} <Icon type="calendar" />
+									</span>
+									<span className="price-card-date-line">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+									<span style={{ marginLeft: '30px' }}>
+										{dateTopriceCard} <Icon type="calendar" />
+									</span>
+								</Col>
+								<Col span={10}>
+									<Select
+										className="price-card-selector"
+										defaultValue="ETH"
+										style={{ width: 80, padding: 0, border: 'none' }}
+										onChange={handleChange}
+									>
+										<Option value="ETH">ETH</Option>
+										<Option value="ETH">ETH</Option>
+									</Select>
+									/
+									<Select
+										className="price-card-selector"
+										defaultValue="BTC"
+										style={{ width: 80, padding: 0, border: 'none' }}
+										onChange={handleChange}
+									>
+										<Option value="BTC">BTC</Option>
+										<Option value="ETH">ETH</Option>
+									</Select>
+									<Select
+										className="price-card-selector"
+										defaultValue="ALL"
+										style={{ width: 80, padding: 0, border: 'none' }}
+										onChange={handleChange}
+									>
+										<Option value="ALL">ALL</Option>
+										<Option value="ALL">ALL</Option>
+									</Select>
+								</Col>
+							</Row>
 						</Col>
 					</Row>
-					<Row style={{ height: '13vh' }}>
-					<div className="table-content">
+					<Row style={{ paddingLeft: 15, paddingBottom: 10 }}>
+						{/* <OrdersTable /> */}
+						<div className="table-content">
 						<div className="titles">
 							<div className="title short"><span>Type</span><i className="fa fa-angle-down" aria-hidden="true"></i></div>
 							<div className="title"><span>Pair</span><i className="fa fa-angle-down" aria-hidden="true"> </i></div>

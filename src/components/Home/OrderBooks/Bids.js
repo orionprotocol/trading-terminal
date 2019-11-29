@@ -15,7 +15,10 @@ function calculateTotalBids(array) {
 function calculatePercent(max, value) {
 	return 100 * value / max;
 }
-
+function calculatePercent27(value) {
+	value = Number(value.substring(0, value.length - 1));
+	return 27 * value / 100;
+}
 // function chooseOrderBookLine(data, type) {
 // 	if (type === 'bids') {
 // 		// let price = data.price;
@@ -101,10 +104,11 @@ function renderBids(data) {
 
 			if (exchanges.length < 3) {
 				for (let j = 0; j < exchanges.length; j++) {
+					let time = new Date().getTime();
 					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
 					imgExchanges.push(
 						<ExchangeImg
-							key={key}
+							key={'bids3i39' + key + time}
 							className={'bid-' + key}
 							style={{ height: '15px', width: '15px' }}
 							imagePath={imagePath}
@@ -115,10 +119,11 @@ function renderBids(data) {
 			} else {
 				let extras = [];
 				for (let j = 0; j < 2; j++) {
+					let time = new Date().getTime();
 					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
 					imgExchanges.push(
 						<ExchangeImg
-							key={key}
+							key={'bids3i39' + key + time}
 							className={'bid-' + key}
 							style={{ height: '15px', width: '15px' }}
 							imagePath={imagePath}
@@ -128,9 +133,10 @@ function renderBids(data) {
 				}
 
 				for (let j = 2; j < exchanges.length; j++) {
+					let time = new Date().getTime();
 					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
 					extras.push(
-						<div className="drop">
+						<div className="drop" key={j + time + 'dbids'}>
 							<img src={imagePath} alt={exchanges[j]} />
 							<span>{exchanges[j]}</span>
 						</div>
@@ -144,13 +150,14 @@ function renderBids(data) {
 					</div>
 				);
 			}
-
+			let time = new Date().getTime();
+			let percentStyle27 = calculatePercent27(percentStyle) + '%';
 			renderData.push(
-				<div className="order" key={key}>
+				<div className="order" key={key + time + 'bids'}>
 					{/* TOTAL - Max width 100% */}
 					<span className="progress-light l-green" style={{ width: percentStyle }} />
 					{/* Max width 27% */}
-					<span className="progress-light d-green" style={{ width: '1%' }} />
+					<span className="progress-light d-green" style={{ width: percentStyle27 }} />
 					<span className="cell emp">{bids[i].price.toFixed(8)}</span>
 					<span className="cell">{bids[i].size.toFixed(3)}</span>
 					<span className="cell">{bids[i].total.toFixed(8)}</span>
@@ -189,7 +196,7 @@ const Bids = props => {
 				<span className="title">Total</span>
 				<span className="title exch">Exch</span>
 			</div>
-			<div className="orders">{bids}</div>
+			<div className="orders bids">{bids}</div>
 			<div className="last-price">
 				<span className="cell">{props.lastPrice}</span>
 				<span className="last">Last Price</span>
