@@ -56,6 +56,22 @@ function calculatePercent27(value) {
 	return 27 * value / 100;
 }
 
+const renderSize = data => {
+	let colorClass = 'cell';
+	if (!data.dynamic) {
+	} else {
+		if (data.dynamic === 1) {
+			colorClass = 'cell green';
+		}
+		if (data.dynamic === -1) {
+			colorClass = 'cell red';
+		}
+	}
+	data.dynamic = 0;
+
+	return <span className={colorClass}>{data.size.toFixed(3)}</span>;
+};
+
 const Asks = props => {
 	const [ asks, setAsks ] = useState();
 
@@ -136,7 +152,9 @@ const Asks = props => {
 						{/* Max width 27% */}
 						<span className="progress-light d-red" style={{ width: percentStyle27 }} />
 						<span className="cell emp">{asks[i].price.toFixed(8)}</span>
-						<span className="cell">{asks[i].size.toFixed(3)}</span>
+						{/* <span className="cell">{asks[i].size.toFixed(3)}</span> */}
+						{renderSize(asks[i])}
+
 						<span className="cell">{asks[i].total.toFixed(8)}</span>
 						<div className="cell exch">
 							<div

@@ -11,14 +11,14 @@ const state = {
 						volume1: 'rgba(90,129,234,0.3)'
 					},
 					green: {
-						upColor: '#39a12c',
-						downColor: '#e5494d',
-						volume0: 'rgba(200,0,00,0.3)',
-						volume1: 'rgba(0,200,0,0.3)'
+						upColor: '#A9E0BB',
+						downColor: '#ffb9b5',
+						volume0: 'rgba(22, 184, 98, 0.3)',
+						volume1: 'rgba(245, 69, 98, 0.3)'
 					}
 				},
 				toolbarBg: '#fff',
-				customCssUrl: 'css/tradingview-style/style.css',
+				// customCssUrl: 'css/tradingview-style/style.css',
 				OVERRIDES: {
 					'scalesProperties.lineColor': '#edf0f4',
 					'scalesProperties.textColor': '#4e5c6e',
@@ -53,10 +53,10 @@ const state = {
 						volume1: 'rgba(90,129,234,0.3)'
 					},
 					green: {
-						upColor: '#39a12c',
-						downColor: '#e5494d',
-						volume0: 'rgba(200,0,00,0.3)',
-						volume1: 'rgba(0,200,0,0.3)'
+						upColor: '#A9E0BB',
+						downColor: '#ffb9b5',
+						volume0: 'rgba(22, 184, 98,0.3)',
+						volume1: 'rgba(245, 69, 98,0.3)'
 					}
 				},
 				// toolbarBg: '#2d2d2d',
@@ -136,7 +136,8 @@ const renderChart = (exchange, symbol, mode) => {
 		};
 	};
 
-	const { upColor: up, downColor: down, volume0, volume1 } = themeConf.candles.blue;
+	// const { upColor: up, downColor: down, volume0, volume1 } = themeConf.candles.blue;
+	const { upColor: up, downColor: down, volume0, volume1 } = themeConf.candles.green;
 
 	const getStudiesOverrides = ({ volume0, volume1 }) => {
 		return {
@@ -149,12 +150,12 @@ const renderChart = (exchange, symbol, mode) => {
 
 	const overrides = {
 		...overridesResult,
-		...themeConf.OVERRIDES,
+		...themeConf.OVERRIDES
 		// 'mainSeriesProperties.priceAxisProperties.autoScale': false,
 		// 'mainSeriesProperties.priceAxisProperties.autoScaleDisabled': true,
 		// 'paneProperties.axisProperties.autoScale': false,
 		// 'paneProperties.axisProperties.lockScale': true
-		'mainSeriesProperties.style': 2
+		// 'mainSeriesProperties.style': 2
 	};
 
 	const studies_overrides = {

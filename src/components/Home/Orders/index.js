@@ -84,7 +84,7 @@ const Orders = _ => {
 						</div>
 						<div className="lines">
 							<div className="line">
-								<div className="line-big">
+								<div className="line-big open">
 									<div className="line-big-main js-line-big-main"><span className="cell short emp">Sell</span><span className="cell">ETH / BTC</span><span className="cell time"><span>09.09.2019</span> <span> 12:42:4</span></span><span className="cell">0,004422124</span><span className="cell">0,000042142</span><span className="cell filled status">Filled</span><span className="cell">1,4422124</span></div>
 									<div className="subtable">
 										<div className="subline">

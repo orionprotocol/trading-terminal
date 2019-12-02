@@ -167,7 +167,6 @@ const OrderBooks = props => {
 			let url =
 				urlBase +
 				'/api/v1/orderBook?symbol={SYMBOL}&depth={DEPTH}'.replace('{SYMBOL}', symbol).replace('{DEPTH}', depth);
-
 			axios.get(url).then(res => {
 				const { data } = res;
 				setState({

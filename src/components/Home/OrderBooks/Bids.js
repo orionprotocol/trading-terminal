@@ -75,6 +75,21 @@ function calculatePercent27(value) {
 // 	);
 // }
 
+const renderSize = data => {
+	let colorClass = 'cell';
+	if (!data.dynamic) {
+	} else {
+		if (data.dynamic === 1) {
+			colorClass = 'cell green';
+		}
+		if (data.dynamic === -1) {
+			colorClass = 'cell red';
+		}
+	}
+	data.dynamic = 0;
+
+	return <span className={colorClass}>{data.size.toFixed(3)}</span>;
+};
 function handleExchanges(e) {
 	const cl = e.target.classList;
 	const idDiv = 'div-' + cl[cl.length - 1];
@@ -159,7 +174,8 @@ function renderBids(data) {
 					{/* Max width 27% */}
 					<span className="progress-light d-green" style={{ width: percentStyle27 }} />
 					<span className="cell emp">{bids[i].price.toFixed(8)}</span>
-					<span className="cell">{bids[i].size.toFixed(3)}</span>
+					{/* <span className="cell">{bids[i].size.toFixed(3)}</span> */}
+					{renderSize(bids[i])}
 					<span className="cell">{bids[i].total.toFixed(8)}</span>
 					<div className="cell exch">
 						<div className={`exch-content js-exch-content`} onClick={handleExchanges} id={'div-bid-' + key}>
