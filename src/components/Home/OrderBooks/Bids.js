@@ -123,7 +123,7 @@ function renderBids(data) {
 					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
 					imgExchanges.push(
 						<ExchangeImg
-							key={'bids3i39' + key + time}
+							key={'bids3i39' + key + time + j}
 							className={'bid-' + key}
 							style={{ height: '15px', width: '15px' }}
 							imagePath={imagePath}
@@ -138,7 +138,7 @@ function renderBids(data) {
 					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
 					imgExchanges.push(
 						<ExchangeImg
-							key={'bids3i39' + key + time}
+							key={'bids3i39' + key + time + j}
 							className={'bid-' + key}
 							style={{ height: '15px', width: '15px' }}
 							imagePath={imagePath}

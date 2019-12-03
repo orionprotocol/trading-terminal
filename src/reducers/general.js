@@ -18,6 +18,8 @@ export default (state = initialState, { type, ...action }) => {
 	switch (type) {
 		case 'SetMode':
 			element.dataset.mode = action.payload;
+			localStorage.setItem('mode', action.payload);
+			console.log('setting mode', action.payload);
 			return { ...state, mode: action.payload };
 		case 'SetChange':
 			return { ...state, change: action.payload };

@@ -26,7 +26,7 @@ function removeClass() {
 }
 
 function Home() {
-	const { orderbook, active, pair, exchange, chart } = useSelector(state => state.responsive.home);
+	const { orderbook, active, pair, exchange, chart, history } = useSelector(state => state.responsive.home);
 
 	useEffect(() => {
 		window.addEventListener('resize', _ => {
@@ -54,13 +54,28 @@ function Home() {
 
 							{!active || (active && exchange) ? <Exchange /> : null}
 						</div>
-						{!active || (active && chart) ? (
+
+						{/* Large */}
+						{!active ? (
 							<div className="center-panel js-panel">
 								<div className="image js-chart js-panel-item">
 									<div id="chart-container" />
 								</div>
 
-								{active ? null : <Orders />}
+								<Orders />
+							</div>
+						) : null}
+
+						{/* Small */}
+						{(active && chart) || (active && history) ? (
+							<div className="center-panel js-panel">
+								{active && chart ? (
+									<div className="image js-chart js-panel-item">
+										<div id="chart-container" />
+									</div>
+								) : null}
+
+								{active && history ? <Orders /> : null}
 							</div>
 						) : null}
 

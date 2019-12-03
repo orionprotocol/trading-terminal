@@ -1,116 +1,12 @@
-.order-books-lastprice {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-align: center;
-	-ms-flex-align: center;
-	align-items: center;
-	padding: 6px 12px 6px 6px;
-	background: rgba(20, 16, 41, 0.02);
-	-webkit-box-pack: justify;
-	-ms-flex-pack: justify;
-	justify-content: space-between;
-	margin: 5px 0 5px 13px;
-}
-.last-price {
-	font-family: 'Montserrat', sans-serif;
-	font-size: 10px;
-	color: rgba(20, 16, 41, 0.6);
-	font-weight: 500;
-}
-.last-price-number {
-	font-family: 'Montserrat', sans-serif;
-	font-size: 10px;
-	color: rgba(20, 16, 41, 0.8);
+.subtable.active {
+	display: block !important;
 }
 
-.bids-table {
-	width: 100%;
-	height: 32em;
-
-	overflow-y: auto;
-	font-family: 'Montserrat', sans-serif;
-	font-size: 10px;
-}
-
-.bids-table-body {
-	width: 100%;
-	height: 300px;
-
-	overflow-y: auto;
-}
-.arrow-exch {
-	opacity: 0.4;
-	width: 14px;
-	height: 14px;
-	margin-left: -2px;
-}
-.table-rows {
-	text-align: center;
-	padding: 6px 0;
-}
-.table-header {
-	padding: 7px 0;
-}
-.green {
-	background-color: #e2f7ec;
-	color: #23bc6b;
-}
-.red {
-	background-color: #fee8ec;
-	color: #f7637c;
-}
-.price-book:hover::after {
-	content: 'asdasds';
-	position: absolute;
-	left: 0;
-	top: 24px;
-	min-width: 200px;
-	border: 1px #aaaaaa solid;
-	border-radius: 10px;
-	background-color: #ffffcc;
-	padding: 12px;
-	color: #000000;
-	font-size: 14px;
-	z-index: 1;
-}
-
-.tooltip1 {
-	position: relative;
-	display: inline-block;
-	height: 20px;
-	font-weight: 600;
-}
-
-.tooltip1 .tooltiptext1 {
-	visibility: visible;
-	/* width: 5.2vw; */
-	color: #fff;
-	text-align: center;
-	position: absolute;
-	z-index: 1;
-	/*  bottom: 125%; */
-	left: 50%;
-	left: 0px;
-	margin-top: -6px;
-	opacity: 1;
-	transition: opacity 0.3s;
-	height: 32px;
-}
-
-.tooltip1 .tooltiptext1.green {
-	background-color: rgba(157, 226, 189, 0.623);
-}
-.tooltip1 .tooltiptext1.red {
-	background-color: rgba(251, 177, 189, 0.623);
-}
-
-.father.orders {
-	background-color: #fff !important;
-	/* color: rgba(224, 224, 255, 0.6); */
-}
-
-.father.orders.dark-mode {
-	background-color: #2a2a41 !important;
-	color: rgba(224, 224, 255, 0.6);
+@media (max-width: 1130px) {
+	.father.orders.ant-layout {
+		position: absolute;
+		top: 30vh;
+		left: 5%;
+		width: 90%;
+	}
 }
