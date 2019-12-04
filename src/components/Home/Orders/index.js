@@ -1,20 +1,76 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Row, Col, Icon, Select, Layout } from 'antd';
-// import OrdersTable from './OrdersTable';
+import { useSelector } from 'react-redux';
 import './index.css';
 import './table.css';
 import Line from './Line';
+import axios from 'axios';
+
+const urlBase = process.env.REACT_APP_BACKEND;
 
 const { Option } = Select;
 const { Content } = Layout;
 
+// Open orders
+//  	orders[i].status == "NEW" ||
+// 		orders[i].status == "PARTIALLY_FILLED"
+
 const Orders = _ => {
+	const { symbol } = useSelector(state => state.general);
+	const [ orders, setOrders ] = useState([]);
+	const [ allOrders, setAllOrders ] = useState([]);
+	const [ state, setState ] = useState({ type: 'open' });
+
+	const loadOrderHistory = () => {
+		let address = localStorage.getItem('currentAccount') || '';
+		if (address) {
+			let url = urlBase + '/api/v1/orderHistory?symbol=' + symbol + '&address=' + address;
+			axios
+				.get(url)
+				.then(res => {
+					if (Array.isArray(res.data)) {
+						setAllOrders(res.data);
+
+						if (state.type === 'open') {
+							let newOrders = res.data.filter(d => d.status === 'NEW' || d.status === 'PARTIALLY_FILLED');
+							setOrders(newOrders);
+						} else {
+							setOrders(res.data);
+						}
+					}
+				})
+				.catch(err => {
+					console.log('error', err);
+				});
+		}
+	};
+	useEffect(
+		_ => {
+			loadOrderHistory();
+		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+		[ symbol ]
+	);
+
 	let d = new Date();
 	let dateTopriceCard = `${d.getDate()}.${d.getMonth()}.${d.getFullYear()}`;
 
 	function handleChange(value) {
 		console.log(`selected ${value}`);
 	}
+
+	const handleType = type => {
+		document.querySelector('#open-price-card-button').classList.toggle('active');
+		document.querySelector('#history-price-card-button').classList.toggle('active');
+
+		let newOrders = allOrders;
+		if (type === 'open') {
+			newOrders = allOrders.filter(d => d.status === 'NEW' || d.status === 'PARTIALLY_FILLED');
+		}
+
+		setOrders(newOrders);
+		setState({ ...state, type });
+	};
 
 	return (
 		<Fragment>
@@ -24,20 +80,31 @@ const Orders = _ => {
 						<Col span={24}>
 							<Row style={{ paddingTop: '5px', paddingLeft: '15px' }}>
 								<Col xs={24} md={6}>
-									<button className="price-card-button">Orders</button>
-									<button className="price-card-button" style={{ border: 'none !important' }}>
+									<button
+										className="price-card-button active"
+										id="open-price-card-button"
+										onClick={_ => handleType('open')}
+									>
+										Orders
+									</button>
+									<button
+										className="price-card-button"
+										id="history-price-card-button"
+										style={{ border: 'none !important' }}
+										onClick={_ => handleType('history')}
+									>
 										History
 									</button>
 								</Col>
 								<Col xs={24} md={8} style={{ marginTop: '3px' }}>
 									<div className="orders-dates">
-										<span>
+										<span className="date">
 											{dateTopriceCard} <Icon type="calendar" />
 										</span>
 										<span className="price-card-date-line">
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										</span>
-										<span style={{ marginLeft: '30px' }}>
+										<span className="date" style={{ marginLeft: '30px' }}>
 											{dateTopriceCard} <Icon type="calendar" />
 										</span>
 									</div>
@@ -113,12 +180,7 @@ const Orders = _ => {
 								</div>
 							</div>
 							<div className="lines">
-								<Line />
-								<Line />
-								<Line />
-								<Line />
-								<Line />
-								<Line />
+								{orders.map((data, i) => <Line type={state.type} key={i} data={data} />)}
 							</div>
 						</div>
 					</Row>

@@ -6,7 +6,7 @@ const initialState = {
 	symbolA: 'ETH',
 	symbolB: 'BTC',
 	lastPrice: 0,
-	ordersBooks: null,
+	orderBook: null,
 	high: 0,
 	low: 0,
 	vol: 0,
@@ -19,7 +19,6 @@ export default (state = initialState, { type, ...action }) => {
 		case 'SetMode':
 			element.dataset.mode = action.payload;
 			localStorage.setItem('mode', action.payload);
-			console.log('setting mode', action.payload);
 			return { ...state, mode: action.payload };
 		case 'SetChange':
 			return { ...state, change: action.payload };
@@ -54,8 +53,8 @@ export default (state = initialState, { type, ...action }) => {
 		case 'SetSymbol':
 			element.dataset.symbol = action.payload;
 			return { ...state, symbol: action.payload };
-		case 'SetOrdersBooks':
-			return { ...state, ordersBooks: action.payload };
+		case 'SetOrderBook':
+			return { ...state, orderBook: action.payload };
 		default:
 			return state;
 	}

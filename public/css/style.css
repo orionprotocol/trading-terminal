@@ -16,7 +16,7 @@ body {
 }
 
 body.dark {
-  background: #202036;
+  background: #202036 !important;
 }
 
 body.dark .ui-menu {
@@ -1015,7 +1015,7 @@ a:active {
 
 .index .center-panel .table-content .titles .title {
   width: 15.3%;
-  color: rgba(20, 16, 41, 0.8);
+  /* color: rgba(20, 16, 41, 0.8); */
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1077,9 +1077,9 @@ a:active {
   width: 19.5%;
 }
 
-.index .center-panel .table-content .lines .line-big .cell.emp {
+/* .index .center-panel .table-content .lines .line-big .cell.emp {
   color: rgba(20, 16, 41, 0.8);
-}
+} */
 
 .index .center-panel .table-content .lines .line-big .cell.filled {
   color: #ffaa00;
@@ -1134,7 +1134,7 @@ a:active {
 
 .index .center-panel .table-content .lines .line-big .subtable .subtitle {
   width: 20%;
-  color: rgba(20, 16, 41, 0.8);
+  /* color: rgba(20, 16, 41, 0.8); */
   font-size: 10px;
   line-height: 12px;
   display: -webkit-box;
@@ -1170,7 +1170,7 @@ a:active {
 .index .center-panel .table-content .lines .line-big .subtable .subline-d span {
   font-size: 10px;
   line-height: 12px;
-  color: rgba(20, 16, 41, 0.6);
+  /* color: rgba(20, 16, 41, 0.6); */
   width: 20%;
 }
 
@@ -1217,13 +1217,13 @@ a:active {
 
 .index .center-panel .table-content .lines .line-small .cell .data {
   width: 30%;
-  color: rgba(20, 16, 41, 0.8);
+  /* color: rgba(20, 16, 41, 0.8); */
   font-size: 16px;
 }
 
 .index .center-panel .table-content .lines .line-small .cell .data-eth {
   width: 40%;
-  color: rgba(20, 16, 41, 0.8);
+  /* color: rgba(20, 16, 41, 0.8); */
 }
 
 .index .center-panel .table-content .lines .line-small .cell .status {
@@ -1233,7 +1233,7 @@ a:active {
 
 .index .center-panel .table-content .lines .line-small .cell .sub-title {
   width: 30%;
-  color: rgba(20, 16, 41, 0.8);
+  /* color: rgba(20, 16, 41, 0.8); */
 }
 
 .index .center-panel .table-content .lines .line-small .cell .data-text {

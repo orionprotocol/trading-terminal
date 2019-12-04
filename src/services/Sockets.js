@@ -10,7 +10,7 @@ const Sockets = props => {
 	const [ websocket, setWS ] = useState(null);
 	const dispatch = useDispatch();
 	// const setBalances = useCallback(data => dispatch({ type: 'SetBalances', payload: data }), [ dispatch ]);
-	const setOrdersBooks = useCallback(data => dispatch({ type: 'SetOrdersBooks', payload: data }), [ dispatch ]);
+	const setOrderBook = useCallback(data => dispatch({ type: 'SetOrderBook', payload: data }), [ dispatch ]);
 	// let address = localStorage.getItem('currentAccount');
 
 	useEffect(
@@ -35,7 +35,7 @@ const Sockets = props => {
 			setWS(ws);
 
 			ws.onmessage = function(data) {
-				setOrdersBooks(JSON.parse(data.data));
+				setOrderBook(JSON.parse(data.data));
 			};
 
 			// --------------------- Orion-Wanchain Sockets -----------------------------------------------------

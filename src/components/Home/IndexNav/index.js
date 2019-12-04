@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Dark, Light } from '../../funtions/handleMode';
 
 const IndexNav = _ => {
 	const { pair, exchange, chart, history, orderbook } = useSelector(state => state.responsive.home);
-	const { symbol } = useSelector(state => state.general);
+	const { symbol, mode } = useSelector(state => state.general);
 	const [ classes, setClasses ] = useState([]);
 	const dispatch = useDispatch();
 
@@ -54,6 +55,12 @@ const IndexNav = _ => {
 					div.style.visibility = 'visible';
 					setSymbol(symbol);
 				} else div.style.visibility = 'hidden';
+			}
+
+			if (mode === 'Dark') {
+				Dark();
+			} else {
+				Light();
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps

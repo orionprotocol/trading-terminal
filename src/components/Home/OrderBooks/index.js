@@ -121,7 +121,7 @@ function updateOrderBookData(data, exchange, stateData, callback) {
 }
 
 const OrderBooks = props => {
-	const { symbol, ordersBooks } = useSelector(state => state.general);
+	const { symbol, orderBook } = useSelector(state => state.general);
 	// const newData = useSelector(state => state.general);
 	// console.log('general', general);
 	const dispatch = useDispatch();
@@ -199,10 +199,10 @@ const OrderBooks = props => {
 
 	useEffect(
 		_ => {
-			if (ordersBooks) {
+			if (orderBook) {
 				let aggregatedData = {
-					asks: ordersBooks.aggregatedAsks,
-					bids: ordersBooks.aggregatedBids
+					asks: orderBook.aggregatedAsks,
+					bids: orderBook.aggregatedBids
 				};
 
 				updateOrderBookData(aggregatedData, 'all', state.data, (asks, bids, maxBid, lastPriceStyle) => {
@@ -222,7 +222,7 @@ const OrderBooks = props => {
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ ordersBooks ]
+		[ orderBook ]
 	);
 
 	// console.log(state);

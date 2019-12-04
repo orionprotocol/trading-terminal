@@ -11,8 +11,10 @@ const state = {
 						volume1: 'rgba(90,129,234,0.3)'
 					},
 					green: {
-						upColor: '#A9E0BB',
-						downColor: '#ffb9b5',
+						// upColor: '#A9E0BB',
+						// downColor: '#ffb9b5',
+						upColor: '#9DE2BD',
+						downColor: '#FBB1BD',
 						volume0: 'rgba(22, 184, 98, 0.3)',
 						volume1: 'rgba(245, 69, 98, 0.3)'
 					}
@@ -53,8 +55,8 @@ const state = {
 						volume1: 'rgba(90,129,234,0.3)'
 					},
 					green: {
-						upColor: '#A9E0BB',
-						downColor: '#ffb9b5',
+						upColor: '#19836D',
+						downColor: '#83196D',
 						volume0: 'rgba(22, 184, 98,0.3)',
 						volume1: 'rgba(245, 69, 98,0.3)'
 					}

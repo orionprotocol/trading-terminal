@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Dark, Light } from '../funtions/handleMode';
 import './index.css';
 
 const Sidebar = _ => {
@@ -10,28 +11,16 @@ const Sidebar = _ => {
 
 	useEffect(_ => {
 		let lastmode = localStorage.getItem('mode');
-		console.log(lastmode);
 
-		// if (lastmode === 'Dark') setMode('Light');
-		// if (lastmode === 'Light') setMode('Dark');
-		// handleMode();
-		// if (lastmode) {
-		// 	setMode(lastmode);
-		// } else setMode('Light');
-		// console.log(lastmode);
-		// handleMode(true);
-		// setTimeout(() => {
-		// 	handleMode();
-		// 	console.log(mode);
-		// }, 2000);
+		if (lastmode === 'Dark') {
+			Dark();
+			setMode('Dark');
+		} else {
+			Light();
+			setMode('Light');
+		}
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	// useEffect(
-	// 	_ => {
-	// 		handleMode();
-	// 	},
-	// 	[ mode ]
-	// );
 
 	const onMouseOver = _ => {
 		document.querySelector('.js-sidebar-wrapper').classList.add('open');
@@ -41,40 +30,12 @@ const Sidebar = _ => {
 		document.querySelector('.js-sidebar-wrapper').classList.remove('open');
 	};
 
-	const handleMode = first => {
-		console.log('handleMode ', mode);
-
+	const handleMode = _ => {
 		if (mode === 'Light') {
-			// console.log('MODE DARK');
-			const moon = document.querySelector('#moon');
-			moon.classList.add('active');
-
-			const toggle = document.querySelector('.index');
-			toggle.classList.add('dark-mode');
-
-			const toggle2 = document.querySelector('.toggler.js-toggler-dark-mode');
-			toggle2.classList.add('active');
-
-			const orders = document.querySelector('.father.orders');
-			orders.classList.add('dark-mode');
-
-			if (typeof first === 'boolean') return;
+			Dark();
 			setMode('Dark');
 		} else if (mode === 'Dark') {
-			// console.log('MODE LIGHT');
-			const moon = document.querySelector('#moon');
-			moon.classList.remove('active');
-
-			const toggle = document.querySelector('.index');
-			toggle.classList.remove('dark-mode');
-
-			const toggle2 = document.querySelector('.toggler.js-toggler-dark-mode');
-			toggle2.classList.remove('active');
-
-			const orders = document.querySelector('.father.orders');
-			orders.classList.remove('dark-mode');
-
-			if (typeof first === 'boolean') return;
+			Light();
 			setMode('Light');
 		}
 	};
