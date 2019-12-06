@@ -40,6 +40,7 @@ const Sockets = props => {
 
 			// --------------------- Orion-Wanchain Sockets -----------------------------------------------------
 
+			// console.log('object');
 			// socket.on('connect', _ => {
 			// 	console.log('Connected....................................');
 			// 	// socket.emit('clientAddress', window.wan3.toChecksumAddress(address));

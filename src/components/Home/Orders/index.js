@@ -5,6 +5,7 @@ import './index.css';
 import './table.css';
 import Line from './Line';
 import axios from 'axios';
+import compareValues from '../../funtions/compareValues';
 
 const urlBase = process.env.REACT_APP_BACKEND;
 
@@ -19,7 +20,16 @@ const Orders = _ => {
 	const { symbol } = useSelector(state => state.general);
 	const [ orders, setOrders ] = useState([]);
 	const [ allOrders, setAllOrders ] = useState([]);
-	const [ state, setState ] = useState({ type: 'open' });
+	const [ state, setState ] = useState({ type: 'open', renderOrders: null });
+	const [ classes, setClasses ] = useState({
+		type: 'fa-angle-down',
+		pair: 'fa-angle-down',
+		time: 'fa-angle-down',
+		amount: 'fa-angle-down',
+		price: 'fa-angle-down',
+		status: 'fa-angle-down',
+		total: 'fa-angle-down'
+	});
 
 	const loadOrderHistory = () => {
 		let address = localStorage.getItem('currentAccount') || '';
@@ -71,6 +81,84 @@ const Orders = _ => {
 		setOrders(newOrders);
 		setState({ ...state, type });
 	};
+
+	const handleSort = type => {
+		let newClasses = {};
+		let sortType = 'asc';
+		for (let e in classes) {
+			if (e === type) {
+				if (classes[e] === 'fa-angle-down') {
+					newClasses[e] = 'fa-angle-up';
+				} else {
+					newClasses[e] = 'fa-angle-down';
+					sortType = 'desc';
+				}
+			} else {
+				newClasses[e] = 'fa-angle-down';
+			}
+		}
+		setClasses(newClasses);
+
+		let sortKey = '';
+		let ordersSorted = [];
+		switch (type) {
+			case 'type':
+				sortKey = 'side';
+				ordersSorted = orders.sort(compareValues(sortKey, sortType));
+				setOrders([ ...ordersSorted ]);
+				break;
+			case 'pair':
+				sortKey = 'symbol';
+				ordersSorted = orders.sort(compareValues(sortKey, sortType));
+				setOrders([ ...ordersSorted ]);
+				break;
+			case 'time':
+				sortKey = 'time';
+				ordersSorted = orders.sort(compareValues(sortKey, sortType));
+				setOrders([ ...ordersSorted ]);
+				break;
+			case 'amount':
+				sortKey = 'orderQty';
+				ordersSorted = orders.sort(compareValues(sortKey, sortType));
+				setOrders([ ...ordersSorted ]);
+				break;
+			case 'price':
+				sortKey = 'price';
+				ordersSorted = orders.sort(compareValues(sortKey, sortType));
+				setOrders([ ...ordersSorted ]);
+				break;
+			case 'status':
+				sortKey = 'status';
+				ordersSorted = orders.sort(compareValues(sortKey, sortType));
+				setOrders([ ...ordersSorted ]);
+				break;
+			case 'total':
+				sortKey = 'total';
+				ordersSorted = orders.sort(compareValues(sortKey, sortType));
+				setOrders([ ...ordersSorted ]);
+				break;
+			default:
+				break;
+		}
+	};
+
+	const renderOrders = _ => {
+		setState({ ...state, renderOrders: null });
+
+		setTimeout(_ => {
+			let newRenderOrders = orders.map((data, i) => <Line type={state.type} key={i} data={data} />);
+
+			setState({ ...state, renderOrders: newRenderOrders });
+		}, 0);
+	};
+
+	useEffect(
+		_ => {
+			renderOrders();
+		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+		[ orders ]
+	);
 
 	return (
 		<Fragment>
@@ -148,40 +236,38 @@ const Orders = _ => {
 						{/* <OrdersTable /> */}
 						<div className="table-content">
 							<div className="titles">
-								<div className="title short">
+								<div className="title short" onClick={_ => handleSort('type')}>
 									<span>Type</span>
-									<i className="fa fa-angle-down" aria-hidden="true" />
+									<i className={`fa ${classes.type}`} aria-hidden="true" />
 								</div>
-								<div className="title">
+								<div className="title" onClick={_ => handleSort('pair')}>
 									<span>Pair</span>
-									<i className="fa fa-angle-down" aria-hidden="true">
+									<i className={`fa ${classes.pair}`} aria-hidden="true">
 										{' '}
 									</i>
 								</div>
-								<div className="title time">
+								<div className="title time" onClick={_ => handleSort('time')}>
 									<span>Time</span>
-									<i className="fa fa-angle-down" aria-hidden="true" />
+									<i className={`fa ${classes.time}`} aria-hidden="true" />
 								</div>
-								<div className="title">
+								<div className="title" onClick={_ => handleSort('amount')}>
 									<span>Amount</span>
-									<i className="fa fa-angle-down" aria-hidden="true" />
+									<i className={`fa ${classes.amount}`} aria-hidden="true" />
 								</div>
-								<div className="title">
+								<div className="title" onClick={_ => handleSort('price')}>
 									<span>Price</span>
-									<i className="fa fa-angle-down" aria-hidden="true" />
+									<i className={`fa ${classes.price}`} aria-hidden="true" />
 								</div>
-								<div className="title status">
+								<div className="title status" onClick={_ => handleSort('status')}>
 									<span>Status</span>
-									<i className="fa fa-angle-down" aria-hidden="true" />
+									<i className={`fa ${classes.status}`} aria-hidden="true" />
 								</div>
-								<div className="title">
+								<div className="title" onClick={_ => handleSort('total')}>
 									<span>Total</span>
-									<i className="fa fa-angle-down" aria-hidden="true" />
+									<i className={`fa ${classes.total}`} aria-hidden="true" />
 								</div>
 							</div>
-							<div className="lines">
-								{orders.map((data, i) => <Line type={state.type} key={i} data={data} />)}
-							</div>
+							<div className="lines">{state.renderOrders}</div>
 						</div>
 					</Row>
 				</Content>

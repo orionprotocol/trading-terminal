@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import SlideToggle from 'react-slide-toggle';
 import moment from 'moment';
+import Subtable from './Subtable';
 
 const Line = props => {
 	const [ state, setState ] = useState({ sub: [] });
@@ -26,6 +27,7 @@ const Line = props => {
 		});
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
 	// console.log(props.type);
 	return (
 		<Fragment>
@@ -49,47 +51,7 @@ const Line = props => {
 								</div>
 
 								<div className="" ref={setCollapsibleElement}>
-									<div className="subtable active" id="subtable0">
-										<div className="subline">
-											<div className="subtitles">
-												<div className="subtitle">
-													<span>Exchange</span>
-													<i className="fa fa-angle-down" aria-hidden="true" />
-												</div>
-												<div className="subtitle right">
-													<span>ID</span>
-													<i className="fa fa-angle-down" aria-hidden="true" />
-												</div>
-												<div className="subtitle right">
-													<span>Amount</span>
-													<i className="fa fa-angle-down" aria-hidden="true" />
-												</div>
-												<div className="subtitle right">
-													<span>Price</span>
-													<i className="fa fa-angle-down" aria-hidden="true" />
-												</div>
-												<div className="subtitle right">
-													<span>Status</span>
-													<i className="fa fa-angle-down" aria-hidden="true" />
-												</div>
-											</div>
-
-											<div className="subcontent">
-												{state.sub.map(data => (
-													<div className="subline-d">
-														<span>{data.exchange}</span>
-														<span className="right">{data.id}</span>
-														<span className="right">{data.subOrdQty}</span>
-														<span className="right">{data.price}</span>
-														<span className="right filled">
-															{data.status[0].toUpperCase() +
-																data.status.slice(1).toLowerCase()}
-														</span>
-													</div>
-												))}
-											</div>
-										</div>
-									</div>
+									<Subtable data={state.sub} />
 								</div>
 							</div>
 						)}

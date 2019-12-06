@@ -1145,6 +1145,10 @@ a:active {
   align-items: center;
 }
 
+.index .center-panel .table-content .lines .line-big .subtable .subtitle:hover{
+  cursor: pointer;
+}
+
 .index .center-panel .table-content .lines .line-big .subtable .subtitle i {
   color: rgba(20, 16, 41, 0.4);
   font-size: 15px;
