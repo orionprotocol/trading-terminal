@@ -1,78 +1,64 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const Exchange = _ => {
+import './index.css';
+import BuyAndSellForm from './form';
+
+export default function Exchange() {
+	const [ activeTab, setActiveTab ] = useState({ buy: 'buy-tab active', sell: 'sell-tab', type: 'buy' });
+	const [ activeButton, setActiveButton ] = useState({
+		left: 'market-button active',
+		rigth: 'limit-order-button',
+		type: 'market'
+	});
+
 	return (
-		<div className="buy-sell js-panel-item js-exchange">
-			<div className="top">
-				<button className="js-buy-sell active" data-content="buy-content">
+		<div id="exchange" className="">
+			{/* <div id="exchange" className="dark-mode"> */}
+			<div>
+				<div
+					className={activeTab.buy}
+					onClick={() => setActiveTab({ buy: 'buy-tab active', sell: 'sell-tab', type: 'buy' })}
+				>
 					Buy
-				</button>
-				<button className="js-buy-sell sell-btn" data-content="sell-content">
+				</div>
+				<div
+					className={activeTab.sell}
+					onClick={() => setActiveTab({ buy: 'buy-tab', sell: 'sell-tab active', type: 'sell' })}
+				>
 					Sell
-				</button>
+				</div>
 			</div>
-			<div className="main-content">
-				<div className="buy-content js-buy-sell-content">
-					<div className="big-toggler">
-						<button className="active">Market</button>
-						<button>Limit order</button>
-					</div>
-					<div className="amount">
-						<span className="placeholder">Amount</span>
-						<input type="text" />
-						<span className="currency">ETH</span>
-						<div className="available">
-							<span>Available</span>
-							<span>0.10099921 BTC</span>
-						</div>
-					</div>
-					<div className="btns">
-						<button>25%</button>
-						<button>50%</button>
-						<button>75%</button>
-						<button>100%</button>
-					</div>
-					<div className="amount total">
-						<span className="placeholder">Total</span>
-						<input type="text" readOnly={true} />
-						<span className="currency">BTC</span>
-					</div>
-					<div className="buy-btn">
-						<button className="buy">Buy ETH</button>
-					</div>
+			<div className="container-buttons-options">
+				<div className="buttons-options">
+					<button
+						className={activeButton.left}
+						onClick={() =>
+							setActiveButton({
+								left: 'market-button active',
+								rigth: 'limit-order-button',
+								type: 'market'
+							})}
+					>
+						Market
+					</button>
 				</div>
-				<div className="sell-content js-buy-sell-content">
-					<div className="big-toggler">
-						<button className="active">Market</button>
-						<button>Limit order</button>
-					</div>
-					<div className="amount">
-						<span className="placeholder">Amount</span>
-						<input type="text" />
-						<span className="currency">ETH</span>
-						<div className="available">
-							<span>Available</span>
-							<span>0.10099921 BTC</span>
-						</div>
-					</div>
-					<div className="btns">
-						<button>25%</button>
-						<button>50%</button>
-						<button>75%</button>
-						<button>100%</button>
-					</div>
-					<div className="amount total">
-						<span className="placeholder">Total</span>
-						<input type="text" readOnly={true} />
-						<span className="currency">BTC</span>
-					</div>
-					<div className="buy-btn">
-						<button className="buy">Buy ETH</button>
-					</div>
+				<div className="buttons-options">
+					<button
+						className={activeButton.rigth}
+						onClick={() =>
+							setActiveButton({
+								left: 'market-button',
+								rigth: 'limit-order-button active',
+								type: 'limit-order'
+							})}
+					>
+						Limit order
+					</button>
 				</div>
+			</div>
+			<div className="buy-and-sell-form">
+				<BuyAndSellForm type={{ trade: activeTab.type, selection: activeButton.type }} />
 			</div>
 		</div>
 	);
-};
-
-export default Exchange;
+}

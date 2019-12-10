@@ -16,6 +16,9 @@ export function Dark() {
 	const orders = document.querySelector('.father.orders');
 	if (orders) orders.classList.add('dark-mode');
 
+	const exchange = document.querySelector('#exchange');
+	if (exchange) exchange.classList.add('dark-mode');
+
 	const btns = document.getElementsByClassName('price-card-button');
 	if (btns && btns.length > 0) {
 		for (let i = 0; i < btns.length; i++) {
@@ -53,6 +56,9 @@ export function Light() {
 
 	const orders = document.querySelector('.father.orders');
 	if (orders) orders.classList.remove('dark-mode');
+
+	const exchange = document.querySelector('#exchange');
+	if (exchange) exchange.classList.remove('dark-mode');
 
 	const btns = document.getElementsByClassName('price-card-button');
 	if (btns && btns.length > 0) {

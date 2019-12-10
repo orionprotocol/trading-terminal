@@ -339,6 +339,7 @@ a:active {
   padding: 8px;
   margin-bottom: 8px;
   background: #ffffff;
+  height: 32vh;
 }
 
 .index .common-info .top {
@@ -509,6 +510,7 @@ a:active {
   -ms-flex-pack: justify;
   justify-content: space-between;
   width: 100%;
+  height: 5vh;
 }
 
 .index .common-info .table .line:not(:last-child) {

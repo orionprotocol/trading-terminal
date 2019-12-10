@@ -53,6 +53,7 @@ function Home() {
 							{!active || (active && pair) ? <CommonInfo /> : null}
 
 							{!active || (active && exchange) ? <Exchange /> : null}
+							{/* <Exchange /> */}
 						</div>
 
 						{/* Large */}
