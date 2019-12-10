@@ -1,6 +1,7 @@
 import React from 'react';
 import TopMenu from '../components/TopMenu'
 import Sidebar from '../components/Sidebar'
+import Wallets from '../components/Dashboard/Wallets'
 
 function Dashboard() {
 	return (
@@ -28,29 +29,7 @@ function Dashboard() {
                 </div>
             </div>
             <div class="wrapper">
-                <div class="wallets">
-                    <div class="top">
-                        <h2>Wallets</h2>
-                        <button class="add js-add-wallet"><img src="./img/add.png" alt="dash"/><span>Add Wallet</span></button>
-                    </div>
-                    <div class="crypto-wallets js-crypto-wallets">
-                        <div class="wallet eth">
-                            <div class="title"><img src="./img/eth-wallet.png" alt="dash"/><span>Details</span></div>
-                            <p class="money"><span class="num">12.008895</span> <span class="currency">ETH</span></p>
-                            <p class="currency-2">0.260000 btc</p>
-                        </div>
-                        <div class="wallet btc">
-                            <div class="title"><img src="./img/btc-wallet.png" alt="dash"/><span>Details</span></div>
-                            <p class="money"><span class="num">12.008895</span> <span class="currency">ETH</span></p>
-                            <p class="currency-2">0.260000 btc</p>
-                        </div>
-                        <div class="wallet dash">
-                            <div class="title"><img src="./img/dash-wallet.png" alt="dash"/><span>Details</span></div>
-                            <p class="money"><span class="num">12.008895</span> <span class="currency">dash</span></p>
-                            <p class="currency-2">0.260000 btc</p>
-                        </div>
-                    </div>
-                </div>
+                <Wallets/>
                 <div class="wallets-table">
                     <div class="titles">
                         <div class="title"><span>Token</span><img src="./img/arrow-down.svg" alt="dash"/></div>

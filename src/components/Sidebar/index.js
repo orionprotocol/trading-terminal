@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dark, Light } from '../funtions/handleMode';
@@ -8,6 +8,7 @@ const Sidebar = _ => {
 	const dispatch = useDispatch();
 	const setMode = useCallback(payload => dispatch({ type: 'SetMode', payload }), [ dispatch ]);
 	const { mode } = useSelector(state => state.general);
+	const [ actives, setActives ] = useState([ 'active', '', '' ]);
 
 	useEffect(_ => {
 		let lastmode = localStorage.getItem('mode');
@@ -18,6 +19,22 @@ const Sidebar = _ => {
 		} else {
 			Light();
 			setMode('Light');
+		}
+
+		let { pathname } = window.location;
+
+		switch (pathname) {
+			case '/home':
+				setActives([ 'active', '', '' ]);
+				break;
+			case '/dashboard':
+				setActives([ '', 'active', '' ]);
+				break;
+			case '/history':
+				setActives([ '', '', 'active' ]);
+				break;
+			default:
+				break;
 		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -64,17 +81,17 @@ const Sidebar = _ => {
 							</div>
 						</div>
 						<nav>
-							<Link className="nav-link active" to="/home">
+							<Link className={`nav-link ${actives[0]}`} to="/home">
 								<span className="icon-link-1 icon" />
 								<span className="text">Home</span>
 							</Link>
 
-							<Link className="nav-link" to="/dashboard">
+							<Link className={`nav-link ${actives[1]}`} to="/dashboard">
 								<span className="icon-link-2 icon" />
 								<span className="text">Dashboard</span>
 							</Link>
 
-							<Link className="nav-link" to="/history">
+							<Link className={`nav-link ${actives[2]}`} to="/history">
 								<span className="icon-link-3 icon" />
 								<span className="text">History</span>
 							</Link>
