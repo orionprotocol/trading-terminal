@@ -57,7 +57,6 @@ const Wanmask = props => {
 			}
 		}
 	};
-
 	wanmaskVerification();
 
 	return <div />;

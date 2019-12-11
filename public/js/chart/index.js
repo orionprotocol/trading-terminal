@@ -2,25 +2,29 @@ let width = 0;
 let height = 0;
 
 document.addEventListener('DOMContentLoaded', _ => {
-	const dataChart = document.querySelector('#chart-data');
+	let { pathname } = window.location;
 
-	let { exchange, symbol, mode } = dataChart.dataset;
+	if (pathname === '/home') {
+		const dataChart = document.querySelector('#chart-data');
 
-	window.addEventListener('resize', _ => {
-		renderChart(exchange, symbol, mode);
-	});
+		let { exchange, symbol, mode } = dataChart.dataset;
 
-	const observer = new MutationObserver(function(mutations) {
-		mutations.forEach(function(mutation) {
-			if (mutation.type == 'attributes') {
-				let { exchange, symbol, mode } = dataChart.dataset;
-				renderChart(exchange, symbol, mode);
-			}
+		window.addEventListener('resize', _ => {
+			renderChart(exchange, symbol, mode);
 		});
-	});
 
-	observer.observe(dataChart, {
-		attributes: true //configure it to listen to attribute changes
-	});
-	renderChart(exchange, symbol, mode);
+		const observer = new MutationObserver(function(mutations) {
+			mutations.forEach(function(mutation) {
+				if (mutation.type == 'attributes') {
+					let { exchange, symbol, mode } = dataChart.dataset;
+					renderChart(exchange, symbol, mode);
+				}
+			});
+		});
+
+		observer.observe(dataChart, {
+			attributes: true //configure it to listen to attribute changes
+		});
+		renderChart(exchange, symbol, mode);
+	}
 });

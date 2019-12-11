@@ -1,0 +1,19 @@
+.popup-wrapper.js-add-wallet-1 {
+	display: block;
+}
+
+.popup-wrapper.js-add-wallet-2 {
+	display: block;
+}
+
+/* .popup-wrapper.js-add-wallet-1.active {
+	display: block;
+}
+
+.popup-wrapper.js-add-wallet-2.active {
+	display: block;
+} */
+
+.popup-wrapper.js-add-wallet-2 .add-wallet-2 {
+	height: 98%;
+}

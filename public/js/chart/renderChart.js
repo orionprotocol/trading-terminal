@@ -191,3 +191,5 @@ const renderChart = (exchange, symbol, mode) => {
 		theme: mode
 	});
 };
+
+window.renderChart = renderChart;

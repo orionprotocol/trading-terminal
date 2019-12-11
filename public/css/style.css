@@ -2646,7 +2646,7 @@ a:active {
   padding: 24px;
   margin-bottom: 8px;
   height: calc(50vh - 30px);
-  overflow-y: auto;
+  /* overflow-y: auto; */
 }
 
 .dashboard .wrapper .wallets .top {

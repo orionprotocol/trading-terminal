@@ -27,6 +27,7 @@ function removeClass() {
 
 function Home() {
 	const { orderbook, active, pair, exchange, chart, history } = useSelector(state => state.responsive.home);
+	const { mode, symbol } = useSelector(state => state.general);
 
 	useEffect(() => {
 		window.addEventListener('resize', _ => {
@@ -37,6 +38,18 @@ function Home() {
 		if (window.innerWidth > 1130) removeClass();
 		else addClass();
 	}, []);
+
+	useEffect(
+		_ => {
+			const { pathname } = window.location;
+
+			if (pathname === '/home') {
+				window.renderChart('all', symbol, mode);
+			}
+		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+		[ window.location.pathname, mode, symbol ]
+	);
 
 	return (
 		<div className="">
