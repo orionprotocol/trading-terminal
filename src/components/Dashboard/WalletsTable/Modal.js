@@ -1,7 +1,9 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import FadeIn from 'react-fade-in';
 
 const Modal = props => {
+	const [ amount, setAmount ] = useState('');
+
 	return (
 		<Fragment>
 			{props.show ? (
@@ -23,7 +25,11 @@ const Modal = props => {
 										<div className="tab-key tab">
 											<div className="private-key">
 												<span>Enter amount</span>
-												<input type="number" />
+												<input
+													type="number"
+													value={amount}
+													onChange={e => setAmount(e.target.value)}
+												/>
 											</div>
 										</div>
 									</div>
@@ -33,7 +39,7 @@ const Modal = props => {
 										<img src="./img/arrow-down.svg" alt="dash" />
 										<span>Go back</span>
 									</button>
-									<button className="connect">
+									<button className="connect" onClick={_ => props.submit(amount)}>
 										<span>{props.operation}</span>
 									</button>
 								</div>

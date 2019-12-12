@@ -7,6 +7,7 @@
 		"axios": "^0.19.0",
 		"crypto-price": "^0.0.6",
 		"formik": "^2.0.6",
+		"long": "^4.0.0",
 		"moment": "^2.24.0",
 		"react": "^16.12.0",
 		"react-dom": "^16.12.0",
@@ -18,6 +19,7 @@
 		"react-slide-toggle": "^0.3.3",
 		"redux": "^4.0.4",
 		"socket.io-client": "^2.3.0",
+		"web3": "^1.2.4",
 		"websocket-heartbeat-js": "^1.0.8",
 		"yup": "^0.27.0"
 	},

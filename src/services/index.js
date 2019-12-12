@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import Sockets from './Sockets';
-import Wanmask from './Wanmask';
+import WanmaskVerification from './WanmaskVerification';
 import OrionWanchain from './OrionWanchain';
 
 const Index = _ => {
@@ -11,7 +11,7 @@ const Index = _ => {
 			<Fragment>
 				<OrionWanchain />
 				<Sockets />
-				<Wanmask />
+				<WanmaskVerification />
 			</Fragment>
 		);
 	} else {
