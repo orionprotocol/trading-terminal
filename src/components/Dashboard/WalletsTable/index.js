@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import Line from './Line';
+import './index.css';
 
-const WalletsTable = _ => {
+const WalletsTable = props => {
 	const balances = useSelector(state => state.balances);
 	const [ contract, setContract ] = useState({
 		ETH: 0,
@@ -64,99 +66,27 @@ const WalletsTable = _ => {
 				</div>
 			</div>
 			<div className="lines">
-				<div className="line">
-					<div className="cell emp coins">
-						<img src="./img/btc-color.png" alt="dash" style={{ width: 20, height: 20 }} />
-						<span>BTC</span>
-					</div>
-					<span className="cell">
-						<span className="title-m">Wallet</span> {wallet.BTC.toFixed(8)}
-					</span>
-					<span className="cell">
-						<span className="title-m">Contract</span> {contract.BTC.toFixed(8)}
-					</span>
-					<span className="cell">
-						<span className="title-m">In open order</span> 0
-					</span>
-					<div className="cell actions">
-						<button className="action">
-							{' '}
-							<img src="./img/arrow.png" alt="dash" />
-							<span>Deposit</span>
-						</button>
-						<button className="action withdraw">
-							<img src="./img/arrow.png" alt="dash" />
-							<span>Withdraw</span>
-						</button>
-						<button className="action">
-							{' '}
-							<img src="./img/trade.png" alt="dash" />
-							<span>Trade</span>
-						</button>
-					</div>
-				</div>
-				<div className="line">
-					<div className="cell emp coins">
-						<img src="./img/eth-wallet.png" alt="dash" style={{ width: 20, height: 20 }} />
-						<span>ETH</span>
-					</div>
-					<span className="cell">
-						<span className="title-m">Wallet</span> {wallet.ETH.toFixed(8)}
-					</span>
-					<span className="cell">
-						<span className="title-m">Contract</span> {contract.ETH.toFixed(8)}
-					</span>
-					<span className="cell">
-						<span className="title-m">In open order</span> 0
-					</span>
-					<div className="cell actions">
-						<button className="action">
-							{' '}
-							<img src="./img/arrow.png" alt="dash" />
-							<span>Deposit</span>
-						</button>
-						<button className="action withdraw">
-							<img src="./img/arrow.png" alt="dash" />
-							<span>Withdraw</span>
-						</button>
-						<button className="action">
-							{' '}
-							<img src="./img/trade.png" alt="dash" />
-							<span>Trade</span>
-						</button>
-					</div>
-				</div>
-				<div className="line">
-					<div className="cell emp coins">
-						<img src="./img/wanchain.png" alt="dash" style={{ width: 20, height: 20 }} />
-						<span>WAN</span>
-					</div>
-					<span className="cell">
-						<span className="title-m">Wallet</span> {wallet.WAN.toFixed(8)}
-					</span>
-					<span className="cell">
-						<span className="title-m">Contract</span> {contract.WAN.toFixed(8)}
-					</span>
-					<span className="cell">
-						<span className="title-m">In open order</span> 0
-					</span>
-					<div className="cell actions">
-						<button className="action">
-							{' '}
-							<img src="./img/arrow.png" alt="dash" />
-							<span>Deposit</span>
-						</button>
-						<button className="action withdraw">
-							<img src="./img/arrow.png" alt="dash" />
-							<span>Withdraw</span>
-						</button>
-						<button className="action">
-							{' '}
-							<img src="./img/trade.png" alt="dash" />
-							<span>Trade</span>
-						</button>
-					</div>
-				</div>
+				<Line
+					currency="BTC"
+					wallet={wallet.BTC.toFixed(8)}
+					contract={contract.BTC.toFixed(8)}
+					img="/img/btc-color.png"
+					history={props.history}
+				/>
+				<Line
+					currency="ETH"
+					wallet={wallet.ETH.toFixed(8)}
+					contract={contract.ETH.toFixed(8)}
+					img="/img/eth-wallet.png"
+					history={props.history}
+				/>
+				<Line
+					currency="WAN"
+					wallet={wallet.WAN.toFixed(8)}
+					contract={contract.WAN.toFixed(8)}
+					img="/img/wanchain.png"
+					history={props.history}
+				/>
 			</div>
 		</div>
 	);

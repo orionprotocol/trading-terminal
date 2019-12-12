@@ -3799,7 +3799,7 @@ a:active {
 }
 
 .add-wallet-2 .methods .tabs .tab {
-  display: none;
+  /* display: none; */
 }
 
 .add-wallet-2 .methods .tabs .tab-metamask {

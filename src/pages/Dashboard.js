@@ -5,7 +5,7 @@ import Wallets from '../components/Dashboard/Wallets';
 import TotalBalances from '../components/Dashboard/TotalBalances';
 import WalletsTable from '../components/Dashboard/WalletsTable';
 
-function Dashboard() {
+function Dashboard(props) {
 	return (
 		<div>
 			<TopMenu />
@@ -17,7 +17,7 @@ function Dashboard() {
 						<TotalBalances />
 						<div className="wrapper">
 							<Wallets />
-							<WalletsTable />
+							<WalletsTable history={props.history} />
 						</div>
 					</div>
 				</div>

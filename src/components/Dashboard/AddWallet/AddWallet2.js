@@ -1,6 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const AddWallet2 = props => {
+	const [ tabs, setTabs ] = useState({
+		metamask: [ 'active', true ],
+		key: [ '', false ],
+		seed: [ '', false ]
+	});
+
+	const handleClick = type => {
+		switch (type) {
+			case 'metamask':
+				setTabs({
+					metamask: [ 'active', true ],
+					key: [ '', false ],
+					seed: [ '', false ]
+				});
+				break;
+			case 'key':
+				setTabs({
+					metamask: [ '', false ],
+					key: [ 'active', true ],
+					seed: [ '', false ]
+				});
+				break;
+			case 'seed':
+				setTabs({
+					metamask: [ '', false ],
+					key: [ '', false ],
+					seed: [ 'active', true ]
+				});
+				break;
+
+			default:
+				break;
+		}
+	};
+
 	return (
 		<div className="popup-wrapper js-add-wallet-2">
 			<div className="popup-body">
@@ -15,36 +50,61 @@ const AddWallet2 = props => {
 					</div>
 					<div className="methods">
 						<div className="tab-titles">
-							<button className="active js-tab-btn" data-tab="metamask">
+							<button
+								className={`js-tab-btn ${tabs.metamask[0]}`}
+								data-tab="metamask"
+								onClick={_ => handleClick('metamask')}
+							>
 								Metamask
 							</button>
-							<button className="js-tab-btn" data-tab="key">
+							<button
+								className={`js-tab-btn ${tabs.key[0]}`}
+								data-tab="key"
+								onClick={_ => handleClick('key')}
+							>
 								Private Key
 							</button>
-							<button className="js-tab-btn" data-tab="seed">
+							<button
+								className={`js-tab-btn ${tabs.seed[0]}`}
+								data-tab="seed"
+								onClick={_ => handleClick('seed')}
+							>
 								Seed
 							</button>
 						</div>
 						<div className="tabs">
-							<div className="tab-metamask tab">
-								<p className="desc">
-									Trade tokens on the Ethereum blockchain using the MetaMask browser extension.
-								</p>
-								<div className="connect">
-									<p className="subtitle">Connect to MetaMask</p>
-									<p className="allow">Allow Orion to connect to MetaMask to begin.</p>
+							{tabs.metamask[1] ? (
+								<div className="tab-metamask tab">
+									<p className="desc">
+										Trade tokens on the Ethereum blockchain using the MetaMask browser extension.
+									</p>
+									<div className="connect">
+										<p className="subtitle">Connect to MetaMask</p>
+										<p className="allow">Allow Orion to connect to MetaMask to begin.</p>
+									</div>
+									<p className="recommend">
+										This is a recommended trading method. All transaction signing is done within the
+										MetaMask extension, and private keys are never sent to the browser.
+									</p>
 								</div>
-								<p className="recommend">
-									This is a recommended trading method. All transaction signing is done within the
-									MetaMask extension, and private keys are never sent to the browser.
-								</p>
-							</div>
-							<div className="tab-key tab">
-								<div className="private-key">
-									<span>Enter private key</span>
-									<input type="password" />
+							) : null}
+							{tabs.key[1] ? (
+								<div className="tab-key tab">
+									<div className="private-key">
+										<span>Enter private key</span>
+										<input type="password" />
+									</div>
 								</div>
-							</div>
+							) : null}
+
+							{tabs.seed[1] ? (
+								<div className="tab-key tab">
+									<div className="private-key">
+										<span>Enter seed</span>
+										<input type="password" />
+									</div>
+								</div>
+							) : null}
 						</div>
 					</div>
 					<div className="btns">
