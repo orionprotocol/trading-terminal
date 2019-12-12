@@ -15,47 +15,37 @@ const Sockets = props => {
 
 	useEffect(_ => {
 		if (window.wan3) {
-			// console.log('object');
 			socket.on('connect', _ => {
 				console.log('Connected....................................');
-				// console.log(balances);
 				if (window.wan3.toChecksumAddress(address)) {
 					socket.emit('clientAddress', window.wan3.toChecksumAddress(address));
 				}
 			});
 		}
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-	// console.log(contractBalances, walletBalances);
 	useEffect(
 		_ => {
-			console.log('useEffect', contractBalances, walletBalances);
 			// --------------------- Orion-Wanchain Sockets -----------------------------------------------------
 
 			if (window.wan3) {
-				// console.log('object');
-
 				socket.on('balanceChange', data => {
-					// console.log(data);
-					// console.log('newBalances0', contractBalances, walletBalances);
 					if (window.wan3.toChecksumAddress(data.user) === window.wan3.toChecksumAddress(address)) {
-						// balances.contractbalances[data.asset] = data.newBalance;
-						// balances.walletBalances[data.asset] = data.newWalletBalance;
-						// setBalances(balances);
-						// console.log(balances)
-
-						let newBalances = { contractBalances, walletBalances };
-						// console.log('newBalances1', newBalances);
-						// console.log('newBalances1', newBalances);
-
 						if (typeof contractBalances !== 'undefined' && typeof walletBalances !== 'undefined') {
-							// console.log('newBalances1', newBalances);
-							newBalances.contractBalances[data.asset] = data.newBalance;
-							newBalances.walletBalances[data.asset] = data.newWalletBalance;
-							// console.log(newBalances);
-							console.log(newBalances.contractBalances.WAN, data.newBalance);
-							setBalances(newBalances);
-							console.log('Balances updated...');
-							// console.log(newBalances.contractBalances.WAN, data.asset);
+							let newBal = 0;
+							if (data.asset === 'WBTC') {
+								newBal = data.newBalance * 100000000;
+							} else {
+								newBal = data.newBalance * 1000000000000000000;
+							}
+
+							let newWalletBal = data.newWalletBalance;
+							contractBalances[data.asset] = newBal;
+							walletBalances[data.asset] = newWalletBal;
+							setBalances({
+								contractBalances,
+								walletBalances
+							});
 						}
 					}
 
@@ -63,13 +53,11 @@ const Sockets = props => {
 				});
 			}
 		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ contractBalances, walletBalances ]
 	);
-	// console.log(balances);
 	useEffect(
 		_ => {
-			// console.log('New balances', balances);
-
 			// ---------------------------------------- Orion Backend Sockets Aks - Bids ---------------
 
 			if (websocket !== null) {

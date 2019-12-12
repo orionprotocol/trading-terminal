@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const WalletsTable = _ => {
-	const { contractBalances, walletBalances } = useSelector(state => state.balances);
+	const balances = useSelector(state => state.balances);
 	const [ contract, setContract ] = useState({
 		ETH: 0,
 		BTC: 0,
@@ -17,18 +17,19 @@ const WalletsTable = _ => {
 	useEffect(
 		_ => {
 			try {
+				const { contractBalances, walletBalances } = balances;
 				if (contractBalances && walletBalances) {
 					setContract({
 						...contract,
-						ETH: contractBalances.WETH,
-						BTC: contractBalances.WBTC,
-						WAN: contractBalances.WAN
+						ETH: Number(contractBalances.WETH),
+						BTC: Number(contractBalances.WBTC),
+						WAN: Number(contractBalances.WAN)
 					});
 					setWallet({
 						...wallet,
-						ETH: walletBalances.WETH,
-						BTC: walletBalances.WBTC,
-						WAN: walletBalances.WAN
+						ETH: Number(walletBalances.WETH),
+						BTC: Number(walletBalances.WBTC),
+						WAN: Number(walletBalances.WAN)
 					});
 				}
 			} catch (e) {
@@ -36,7 +37,7 @@ const WalletsTable = _ => {
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ contractBalances ]
+		[ balances ]
 	);
 
 	return (
@@ -69,10 +70,10 @@ const WalletsTable = _ => {
 						<span>BTC</span>
 					</div>
 					<span className="cell">
-						<span className="title-m">Wallet</span> {wallet.BTC}
+						<span className="title-m">Wallet</span> {wallet.BTC.toFixed(8)}
 					</span>
 					<span className="cell">
-						<span className="title-m">Contract</span> {contract.BTC}
+						<span className="title-m">Contract</span> {contract.BTC.toFixed(8)}
 					</span>
 					<span className="cell">
 						<span className="title-m">In open order</span> 0
@@ -100,10 +101,10 @@ const WalletsTable = _ => {
 						<span>ETH</span>
 					</div>
 					<span className="cell">
-						<span className="title-m">Wallet</span> {wallet.ETH}
+						<span className="title-m">Wallet</span> {wallet.ETH.toFixed(8)}
 					</span>
 					<span className="cell">
-						<span className="title-m">Contract</span> {contract.ETH}
+						<span className="title-m">Contract</span> {contract.ETH.toFixed(8)}
 					</span>
 					<span className="cell">
 						<span className="title-m">In open order</span> 0
@@ -131,10 +132,10 @@ const WalletsTable = _ => {
 						<span>WAN</span>
 					</div>
 					<span className="cell">
-						<span className="title-m">Wallet</span> {wallet.WAN}
+						<span className="title-m">Wallet</span> {wallet.WAN.toFixed(8)}
 					</span>
 					<span className="cell">
-						<span className="title-m">Contract</span> {contract.WAN}
+						<span className="title-m">Contract</span> {contract.WAN.toFixed(8)}
 					</span>
 					<span className="cell">
 						<span className="title-m">In open order</span> 0

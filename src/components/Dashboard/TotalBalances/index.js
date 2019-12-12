@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const TotalBalances = _ => {
-	const { contractBalances } = useSelector(state => state.balances);
+	const balances = useSelector(state => state.balances);
 	const [ contract, setContract ] = useState({
 		ETH: 0,
 		BTC: 0,
@@ -12,12 +12,13 @@ const TotalBalances = _ => {
 	useEffect(
 		_ => {
 			try {
+				const { contractBalances } = balances;
 				if (contractBalances) {
 					setContract({
 						...contract,
-						ETH: contractBalances.WETH,
-						BTC: contractBalances.WBTC,
-						WAN: contractBalances.WAN
+						ETH: Number(contractBalances.WETH),
+						BTC: Number(contractBalances.WBTC),
+						WAN: Number(contractBalances.WAN)
 					});
 				}
 			} catch (e) {
@@ -25,7 +26,7 @@ const TotalBalances = _ => {
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ contractBalances ]
+		[ balances ]
 	);
 
 	useEffect(_ => {
@@ -80,21 +81,21 @@ const TotalBalances = _ => {
 						<img src="./img/wanchain.png" alt="dash" />
 						<span className="name">WAN</span>
 					</div>
-					<span className="num">{contract.WAN}</span>
+					<span className="num">{contract.WAN.toFixed(6)}</span>
 				</div>
 				<div className="coin">
 					<div className="left">
 						<img src="./img/btc-wallet.png" alt="dash" />
 						<span className="name">BTC</span>
 					</div>
-					<span className="num">{contract.BTC}</span>
+					<span className="num">{contract.BTC.toFixed(6)}</span>
 				</div>
 				<div className="coin">
 					<div className="left">
 						<img src="./img/eth-wallet.png" alt="dash" />
 						<span className="name">eth</span>
 					</div>
-					<span className="num">{contract.ETH}</span>
+					<span className="num">{contract.ETH.toFixed(6)}</span>
 				</div>
 			</div>
 		</div>

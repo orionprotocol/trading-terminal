@@ -7,7 +7,7 @@ import FadeIn from 'react-fade-in';
 import './index.css';
 
 const Wallets = _ => {
-	const { contractBalances } = useSelector(state => state.balances);
+	const balances = useSelector(state => state.balances);
 	const [ contract, setContract ] = useState({
 		ETH: 0,
 		BTC: 0,
@@ -20,12 +20,13 @@ const Wallets = _ => {
 	useEffect(
 		_ => {
 			try {
+				const { contractBalances } = balances;
 				if (contractBalances) {
 					setContract({
 						...contract,
-						ETH: contractBalances.WETH,
-						BTC: contractBalances.WBTC,
-						WAN: contractBalances.WAN
+						ETH: Number(contractBalances.WETH),
+						BTC: Number(contractBalances.WBTC),
+						WAN: Number(contractBalances.WAN)
 					});
 				}
 			} catch (e) {
@@ -33,7 +34,7 @@ const Wallets = _ => {
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ contractBalances ]
+		[ balances ]
 	);
 
 	const settings = {
@@ -78,7 +79,7 @@ const Wallets = _ => {
 							<span>Details</span>
 						</div>
 						<p className="money">
-							<span className="num">{contract.ETH}</span> <span className="currency">ETH</span>
+							<span className="num">{contract.ETH.toFixed(6)}</span> <span className="currency">ETH</span>
 						</p>
 						<p className="currency-2">0.0000 btc</p>
 					</div>
@@ -88,7 +89,7 @@ const Wallets = _ => {
 							<span>Details</span>
 						</div>
 						<p className="money">
-							<span className="num">{contract.BTC}</span> <span className="currency">BTC</span>
+							<span className="num">{contract.BTC.toFixed(6)}</span> <span className="currency">BTC</span>
 						</p>
 						<p className="currency-2">{contract.BTC} btc</p>
 					</div>
@@ -98,7 +99,7 @@ const Wallets = _ => {
 							<span>Details</span>
 						</div>
 						<p className="money">
-							<span className="num">{contract.WAN}</span> <span className="currency">WAN</span>
+							<span className="num">{contract.WAN.toFixed(6)}</span> <span className="currency">WAN</span>
 						</p>
 						<p className="currency-2">0.0000 btc</p>
 					</div>
