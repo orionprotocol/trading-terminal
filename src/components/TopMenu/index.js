@@ -1,27 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const TopMenu = _ => {
+	const [ actives, setActives ] = useState([ 'active', '', '' ]);
+
+	useEffect(
+		_ => {
+			const { pathname } = window.location;
+
+			switch (pathname) {
+				case '/home':
+					setActives([ 'active', '', '' ]);
+					break;
+
+				case '/dashboard':
+					setActives([ '', 'active', '' ]);
+					break;
+				case '/history':
+					setActives([ '', '', 'active' ]);
+					break;
+				default:
+					break;
+			}
+		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+		[ window.location.pathname ]
+	);
+
 	return (
 		<div className="top-menu">
 			<div className="links">
-				<a className="logo" href="/">
+				<Link className="logo" to="/home">
 					<img src="./img/logo.png" alt="home" />
-				</a>
-				<a className="nav-link active" href="/">
+				</Link>
+				<Link className={`nav-link ${actives[0]}`} to="/home">
 					<span className="icon-link-1 icon" />
-				</a>
-				<a className="nav-link" href="/">
+				</Link>
+				<Link className={`nav-link ${actives[1]}`} to="/dashboard">
 					<span className="icon-link-2 icon" />
-				</a>
-				<a className="nav-link" href="/">
+				</Link>
+				<Link className={`nav-link ${actives[2]}`} to="/history">
 					<span className="icon-link-3 icon" />
-				</a>
-				<a className="nav-link" href="/">
-					<span className="icon-link-1 icon" />
-				</a>
-				<a className="nav-link" href="/">
-					<span className="icon-link-1 icon" />
-				</a>
+				</Link>
 			</div>
 			<div className="add">+</div>
 		</div>

@@ -24,11 +24,12 @@ const IndexNav = _ => {
 
 	useEffect(_ => {
 		window.addEventListener('resize', _ => {
-			if (window.innerWidth < 1130) {
-				setActive(true);
-				update();
-			} else {
+			if (window.innerWidth > 1130) {
+				// setActive(true);
+				// update();
 				setActive(false);
+			} else {
+				//setActive(false);
 			}
 		});
 		if (window.innerWidth < 1130) {
@@ -48,7 +49,6 @@ const IndexNav = _ => {
 				orderbook ? 'active' : ''
 			];
 			setClasses(newClasses);
-
 			const div = document.querySelector('#chart-container');
 			if (div) {
 				if (chart) {
@@ -56,7 +56,6 @@ const IndexNav = _ => {
 					setSymbol(symbol);
 				} else div.style.visibility = 'hidden';
 			}
-
 			if (mode === 'Dark') {
 				Dark();
 			} else {

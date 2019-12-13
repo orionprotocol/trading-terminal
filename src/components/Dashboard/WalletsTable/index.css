@@ -9,6 +9,12 @@
 	z-index: 55555;
 }
 
+@media (max-width: 1130px) {
+	.popup-wrapper.deposit-withdraw .add-wallet-2 {
+		max-height: 50%;
+	}
+}
+
 .popup-wrapper.deposit-withdraw .popup-body .popup-top {
 	margin-bottom: 15px;
 }
@@ -23,4 +29,8 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
 	-moz-appearance: textfield;
+}
+
+.dashboard .wrapper .wallets-table .titles .title i {
+	margin-left: 10px;
 }

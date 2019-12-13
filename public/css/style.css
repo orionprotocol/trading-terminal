@@ -2863,7 +2863,7 @@ a:active {
 
 .dashboard .wrapper .wallets-table .lines .line .cell .title-m {
   display: none;
-  color: rgba(20, 16, 41, 0.8);
+  /* color: rgba(20, 16, 41, 0.8); */
 }
 
 .dashboard .wrapper .wallets-table .lines .line .cell.actions {

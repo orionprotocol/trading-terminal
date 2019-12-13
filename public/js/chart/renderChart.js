@@ -166,6 +166,8 @@ const renderChart = (exchange, symbol, mode) => {
 	};
 
 	const element = document.querySelector('#chart-container');
+
+	if (!element) return;
 	const width = element.offsetWidth - 5;
 	const height = element.offsetHeight - 5;
 

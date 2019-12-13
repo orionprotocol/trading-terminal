@@ -6,6 +6,25 @@ import AddWallet2 from '../AddWallet/AddWallet2';
 import FadeIn from 'react-fade-in';
 import './index.css';
 
+const settings = {
+	infinite: false,
+	speed: 500,
+	slidesToShow: 3,
+	slidesToScroll: 1,
+	responsive: [
+		{
+			breakpoint: 1130,
+			settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				infinite: true,
+				autoplay: true,
+				speed: 1000
+			}
+		}
+	]
+};
+
 const Wallets = _ => {
 	const balances = useSelector(state => state.balances);
 	const [ contract, setContract ] = useState({
@@ -36,13 +55,6 @@ const Wallets = _ => {
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ balances ]
 	);
-
-	const settings = {
-		infinite: false,
-		speed: 500,
-		slidesToShow: 3,
-		slidesToScroll: 1
-	};
 
 	const handleAddWallet = _ => {
 		setShow1(!show1);
