@@ -15,6 +15,7 @@ const { Content } = Layout;
 // Open orders
 //  	orders[i].status == "NEW" ||
 // 		orders[i].status == "PARTIALLY_FILLED"
+var loadOrderHistory = () => {};
 
 const Orders = _ => {
 	const { symbol } = useSelector(state => state.general);
@@ -31,7 +32,7 @@ const Orders = _ => {
 		total: 'fa-angle-down'
 	});
 
-	const loadOrderHistory = () => {
+	loadOrderHistory = () => {
 		let address = localStorage.getItem('currentAccount') || '';
 		if (address) {
 			let url = urlBase + '/api/v1/orderHistory?symbol=' + symbol + '&address=' + address;
@@ -277,3 +278,5 @@ const Orders = _ => {
 };
 
 export default Orders;
+
+export { loadOrderHistory };

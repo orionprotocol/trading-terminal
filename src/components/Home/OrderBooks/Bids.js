@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import ExchangeImg from './ExchangeImg';
 
 function calculateTotalBids(array) {
@@ -19,35 +20,6 @@ function calculatePercent27(value) {
 	value = Number(value.substring(0, value.length - 1));
 	return 27 * value / 100;
 }
-// function chooseOrderBookLine(data, type) {
-// 	if (type === 'bids') {
-// 		// let price = data.price;
-// 		// this.setState({ currentPrice: price });
-// 		// $("#sell-form-link").trigger("click");
-// 		// let count = 0;
-// 		// let total = 0;
-// 		// let bids = this.state.data.bids;
-// 		// for (let i = 0; i < bids.length; i++) {
-// 		//     if (bids[i].price >= price) {
-// 		//         count = count + bids[i].size;
-// 		//         total = total + bids[i].total;
-// 		//     }
-// 		// }
-// 		// if (this.state.customCount) {
-// 		//     this.setState({ currentPrice: price, total: total }, () => {
-// 		//         this.loadBenefits();
-// 		//     });
-// 		// } else {
-// 		//     this.setState(
-// 		//         { currentPrice: price, count: count, total: total },
-// 		//         () => {
-// 		//             this.loadBenefits();
-// 		//         }
-// 		//     );
-// 		// }
-// 		return;
-// 	}
-// }
 
 // function renderSize(data, exchange) {
 // 	if (exchange === 'binance' && data.dynamic !== 0) {
@@ -100,108 +72,132 @@ function handleExchanges(e) {
 	if (drop) drop.classList.toggle('active');
 }
 
-function renderBids(data) {
-	let renderData = [];
-	let key = 0;
-	if (data && data.bids && data.bids.length > 0) {
-		const bids = data.bids;
-		calculateTotalBids(bids);
-		const maxBid = bids.reduce(function(prev, current) {
-			return prev.total > current.total ? prev : current;
-		});
-		for (let i = 0; i < bids.length; i++, key++) {
-			let exchanges = bids[i].exchanges || [];
-			const percent = calculatePercent(maxBid.total, bids[i].total).toFixed(6);
-			let percentStyle = percent + '%';
-			let imgExchanges = [];
-			let arrow = null;
-			let exchangesExtras = null;
-
-			if (exchanges.length < 3) {
-				for (let j = 0; j < exchanges.length; j++) {
-					let time = new Date().getTime();
-					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
-					imgExchanges.push(
-						<ExchangeImg
-							key={'bids3i39' + key + time + j}
-							className={'bid-' + key}
-							style={{ height: '15px', width: '15px' }}
-							imagePath={imagePath}
-							alt={exchanges[j]}
-						/>
-					);
-				}
-			} else {
-				let extras = [];
-				for (let j = 0; j < 2; j++) {
-					let time = new Date().getTime();
-					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
-					imgExchanges.push(
-						<ExchangeImg
-							key={'bids3i39' + key + time + j}
-							className={'bid-' + key}
-							style={{ height: '15px', width: '15px' }}
-							imagePath={imagePath}
-							alt={exchanges[j]}
-						/>
-					);
-				}
-
-				for (let j = 2; j < exchanges.length; j++) {
-					let time = new Date().getTime();
-					let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
-					extras.push(
-						<div className="drop" key={j + time + 'dbids'}>
-							<img src={imagePath} alt={exchanges[j]} />
-							<span>{exchanges[j]}</span>
-						</div>
-					);
-				}
-
-				arrow = <img className={`arrow bid-${key}`} src="./img/arrow-down.svg" alt="home" />;
-				exchangesExtras = (
-					<div className="exch-drop js-exch-drop" id={'drop-bid-' + key}>
-						{extras}
-					</div>
-				);
-			}
-			let time = new Date().getTime();
-			let percentStyle27 = calculatePercent27(percentStyle) + '%';
-			renderData.push(
-				<div className="order" key={key + time + 'bids'}>
-					{/* TOTAL - Max width 100% */}
-					<span className="progress-light l-green" style={{ width: percentStyle }} />
-					{/* Max width 27% */}
-					<span className="progress-light d-green" style={{ width: percentStyle27 }} />
-					<span className="cell emp">{bids[i].price.toFixed(8)}</span>
-					{/* <span className="cell">{bids[i].size.toFixed(3)}</span> */}
-					{renderSize(bids[i])}
-					<span className="cell">{bids[i].total.toFixed(8)}</span>
-					<div className="cell exch">
-						<div className={`exch-content js-exch-content`} onClick={handleExchanges} id={'div-bid-' + key}>
-							{imgExchanges}
-							{arrow}
-						</div>
-						{exchangesExtras}
-					</div>
-				</div>
-			);
-		}
-	}
-	return renderData;
-}
-
 const Bids = props => {
+	const dispatch = useDispatch();
 	const [ bids, setBids ] = useState();
+	const [ dataBids, setDataBids ] = useState([]);
+	const setOrderData = useCallback(data => dispatch({ type: 'SetOrderData', payload: data }), [ dispatch ]);
 
 	useEffect(
 		_ => {
 			if (props.data) {
 				setBids(renderBids(props.data));
+				setDataBids(props.data.bids);
 			}
 		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ props ]
 	);
+
+	function chooseOrderBookLine(data) {
+		let { price } = data;
+		let amount = 0;
+		let total = 0;
+		let bids = dataBids;
+		for (let i = 0; i < bids.length; i++) {
+			if (bids[i].price >= price) {
+				amount = amount + bids[i].size;
+				total = total + bids[i].total;
+			}
+		}
+
+		setOrderData({ price, amount, total });
+	}
+
+	function renderBids(data) {
+		let renderData = [];
+		let key = 0;
+		if (data && data.bids && data.bids.length > 0) {
+			const bids = data.bids;
+			calculateTotalBids(bids);
+			const maxBid = bids.reduce(function(prev, current) {
+				return prev.total > current.total ? prev : current;
+			});
+			for (let i = 0; i < bids.length; i++, key++) {
+				let exchanges = bids[i].exchanges || [];
+				const percent = calculatePercent(maxBid.total, bids[i].total).toFixed(6);
+				let percentStyle = percent + '%';
+				let imgExchanges = [];
+				let arrow = null;
+				let exchangesExtras = null;
+
+				if (exchanges.length < 3) {
+					for (let j = 0; j < exchanges.length; j++) {
+						let time = new Date().getTime();
+						let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
+						imgExchanges.push(
+							<ExchangeImg
+								key={'bids3i39' + key + time + j}
+								className={'bid-' + key}
+								style={{ height: '15px', width: '15px' }}
+								imagePath={imagePath}
+								alt={exchanges[j]}
+							/>
+						);
+					}
+				} else {
+					let extras = [];
+					for (let j = 0; j < 2; j++) {
+						let time = new Date().getTime();
+						let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
+						imgExchanges.push(
+							<ExchangeImg
+								key={'bids3i39' + key + time + j}
+								className={'bid-' + key}
+								style={{ height: '15px', width: '15px' }}
+								imagePath={imagePath}
+								alt={exchanges[j]}
+							/>
+						);
+					}
+
+					for (let j = 2; j < exchanges.length; j++) {
+						let time = new Date().getTime();
+						let imagePath = 'img/exchanges/{exchange}.png'.replace('{exchange}', exchanges[j]);
+						extras.push(
+							<div className="drop" key={j + time + 'dbids'}>
+								<img src={imagePath} alt={exchanges[j]} />
+								<span>{exchanges[j]}</span>
+							</div>
+						);
+					}
+
+					arrow = <img className={`arrow bid-${key}`} src="./img/arrow-down.svg" alt="home" />;
+					exchangesExtras = (
+						<div className="exch-drop js-exch-drop" id={'drop-bid-' + key}>
+							{extras}
+						</div>
+					);
+				}
+				let time = new Date().getTime();
+				let percentStyle27 = calculatePercent27(percentStyle) + '%';
+				renderData.push(
+					<div className="order" key={key + time + 'bids'} onClick={_ => chooseOrderBookLine(bids[i])}>
+						{/* TOTAL - Max width 100% */}
+						<span className="progress-light l-green" style={{ width: percentStyle }} />
+						{/* Max width 27% */}
+						<span className="progress-light d-green" style={{ width: percentStyle27 }} />
+						<span className="cell emp">{bids[i].price.toFixed(8)}</span>
+						{/* <span className="cell">{bids[i].size.toFixed(3)}</span> */}
+						{renderSize(bids[i])}
+						<span className="cell">{bids[i].total.toFixed(8)}</span>
+						<div className="cell exch">
+							<div
+								className={`exch-content js-exch-content`}
+								onClick={handleExchanges}
+								id={'div-bid-' + key}
+							>
+								{imgExchanges}
+								{arrow}
+							</div>
+							{exchangesExtras}
+						</div>
+					</div>
+				);
+			}
+		}
+		return renderData;
+	}
 
 	return (
 		<div className="order-book">

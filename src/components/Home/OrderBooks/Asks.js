@@ -1,31 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import ExchangeImg from './ExchangeImg';
-// function chooseOrderBookLine(data, type) {
-// 	if (type === 'asks') {
-// 		// let price = data.price;
-// 		// let count = 0;
-// 		// let total = 0;
-// 		// let asks = this.state.data.asks;
-// 		// for (let i = 0; i < asks.length; i++) {
-// 		// 	if (asks[i].price <= price) {
-// 		// 		count = count + asks[i].size;
-// 		// 		total = total + asks[i].total;
-// 		// 	}
-// 		// }
-// 		// if (this.state.customCount) {
-// 		// 	this.setState({ currentPrice: price, total: total }, () => {
-// 		// 		this.loadBenefits();
-// 		// 	});
-// 		// } else {
-// 		// 	this.setState({ currentPrice: price, count: count, total: total }, () => {
-// 		// 		this.loadBenefits();
-// 		// 	});
-// 		// }
-
-// 		// $('#buy-form-link').trigger('click');
-// 		return;
-// 	}
-// }
 
 function handleExchanges(e) {
 	const cl = e.target.classList;
@@ -73,7 +48,37 @@ const renderSize = data => {
 };
 
 const Asks = props => {
+	const dispatch = useDispatch();
 	const [ asks, setAsks ] = useState();
+	const setOrderData = useCallback(data => dispatch({ type: 'SetOrderData', payload: data }), [ dispatch ]);
+	const [ dataAsks, setDataAsks ] = useState([]);
+
+	useEffect(
+		_ => {
+			if (props.data) {
+				// setAsks(null);
+				setAsks(renderAsks(props.data));
+				setDataAsks(props.data.asks);
+			}
+		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+		[ props ]
+	);
+
+	function chooseOrderBookLine(data) {
+		let { price } = data;
+		let amount = 0;
+		let total = 0;
+		let asks = dataAsks;
+		for (let i = 0; i < asks.length; i++) {
+			if (asks[i].price <= price) {
+				amount = amount + asks[i].size;
+				total = total + asks[i].total;
+			}
+		}
+
+		setOrderData({ price, amount, total });
+	}
 
 	function renderAsks(data) {
 		let renderData = [];
@@ -146,7 +151,7 @@ const Asks = props => {
 				let time = new Date().getTime();
 				let percentStyle27 = calculatePercent27(percentStyle) + '%';
 				renderData.push(
-					<div className="order" key={key + time}>
+					<div className="order" key={key + time} onClick={_ => chooseOrderBookLine(asks[i])}>
 						{/* TOTAL - Max width 100% */}
 						<span className="progress-light l-red" style={{ width: percentStyle }} />
 						{/* Max width 27% */}
@@ -173,16 +178,6 @@ const Asks = props => {
 		}
 		return renderData;
 	}
-
-	useEffect(
-		_ => {
-			if (props.data) {
-				// setAsks(null);
-				setAsks(renderAsks(props.data));
-			}
-		},
-		[ props ]
-	);
 
 	return (
 		<div className="order-book">

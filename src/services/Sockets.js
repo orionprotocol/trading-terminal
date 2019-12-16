@@ -40,8 +40,8 @@ const Sockets = props => {
 							}
 
 							let newWalletBal = data.newWalletBalance;
-							contractBalances[data.asset] = newBal;
-							walletBalances[data.asset] = newWalletBal;
+							contractBalances[data.asset] = String(newBal.toFixed(8));
+							walletBalances[data.asset] = String(newWalletBal.toFixed(8));
 							setBalances({
 								contractBalances,
 								walletBalances

@@ -1,5 +1,16 @@
 const Web3 = require('web3');
 
+let deposit,
+	withdraw,
+	hashOrder,
+	signOrder,
+	WETH,
+	WBTC,
+	tokensAddress,
+	// getWalletBalance,
+	getSignatureObj,
+	validateSolidity = null;
+
 if (window.wan3) {
 	const web3 = new Web3(window.wan3.currentProvider);
 	// const web3 = new Web3();
@@ -8,8 +19,8 @@ if (window.wan3) {
 	const WETHArtifact = require('../contracts/WETH.json');
 	const WBTCArtifact = require('../contracts/WBTC.json');
 	const contractAddress = exchangeArtifact.networks['3'].address;
-	const WBTC = WBTCArtifact.networks['3'].address;
-	const WETH = WETHArtifact.networks['3'].address;
+	WBTC = WBTCArtifact.networks['3'].address;
+	WETH = WETHArtifact.networks['3'].address;
 	const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 	const Long = require('long');
 
@@ -19,7 +30,7 @@ if (window.wan3) {
 	const wbtc = new web3.eth.Contract(WBTCArtifact.abi, WBTC);
 	const weth = new web3.eth.Contract(WETHArtifact.abi, WETH);
 
-	const tokensAddress = {
+	tokensAddress = {
 		WAN: ZERO_ADDRESS,
 		WBTC,
 		WETH
@@ -68,7 +79,7 @@ if (window.wan3) {
 	// 		}
 	// 	});
 
-	const deposit = (currency, amount, currentAccount) =>
+	deposit = (currency, amount, currentAccount) =>
 		new Promise(async (resolve, reject) => {
 			currency = currency.toLowerCase();
 
@@ -122,7 +133,7 @@ if (window.wan3) {
 			}
 		});
 
-	const withdraw = (currency, amount, currentAccount) =>
+	withdraw = (currency, amount, currentAccount) =>
 		new Promise(async (resolve, reject) => {
 			currency = currency.toLowerCase();
 
@@ -166,7 +177,7 @@ if (window.wan3) {
 	};
 
 	// === GET ORDER HASH=== //
-	const hashOrder = orderInfo => {
+	hashOrder = orderInfo => {
 		let message = web3.utils.soliditySha3(
 			'0x03',
 			orderInfo.senderAddress,
@@ -187,7 +198,7 @@ if (window.wan3) {
 
 	// === SIGN ORDER === //
 
-	const signOrder = orderInfo =>
+	signOrder = orderInfo =>
 		new Promise((resolve, reject) => {
 			let message = hashOrder(orderInfo);
 			//Wanmask
@@ -268,7 +279,7 @@ if (window.wan3) {
 		});
 
 	// === GET SIGATURE OBJECT === //
-	function getSignatureObj(signature) {
+	getSignatureObj = signature => {
 		const netId = 3;
 		signature = signature.substr(2); //remove 0x
 		const r = '0x' + signature.slice(0, 64);
@@ -276,9 +287,9 @@ if (window.wan3) {
 		let v = web3.utils.hexToNumber('0x' + signature.slice(128, 130)); //gwan
 		if (netId !== 3) v += 27; //ganache
 		return { v, r, s };
-	}
+	};
 
-	const validateSolidity = (orderInfo, signature) =>
+	validateSolidity = (orderInfo, signature) =>
 		new Promise(async (resolve, reject) => {
 			//Validate in smart contract
 
@@ -300,18 +311,19 @@ if (window.wan3) {
 
 			resolve(response);
 		});
-
-	module.exports = {
-		// getBalance,
-		deposit,
-		withdraw,
-		hashOrder,
-		signOrder,
-		WETH,
-		WBTC,
-		tokensAddress,
-		// getWalletBalance,
-		getSignatureObj,
-		validateSolidity
-	};
 }
+
+// module.exports =
+export {
+	// getBalance,
+	deposit,
+	withdraw,
+	hashOrder,
+	signOrder,
+	WETH,
+	WBTC,
+	tokensAddress,
+	// getWalletBalance,
+	getSignatureObj,
+	validateSolidity
+};

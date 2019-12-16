@@ -5,3 +5,8 @@
 .js-exch-drop.active {
 	display: block !important;
 }
+
+.index .right-panel .order-book .orders .order:hover {
+	cursor: pointer;
+	background-color: #f5f5f5;
+}
