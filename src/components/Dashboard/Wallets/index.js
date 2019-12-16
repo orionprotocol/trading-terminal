@@ -39,13 +39,23 @@ const Wallets = _ => {
 	useEffect(
 		_ => {
 			try {
-				const { contractBalances } = balances;
-				if (contractBalances) {
+				// const { contractBalances } = balances;
+				// if (contractBalances) {
+				// 	setContract({
+				// 		...contract,
+				// 		ETH: Number(contractBalances.WETH),
+				// 		BTC: Number(contractBalances.WBTC),
+				// 		WAN: Number(contractBalances.WAN)
+				// 	});
+				// }
+
+				const { walletBalances } = balances;
+				if (walletBalances) {
 					setContract({
 						...contract,
-						ETH: Number(contractBalances.WETH),
-						BTC: Number(contractBalances.WBTC),
-						WAN: Number(contractBalances.WAN)
+						ETH: Number(walletBalances.WETH),
+						BTC: Number(walletBalances.WBTC),
+						WAN: Number(walletBalances.WAN)
 					});
 				}
 			} catch (e) {
