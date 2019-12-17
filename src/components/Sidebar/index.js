@@ -83,10 +83,10 @@ const Sidebar = _ => {
 						<nav>
 							<Link className={`nav-link ${actives[0]}`} to="/home">
 								<span className="icon-link-1 icon" />
-								<span className="text">Home</span>
+								<span className="text">Trading Terminal</span>
 							</Link>
 
-							<Link className={`nav-link ${actives[1]}`} to="/dashboard">
+							{/* <Link className={`nav-link ${actives[1]}`} to="/dashboard">
 								<span className="icon-link-2 icon" />
 								<span className="text">Dashboard</span>
 							</Link>
@@ -94,9 +94,9 @@ const Sidebar = _ => {
 							<Link className={`nav-link ${actives[2]}`} to="/history">
 								<span className="icon-link-3 icon" />
 								<span className="text">History</span>
-							</Link>
+							</Link> */}
 						</nav>
-						<div className="aside-coins">
+						{/* <div className="aside-coins">
 							<div className="coin">
 								<img src="./img/bit-aside.svg" alt="home" />
 								<span className="text">Bitcoin</span>
@@ -109,11 +109,12 @@ const Sidebar = _ => {
 								<img src="./img/dash-small.png" alt="home" />
 								<span className="text">Dash</span>
 							</div>
-						</div>
+						</div> */}
 						{/* <button className="add-wallet"> */}
-						<Link className="add-wallet" to="/wallet">
+						{/* <Link className="add-wallet" to="/wallet"> */}
+						<Link className="add-wallet" to="#">
 							<img src="./img/close.png" alt="home" />
-							<span>Add Wallet</span>
+							<span className="add-wallet-btn">Add Wallet</span>
 						</Link>
 
 						{/* </button> */}

@@ -32,6 +32,7 @@ function calculatePercent27(value) {
 }
 
 const renderSize = data => {
+	let id = 'ask-row-' + Math.floor(Math.random() * 100000);
 	let colorClass = 'cell';
 	if (!data.dynamic) {
 	} else {
@@ -44,7 +45,19 @@ const renderSize = data => {
 	}
 	data.dynamic = 0;
 
-	return <span className={colorClass}>{data.size.toFixed(3)}</span>;
+	setTimeout(() => {
+		let element = document.querySelector('#' + id);
+		if (element) {
+			element.classList.remove('green');
+			element.classList.remove('red');
+		}
+	}, 300);
+
+	return (
+		<span className={colorClass} id={id}>
+			{data.size.toFixed(3)}
+		</span>
+	);
 };
 
 const Asks = props => {
@@ -92,7 +105,9 @@ const Asks = props => {
 			for (let i = 0; i < asks.length; i++, key++) {
 				let exchanges = asks[i].exchanges || [];
 				const percent = calculatePercent(maxAsk.total, asks[i].total).toFixed(6);
+				const percent2 = Math.abs(percent - 100);
 				let percentStyle = percent + '%';
+				const percentStyle2 = percent2 + '%';
 				let imgExchanges = [];
 				let arrow = null;
 				let exchangesExtras = null;
@@ -153,7 +168,7 @@ const Asks = props => {
 				renderData.push(
 					<div className="order" key={key + time} onClick={_ => chooseOrderBookLine(asks[i])}>
 						{/* TOTAL - Max width 100% */}
-						<span className="progress-light l-red" style={{ width: percentStyle }} />
+						<span className="progress-light l-red" style={{ width: percentStyle2 }} />
 						{/* Max width 27% */}
 						<span className="progress-light d-red" style={{ width: percentStyle27 }} />
 						<span className="cell emp">{asks[i].price.toFixed(8)}</span>
