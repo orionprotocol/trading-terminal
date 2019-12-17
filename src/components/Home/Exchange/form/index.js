@@ -4,6 +4,7 @@ import validate from './validation';
 import { useSelector } from 'react-redux';
 import { WanchainOrder } from '../../../../services/WanchainOrder';
 import { loadOrderHistory } from '../../Orders/index';
+import openNotification from '../../../Notification';
 
 // type: { trade: 'buy' or 'sell, selection: 'market' or 'limit-order'}
 export default function BuyAndSellForm({ type }) {
@@ -122,6 +123,8 @@ export default function BuyAndSellForm({ type }) {
 			} else if (type.selection === 'limit-order') {
 				if (values.price !== '') {
 					setTotal((e.target.value * values.price).toFixed(8));
+				} else {
+					setTotal((e.target.value * lastPrice).toFixed(8));
 				}
 			}
 		}
@@ -133,6 +136,31 @@ export default function BuyAndSellForm({ type }) {
 	};
 
 	const submitOrder = async _ => {
+		if (values.amount === '' || Number(values.amount) <= 0) {
+			openNotification({
+				message: `Please, enter a valid amount.`
+			});
+			return;
+		}
+
+		if (type.trade === 'buy') {
+			if (Number(total) > Number(available)) {
+				openNotification({
+					message: `Insufficient ${symbolB} balance`
+				});
+
+				return;
+			}
+		} else if (type.trade === 'sell') {
+			if (Number(values.amount) > Number(available)) {
+				openNotification({
+					message: `Insufficient ${symbolA} balance`
+				});
+
+				return;
+			}
+		}
+
 		let price = values.price === '' ? lastPrice : values.price;
 		let orderSymbolA = symbolA,
 			orderSymbolB = symbolB;
@@ -163,7 +191,9 @@ export default function BuyAndSellForm({ type }) {
 			});
 			setTotal(0);
 
-			alert(wanchainOrder);
+			openNotification({
+				message: wanchainOrder
+			});
 		} catch (e) {
 			console.log('error', e);
 		}

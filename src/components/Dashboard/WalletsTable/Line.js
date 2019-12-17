@@ -70,6 +70,7 @@ const Line = props => {
 				operation="Withdraw"
 				toggle={_ => toggleWithdrawModal(!withdrawModal)}
 				submit={submitWithdraw}
+				maxWithdraw={props.contract}
 			/>
 		</div>
 	);

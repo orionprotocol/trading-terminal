@@ -1,8 +1,23 @@
 import React, { Fragment, useState } from 'react';
 import FadeIn from 'react-fade-in';
+import openNotification from '../../Notification';
 
 const Modal = props => {
 	const [ amount, setAmount ] = useState('');
+
+	const handleSubmit = _ => {
+		if (props.operation === 'Withdraw') {
+			if (Number(amount) > Number(props.maxWithdraw)) {
+				openNotification({
+					message: 'Insufficient balance'
+				});
+			} else {
+				props.submit(amount);
+			}
+		} else {
+			props.submit(amount);
+		}
+	};
 
 	return (
 		<Fragment>
@@ -39,7 +54,8 @@ const Modal = props => {
 										<img src="./img/arrow-down.svg" alt="dash" />
 										<span>Go back</span>
 									</button>
-									<button className="connect" onClick={_ => props.submit(amount)}>
+									{/* <button className="connect" onClick={_ => props.submit(amount)}> */}
+									<button className="connect" onClick={handleSubmit}>
 										<span>{props.operation}</span>
 									</button>
 								</div>
