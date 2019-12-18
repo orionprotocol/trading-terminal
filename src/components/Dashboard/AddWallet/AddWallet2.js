@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 const AddWallet2 = props => {
+	const dispatch = useDispatch();
+
 	const { walletOpt } = useSelector(state => state.wallet);
+	const setWanmaskConnect = useCallback(payload => dispatch({ type: 'SetWanmaskConnect', payload }), [ dispatch ]);
 	const [ opt, setOpt ] = useState('');
 
 	useEffect(
@@ -60,6 +63,8 @@ const AddWallet2 = props => {
 		// const Web3 = require('web3');
 		// const web3 = new Web3(window.wan3.currentProvider);
 		// console.log(web3.enable());
+		localStorage.setItem('wanmaskConnected', 'true');
+		setWanmaskConnect(true);
 		props.hide2();
 	};
 

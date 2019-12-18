@@ -181,7 +181,7 @@ const OrderBooks = props => {
 				});
 
 				setTimeout(() => {
-					const div = document.querySelector('.orders.bids');
+					const div = document.querySelector('.orders.asks');
 					if (div) div.scrollTop = div.scrollHeight;
 				}, 10);
 			});
@@ -230,8 +230,8 @@ const OrderBooks = props => {
 	return (
 		<div className="right-panel js-panel active">
 			<div className="js-panel-item js-orderbook">
+				<Asks data={state.data} lastPrice={state.data.lastPrice} />
 				<Bids data={state.data} lastPrice={state.data.lastPrice} />
-				<Asks data={state.data} />
 			</div>
 		</div>
 	);

@@ -28,9 +28,27 @@ const isLocked = () =>
 
 let interval = 0;
 let interval2 = 0;
+
 const WanmaskVerification = props => {
 	const dispatch = useDispatch();
 	const setWanActive = useCallback(payload => dispatch({ type: 'SetWanActive', payload }), [ dispatch ]);
+
+	const setAccounts = _ => {
+		let currentAccount = localStorage.getItem('currentAccount');
+		window.wan3.eth.getAccounts((err, accounts) => {
+			if (err != null) {
+				console.log('Wan err: ', err);
+			} else if (accounts.length === 0) {
+				window.clearInterval(interval2);
+				wanmaskVerification();
+			} else {
+				if (currentAccount !== accounts[0]) {
+					currentAccount = accounts[0];
+					localStorage.setItem('currentAccount', currentAccount);
+				}
+			}
+		});
+	};
 
 	const wanmaskVerification = async _ => {
 		if (!isInstalled()) {
@@ -51,23 +69,10 @@ const WanmaskVerification = props => {
 			} else {
 				window.clearInterval(interval);
 				interval = 0;
-				let currentAccount = localStorage.getItem('currentAccount');
 				setWanActive(true);
-
+				setAccounts();
 				interval2 = setInterval(() => {
-					window.wan3.eth.getAccounts((err, accounts) => {
-						if (err != null) {
-							console.log('Wan err: ', err);
-						} else if (accounts.length === 0) {
-							window.clearInterval(interval2);
-							wanmaskVerification();
-						} else {
-							if (currentAccount !== accounts[0]) {
-								currentAccount = accounts[0];
-								localStorage.setItem('currentAccount', currentAccount);
-							}
-						}
-					});
+					setAccounts();
 				}, 1000);
 			}
 		}

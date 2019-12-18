@@ -1,27 +1,34 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Sockets from './Sockets';
 import WanmaskVerification from './WanmaskVerification';
 import OrionWanchain from './OrionWanchain';
+import { useSelector } from 'react-redux';
 
 const Index = _ => {
-	let render = <Fragment />;
+	const { wanmaskConnect } = useSelector(state => state.wallet);
 
-	if (window.wan3 !== undefined) {
-		render = (
-			<Fragment>
-				<OrionWanchain />
-				<Sockets />
-				<WanmaskVerification />
-			</Fragment>
-		);
-	} else {
-		console.log('WansMask not installed');
-		render = <Sockets />;
-	}
+	const [ render, setRender ] = useState(null);
 
-	// render = <Sockets />;
+	useEffect(
+		_ => {
+			if (window.wan3 !== undefined && wanmaskConnect) {
+				setRender(
+					<Fragment>
+						<OrionWanchain />
+						<WanmaskVerification />
+					</Fragment>
+				);
+			}
+		},
+		[ wanmaskConnect ]
+	);
 
-	return render;
+	return (
+		<Fragment>
+			<Sockets />
+			{render}
+		</Fragment>
+	);
 };
 
 export default Index;

@@ -102,10 +102,13 @@ const Asks = props => {
 			const maxAsk = asks.reduce(function(prev, current) {
 				return prev.total > current.total ? prev : current;
 			});
+			const maxAskAmount = asks.reduce(function(prev, current) {
+				return prev.size > current.size ? prev : current;
+			});
 			for (let i = 0; i < asks.length; i++, key++) {
 				let exchanges = asks[i].exchanges || [];
 				const percent = calculatePercent(maxAsk.total, asks[i].total).toFixed(6);
-				const percent2 = Math.abs(percent - 100);
+				const percent2 = calculatePercent(maxAskAmount.size, asks[i].size).toFixed(6);
 				let percentStyle = percent + '%';
 				const percentStyle2 = percent2 + '%';
 				let imgExchanges = [];
@@ -164,11 +167,11 @@ const Asks = props => {
 					);
 				}
 				let time = new Date().getTime();
-				let percentStyle27 = calculatePercent27(percentStyle) + '%';
+				let percentStyle27 = calculatePercent27(percentStyle2) + '%';
 				renderData.push(
 					<div className="order" key={key + time} onClick={_ => chooseOrderBookLine(asks[i])}>
 						{/* TOTAL - Max width 100% */}
-						<span className="progress-light l-red" style={{ width: percentStyle2 }} />
+						<span className="progress-light l-red" style={{ width: percentStyle }} />
 						{/* Max width 27% */}
 						<span className="progress-light d-red" style={{ width: percentStyle27 }} />
 						<span className="cell emp">{asks[i].price.toFixed(8)}</span>
@@ -196,7 +199,18 @@ const Asks = props => {
 
 	return (
 		<div className="order-book">
-			<div className="orders">{asks}</div>
+			<p className="heading">Order Book</p>
+			<div className="titles">
+				<span className="title">Price</span>
+				<span className="title">Amount</span>
+				<span className="title">Total</span>
+				<span className="title exch">Exch</span>
+			</div>
+			<div className="orders asks">{asks}</div>
+			<div className="last-price">
+				<span className="cell">{props.lastPrice}</span>
+				<span className="last">Last Price</span>
+			</div>
 		</div>
 	);
 };

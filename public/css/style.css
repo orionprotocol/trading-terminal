@@ -1359,8 +1359,8 @@ a:active {
 }
 
 .index .right-panel .order-book .orders .order .progress-light.l-green {
-  background: rgba(22, 184, 98, 0.03);
-  /* background: rgba(22, 184, 98, 0.075); */
+  /* background: rgba(22, 184, 98, 0.03); */
+  background: rgba(22, 184, 98, 0.075);
 }
 
 .index .right-panel .order-book .orders .order .progress-light.d-green {
@@ -1369,8 +1369,8 @@ a:active {
 }
 
 .index .right-panel .order-book .orders .order .progress-light.l-red {
-  background: rgba(245, 69, 98, 0.03);
-  /* background: rgba(245, 69, 98, 0.075); */
+  /* background: rgba(245, 69, 98, 0.03); */
+  background: rgba(245, 69, 98, 0.075);
 }
 
 .index .right-panel .order-book .orders .order .progress-light.d-red {

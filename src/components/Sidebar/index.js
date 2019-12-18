@@ -8,10 +8,12 @@ import './index.css';
 const Sidebar = props => {
 	const dispatch = useDispatch();
 	const setMode = useCallback(payload => dispatch({ type: 'SetMode', payload }), [ dispatch ]);
+	const setWanmaskConnect = useCallback(payload => dispatch({ type: 'SetWanmaskConnect', payload }), [ dispatch ]);
 	const { mode } = useSelector(state => state.general);
 	const [ actives, setActives ] = useState([ 'active', '', '' ]);
-	const { wanActive, walletOpt } = useSelector(state => state.wallet);
+	const { wanActive, walletOpt, wanmaskConnect } = useSelector(state => state.wallet);
 	const [ walletActive, setWalletActive ] = useState(false);
+	const [ addWalletOpt, setAddWalletOpt ] = useState(false);
 
 	useEffect(
 		_ => {
@@ -30,9 +32,16 @@ const Sidebar = props => {
 			if (!wanActive && pathname !== '/home') {
 				props.history.push('/home');
 			}
+
+			const wanmask = localStorage.getItem('wanmaskConnected') === 'true' ? true : false;
+
+			if (wanmask || wanmaskConnect) {
+				setAddWalletOpt(true);
+				setWanmaskConnect(true);
+			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ wanActive, walletOpt ]
+		[ wanActive, walletOpt, wanmaskConnect ]
 	);
 
 	useEffect(_ => {
@@ -124,11 +133,19 @@ const Sidebar = props => {
 								<span className="text">History</span>
 							</Link> */}
 						</nav>
-						{/* <div className="aside-coins">
+						<div className="aside-coins">
+							{wanmaskConnect ? (
+								<div className="coin">
+									<img src="./img/wanchain2.png" alt="home" />
+									<span className="text">Wanchain</span>
+								</div>
+							) : null}
+							{/*
 							<div className="coin">
 								<img src="./img/bit-aside.svg" alt="home" />
 								<span className="text">Bitcoin</span>
 							</div>
+							
 							<div className="coin">
 								<img src="./img/eth-aside.svg" alt="home" />
 								<span className="text">Ethereum</span>
@@ -136,15 +153,22 @@ const Sidebar = props => {
 							<div className="coin">
 								<img src="./img/dash-small.png" alt="home" />
 								<span className="text">Dash</span>
-							</div>
-						</div> */}
+							</div> */}
+						</div>
 						{/* <button className="add-wallet"> */}
 						{/* <Link className="add-wallet" to="/wallet"> */}
 						<Link className="add-wallet" to="#">
 							<img src="./img/close.png" alt="home" />
-							<span className="add-wallet-btn" onClick={props.handleAddWallet}>
-								Add Wallet
-							</span>
+
+							{addWalletOpt ? (
+								<span className="" onClick={props.handleAddWallet}>
+									Add Wallet
+								</span>
+							) : (
+								<span className="add-wallet-btn" onClick={props.handleAddWallet}>
+									Add Wallet
+								</span>
+							)}
 						</Link>
 
 						{/* </button> */}

@@ -14,7 +14,7 @@ const Sockets = props => {
 	const address = localStorage.getItem('currentAccount');
 
 	useEffect(_ => {
-		if (window.wan3) {
+		if (window.wan3 && address) {
 			socket.on('connect', _ => {
 				console.log('Connected....................................');
 				if (window.wan3.toChecksumAddress(address)) {
