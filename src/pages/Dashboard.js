@@ -10,7 +10,7 @@ function Dashboard(props) {
 		<div>
 			<TopMenu />
 			<div className="dashboard">
-				<Sidebar />
+				<Sidebar history={props.history} />
 
 				<div className="my-container">
 					<div className="my-row">

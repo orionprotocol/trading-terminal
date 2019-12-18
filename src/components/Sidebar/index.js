@@ -2,13 +2,38 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dark, Light } from '../funtions/handleMode';
+
 import './index.css';
 
-const Sidebar = _ => {
+const Sidebar = props => {
 	const dispatch = useDispatch();
 	const setMode = useCallback(payload => dispatch({ type: 'SetMode', payload }), [ dispatch ]);
 	const { mode } = useSelector(state => state.general);
 	const [ actives, setActives ] = useState([ 'active', '', '' ]);
+	const { wanActive, walletOpt } = useSelector(state => state.wallet);
+	const [ walletActive, setWalletActive ] = useState(false);
+
+	useEffect(
+		_ => {
+			setWalletActive(wanActive);
+			// switch (walletOpt) {
+			// 	case 'wanchain':
+			// 		setWalletActive(wanActive);
+			// 		break;
+
+			// 	default:
+			// 		setWalletActive(false);
+			// 		break;
+			// }
+
+			const { pathname } = window.location;
+			if (!wanActive && pathname !== '/home') {
+				props.history.push('/home');
+			}
+		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+		[ wanActive, walletOpt ]
+	);
 
 	useEffect(_ => {
 		let lastmode = localStorage.getItem('mode');
@@ -86,11 +111,14 @@ const Sidebar = _ => {
 								<span className="text">Trading Terminal</span>
 							</Link>
 
-							{/* <Link className={`nav-link ${actives[1]}`} to="/dashboard">
-								<span className="icon-link-2 icon" />
-								<span className="text">Dashboard</span>
-							</Link>
+							{walletActive ? (
+								<Link className={`nav-link ${actives[1]}`} to="/dashboard">
+									<span className="icon-link-2 icon" />
+									<span className="text">Dashboard</span>
+								</Link>
+							) : null}
 
+							{/* 
 							<Link className={`nav-link ${actives[2]}`} to="/history">
 								<span className="icon-link-3 icon" />
 								<span className="text">History</span>
@@ -114,7 +142,9 @@ const Sidebar = _ => {
 						{/* <Link className="add-wallet" to="/wallet"> */}
 						<Link className="add-wallet" to="#">
 							<img src="./img/close.png" alt="home" />
-							<span className="add-wallet-btn">Add Wallet</span>
+							<span className="add-wallet-btn" onClick={props.handleAddWallet}>
+								Add Wallet
+							</span>
 						</Link>
 
 						{/* </button> */}

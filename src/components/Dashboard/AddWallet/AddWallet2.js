@@ -1,31 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const AddWallet2 = props => {
+	const { walletOpt } = useSelector(state => state.wallet);
+	const [ opt, setOpt ] = useState('');
+
+	useEffect(
+		_ => {
+			switch (walletOpt) {
+				case 'wanchain':
+					setOpt('WanMask');
+					break;
+				case 'ethereum':
+					setOpt('MetaMask');
+					break;
+				default:
+					break;
+			}
+		},
+		[ walletOpt ]
+	);
+
 	const [ tabs, setTabs ] = useState({
-		metamask: [ 'active', true ],
+		wallet: [ 'active', true ],
 		key: [ '', false ],
 		seed: [ '', false ]
 	});
 
 	const handleClick = type => {
 		switch (type) {
-			case 'metamask':
+			case 'wallet':
 				setTabs({
-					metamask: [ 'active', true ],
+					wallet: [ 'active', true ],
 					key: [ '', false ],
 					seed: [ '', false ]
 				});
 				break;
 			case 'key':
 				setTabs({
-					metamask: [ '', false ],
+					wallet: [ '', false ],
 					key: [ 'active', true ],
 					seed: [ '', false ]
 				});
 				break;
 			case 'seed':
 				setTabs({
-					metamask: [ '', false ],
+					wallet: [ '', false ],
 					key: [ '', false ],
 					seed: [ 'active', true ]
 				});
@@ -34,6 +54,13 @@ const AddWallet2 = props => {
 			default:
 				break;
 		}
+	};
+
+	const handleConnect = _ => {
+		// const Web3 = require('web3');
+		// const web3 = new Web3(window.wan3.currentProvider);
+		// console.log(web3.enable());
+		props.hide2();
 	};
 
 	return (
@@ -51,13 +78,13 @@ const AddWallet2 = props => {
 					<div className="methods">
 						<div className="tab-titles">
 							<button
-								className={`js-tab-btn ${tabs.metamask[0]}`}
-								data-tab="metamask"
-								onClick={_ => handleClick('metamask')}
+								className={`js-tab-btn ${tabs.wallet[0]}`}
+								data-tab="wallet"
+								onClick={_ => handleClick('wallet')}
 							>
-								Metamask
+								{opt}
 							</button>
-							<button
+							{/* <button
 								className={`js-tab-btn ${tabs.key[0]}`}
 								data-tab="key"
 								onClick={_ => handleClick('key')}
@@ -70,21 +97,29 @@ const AddWallet2 = props => {
 								onClick={_ => handleClick('seed')}
 							>
 								Seed
-							</button>
+							</button> */}
 						</div>
 						<div className="tabs">
-							{tabs.metamask[1] ? (
+							{tabs.wallet[1] ? (
 								<div className="tab-metamask tab">
-									<p className="desc">
-										Trade tokens on the Ethereum blockchain using the MetaMask browser extension.
-									</p>
+									{walletOpt === 'wanchain' ? (
+										<p className="desc">
+											Trade tokens on the Wanchain blockchain using the WanMask browser extension.
+										</p>
+									) : null}
+									{walletOpt === 'ethereum' ? (
+										<p className="desc">
+											Trade tokens on the Ethereum blockchain using the MetaMask browser
+											extension.
+										</p>
+									) : null}
 									<div className="connect">
-										<p className="subtitle">Connect to MetaMask</p>
-										<p className="allow">Allow Orion to connect to MetaMask to begin.</p>
+										<p className="subtitle">Connect to {opt}</p>
+										<p className="allow">Allow Orion to connect to {opt} to begin.</p>
 									</div>
 									<p className="recommend">
-										This is a recommended trading method. All transaction signing is done within the
-										MetaMask extension, and private keys are never sent to the browser.
+										This is a recommended trading method. All transaction signing is done within the{' '}
+										{opt} extension, and private keys are never sent to the browser.
 									</p>
 								</div>
 							) : null}
@@ -112,8 +147,8 @@ const AddWallet2 = props => {
 							<img src="./img/arrow-down.svg" alt="dash" />
 							<span>Go back</span>
 						</button>
-						<button className="connect">
-							<img src="./img/fox.png" alt="dash" />
+						<button className="connect" onClick={handleConnect}>
+							{opt === 'MetaMask' ? <img src="./img/fox.png" alt="dash" /> : null}
 							<span>Connect</span>
 						</button>
 					</div>

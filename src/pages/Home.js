@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import TopMenu from '../components/TopMenu';
@@ -8,6 +8,9 @@ import OrderBooks from '../components/Home/OrderBooks';
 import Orders from '../components/Home/Orders';
 import CommonInfo from '../components/Home/CommonInfo';
 import Exchange from '../components/Home/Exchange';
+import AddWallet1 from '../components/Dashboard/AddWallet/AddWallet1';
+import AddWallet2 from '../components/Dashboard/AddWallet/AddWallet2';
+import FadeIn from 'react-fade-in';
 
 function addClass() {
 	let e = document.querySelector('.left-panel.js-panel');
@@ -25,9 +28,30 @@ function removeClass() {
 	if (orderbook) orderbook.classList.remove('active');
 }
 
-function Home() {
+function Home(props) {
 	const { orderbook, active, pair, exchange, chart, history } = useSelector(state => state.responsive.home);
 	const { mode, symbol } = useSelector(state => state.general);
+
+	const [ show1, setShow1 ] = useState(false);
+	const [ show2, setShow2 ] = useState(false);
+
+	const handleShow2 = _ => {
+		setShow1(false);
+		setTimeout(() => {
+			setShow2(true);
+		}, 100);
+	};
+
+	const handleShow1 = _ => {
+		setShow2(false);
+		setTimeout(() => {
+			setShow1(true);
+		}, 100);
+	};
+
+	const handleAddWallet = _ => {
+		setShow1(!show1);
+	};
 
 	useEffect(() => {
 		window.addEventListener('resize', _ => {
@@ -58,7 +82,19 @@ function Home() {
 			<IndexNav />
 
 			<div className="index">
-				<Sidebar />
+				<Sidebar handleAddWallet={handleAddWallet} history={props.history} />
+
+				{show1 ? (
+					<FadeIn transitionDuration={10}>
+						<AddWallet1 show2={handleShow2} hide1={_ => setShow1(false)} />
+					</FadeIn>
+				) : null}
+
+				{show2 ? (
+					<FadeIn transitionDuration={10}>
+						<AddWallet2 show1={handleShow1} hide2={_ => setShow2(false)} />
+					</FadeIn>
+				) : null}
 
 				<div className="my-container">
 					<div className="my-row">

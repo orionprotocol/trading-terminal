@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 
 const isInstalled = () => {
 	if (typeof wan3 !== 'undefined') {
@@ -15,7 +16,7 @@ const isLocked = () =>
 				console.log('Wan err: ', err);
 				reject(err);
 			} else if (accounts.length === 0) {
-				console.log('WanMask is locked');
+				// console.log('WanMask is locked');
 				resolve(true);
 			} else {
 				// console.log('WanMask is unlocked');
@@ -25,7 +26,12 @@ const isLocked = () =>
 		});
 	});
 
+let interval = 0;
+let interval2 = 0;
 const WanmaskVerification = props => {
+	const dispatch = useDispatch();
+	const setWanActive = useCallback(payload => dispatch({ type: 'SetWanActive', payload }), [ dispatch ]);
+
 	const wanmaskVerification = async _ => {
 		if (!isInstalled()) {
 			// alert('Not installed')
@@ -35,23 +41,32 @@ const WanmaskVerification = props => {
 			let islocked = await isLocked();
 			if (islocked) {
 				// alert('Please, sign in on wanmask')
-				console.log('Please, sign in on wanmask');
+				// console.log('Please, sign in on wanmask');
+				setWanActive(false);
+				if (interval === 0) {
+					interval = setInterval(() => {
+						wanmaskVerification();
+					}, 2000);
+				}
 			} else {
+				window.clearInterval(interval);
+				interval = 0;
 				let currentAccount = localStorage.getItem('currentAccount');
+				setWanActive(true);
 
-				setInterval(() => {
+				interval2 = setInterval(() => {
 					window.wan3.eth.getAccounts((err, accounts) => {
 						if (err != null) {
 							console.log('Wan err: ', err);
 						} else if (accounts.length === 0) {
+							window.clearInterval(interval2);
+							wanmaskVerification();
 						} else {
 							if (currentAccount !== accounts[0]) {
 								currentAccount = accounts[0];
 								localStorage.setItem('currentAccount', currentAccount);
 							}
 						}
-
-						// console.log(currentAccount);
 					});
 				}, 1000);
 			}
