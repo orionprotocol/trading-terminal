@@ -28,8 +28,10 @@ const state = {
 					'paneProperties.gridProperties.color': '#edf0f4',
 					'paneProperties.vertGridProperties.color': '#edf0f4',
 					'paneProperties.horzGridProperties.color': '#edf0f4',
-					'mainSeriesProperties.candleStyle.borderDownColor': '#e5494d',
-					'mainSeriesProperties.candleStyle.borderUpColor': '#5a81ea',
+					// 'mainSeriesProperties.candleStyle.borderDownColor': '#e5494d',
+					'mainSeriesProperties.candleStyle.borderDownColor': '#FBB1BD',
+					// 'mainSeriesProperties.candleStyle.borderUpColor': '#5a81ea',
+					'mainSeriesProperties.candleStyle.borderUpColor': '#9DE2BD',
 					'mainSeriesProperties.hollowCandleStyle.borderDownColor': '#e5494d',
 					'mainSeriesProperties.hollowCandleStyle.borderUpColor': '#e5494d',
 					'mainSeriesProperties.haStyle.borderDownColor': '#e5494d',
@@ -72,9 +74,11 @@ const state = {
 					'paneProperties.gridProperties.color': '#424242',
 					'paneProperties.vertGridProperties.color': '#424242',
 					'paneProperties.horzGridProperties.color': '#424242',
-					'mainSeriesProperties.candleStyle.borderDownColor': '#e5494d',
+					// 'mainSeriesProperties.candleStyle.borderDownColor': '#e5494d',
+					'mainSeriesProperties.candleStyle.borderDownColor': '#83196D',
+					// 'mainSeriesProperties.candleStyle.borderUpColor': '#5a81ea',
+					'mainSeriesProperties.candleStyle.borderUpColor': '#19836D',
 					'mainSeriesProperties.hollowCandleStyle.borderDownColor': '#e5494d',
-					'mainSeriesProperties.candleStyle.borderUpColor': '#5a81ea',
 					'mainSeriesProperties.haStyle.borderUpColor': '#5a81ea',
 					'mainSeriesProperties.hollowCandleStyle.borderUpColor': '#e5494d',
 					'mainSeriesProperties.haStyle.borderDownColor': '#e5494d',
@@ -133,8 +137,8 @@ const renderChart = (exchange, symbol, mode) => {
 			'mainSeriesProperties.lineStyle.color': candleUpColor,
 			'mainSeriesProperties.areaStyle.color1': candleUpColor,
 			'mainSeriesProperties.areaStyle.color2': candleUpColor,
-			'mainSeriesProperties.areaStyle.linecolor': candleUpColor,
-			volumePaneSize: 'tiny'
+			'mainSeriesProperties.areaStyle.linecolor': candleUpColor
+			// volumePaneSize: 'tiny'
 		};
 	};
 
