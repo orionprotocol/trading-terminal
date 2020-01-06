@@ -75,10 +75,16 @@ const Sidebar = props => {
 
 	const onMouseOver = _ => {
 		document.querySelector('.js-sidebar-wrapper').classList.add('open');
+
+		const div = document.querySelector('#js-wrapper-pair');
+		if (div) div.classList.add('active');
 	};
 
 	const onMouseLeave = _ => {
 		document.querySelector('.js-sidebar-wrapper').classList.remove('open');
+
+		const div = document.querySelector('#js-wrapper-pair');
+		if (div) div.classList.remove('active');
 	};
 
 	const handleMode = _ => {
