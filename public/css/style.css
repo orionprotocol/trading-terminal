@@ -4594,6 +4594,37 @@ a:active {
   filter: invert(100%);
 }
 
+/* scrollbar */
+
+::-webkit-scrollbar-button {
+  width: 5px;
+  height: 0px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #ecedee;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+}
+
+::-webkit-resizer {
+  width: 4px;
+  height: 0px;
+}
+
+body.dark ::-webkit-scrollbar-track {
+  background-color: #2a2a41;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
 @media (min-width: 576px) {
   .my-container {
     max-width: 100%;
