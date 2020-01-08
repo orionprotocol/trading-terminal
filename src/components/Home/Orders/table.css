@@ -217,16 +217,6 @@
 
 /* =========================================================================== */
 
-.orders-dates .date {
-	background-color: #fafafa;
-	padding: 10px 20px;
-	border-radius: 4px;
-}
-
-.orders-dates .date.dark-mode {
-	background-color: transparent;
-}
-
 /* .cell.short.emp.dark-mode {
 	color: #ffffff !important;
 } */

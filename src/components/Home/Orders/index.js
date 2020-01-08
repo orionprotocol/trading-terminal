@@ -6,6 +6,8 @@ import './table.css';
 import Line from './Line';
 import axios from 'axios';
 import compareValues from '../../funtions/compareValues';
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.min.css'
 
 const urlBase = process.env.REACT_APP_BACKEND;
 
@@ -20,8 +22,10 @@ var loadOrderHistory = () => {};
 const Orders = _ => {
 	const { symbol } = useSelector(state => state.general);
 	const [ orders, setOrders ] = useState([]);
+	const [ ordersOrigin, setOrdersOrigin ] = useState([]);
 	const [ allOrders, setAllOrders ] = useState([]);
 	const [ state, setState ] = useState({ type: 'open', renderOrders: null });
+	const [startDate, setStartDate] = useState(new Date());
 	const [ classes, setClasses ] = useState({
 		type: 'fa-angle-down',
 		pair: 'fa-angle-down',
@@ -45,8 +49,10 @@ const Orders = _ => {
 						if (state.type === 'open') {
 							let newOrders = res.data.filter(d => d.status === 'NEW' || d.status === 'PARTIALLY_FILLED');
 							setOrders(newOrders);
+							setOrdersOrigin(newOrders);
 						} else {
 							setOrders(res.data);
+							setOrdersOrigin(res.data);
 						}
 					}
 				})
@@ -66,10 +72,6 @@ const Orders = _ => {
 	let d = new Date();
 	let dateTopriceCard = `${d.getDate()}.${d.getMonth()}.${d.getFullYear()}`;
 
-	function handleChange(value) {
-		console.log(`selected ${value}`);
-	}
-
 	const handleType = type => {
 		document.querySelector('#open-price-card-button').classList.toggle('active');
 		document.querySelector('#history-price-card-button').classList.toggle('active');
@@ -80,6 +82,7 @@ const Orders = _ => {
 		}
 
 		setOrders(newOrders);
+		setOrdersOrigin(newOrders);
 		setState({ ...state, type });
 	};
 
@@ -161,6 +164,32 @@ const Orders = _ => {
 		[ orders ]
 	);
 
+	function handleChangeA(value) {
+		let newOrders = ordersOrigin.filter(e => {
+			let symbolA = e.symbol.split('-')[0];
+
+			return symbolA === value;
+		});
+
+		setOrders(newOrders);
+	}
+	function handleChangeB(value) {
+		let newOrders = ordersOrigin.filter(e => {
+			let symbolB = e.symbol.split('-')[1];
+
+			return symbolB === value;
+		});
+
+		setOrders(newOrders);
+	}
+	function handleChangeC(value) {
+		if (value === 'NONE') {
+			setOrders([]);
+		} else {
+			setOrders(ordersOrigin);
+		}
+	}
+
 	return (
 		<Fragment>
 			<Layout className="father orders">
@@ -187,15 +216,24 @@ const Orders = _ => {
 								</Col>
 								<Col xs={24} md={8} style={{ marginTop: '3px' }}>
 									<div className="orders-dates">
-										<span className="date">
-											{dateTopriceCard} <Icon type="calendar" />
+										{/* <input type="date" className="date" /> */}
+										<DatePicker 
+										className="date" 
+										selected={startDate} 
+										onChange={date => 
+										setStartDate(date)} 
+										popperPlacement="bottom-end"
+										/>
+										<span className="date-icon">
+											<Icon type="calendar" />
 										</span>
-										<span className="price-card-date-line">
+										{/* <span className="price-card-date-line">
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										</span>
-										<span className="date" style={{ marginLeft: '30px' }}>
-											{dateTopriceCard} <Icon type="calendar" />
-										</span>
+										</span> */}
+										{/* <input type="date" className="date" />
+										<span className="date-icon">
+											<Icon type="calendar" />
+										</span> */}
 									</div>
 								</Col>
 								<Col xs={24} md={10}>
@@ -204,29 +242,28 @@ const Orders = _ => {
 											className="price-card-selector"
 											defaultValue="ETH"
 											style={{ width: 80, padding: 0, border: 'none' }}
-											onChange={handleChange}
+											onChange={handleChangeA}
 										>
 											<Option value="ETH">ETH</Option>
-											<Option value="ETH">ETH</Option>
+											<Option value="XRP">XRP</Option>
 										</Select>
 										/
 										<Select
 											className="price-card-selector"
 											defaultValue="BTC"
 											style={{ width: 80, padding: 0, border: 'none' }}
-											onChange={handleChange}
+											onChange={handleChangeB}
 										>
 											<Option value="BTC">BTC</Option>
-											<Option value="ETH">ETH</Option>
 										</Select>
 										<Select
 											className="price-card-selector"
-											defaultValue="ALL"
+											defaultValue=""
 											style={{ width: 80, padding: 0, border: 'none' }}
-											onChange={handleChange}
+											onChange={handleChangeC}
 										>
 											<Option value="ALL">ALL</Option>
-											<Option value="ALL">ALL</Option>
+											<Option value="NONE">NONE</Option>
 										</Select>
 									</div>
 								</Col>

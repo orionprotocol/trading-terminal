@@ -2,6 +2,25 @@
 	display: block !important;
 }
 
+.orders-dates > .date {
+	border: 0px;
+	width: 40%;
+	background-color: #fafafa;
+	padding: 7px 5px;
+	margin: 0px 10px;
+	border-radius: 3px;
+	margin-top: -10px;
+}
+
+.orders-dates .date.dark-mode {
+	background-color: transparent;
+}
+
+.orders-dates > .date-icon {
+	position: absolute;
+	margin-left: -20px;
+}
+
 @media (max-width: 1130px) {
 	.father.orders.ant-layout {
 		position: absolute;
