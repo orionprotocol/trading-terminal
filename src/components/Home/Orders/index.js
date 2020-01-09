@@ -227,7 +227,7 @@ const Orders = _ => {
 		[ startDateB ]
 	);
 
-	const optsClass = mode === 'Light' ? 'option-select' : 'dark-mode option-select';
+	const optsClass = mode === 'Light' ? 'option-select emp' : 'dark-mode option-select emp';
 
 	return (
 		<Fragment>
@@ -238,14 +238,14 @@ const Orders = _ => {
 							<Row style={{ paddingTop: '5px', paddingLeft: '15px' }}>
 								<Col xs={24} md={6}>
 									<button
-										className="price-card-button active"
+										className="price-card-button active emp"
 										id="open-price-card-button"
 										onClick={_ => handleType('open')}
 									>
 										Orders
 									</button>
 									<button
-										className="price-card-button"
+										className="price-card-button emp"
 										id="history-price-card-button"
 										style={{ border: 'none !important' }}
 										onClick={_ => handleType('history')}
@@ -283,7 +283,7 @@ const Orders = _ => {
 								<Col xs={24} md={10}>
 									<div className="orders-selects">
 										<Select
-											className="price-card-selector"
+											className="price-card-selector emp"
 											defaultValue="ETH"
 											style={{ width: 80, padding: 0, border: 'none' }}
 											onChange={handleChangeA}
@@ -297,7 +297,7 @@ const Orders = _ => {
 										</Select>
 										/
 										<Select
-											className="price-card-selector"
+											className="price-card-selector emp"
 											defaultValue="BTC"
 											style={{ width: 80, padding: 0, border: 'none' }}
 											onChange={handleChangeB}
@@ -307,7 +307,7 @@ const Orders = _ => {
 											</Option>
 										</Select>
 										<Select
-											className="price-card-selector"
+											className="price-card-selector emp"
 											defaultValue=""
 											style={{ width: 80, padding: 0, border: 'none' }}
 											onChange={handleChangeC}

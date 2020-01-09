@@ -53,7 +53,7 @@ const CommonInfo = props => {
 				<div className="last-price">
 					<span className="title">Last price</span>
 					<div className="value">
-						<span className="emp">{lastPrice}</span>
+						<span className="emp">{lastPrice.toFixed(5)}</span>
 						<span className="dollars">${dollars.last}</span>
 					</div>
 				</div>

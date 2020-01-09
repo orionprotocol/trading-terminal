@@ -108,6 +108,27 @@
 .ant-select-dropdown-menu-item.dark-mode.option-select.ant-select-dropdown-menu-item-active {
 	background-color: rgba(51, 61, 75, 0.828);
 }
+
+.father.orders {
+	font-size: 14px;
+}
+
+.father.orders button {
+	font-size: 14px;
+}
+
+.father.orders .titles span {
+	color: rgba(20, 16, 41, 0.8);
+}
+
+.emp {
+	color: rgba(20, 16, 41, 0.8);
+}
+
+.titles {
+	margin-top: 10px;
+}
+
 @media (max-width: 1130px) {
 	.father.orders.ant-layout {
 		position: absolute;

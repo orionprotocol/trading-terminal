@@ -246,15 +246,15 @@ export default function BuyAndSellForm({ type }) {
 								{/* {errors.price && touched.price ? <div>{errors.price}</div> : null} */}
 							</div>
 						)}
-						<div style={{ justifyContent: 'space-between', display: 'flex' }}>
+						<div style={{ justifyContent: 'space-between', display: 'flex', paddingTop: '5px' }}>
 							<span style={{ marginLeft: '10px' }}>Available</span>
 
 							{type.trade === 'buy' ? (
-								<span>
+								<span className="avl-amount">
 									{available} {symbolB}
 								</span>
 							) : (
-								<span>
+								<span className="avl-amount">
 									{available} {symbolA}
 								</span>
 							)}

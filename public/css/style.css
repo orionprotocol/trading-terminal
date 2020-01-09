@@ -10,7 +10,7 @@ body {
   font-family: 'Montserrat', sans-serif !important;
   font-size: 10px !important;
   line-height: 12px;
-  color: rgba(20, 16, 41, 0.6);
+  color: rgba(20, 16, 41, 0.6) !important;
   font-weight: 500;
   background: rgba(20, 16, 41, 0.02) !important;
 }
@@ -350,7 +350,6 @@ a:active {
   padding: 8px;
   margin-bottom: 8px;
   background: #ffffff;
-  height: 32vh;
 }
 
 .index .common-info .top {
@@ -521,12 +520,11 @@ a:active {
   -ms-flex-pack: justify;
   justify-content: space-between;
   width: 100%;
-  height: 5vh;
 }
 
-.index .common-info .table .line:not(:last-child) {
-  /* margin-bottom: 9px; */
-}
+/* .index .common-info .table .line:not(:last-child) {
+  margin-bottom: 9px;
+} */
 
 .index .common-info .table .line .title {
   color: rgba(20, 16, 41, 0.4);
@@ -4768,9 +4766,9 @@ body.dark ::-webkit-scrollbar-track {
     line-height: 24px;
   }
 
-  .index .common-info .price {
+  /* .index .common-info .price {
     margin-bottom: 37px;
-  }
+  } */
 
   .index .common-info .price .last-price .title {
     font-size: 14px;
