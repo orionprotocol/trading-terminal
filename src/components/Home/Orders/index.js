@@ -6,8 +6,9 @@ import './table.css';
 import Line from './Line';
 import axios from 'axios';
 import compareValues from '../../funtions/compareValues';
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.min.css'
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.min.css';
+import moment from 'moment';
 
 const urlBase = process.env.REACT_APP_BACKEND;
 
@@ -20,12 +21,13 @@ const { Content } = Layout;
 var loadOrderHistory = () => {};
 
 const Orders = _ => {
-	const { symbol } = useSelector(state => state.general);
+	const { symbol, mode } = useSelector(state => state.general);
 	const [ orders, setOrders ] = useState([]);
 	const [ ordersOrigin, setOrdersOrigin ] = useState([]);
 	const [ allOrders, setAllOrders ] = useState([]);
 	const [ state, setState ] = useState({ type: 'open', renderOrders: null });
-	const [startDate, setStartDate] = useState(new Date());
+	const [ startDateA, setStartDateA ] = useState(new Date());
+	const [ startDateB, setStartDateB ] = useState(new Date());
 	const [ classes, setClasses ] = useState({
 		type: 'fa-angle-down',
 		pair: 'fa-angle-down',
@@ -68,9 +70,6 @@ const Orders = _ => {
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ symbol ]
 	);
-
-	let d = new Date();
-	let dateTopriceCard = `${d.getDate()}.${d.getMonth()}.${d.getFullYear()}`;
 
 	const handleType = type => {
 		document.querySelector('#open-price-card-button').classList.toggle('active');
@@ -190,6 +189,46 @@ const Orders = _ => {
 		}
 	}
 
+	const handleDateChangeRaw = e => {
+		e.preventDefault();
+	};
+
+	useEffect(
+		_ => {
+			let newTime = moment(startDateA).unix();
+			let timeB = moment(startDateB).unix();
+
+			let newOrders = ordersOrigin.filter(e => {
+				let time = String(e.time);
+				time = time.substring(0, 10);
+				return time >= newTime && time <= timeB;
+			});
+
+			setOrders(newOrders);
+		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+		[ startDateA ]
+	);
+
+	useEffect(
+		_ => {
+			let newTime = moment(startDateB).unix();
+			let timeA = moment(startDateA).unix();
+
+			let newOrders = ordersOrigin.filter(e => {
+				let time = String(e.time);
+				time = time.substring(0, 10);
+				return time <= newTime && time >= timeA;
+			});
+
+			setOrders(newOrders);
+		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+		[ startDateB ]
+	);
+
+	const optsClass = mode === 'Light' ? 'option-select' : 'dark-mode option-select';
+
 	return (
 		<Fragment>
 			<Layout className="father orders">
@@ -216,24 +255,29 @@ const Orders = _ => {
 								</Col>
 								<Col xs={24} md={8} style={{ marginTop: '3px' }}>
 									<div className="orders-dates">
-										{/* <input type="date" className="date" /> */}
-										<DatePicker 
-										className="date" 
-										selected={startDate} 
-										onChange={date => 
-										setStartDate(date)} 
-										popperPlacement="bottom-end"
+										<DatePicker
+											selected={startDateA}
+											onChange={date => setStartDateA(date)}
+											calendarClassName="date"
+											dateFormat="dd.MM.Y"
+											onChangeRaw={handleDateChangeRaw}
 										/>
 										<span className="date-icon">
 											<Icon type="calendar" />
 										</span>
-										{/* <span className="price-card-date-line">
+										<span className="price-card-date-line">
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										</span> */}
-										{/* <input type="date" className="date" />
+										</span>
+										<DatePicker
+											selected={startDateB}
+											onChange={date => setStartDateB(date)}
+											calendarClassName="date"
+											dateFormat="dd.MM.Y"
+											onChangeRaw={handleDateChangeRaw}
+										/>
 										<span className="date-icon">
 											<Icon type="calendar" />
-										</span> */}
+										</span>
 									</div>
 								</Col>
 								<Col xs={24} md={10}>
@@ -244,8 +288,12 @@ const Orders = _ => {
 											style={{ width: 80, padding: 0, border: 'none' }}
 											onChange={handleChangeA}
 										>
-											<Option value="ETH">ETH</Option>
-											<Option value="XRP">XRP</Option>
+											<Option value="ETH" className={optsClass}>
+												ETH
+											</Option>
+											<Option value="XRP" className={optsClass}>
+												XRP
+											</Option>
 										</Select>
 										/
 										<Select
@@ -254,7 +302,9 @@ const Orders = _ => {
 											style={{ width: 80, padding: 0, border: 'none' }}
 											onChange={handleChangeB}
 										>
-											<Option value="BTC">BTC</Option>
+											<Option value="BTC" className={optsClass}>
+												BTC
+											</Option>
 										</Select>
 										<Select
 											className="price-card-selector"
@@ -262,8 +312,12 @@ const Orders = _ => {
 											style={{ width: 80, padding: 0, border: 'none' }}
 											onChange={handleChangeC}
 										>
-											<Option value="ALL">ALL</Option>
-											<Option value="NONE">NONE</Option>
+											<Option value="ALL" className={optsClass}>
+												ALL
+											</Option>
+											<Option value="NONE" className={optsClass}>
+												NONE
+											</Option>
 										</Select>
 									</div>
 								</Col>

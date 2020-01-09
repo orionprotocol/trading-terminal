@@ -161,16 +161,10 @@
 	font-size: 10px;
 	padding-top: 0.5em;
 }
-.price-card-date-line {
-	border-top: 1px solid rgb(100, 100, 100);
-	width: 10px;
-	margin: 0px 10px;
-	margin-top: 9px;
-	position: absolute;
-}
+
 .price-card-button {
 	background-color: #fafafa;
-	margin-top: -7px;
+	margin-top: -5px;
 	padding: 7px 2em;
 	font-size: 10px;
 	border-radius: 6%;
@@ -184,8 +178,12 @@
 	border: 1px solid #efeff0;
 }
 
+.price-card-button.active.dark-mode {
+	background-color: #4c5266;
+}
+
 .price-card-button.dark-mode {
-	background-color: transparent;
+	background-color: #2e2e45;
 	border: 0px solid #efeff0;
 	box-shadow: 0px 0px 0px #f4f4f4;
 }
@@ -210,9 +208,13 @@
 	font-weight: 600;
 }
 
-.price-card-selector.dark-mode {
-	background-color: transparent;
+.dark-mode .price-card-selector {
+	background-color: #2e2e45;
 	color: rgba(224, 224, 255, 0.6);
+}
+
+.dark-mode .price-card-selector svg {
+	color: rgba(210, 210, 238, 0.459);
 }
 
 /* =========================================================================== */
