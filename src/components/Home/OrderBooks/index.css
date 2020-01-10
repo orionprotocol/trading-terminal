@@ -10,3 +10,11 @@
 	cursor: pointer;
 	background-color: #f5f5f5;
 }
+
+.exch-content.js-exch-content {
+	margin-left: 8px;
+}
+
+.title.exch {
+	padding-left: 8px;
+}
