@@ -58,10 +58,12 @@ const CommonInfo = props => {
 					</div>
 				</div>
 				<div className="change">
-					<span className="title">24h change</span>
+					<span className="title" style={{ fontSize: '12px', color: 'red' }}>
+						24h change
+					</span>
 					<div className="value">
 						<img src="./img/growth.png" alt="home" />
-						<p className="emp">
+						<p className="emp" style={{ fontSize: '12px' }}>
 							+{change} <span>%</span>
 						</p>
 					</div>
