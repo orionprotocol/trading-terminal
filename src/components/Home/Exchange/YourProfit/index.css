@@ -1,0 +1,18 @@
+.your-profit {
+	/* background-color: aqua; */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	margin-top: 4%;
+}
+
+.your-profit h2 {
+	font-size: 24px;
+}
+
+.your-profit-data {
+	background-color: #fff;
+	width: 100%;
+	min-height: 100px;
+}

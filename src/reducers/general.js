@@ -11,12 +11,18 @@ const initialState = {
 	low: 0,
 	vol: 0,
 	change: 0,
-	orderData: {} // { amount: 0, price: 0, total: 0 }
+	orderData: {}, // { amount: 0, price: 0, total: 0 }
+	qtyForm: 0,
+	sideForm: 'buy'
 };
 
 export default (state = initialState, { type, ...action }) => {
 	let newSymbol = '';
 	switch (type) {
+		case 'SetQtyForm':
+			return { ...state, qtyForm: action.payload };
+		case 'SetSideForm':
+			return { ...state, sideForm: action.payload };
 		case 'SetOrderData':
 			return { ...state, orderData: action.payload };
 		case 'SetMode':
