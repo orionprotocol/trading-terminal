@@ -13,8 +13,10 @@ const state = {
 					green: {
 						// upColor: '#A9E0BB',
 						// downColor: '#ffb9b5',
-						upColor: '#9DE2BD',
-						downColor: '#FBB1BD',
+						// upColor: '#9DE2BD',
+						// downColor: '#FBB1BD',
+						upColor: 'rgba(22, 184, 98, 0.8)',
+						downColor: 'rgba(245, 69, 98, 0.8)', // #16b86266
 						volume0: 'rgba(22, 184, 98, 0.3)',
 						volume1: 'rgba(245, 69, 98, 0.3)'
 					}
@@ -29,18 +31,18 @@ const state = {
 					'paneProperties.vertGridProperties.color': '#edf0f4',
 					'paneProperties.horzGridProperties.color': '#edf0f4',
 					// 'mainSeriesProperties.candleStyle.borderDownColor': '#e5494d',
-					'mainSeriesProperties.candleStyle.borderDownColor': '#FBB1BD',
+					'mainSeriesProperties.candleStyle.borderDownColor': 'rgba(245, 69, 98, 0.8)',
 					// 'mainSeriesProperties.candleStyle.borderUpColor': '#5a81ea',
-					'mainSeriesProperties.candleStyle.borderUpColor': '#9DE2BD',
-					'mainSeriesProperties.hollowCandleStyle.borderDownColor': '#e5494d',
-					'mainSeriesProperties.hollowCandleStyle.borderUpColor': '#e5494d',
-					'mainSeriesProperties.haStyle.borderDownColor': '#e5494d',
-					'mainSeriesProperties.candleStyle.wickUpColor': 'rgba(90, 129, 234, 0.5)',
-					'mainSeriesProperties.candleStyle.wickDownColor': 'rgba(229, 73, 77, 0.5)',
-					'mainSeriesProperties.hollowCandleStyle.wickUpColor': 'rgba(90, 129, 234, 0.5)',
-					'mainSeriesProperties.hollowCandleStyle.wickDownColor': 'rgba(229, 73, 77, 0.5)',
-					'mainSeriesProperties.haStyle.wickUpColor': 'rgba(90, 129, 234, 0.5)',
-					'mainSeriesProperties.haStyle.wickDownColor': 'rgba(229, 73, 77, 0.5)'
+					'mainSeriesProperties.candleStyle.borderUpColor': 'rgba(22, 184, 98, 0.8)',
+					'mainSeriesProperties.hollowCandleStyle.borderDownColor': 'rgba(245, 69, 98, 0.8)',
+					'mainSeriesProperties.hollowCandleStyle.borderUpColor': 'rgba(22, 184, 98, 0.8)',
+					'mainSeriesProperties.haStyle.borderDownColor': 'rgba(245, 69, 98, 0.8)',
+					'mainSeriesProperties.candleStyle.wickUpColor': 'rgba(22, 184, 98, 0.8)',
+					'mainSeriesProperties.candleStyle.wickDownColor': 'rgba(245, 69, 98, 0.8)',
+					'mainSeriesProperties.hollowCandleStyle.wickUpColor': 'rgba(22, 184, 98, 0.8)',
+					'mainSeriesProperties.hollowCandleStyle.wickDownColor': 'rgba(245, 69, 98, 0.8)',
+					'mainSeriesProperties.haStyle.wickUpColor': 'rgba(22, 184, 98, 0.8)',
+					'mainSeriesProperties.haStyle.wickDownColor': 'rgba(245, 69, 98, 0.8)'
 				}
 			},
 			wAssetRateChart: { seriesColor: '#5a81ea' },
@@ -57,8 +59,9 @@ const state = {
 						volume1: 'rgba(90,129,234,0.3)'
 					},
 					green: {
-						upColor: '#19836D',
-						downColor: '#83196D',
+						// upColor: '#19836D',
+						upColor: 'rgba(0, 255, 170, 0.8)',
+						downColor: 'rgba(255, 0, 170, 0.8)',
 						volume0: 'rgba(22, 184, 98,0.3)',
 						volume1: 'rgba(245, 69, 98,0.3)'
 					}
@@ -75,19 +78,19 @@ const state = {
 					'paneProperties.vertGridProperties.color': '#424242',
 					'paneProperties.horzGridProperties.color': '#424242',
 					// 'mainSeriesProperties.candleStyle.borderDownColor': '#e5494d',
-					'mainSeriesProperties.candleStyle.borderDownColor': '#83196D',
+					'mainSeriesProperties.candleStyle.borderDownColor': 'rgba(255, 0, 170, 0.8)',
 					// 'mainSeriesProperties.candleStyle.borderUpColor': '#5a81ea',
-					'mainSeriesProperties.candleStyle.borderUpColor': '#19836D',
-					'mainSeriesProperties.hollowCandleStyle.borderDownColor': '#e5494d',
-					'mainSeriesProperties.haStyle.borderUpColor': '#5a81ea',
-					'mainSeriesProperties.hollowCandleStyle.borderUpColor': '#e5494d',
-					'mainSeriesProperties.haStyle.borderDownColor': '#e5494d',
-					'mainSeriesProperties.candleStyle.wickUpColor': 'rgba(90, 129, 234, 0.5)',
-					'mainSeriesProperties.candleStyle.wickDownColor': 'rgba(229, 73, 77, 0.5)',
-					'mainSeriesProperties.hollowCandleStyle.wickUpColor': 'rgba(90, 129, 234, 0.5)',
-					'mainSeriesProperties.hollowCandleStyle.wickDownColor': 'rgba(229, 73, 77, 0.5)',
-					'mainSeriesProperties.haStyle.wickUpColor': 'rgba(90, 129, 234, 0.5)',
-					'mainSeriesProperties.haStyle.wickDownColor': 'rgba(229, 73, 77, 0.5)'
+					'mainSeriesProperties.candleStyle.borderUpColor': 'rgba(0, 255, 170, 0.8)',
+					'mainSeriesProperties.hollowCandleStyle.borderDownColor': 'rgba(255, 0, 170, 0.8)',
+					'mainSeriesProperties.haStyle.borderUpColor': 'rgba(0, 255, 170, 0.8)',
+					'mainSeriesProperties.hollowCandleStyle.borderUpColor': 'rgba(0, 255, 170, 0.8)',
+					'mainSeriesProperties.haStyle.borderDownColor': 'rgba(255, 0, 170, 0.8)',
+					'mainSeriesProperties.candleStyle.wickUpColor': 'rgba(0, 255, 170, 0.8)',
+					'mainSeriesProperties.candleStyle.wickDownColor': 'rgba(255, 0, 170, 0.8)',
+					'mainSeriesProperties.hollowCandleStyle.wickUpColor': 'rgba(0, 255, 170, 0.8)',
+					'mainSeriesProperties.hollowCandleStyle.wickDownColor': 'rgba(255, 0, 170, 0.8)',
+					'mainSeriesProperties.haStyle.wickUpColor': 'rgba(0, 255, 170, 0.8)',
+					'mainSeriesProperties.haStyle.wickDownColor': 'rgba(255, 0, 170, 0.8)'
 				}
 			},
 			wAssetRateChart: { seriesColor: 'rgba(255,255,255,0.80)' },
