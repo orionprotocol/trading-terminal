@@ -13,7 +13,13 @@ body {
   color: rgba(20, 16, 41, 0.6) !important;
   font-weight: 500;
   background: rgba(20, 16, 41, 0.02) !important;
-  font-variant: normal !important;
+}
+
+.main-body {
+  font-feature-settings: normal;
+ -webkit-font-feature-settings: normal;
+ -moz-font-feature-settings: normal;
+ font-variant: normal !important;
 }
 
 body.dark {
