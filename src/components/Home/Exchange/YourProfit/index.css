@@ -8,11 +8,63 @@
 }
 
 .your-profit h2 {
-	font-size: 24px;
+	font-size: 16px;
+}
+
+.dark-mode .your-profit h2 {
+	color: #fff;
 }
 
 .your-profit-data {
 	background-color: #fff;
 	width: 100%;
-	min-height: 100px;
+	/* min-height: 100px; */
+}
+
+.dark-mode .your-profit-data {
+	background-color: #2a2a41;
+}
+
+.your-profit-data {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	padding: 5% 3%;
+}
+
+.your-profit-data > .exchange > .numbers {
+	/* background-color: blueviolet; */
+	border-top: 2px solid rgb(237, 240, 244);
+	padding-top: 3px;
+}
+
+.dark-mode .your-profit-data > .exchange > .numbers {
+	border-top: 1px solid rgba(224, 224, 255, 0.6);
+}
+
+.your-profit-data > .exchange > .numbers > span {
+	display: block;
+	color: rgb(65, 195, 0);
+	font-size: 9px;
+}
+
+.your-profit-data > .exchange > .numbers.center,
+.your-profit-data > .exchange > .name.center {
+	border-right: 2px solid rgb(237, 240, 244);
+	border-left: 2px solid rgb(237, 240, 244);
+}
+
+.dark-mode .your-profit-data > .exchange > .numbers.center,
+.dark-mode .your-profit-data > .exchange > .name.center {
+	border-right: 1px solid rgba(224, 224, 255, 0.6);
+	border-left: 1px solid rgba(224, 224, 255, 0.6);
+}
+
+.your-profit-data > .exchange > div {
+	text-align: center;
+}
+
+@media (min-width: 1500px) {
+	.your-profit h2 {
+		font-size: 24px;
+	}
 }

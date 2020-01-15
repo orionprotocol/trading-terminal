@@ -1,15 +1,18 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import { Formik, Form, Field } from 'formik';
 import validate from './validation';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { WanchainOrder } from '../../../../services/WanchainOrder';
 import { loadOrderHistory } from '../../Orders/index';
 import openNotification from '../../../Notification';
 
 // type: { trade: 'buy' or 'sell, selection: 'market' or 'limit-order'}
 export default function BuyAndSellForm({ type }) {
+	const dispatch = useDispatch();
 	const { symbolA, symbolB, orderData, lastPrice } = useSelector(state => state.general);
 	const balances = useSelector(state => state.balances);
+	const setQtyForm = useCallback(data => dispatch({ type: 'SetQtyForm', payload: data }), [ dispatch ]);
+	const setSideForm = useCallback(data => dispatch({ type: 'SetSideForm', payload: data }), [ dispatch ]);
 
 	const [ values, setValues ] = useState({
 		amount: '',
@@ -94,6 +97,8 @@ export default function BuyAndSellForm({ type }) {
 					price: ''
 				});
 				setTotal(0);
+				setSideForm(type.trade);
+				setQtyForm(0);
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
@@ -118,6 +123,10 @@ export default function BuyAndSellForm({ type }) {
 
 	const handleChange = e => {
 		if (e.target.name === 'amount' || e.target.name === 'price') {
+			if (e.target.name === 'amount') {
+				setQtyForm(e.target.value);
+			}
+
 			if (type.selection === 'market') {
 				setTotal((e.target.value * lastPrice).toFixed(8));
 			} else if (type.selection === 'limit-order') {
@@ -222,7 +231,7 @@ export default function BuyAndSellForm({ type }) {
 							/>
 							<label
 								style={{
-									position: 'absolute',
+									// position: 'absolute',
 									fontSize: '14px',
 									color: '#706E7D',
 									marginLeft: '-40px',
@@ -285,7 +294,7 @@ export default function BuyAndSellForm({ type }) {
 							/>
 							<label
 								style={{
-									position: 'absolute',
+									// position: 'absolute',
 									fontSize: '14px',
 									color: '#706E7D',
 									marginLeft: '-40px',

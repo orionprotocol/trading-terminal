@@ -1,15 +1,15 @@
 #exchange {
 	background-color: #fff !important;
-}
-
-#exchange span {
-	font-size: 13px;
+	padding-bottom: 1px;
+	/* padding-top: 10%; */
 }
 
 .left-panel.js-panel {
 	display: flex;
-	flex-wrap: wrap;
+	/* flex-wrap: wrap; */
 	flex-direction: column;
+	/* overflow-y: auto;
+	overflow-x: visible; */
 }
 
 /* --------------------- Dark Mode ----------------------- */
@@ -95,10 +95,6 @@
 .buttons-options {
 	text-align: center;
 	width: 50%;
-}
-
-.buttons-options button {
-	font-size: 14px;
 }
 
 .market-button,
@@ -213,3 +209,13 @@
 }
 
 /* End of form Css */
+
+@media (min-width: 1500px) {
+	.buttons-options button {
+		font-size: 14px;
+	}
+
+	#exchange span {
+		font-size: 13px;
+	}
+}
