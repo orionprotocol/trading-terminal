@@ -2,21 +2,21 @@ import React, { Fragment, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
-const OrionWanchain = _ => {
-	const balances = useSelector(state => state.balances);
+const OrionWanchain = (_) => {
+	const balances = useSelector((state) => state.balances);
 	const dispatch = useDispatch();
-	const { wanmaskConnect, wanActive } = useSelector(state => state.wallet);
-	const setBalances = useCallback(data => dispatch({ type: 'SetBalances', payload: data }), [ dispatch ]);
+	const { wanmaskConnect, wanActive } = useSelector((state) => state.wallet);
+	const setBalances = useCallback((data) => dispatch({ type: 'SetBalances', payload: data }), [ dispatch ]);
 	useEffect(
 		() => {
 			setTimeout(() => {
 				let address = localStorage.getItem('currentAccount');
-				const getBalances = address => {
+				const getBalances = (address) => {
 					axios
 						.get(`${process.env.REACT_APP_ORION_WAN}/api/balance/${address}`)
-						.then(res => {
+						.then((res) => {
 							if (res.data.contractbalances) {
-								// console.log(res.data);
+								console.log(res.data);
 								//{walletBalances: {…}, contractbalances: {…}}
 								let all = res.data;
 								let newBal = {
@@ -26,8 +26,8 @@ const OrionWanchain = _ => {
 								setBalances(newBal);
 							}
 						})
-						.catch(err => {
-							console.log(err);
+						.catch((err) => {
+							console.log(err.response);
 						});
 				};
 				// If no balances

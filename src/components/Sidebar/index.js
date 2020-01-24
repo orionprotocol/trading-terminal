@@ -1,22 +1,23 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Dark, Light } from '../funtions/handleMode';
 
 import './index.css';
 
-const Sidebar = props => {
+const Sidebar = (props) => {
 	const dispatch = useDispatch();
-	const setMode = useCallback(payload => dispatch({ type: 'SetMode', payload }), [ dispatch ]);
-	const setWanmaskConnect = useCallback(payload => dispatch({ type: 'SetWanmaskConnect', payload }), [ dispatch ]);
-	const { mode } = useSelector(state => state.general);
+	const setMode = useCallback((payload) => dispatch({ type: 'SetMode', payload }), [ dispatch ]);
+	const setWanmaskConnect = useCallback((payload) => dispatch({ type: 'SetWanmaskConnect', payload }), [ dispatch ]);
+	const { mode } = useSelector((state) => state.general);
 	const [ actives, setActives ] = useState([ 'active', '', '' ]);
-	const { wanActive, walletOpt, wanmaskConnect } = useSelector(state => state.wallet);
+	const { wanActive, walletOpt, wanmaskConnect } = useSelector((state) => state.wallet);
 	const [ walletActive, setWalletActive ] = useState(false);
 	const [ addWalletOpt, setAddWalletOpt ] = useState(false);
+	const history = useHistory();
 
 	useEffect(
-		_ => {
+		(_) => {
 			setWalletActive(wanActive);
 			// switch (walletOpt) {
 			// 	case 'wanchain':
@@ -30,7 +31,7 @@ const Sidebar = props => {
 
 			const { pathname } = window.location;
 			if (!wanActive && pathname !== '/home') {
-				props.history.push('/home');
+				history.push('/home');
 			}
 
 			const wanmask = localStorage.getItem('wanmaskConnected') === 'true' ? true : false;
@@ -44,7 +45,7 @@ const Sidebar = props => {
 		[ wanActive, walletOpt, wanmaskConnect ]
 	);
 
-	useEffect(_ => {
+	useEffect((_) => {
 		let lastmode = localStorage.getItem('mode');
 
 		if (lastmode === 'Dark') {
@@ -73,21 +74,21 @@ const Sidebar = props => {
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const onMouseOver = _ => {
+	const onMouseOver = (_) => {
 		document.querySelector('.js-sidebar-wrapper').classList.add('open');
 
 		const div = document.querySelector('#js-wrapper-pair');
 		if (div) div.classList.add('active');
 	};
 
-	const onMouseLeave = _ => {
+	const onMouseLeave = (_) => {
 		document.querySelector('.js-sidebar-wrapper').classList.remove('open');
 
 		const div = document.querySelector('#js-wrapper-pair');
 		if (div) div.classList.remove('active');
 	};
 
-	const handleMode = _ => {
+	const handleMode = (_) => {
 		if (mode === 'Light') {
 			Dark();
 			setMode('Dark');

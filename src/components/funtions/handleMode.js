@@ -43,6 +43,10 @@ export function Dark() {
 			selects[i].classList.add('dark-mode');
 		}
 	}
+	const history = document.querySelector('.history');
+	if (history) {
+		history.classList.add('dark-mode');
+	}
 }
 
 export function Light() {
@@ -85,6 +89,11 @@ export function Light() {
 		for (let i = 0; i < selects.length; i++) {
 			selects[i].classList.remove('dark-mode');
 		}
+	}
+
+	const history = document.querySelector('.history');
+	if (history) {
+		history.classList.remove('dark-mode');
 	}
 }
 

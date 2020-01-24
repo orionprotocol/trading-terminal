@@ -1,0 +1,11 @@
+.date-1 > .react-datepicker-wrapper {
+	width: 100% !important;
+}
+
+.date-1 > .date-icon {
+	position: absolute;
+	margin-top: -8px;
+}
+.history .history-table .top .date .hr {
+	margin-top: -8px;
+}

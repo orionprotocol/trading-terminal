@@ -204,11 +204,11 @@ body.dark .datepicker .datepicker--day-name {
 }
 
 h1 {
-  font-size: 36px;
-  line-height: 36px;
-  font-weight: 700;
-  letter-spacing: -1px;
-  color: rgba(20, 16, 41, 0.8);
+  font-size: 36px !important;
+  line-height: 36px !important;
+  font-weight: 700 !important;
+  letter-spacing: -1px !important;
+  color: rgba(20, 16, 41, 0.8) !important;
 }
 
 h2 {
@@ -2581,7 +2581,7 @@ a:active {
 }
 
 .history.dark-mode h1 {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .history.dark-mode .history-table {
