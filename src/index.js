@@ -9,13 +9,15 @@ import balances from './reducers/balances.js';
 import general from './reducers/general.js';
 import responsive from './reducers/responsive.js';
 import wallet from './reducers/wallet.js';
+import history from './reducers/history.js';
 import 'antd/dist/antd.css';
 
 const reducer = combineReducers({
 	balances,
 	general,
 	responsive,
-	wallet
+	wallet,
+	history
 });
 
 const store = createStore(reducer);

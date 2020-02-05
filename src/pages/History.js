@@ -1,11 +1,48 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import TopMenu from '../components/TopMenu';
 import Sidebar from '../components/Sidebar';
-
+import axios from 'axios';
 import Deposits from '../components/History/Deposits';
 import Withdraws from '../components/History/Withdraws';
+import { useDispatch } from 'react-redux';
+
+const address = window.wan3.toChecksumAddress(localStorage.getItem('currentAccount'));
+
+const url = 'http://localhost:3001/api/history/' + address;
 
 function History() {
+	const dispatch = useDispatch();
+
+	const setDeposits = useCallback((data) => dispatch({ type: 'SetDeposits', payload: data }), [ dispatch ]);
+	const setWithdrawls = useCallback((data) => dispatch({ type: 'SetWithdrawls', payload: data }), [ dispatch ]);
+
+	useEffect((_) => {
+		axios
+			.get(url)
+			.then((res) => {
+				if (res.data.length > 0) {
+					let w = [],
+						d = [];
+
+					res.data.map((e) => {
+						if (e.type === 'deposit') {
+							return d.push(e);
+						} else if (e.type === 'withdrawl') {
+							return w.push(e);
+						}
+					});
+
+					setDeposits(d);
+					setWithdrawls(w);
+
+					// console.log(w, d);
+				}
+			})
+			.catch((err) => {
+				console.log(err.response.data);
+			});
+	}, []);
+
 	return (
 		<div>
 			<TopMenu />

@@ -3,19 +3,20 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const io = require('socket.io-client'),
 	socket = io.connect(process.env.REACT_APP_SOCKET_URL);
+// socket = io.connect('http://localhost:3002');
 
-const Sockets = props => {
-	let { contractBalances, walletBalances } = useSelector(state => state.balances);
-	const { symbol } = useSelector(state => state.general);
+const Sockets = (props) => {
+	let { contractBalances, walletBalances } = useSelector((state) => state.balances);
+	const { symbol } = useSelector((state) => state.general);
 	const [ websocket, setWS ] = useState(null);
 	const dispatch = useDispatch();
-	const setBalances = useCallback(data => dispatch({ type: 'SetBalances', payload: data }), [ dispatch ]);
-	const setOrderBook = useCallback(data => dispatch({ type: 'SetOrderBook', payload: data }), [ dispatch ]);
+	const setBalances = useCallback((data) => dispatch({ type: 'SetBalances', payload: data }), [ dispatch ]);
+	const setOrderBook = useCallback((data) => dispatch({ type: 'SetOrderBook', payload: data }), [ dispatch ]);
 	const address = localStorage.getItem('currentAccount');
 
-	useEffect(_ => {
+	useEffect((_) => {
 		if (window.wan3 && address) {
-			socket.on('connect', _ => {
+			socket.on('connect', (_) => {
 				console.log('Connected....................................');
 				if (window.wan3.toChecksumAddress(address)) {
 					socket.emit('clientAddress', window.wan3.toChecksumAddress(address));
@@ -25,13 +26,15 @@ const Sockets = props => {
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	useEffect(
-		_ => {
+		(_) => {
 			// --------------------- Orion-Wanchain Sockets -----------------------------------------------------
 
 			if (window.wan3) {
-				socket.on('balanceChange', data => {
+				socket.on('balanceChange', (data) => {
 					if (window.wan3.toChecksumAddress(data.user) === window.wan3.toChecksumAddress(address)) {
 						if (typeof contractBalances !== 'undefined' && typeof walletBalances !== 'undefined') {
+							// console.log('New Balance, ', data);
+
 							let newBal = 0;
 							if (data.asset === 'WBTC') {
 								newBal = data.newBalance * 100000000;
@@ -39,7 +42,7 @@ const Sockets = props => {
 								newBal = data.newBalance * 1000000000000000000;
 							}
 
-							let newWalletBal = data.newWalletBalance;
+							let newWalletBal = Number(data.newWalletBalance);
 							contractBalances[data.asset] = String(newBal.toFixed(8));
 							walletBalances[data.asset] = String(newWalletBal.toFixed(8));
 							setBalances({
@@ -57,7 +60,7 @@ const Sockets = props => {
 		[ contractBalances, walletBalances ]
 	);
 	useEffect(
-		_ => {
+		(_) => {
 			// ---------------------------------------- Orion Backend Sockets Aks - Bids ---------------
 
 			if (websocket !== null) {

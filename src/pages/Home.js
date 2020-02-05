@@ -29,32 +29,32 @@ function removeClass() {
 }
 
 function Home(props) {
-	const { orderbook, active, pair, exchange, chart, history } = useSelector(state => state.responsive.home);
-	const { mode, symbol } = useSelector(state => state.general);
+	const { orderbook, active, pair, exchange, chart, history } = useSelector((state) => state.responsive.home);
+	const { mode, symbol } = useSelector((state) => state.general);
 
 	const [ show1, setShow1 ] = useState(false);
 	const [ show2, setShow2 ] = useState(false);
 
-	const handleShow2 = _ => {
+	const handleShow2 = (_) => {
 		setShow1(false);
 		setTimeout(() => {
 			setShow2(true);
 		}, 100);
 	};
 
-	const handleShow1 = _ => {
+	const handleShow1 = (_) => {
 		setShow2(false);
 		setTimeout(() => {
 			setShow1(true);
 		}, 100);
 	};
 
-	const handleAddWallet = _ => {
+	const handleAddWallet = (_) => {
 		setShow1(!show1);
 	};
 
 	useEffect(() => {
-		window.addEventListener('resize', _ => {
+		window.addEventListener('resize', (_) => {
 			if (window.innerWidth > 1130) removeClass();
 			else addClass();
 		});
@@ -64,12 +64,12 @@ function Home(props) {
 	}, []);
 
 	useEffect(
-		_ => {
+		(_) => {
 			const { pathname } = window.location;
 
-			if (pathname === '/home') {
-				window.renderChart('all', symbol, mode);
-			}
+			// if (pathname === '/home') {
+			// 	window.renderChart('all', symbol, mode);
+			// }
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ window.location.pathname, mode, symbol ]
@@ -86,13 +86,13 @@ function Home(props) {
 
 				{show1 ? (
 					<FadeIn transitionDuration={10}>
-						<AddWallet1 show2={handleShow2} hide1={_ => setShow1(false)} />
+						<AddWallet1 show2={handleShow2} hide1={(_) => setShow1(false)} />
 					</FadeIn>
 				) : null}
 
 				{show2 ? (
 					<FadeIn transitionDuration={10}>
-						<AddWallet2 show1={handleShow1} hide2={_ => setShow2(false)} />
+						<AddWallet2 show1={handleShow1} hide2={(_) => setShow2(false)} />
 					</FadeIn>
 				) : null}
 

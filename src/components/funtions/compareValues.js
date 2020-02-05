@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export default function compareValues(key, order = 'asc') {
 	return function(a, b) {
 		if (key === 'total') {
@@ -8,6 +10,19 @@ export default function compareValues(key, order = 'asc') {
 		if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
 			// property doesn't exist on either object
 			return 0;
+		}
+
+		if (key === 'created_at') {
+			const dateA = moment(a[key]).unix();
+			const dateB = moment(b[key]).unix();
+
+			let comparison = 0;
+			if (dateA > dateB) {
+				comparison = 1;
+			} else if (dateA < dateB) {
+				comparison = -1;
+			}
+			return order === 'desc' ? comparison * -1 : comparison;
 		}
 
 		const varA = typeof a[key] === 'string' ? a[key].toUpperCase() : a[key];

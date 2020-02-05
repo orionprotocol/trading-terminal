@@ -30,9 +30,9 @@ const Sidebar = (props) => {
 			// }
 
 			const { pathname } = window.location;
-			if (!wanActive && pathname !== '/home') {
-				history.push('/home');
-			}
+			// if (!wanActive && pathname !== '/home') {
+			// 	history.push('/home');
+			// }
 
 			const wanmask = localStorage.getItem('wanmaskConnected') === 'true' ? true : false;
 
@@ -134,11 +134,10 @@ const Sidebar = (props) => {
 								</Link>
 							) : null}
 
-							{/* 
 							<Link className={`nav-link ${actives[2]}`} to="/history">
 								<span className="icon-link-3 icon" />
 								<span className="text">History</span>
-							</Link> */}
+							</Link>
 						</nav>
 						<div className="aside-coins">
 							{wanmaskConnect ? (

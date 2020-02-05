@@ -16,7 +16,7 @@ const OrionWanchain = (_) => {
 						.get(`${process.env.REACT_APP_ORION_WAN}/api/balance/${address}`)
 						.then((res) => {
 							if (res.data.contractbalances) {
-								console.log(res.data);
+								// console.log(res.data);
 								//{walletBalances: {…}, contractbalances: {…}}
 								let all = res.data;
 								let newBal = {

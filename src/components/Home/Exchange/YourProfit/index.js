@@ -5,8 +5,8 @@ import './index.css';
 
 const urlBase = process.env.REACT_APP_BACKEND;
 
-const YourProfit = pros => {
-	const { symbol, qtyForm, sideForm } = useSelector(state => state.general);
+const YourProfit = (pros) => {
+	const { symbol, qtyForm, sideForm } = useSelector((state) => state.general);
 	const [ binance, setBinance ] = useState({ pct: 0, btc: 0 });
 	const [ poloniex, setPoloniex ] = useState({ pct: 0, btc: 0 });
 	const [ bittrex, setBittrex ] = useState({ pct: 0, btc: 0 });
@@ -21,8 +21,8 @@ const YourProfit = pros => {
 
 		axios
 			.get(url)
-			.then(res => {
-				console.log(res.data);
+			.then((res) => {
+				// console.log(res.data);
 				setBinance({
 					pct: res.data.binance.benefitPct,
 					btc: res.data.binance.benefitBtc
@@ -36,13 +36,13 @@ const YourProfit = pros => {
 					btc: res.data.bittrex.benefitBtc
 				});
 			})
-			.catch(err => {
+			.catch((err) => {
 				console.log('err: ', err);
 			});
 	};
 
 	useEffect(
-		_ => {
+		(_) => {
 			loadBenefits();
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
