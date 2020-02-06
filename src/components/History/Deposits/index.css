@@ -9,3 +9,11 @@
 .history .history-table .top .date .hr {
 	margin-top: -8px;
 }
+
+.pagination {
+	margin-top: 5px !important;
+}
+
+.dark-mode .react-datepicker__input-container {
+	color: #fff;
+}

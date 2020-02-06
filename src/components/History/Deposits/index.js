@@ -6,6 +6,7 @@ import getSymbol from '../../funtions/getSymbol';
 import getSymbolImg from '../../funtions/getSymbolImg';
 import moment from 'moment';
 import compareValues from '../../funtions/compareValues';
+import ReactPaginate from 'react-paginate';
 
 import './index.css';
 
@@ -25,6 +26,11 @@ export default function Deposits() {
 		amount: 'fa-angle-down',
 		status: 'fa-angle-down'
 	});
+	const [ offset, setOffset ] = useState(0);
+	const [ elements, setElements ] = useState([]);
+	const [ currentPage, setCurrentPage ] = useState(0);
+	const [ pageCount, setPageCount ] = useState(0);
+	const perPage = 10;
 
 	const handleSort = (type) => {
 		let newClasses = {};
@@ -75,6 +81,7 @@ export default function Deposits() {
 
 	useEffect(
 		(_) => {
+			setPageCount(Math.ceil(deps.length / perPage));
 			setDepositsRender(
 				deps.map((e, i) => {
 					const date = moment(e.created_at).utc(false).format('DD.MM.YYYY HH:mm:ss');
@@ -105,6 +112,17 @@ export default function Deposits() {
 
 	useEffect(
 		(_) => {
+			// console.log('length ', depositsRender.length)
+			if (depositsRender.length > 0) {
+				setElementsForCurrentPage();
+			}
+		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+		[ depositsRender ]
+	);
+
+	useEffect(
+		(_) => {
 			let newTime = moment(startDateA).unix();
 			let timeB = moment(startDateB).unix();
 
@@ -115,6 +133,7 @@ export default function Deposits() {
 
 			setDeps(newDeps);
 		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ startDateA ]
 	);
 
@@ -130,6 +149,7 @@ export default function Deposits() {
 
 			setDeps(newDeps);
 		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ startDateB ]
 	);
 
@@ -150,6 +170,26 @@ export default function Deposits() {
 
 			setDeps(newDeps);
 		}
+	};
+
+	const setElementsForCurrentPage = () => {
+		let elements = depositsRender.slice(offset, offset + perPage);
+		setElements(elements);
+	};
+
+	useEffect(
+		(_) => {
+			setElementsForCurrentPage();
+		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+		[ currentPage, offset ]
+	);
+
+	const handlePageClick = (data) => {
+		const selectedPage = data.selected;
+		const offset = selectedPage * perPage;
+		setCurrentPage(selectedPage);
+		setOffset(offset);
 	};
 
 	return (
@@ -243,16 +283,33 @@ export default function Deposits() {
 							<i className={`fa ${classes.status}`} aria-hidden="true" />
 						</div>
 					</div>
-					<div className="lines">{depositsRender}</div>
+					<div className="lines">
+						{/* {depositsRender} */}
+						{elements}
+					</div>
 				</div>
 				<div className="pagination">
-					<i className="fa fa-angle-left arrow-prev" aria-hidden="true" />
+					{depositsRender.length > 0 && (
+						<ReactPaginate
+							previousLabel={<i className="fa fa-angle-left arrow-prev" aria-hidden="true" />}
+							nextLabel={<i className="fa fa-angle-right arrow-next" aria-hidden="true" />}
+							breakLabel={<span className="gap">...</span>}
+							pageCount={pageCount}
+							onPageChange={handlePageClick}
+							forcePage={currentPage}
+							containerClassName={'pagination'}
+							disabledClassName={'disabled'}
+							activeClassName={'num active'}
+							pageLinkClassName="num"
+						/>
+					)}
+					{/* <i className="fa fa-angle-left arrow-prev" aria-hidden="true" />
 					<span className="num">1</span>
 					<span className="num active">2</span>
 					<span className="num">3</span>
 					<span className="num">...</span>
 					<span className="num">8</span>
-					<i className="fa fa-angle-right arrow-next" aria-hidden="true" />
+					<i className="fa fa-angle-right arrow-next" aria-hidden="true" /> */}
 				</div>
 			</div>
 		</div>

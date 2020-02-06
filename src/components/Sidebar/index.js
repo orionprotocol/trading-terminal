@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Dark, Light } from '../funtions/handleMode';
 
 import './index.css';
@@ -14,7 +14,7 @@ const Sidebar = (props) => {
 	const { wanActive, walletOpt, wanmaskConnect } = useSelector((state) => state.wallet);
 	const [ walletActive, setWalletActive ] = useState(false);
 	const [ addWalletOpt, setAddWalletOpt ] = useState(false);
-	const history = useHistory();
+	// const history = useHistory();
 
 	useEffect(
 		(_) => {
@@ -29,7 +29,7 @@ const Sidebar = (props) => {
 			// 		break;
 			// }
 
-			const { pathname } = window.location;
+			// const { pathname } = window.location;
 			// if (!wanActive && pathname !== '/home') {
 			// 	history.push('/home');
 			// }

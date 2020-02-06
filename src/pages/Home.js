@@ -67,9 +67,9 @@ function Home(props) {
 		(_) => {
 			const { pathname } = window.location;
 
-			// if (pathname === '/home') {
-			// 	window.renderChart('all', symbol, mode);
-			// }
+			if (pathname === '/home') {
+				window.renderChart('all', symbol, mode);
+			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ window.location.pathname, mode, symbol ]

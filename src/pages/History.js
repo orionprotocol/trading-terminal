@@ -30,17 +30,18 @@ function History() {
 						} else if (e.type === 'withdrawl') {
 							return w.push(e);
 						}
+						return e;
 					});
 
 					setDeposits(d);
 					setWithdrawls(w);
-
-					// console.log(w, d);
 				}
 			})
 			.catch((err) => {
-				console.log(err.response.data);
+				if (err.response) console.log(err.response.data);
+				else console.log(err);
 			});
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (
