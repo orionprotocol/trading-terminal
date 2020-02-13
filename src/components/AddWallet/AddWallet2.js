@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-const AddWallet2 = props => {
+const AddWallet2 = (props) => {
 	const dispatch = useDispatch();
 
-	const { walletOpt } = useSelector(state => state.wallet);
-	const setWanmaskConnect = useCallback(payload => dispatch({ type: 'SetWanmaskConnect', payload }), [ dispatch ]);
+	const { walletOpt } = useSelector((state) => state.wallet);
+	const setWanmaskConnect = useCallback((payload) => dispatch({ type: 'SetWanmaskConnect', payload }), [ dispatch ]);
 	const [ opt, setOpt ] = useState('');
 
 	useEffect(
-		_ => {
+		(_) => {
 			switch (walletOpt) {
 				case 'wanchain':
 					setOpt('WanMask');
@@ -30,7 +30,7 @@ const AddWallet2 = props => {
 		seed: [ '', false ]
 	});
 
-	const handleClick = type => {
+	const handleClick = (type) => {
 		switch (type) {
 			case 'wallet':
 				setTabs({
@@ -59,13 +59,24 @@ const AddWallet2 = props => {
 		}
 	};
 
-	const handleConnect = _ => {
-		// const Web3 = require('web3');
-		// const web3 = new Web3(window.wan3.currentProvider);
-		// console.log(web3.enable());
-		localStorage.setItem('wanmaskConnected', 'true');
-		setWanmaskConnect(true);
-		props.hide2();
+	const handleConnect = async (_) => {
+		console.log(opt);
+		switch (opt) {
+			case 'WanMask':
+				localStorage.setItem('wanmaskConnected', 'true');
+				setWanmaskConnect(true);
+				props.hide2();
+				break;
+			case 'MetaMask':
+				if (window.ethereum) {
+					const accounts = await window.ethereum.enable();
+					console.log('accounts', accounts);
+					props.hide2();
+				}
+				break;
+			default:
+				break;
+		}
 	};
 
 	return (
@@ -85,7 +96,7 @@ const AddWallet2 = props => {
 							<button
 								className={`js-tab-btn ${tabs.wallet[0]}`}
 								data-tab="wallet"
-								onClick={_ => handleClick('wallet')}
+								onClick={(_) => handleClick('wallet')}
 							>
 								{opt}
 							</button>

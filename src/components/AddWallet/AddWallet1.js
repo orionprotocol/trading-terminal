@@ -2,11 +2,11 @@ import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import './index.css';
 
-const AddWallet1 = props => {
+const AddWallet1 = (props) => {
 	const dispatch = useDispatch();
-	const setWalletOpt = useCallback(payload => dispatch({ type: 'SetWalletOpt', payload }), [ dispatch ]);
+	const setWalletOpt = useCallback((payload) => dispatch({ type: 'SetWalletOpt', payload }), [ dispatch ]);
 
-	const handleClick = opt => {
+	const handleClick = (opt) => {
 		setWalletOpt(opt);
 
 		props.show2();
@@ -25,15 +25,15 @@ const AddWallet1 = props => {
 						<img className="close js-close" src="./img/close.png" alt="dash" onClick={props.hide1} />
 					</div>
 					<div className="choose-wallet">
-						{/* <div className="item js-next-step" onClick={_ => handleClick('ethereum')}>
+						<div className="item js-next-step" onClick={(_) => handleClick('ethereum')}>
 							<img className="icon" src="./img/big-eth.png" alt="dash" />
 							<div className="text">
 								<p className="name">Ethereum</p>
 								<p className="desc">Ethereum is the solution</p>
 							</div>
 							<img className="next" src="./img/arrow-down.svg" alt="dash" />
-						</div> */}
-						<div className="item js-next-step" onClick={_ => handleClick('wanchain')}>
+						</div>
+						<div className="item js-next-step" onClick={(_) => handleClick('wanchain')}>
 							<img className="icon" src="./img/wanchain.png" alt="dash" />
 							<div className="text">
 								<p className="name">Wanchain</p>

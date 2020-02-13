@@ -2,7 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dark, Light } from '../funtions/handleMode';
-
+import FadeIn from 'react-fade-in';
+import AddWallet1 from '../AddWallet/AddWallet1';
+import AddWallet2 from '../AddWallet/AddWallet2';
 import './index.css';
 
 const Sidebar = (props) => {
@@ -14,7 +16,25 @@ const Sidebar = (props) => {
 	const { wanActive, walletOpt, wanmaskConnect } = useSelector((state) => state.wallet);
 	const [ walletActive, setWalletActive ] = useState(false);
 	const [ addWalletOpt, setAddWalletOpt ] = useState(false);
+
+	const [ show1, setShow1 ] = useState(false);
+	const [ show2, setShow2 ] = useState(false);
+
 	// const history = useHistory();
+
+	const handleShow2 = (_) => {
+		setShow1(false);
+		setTimeout(() => {
+			setShow2(true);
+		}, 100);
+	};
+
+	const handleShow1 = (_) => {
+		setShow2(false);
+		setTimeout(() => {
+			setShow1(true);
+		}, 100);
+	};
 
 	useEffect(
 		(_) => {
@@ -98,11 +118,28 @@ const Sidebar = (props) => {
 		}
 	};
 
+	const handleAddWallet = (_) => {
+		setShow1(!show1);
+	};
+
 	return (
 		<div onMouseLeave={onMouseLeave} onMouseOver={onMouseOver}>
 			<div className="sidebar-line js-sidebar-line">
 				<div className="line" />
 			</div>
+
+			{show1 ? (
+				<FadeIn transitionDuration={10}>
+					<AddWallet1 show2={handleShow2} hide1={(_) => setShow1(false)} />
+				</FadeIn>
+			) : null}
+
+			{show2 ? (
+				<FadeIn transitionDuration={10}>
+					<AddWallet2 show1={handleShow1} hide2={(_) => setShow2(false)} />
+				</FadeIn>
+			) : null}
+
 			<div className="sidebar-wrapper js-sidebar-wrapper">
 				<div className="sidebar-content">
 					<a className="logo" href="/">
@@ -167,11 +204,11 @@ const Sidebar = (props) => {
 							<img src="./img/close.png" alt="home" />
 
 							{addWalletOpt ? (
-								<span className="" onClick={props.handleAddWallet}>
+								<span className="" onClick={handleAddWallet}>
 									Add Wallet
 								</span>
 							) : (
-								<span className="add-wallet-btn" onClick={props.handleAddWallet}>
+								<span className="add-wallet-btn" onClick={handleAddWallet}>
 									Add Wallet
 								</span>
 							)}

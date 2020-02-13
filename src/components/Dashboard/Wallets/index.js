@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Slider from 'react-slick';
-import AddWallet1 from '../AddWallet/AddWallet1';
-import AddWallet2 from '../AddWallet/AddWallet2';
+import AddWallet1 from '../../AddWallet/AddWallet1';
+import AddWallet2 from '../../AddWallet/AddWallet2';
 import FadeIn from 'react-fade-in';
 import './index.css';
 
@@ -25,8 +25,8 @@ const settings = {
 	]
 };
 
-const Wallets = _ => {
-	const balances = useSelector(state => state.balances);
+const Wallets = (_) => {
+	const balances = useSelector((state) => state.balances);
 	const [ contract, setContract ] = useState({
 		ETH: 0,
 		BTC: 0,
@@ -37,7 +37,7 @@ const Wallets = _ => {
 	const [ show2, setShow2 ] = useState(false);
 
 	useEffect(
-		_ => {
+		(_) => {
 			try {
 				// const { contractBalances } = balances;
 				// if (contractBalances) {
@@ -66,18 +66,18 @@ const Wallets = _ => {
 		[ balances ]
 	);
 
-	const handleAddWallet = _ => {
+	const handleAddWallet = (_) => {
 		setShow1(!show1);
 	};
 
-	const handleShow2 = _ => {
+	const handleShow2 = (_) => {
 		setShow1(false);
 		setTimeout(() => {
 			setShow2(true);
 		}, 100);
 	};
 
-	const handleShow1 = _ => {
+	const handleShow1 = (_) => {
 		setShow2(false);
 		setTimeout(() => {
 			setShow1(true);
@@ -130,13 +130,13 @@ const Wallets = _ => {
 
 			{show1 ? (
 				<FadeIn transitionDuration={500}>
-					<AddWallet1 show2={handleShow2} hide1={_ => setShow1(false)} />
+					<AddWallet1 show2={handleShow2} hide1={(_) => setShow1(false)} />
 				</FadeIn>
 			) : null}
 
 			{show2 ? (
 				<FadeIn transitionDuration={500}>
-					<AddWallet2 show1={handleShow1} hide2={_ => setShow2(false)} />
+					<AddWallet2 show1={handleShow1} hide2={(_) => setShow2(false)} />
 				</FadeIn>
 			) : null}
 		</div>
