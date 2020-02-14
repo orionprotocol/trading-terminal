@@ -5,7 +5,7 @@ import axios from 'axios';
 const OrionWanchain = (_) => {
 	const balances = useSelector((state) => state.balances);
 	const dispatch = useDispatch();
-	const { wanmaskConnect, wanActive } = useSelector((state) => state.wallet);
+	const { wanmaskConnected, wanActive } = useSelector((state) => state.wallet);
 	const setBalances = useCallback((data) => dispatch({ type: 'SetBalances', payload: data }), [ dispatch ]);
 	useEffect(
 		() => {
@@ -37,7 +37,7 @@ const OrionWanchain = (_) => {
 			}, 500);
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ wanmaskConnect, wanActive ]
+		[ wanmaskConnected, wanActive ]
 	);
 
 	return <Fragment />;

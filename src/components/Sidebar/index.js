@@ -9,11 +9,18 @@ import './index.css';
 
 const Sidebar = (props) => {
 	const dispatch = useDispatch();
+
 	const setMode = useCallback((payload) => dispatch({ type: 'SetMode', payload }), [ dispatch ]);
+
 	const setWanmaskConnect = useCallback((payload) => dispatch({ type: 'SetWanmaskConnect', payload }), [ dispatch ]);
+
+	const setMetamaskConnect = useCallback((payload) => dispatch({ type: 'SetMetamaskConnect', payload }), [
+		dispatch
+	]);
+
 	const { mode } = useSelector((state) => state.general);
 	const [ actives, setActives ] = useState([ 'active', '', '' ]);
-	const { wanActive, walletOpt, wanmaskConnect } = useSelector((state) => state.wallet);
+	const { wanActive, walletOpt, wanmaskConnected, metamaskConnected } = useSelector((state) => state.wallet);
 	const [ walletActive, setWalletActive ] = useState(false);
 	const [ addWalletOpt, setAddWalletOpt ] = useState(false);
 
@@ -55,14 +62,22 @@ const Sidebar = (props) => {
 			// }
 
 			const wanmask = localStorage.getItem('wanmaskConnected') === 'true' ? true : false;
+			const metamask = localStorage.getItem('metamaskConnected') === 'true' ? true : false;
 
-			if (wanmask || wanmaskConnect) {
+			if (wanmask || wanmaskConnected) {
 				setAddWalletOpt(true);
 				setWanmaskConnect(true);
+				setWalletActive(true);
+			}
+
+			if (metamask || metamaskConnected) {
+				setAddWalletOpt(true);
+				setMetamaskConnect(true);
+				setWalletActive(true);
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ wanActive, walletOpt, wanmaskConnect ]
+		[ wanActive, walletOpt, wanmaskConnected ]
 	);
 
 	useEffect((_) => {
@@ -177,10 +192,16 @@ const Sidebar = (props) => {
 							</Link>
 						</nav>
 						<div className="aside-coins">
-							{wanmaskConnect ? (
+							{wanmaskConnected ? (
 								<div className="coin">
 									<img src="./img/wanchain2.png" alt="home" />
 									<span className="text">Wanchain</span>
+								</div>
+							) : null}
+							{metamaskConnected ? (
+								<div className="coin">
+									<img src="./img/eth-aside.svg" alt="home" />
+									<span className="text">Ethereum</span>
 								</div>
 							) : null}
 							{/*
@@ -189,10 +210,6 @@ const Sidebar = (props) => {
 								<span className="text">Bitcoin</span>
 							</div>
 							
-							<div className="coin">
-								<img src="./img/eth-aside.svg" alt="home" />
-								<span className="text">Ethereum</span>
-							</div>
 							<div className="coin">
 								<img src="./img/dash-small.png" alt="home" />
 								<span className="text">Dash</span>

@@ -5,7 +5,13 @@ const AddWallet2 = (props) => {
 	const dispatch = useDispatch();
 
 	const { walletOpt } = useSelector((state) => state.wallet);
+
 	const setWanmaskConnect = useCallback((payload) => dispatch({ type: 'SetWanmaskConnect', payload }), [ dispatch ]);
+
+	const setMetamaskConnect = useCallback((payload) => dispatch({ type: 'SetMetamaskConnect', payload }), [
+		dispatch
+	]);
+
 	const [ opt, setOpt ] = useState('');
 
 	useEffect(
@@ -60,7 +66,7 @@ const AddWallet2 = (props) => {
 	};
 
 	const handleConnect = async (_) => {
-		console.log(opt);
+		// console.log(opt);
 		switch (opt) {
 			case 'WanMask':
 				localStorage.setItem('wanmaskConnected', 'true');
@@ -69,9 +75,15 @@ const AddWallet2 = (props) => {
 				break;
 			case 'MetaMask':
 				if (window.ethereum) {
-					const accounts = await window.ethereum.enable();
-					console.log('accounts', accounts);
-					props.hide2();
+					try {
+						const accounts = await window.ethereum.enable();
+						console.log('accounts', accounts);
+						localStorage.setItem('metamaskConnected', 'true');
+						setMetamaskConnect(true);
+						props.hide2();
+					} catch (err) {
+						console.log(err);
+					}
 				}
 				break;
 			default:

@@ -6,13 +6,13 @@ import Metamask from './Metamask';
 import { useSelector } from 'react-redux';
 
 const Index = (_) => {
-	const { wanmaskConnect } = useSelector((state) => state.wallet);
+	const { wanmaskConnected } = useSelector((state) => state.wallet);
 
 	const [ render, setRender ] = useState(null);
 
 	useEffect(
 		(_) => {
-			if (window.wan3 !== undefined && wanmaskConnect) {
+			if (window.wan3 !== undefined && wanmaskConnected) {
 				setRender(
 					<Fragment>
 						<OrionWanchain />
@@ -21,7 +21,7 @@ const Index = (_) => {
 				);
 			}
 		},
-		[ wanmaskConnect ]
+		[ wanmaskConnected ]
 	);
 
 	return (
