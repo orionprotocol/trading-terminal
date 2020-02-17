@@ -15,9 +15,9 @@ if (window.wan3) {
 	const web3 = new Web3(window.wan3.currentProvider);
 	// const web3 = new Web3();
 
-	const exchangeArtifact = require('../contracts/Exchange.json');
-	const WETHArtifact = require('../contracts/WETH.json');
-	const WBTCArtifact = require('../contracts/WBTC.json');
+	const exchangeArtifact = require('../contracts/Exchange-wan.json');
+	const WETHArtifact = require('../contracts/WETH-wan.json');
+	const WBTCArtifact = require('../contracts/WBTC-wan.json');
 	const contractAddress = exchangeArtifact.networks['3'].address;
 	WBTC = WBTCArtifact.networks['3'].address;
 	WETH = WETHArtifact.networks['3'].address;
@@ -172,12 +172,12 @@ if (window.wan3) {
 		});
 
 	// === Hash Order=== //// CONVERT LONG TO BYTES
-	const longToBytes = long => {
+	const longToBytes = (long) => {
 		return web3.utils.bytesToHex(Long.fromNumber(long).toBytesBE());
 	};
 
 	// === GET ORDER HASH=== //
-	hashOrder = orderInfo => {
+	hashOrder = (orderInfo) => {
 		let message = web3.utils.soliditySha3(
 			'0x03',
 			orderInfo.senderAddress,
@@ -198,7 +198,7 @@ if (window.wan3) {
 
 	// === SIGN ORDER === //
 
-	signOrder = orderInfo =>
+	signOrder = (orderInfo) =>
 		new Promise((resolve, reject) => {
 			let message = hashOrder(orderInfo);
 			//Wanmask
@@ -279,7 +279,7 @@ if (window.wan3) {
 		});
 
 	// === GET SIGATURE OBJECT === //
-	getSignatureObj = signature => {
+	getSignatureObj = (signature) => {
 		const netId = 3;
 		signature = signature.substr(2); //remove 0x
 		const r = '0x' + signature.slice(0, 64);
