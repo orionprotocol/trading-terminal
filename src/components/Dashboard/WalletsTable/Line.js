@@ -3,25 +3,25 @@ import Modal from './Modal';
 
 import { deposit, withdraw } from '../../../services/Wanmask';
 
-const Line = props => {
+const Line = (props) => {
 	const [ depositModal, toggleDepositModal ] = useState(false);
 	const [ withdrawModal, toggleWithdrawModal ] = useState(false);
 	const currentAccount = localStorage.getItem('currentAccount');
-	const handleTrade = _ => props.history.push('/home');
-	const handleDeposit = _ => {
+	const handleTrade = (_) => props.history.push('/home');
+	const handleDeposit = (_) => {
 		toggleDepositModal(!depositModal);
 	};
-	const handleWithdraw = _ => {
+	const handleWithdraw = (_) => {
 		toggleWithdrawModal(!withdrawModal);
 	};
 
-	const submitDeposit = async amount => {
+	const submitDeposit = async (amount) => {
 		let res = await deposit(props.currency.toLowerCase(), amount, currentAccount);
 		console.log(res);
 		handleDeposit();
 	};
 
-	const submitWithdraw = async amount => {
+	const submitWithdraw = async (amount) => {
 		let res = await withdraw(props.currency.toLowerCase(), amount, currentAccount);
 		console.log(res);
 		handleWithdraw();
@@ -34,7 +34,8 @@ const Line = props => {
 				<span>{props.currency}</span>
 			</div>
 			<span className="cell">
-				<span className="title-m">Wallet</span> {props.wallet}
+				<span className="title-m">Wallet</span>
+				{props.wallet}
 			</span>
 			<span className="cell">
 				<span className="title-m">Contract</span> {props.contract}
@@ -62,13 +63,13 @@ const Line = props => {
 			<Modal
 				show={depositModal}
 				operation="Deposit"
-				toggle={_ => toggleDepositModal(!depositModal)}
+				toggle={(_) => toggleDepositModal(!depositModal)}
 				submit={submitDeposit}
 			/>
 			<Modal
 				show={withdrawModal}
 				operation="Withdraw"
-				toggle={_ => toggleWithdrawModal(!withdrawModal)}
+				toggle={(_) => toggleWithdrawModal(!withdrawModal)}
 				submit={submitWithdraw}
 				maxWithdraw={props.contract}
 			/>

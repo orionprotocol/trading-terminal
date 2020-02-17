@@ -53,9 +53,9 @@ const Wallets = (_) => {
 				if (walletBalances) {
 					setContract({
 						...contract,
-						ETH: Number(walletBalances.WETH),
-						BTC: Number(walletBalances.WBTC),
-						WAN: Number(walletBalances.WAN)
+						ETH: Number(walletBalances.WETH) || 0,
+						BTC: Number(walletBalances.WBTC) || 0,
+						WAN: Number(walletBalances.WAN) || 0
 					});
 				}
 			} catch (e) {

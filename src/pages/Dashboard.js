@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import TopMenu from '../components/TopMenu';
 import Sidebar from '../components/Sidebar';
 import Wallets from '../components/Dashboard/Wallets';
@@ -6,6 +6,12 @@ import TotalBalances from '../components/Dashboard/TotalBalances';
 import WalletsTable from '../components/Dashboard/WalletsTable';
 
 function Dashboard(props) {
+	useEffect((_) => {
+		// setInterval(async () => {
+		// 	const accounts = await window.ethereum.enable();
+		// 	console.log('accounts', accounts);
+		// }, 1000);
+	});
 	return (
 		<div>
 			<TopMenu />

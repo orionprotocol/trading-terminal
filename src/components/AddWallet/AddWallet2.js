@@ -77,8 +77,9 @@ const AddWallet2 = (props) => {
 				if (window.ethereum) {
 					try {
 						const accounts = await window.ethereum.enable();
-						console.log('accounts', accounts);
+						// console.log('accounts', accounts);
 						localStorage.setItem('metamaskConnected', 'true');
+						localStorage.setItem('address', accounts[0]);
 						setMetamaskConnect(true);
 						props.hide2();
 					} catch (err) {

@@ -77,7 +77,7 @@ const Sidebar = (props) => {
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ wanActive, walletOpt, wanmaskConnected ]
+		[ wanActive, walletOpt, wanmaskConnected, metamaskConnected ]
 	);
 
 	useEffect((_) => {

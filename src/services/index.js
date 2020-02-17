@@ -15,7 +15,6 @@ const Index = (_) => {
 			if (window.wan3 !== undefined && wanmaskConnected) {
 				setRender(
 					<Fragment>
-						<OrionWanchain />
 						<WanmaskVerification />
 					</Fragment>
 				);
@@ -28,6 +27,7 @@ const Index = (_) => {
 		<Fragment>
 			<Sockets />
 			<Metamask />
+			<OrionWanchain />
 			{render}
 		</Fragment>
 	);

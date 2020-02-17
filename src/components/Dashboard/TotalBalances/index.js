@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-const TotalBalances = _ => {
-	const balances = useSelector(state => state.balances);
+const TotalBalances = (_) => {
+	const balances = useSelector((state) => state.balances);
 	const [ contract, setContract ] = useState({
 		ETH: 0,
 		BTC: 0,
@@ -10,15 +10,15 @@ const TotalBalances = _ => {
 	});
 
 	useEffect(
-		_ => {
+		(_) => {
 			try {
 				const { contractBalances } = balances;
 				if (contractBalances) {
 					setContract({
 						...contract,
-						ETH: Number(contractBalances.WETH),
-						BTC: Number(contractBalances.WBTC),
-						WAN: Number(contractBalances.WAN)
+						ETH: Number(contractBalances.WETH) || 0,
+						BTC: Number(contractBalances.WBTC) || 0,
+						WAN: Number(contractBalances.WAN) || 0
 					});
 				}
 			} catch (e) {
@@ -29,7 +29,7 @@ const TotalBalances = _ => {
 		[ balances ]
 	);
 
-	useEffect(_ => {
+	useEffect((_) => {
 		window.am4core.ready(function() {
 			window.am4core.useTheme(window.am4themes_animated); // Themes end
 			/**

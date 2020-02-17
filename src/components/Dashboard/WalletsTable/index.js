@@ -4,8 +4,8 @@ import Line from './Line';
 import compareValues from '../../funtions/compareValues';
 import './index.css';
 
-const WalletsTable = props => {
-	const balances = useSelector(state => state.balances);
+const WalletsTable = (props) => {
+	const balances = useSelector((state) => state.balances);
 	const [ contract, setContract ] = useState({
 		ETH: 0,
 		BTC: 0,
@@ -26,7 +26,15 @@ const WalletsTable = props => {
 	const [ lines, setLines ] = useState([]);
 
 	useEffect(
-		_ => {
+		(_) => {
+			let wanWallet = 0,
+				wanContract = 0;
+
+			if (wallet.WAN && contract.WAN) {
+				wanWallet = wallet.WAN.toFixed(8);
+				wanContract = contract.WAN.toFixed(8);
+			}
+
 			setLines([
 				{
 					token: 'BTC',
@@ -44,8 +52,8 @@ const WalletsTable = props => {
 				},
 				{
 					token: 'WAN',
-					wallet: wallet.WAN.toFixed(8),
-					contract: contract.WAN.toFixed(8),
+					wallet: wanWallet,
+					contract: wanContract,
 					open: 0,
 					img: '/img/wanchain.png'
 				}
@@ -55,7 +63,7 @@ const WalletsTable = props => {
 	);
 
 	useEffect(
-		_ => {
+		(_) => {
 			try {
 				const { contractBalances, walletBalances } = balances;
 				if (contractBalances && walletBalances) {
@@ -80,7 +88,7 @@ const WalletsTable = props => {
 		[ balances ]
 	);
 
-	const handleSort = type => {
+	const handleSort = (type) => {
 		// let newLines = []
 
 		let newClasses = {};
@@ -109,19 +117,19 @@ const WalletsTable = props => {
 	return (
 		<div className="wallets-table">
 			<div className="titles">
-				<div className="title" onClick={_ => handleSort('token')}>
+				<div className="title" onClick={(_) => handleSort('token')}>
 					<span>Token</span>
 					<i className={classes.token} />
 				</div>
-				<div className="title" onClick={_ => handleSort('wallet')}>
+				<div className="title" onClick={(_) => handleSort('wallet')}>
 					<span>Wallet</span>
 					<i className={classes.wallet} />
 				</div>
-				<div className="title" onClick={_ => handleSort('contract')}>
+				<div className="title" onClick={(_) => handleSort('contract')}>
 					<span>Contract</span>
 					<i className={classes.contract} />
 				</div>
-				<div className="title" onClick={_ => handleSort('open')}>
+				<div className="title" onClick={(_) => handleSort('open')}>
 					<span>In open order</span>
 					<i className={classes.open} />
 				</div>
