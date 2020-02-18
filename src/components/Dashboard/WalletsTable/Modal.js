@@ -1,21 +1,28 @@
 import React, { Fragment, useState } from 'react';
 import FadeIn from 'react-fade-in';
-import openNotification from '../../Notification';
+// import openNotification from '../../Notification';
+import { deposit, withdraw } from '../../../services/Metamask';
 
-const Modal = props => {
+const Modal = (props) => {
 	const [ amount, setAmount ] = useState('');
 
-	const handleSubmit = _ => {
+	const handleSubmit = (_) => {
+		const address = window.ethereum.selectedAddress;
 		if (props.operation === 'Withdraw') {
-			if (Number(amount) > Number(props.maxWithdraw)) {
-				openNotification({
-					message: 'Insufficient balance'
-				});
-			} else {
-				props.submit(amount);
-			}
+			// if (Number(amount) > Number(props.maxWithdraw)) {
+			// 	openNotification({
+			// 		message: 'Insufficient balance'
+			// 	});
+			// } else {
+			// 	props.submit(amount);
+			// }
+			//-------------------------------------------------------------------------
+			withdraw('wbtc', amount, address);
 		} else {
-			props.submit(amount);
+			// props.submit(amount);
+			//-------------------------------------------------------------------------
+			// console.log('deposit', 'WBTC', amount, address);
+			deposit('wbtc', amount, address);
 		}
 	};
 
@@ -43,7 +50,7 @@ const Modal = props => {
 												<input
 													type="number"
 													value={amount}
-													onChange={e => setAmount(e.target.value)}
+													onChange={(e) => setAmount(e.target.value)}
 												/>
 											</div>
 										</div>
