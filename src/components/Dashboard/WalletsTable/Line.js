@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import Modal from './Modal';
-
-import { deposit, withdraw } from '../../../services/Wanmask';
+import { useSelector } from 'react-redux';
+import { deposit, withdraw } from '../../../services/Metamask';
+import { deposit as depositWan, withdraw as withdrawWan } from '../../../services/Wanmask';
 
 const Line = (props) => {
 	const [ depositModal, toggleDepositModal ] = useState(false);
 	const [ withdrawModal, toggleWithdrawModal ] = useState(false);
+	const { wanmaskConnected, metamaskConnected } = useSelector((state) => state.wallet);
+
 	const currentAccount = localStorage.getItem('currentAccount');
 	const handleTrade = (_) => props.history.push('/home');
 	const handleDeposit = (_) => {
@@ -14,17 +17,50 @@ const Line = (props) => {
 	const handleWithdraw = (_) => {
 		toggleWithdrawModal(!withdrawModal);
 	};
+	const address = window.ethereum.selectedAddress;
 
 	const submitDeposit = async (amount) => {
-		let res = await deposit(props.currency.toLowerCase(), amount, currentAccount);
-		console.log(res);
+		
+		if(wanmaskConnected){
+			await depositWan(props.currency.toLowerCase(), amount, currentAccount);
+		}else if(metamaskConnected){
+			let asset
+			switch (props.currency.toLowerCase()) {
+				case 'btc':
+					asset = 'wbtc'
+					break;
+				case 'eth':
+					asset = 'weth'
+					break;
+				default:
+					break;
+			}
+			await deposit(asset, amount, address);
+		}
 		handleDeposit();
 	};
 
 	const submitWithdraw = async (amount) => {
-		let res = await withdraw(props.currency.toLowerCase(), amount, currentAccount);
-		console.log(res);
-		handleWithdraw();
+		if(wanmaskConnected){
+			await withdrawWan(props.currency.toLowerCase(), amount, currentAccount);
+		}else if(metamaskConnected){
+			let asset
+			switch (props.currency.toLowerCase()) {
+				case 'btc':
+					asset = 'wbtc'
+					break;
+				case 'eth':
+					asset = 'weth'
+					break;
+				default:
+					break;
+			}
+			setTimeout(() => {
+				handleWithdraw();
+			}, 2000);
+			await withdraw(asset, amount, address);
+		}
+		// handleWithdraw();
 	};
 
 	return (

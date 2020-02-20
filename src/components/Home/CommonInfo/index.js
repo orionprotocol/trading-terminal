@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import PairDrop from './PairDrop';
+import axios from 'axios';
 import './index.css';
 let price = require('crypto-price');
 
@@ -15,14 +16,23 @@ function handleWrapper() {
 	drop.classList.toggle('active');
 }
 
-const CommonInfo = props => {
-	const { symbolA, symbolB, lastPrice, high, low, vol, change } = useSelector(state => state.general);
+const CommonInfo = (props) => {
+	const { symbolA, symbolB, lastPrice, high, low, vol, change } = useSelector((state) => state.general);
 
 	const [ dollars, setDollars ] = useState({});
 
+	useEffect((_) => {
+		const url = process.env.REACT_APP_BACKEND + '/api/v1/pairs/list';
+		console.log(url);
+
+		axios.get(url).then((res) => {
+			console.log(res.data);
+		});
+	}, []);
+
 	useEffect(
-		_ => {
-			price.getCryptoPrice('USD', symbolB).then(object => {
+		(_) => {
+			price.getCryptoPrice('USD', symbolB).then((object) => {
 				const last = (object.price * lastPrice).toFixed(2);
 				setDollars({ last });
 			});

@@ -8,39 +8,68 @@ const io = require('socket.io-client'),
 const Sockets = (props) => {
 	let { contractBalances, walletBalances } = useSelector((state) => state.balances);
 	const { symbol } = useSelector((state) => state.general);
+	const { wanmaskConnected, metamaskConnected } = useSelector((state) => state.wallet);
 	const [ websocket, setWS ] = useState(null);
 	const dispatch = useDispatch();
 	const setBalances = useCallback((data) => dispatch({ type: 'SetBalances', payload: data }), [ dispatch ]);
 	const setOrderBook = useCallback((data) => dispatch({ type: 'SetOrderBook', payload: data }), [ dispatch ]);
-	const address = localStorage.getItem('currentAccount');
+	const [ address, setAddress ] = useState(localStorage.getItem('currentAccount'));
 
-	useEffect((_) => {
-		if (window.wan3 && address) {
-			socket.on('connect', (_) => {
-				console.log('Connected....................................');
-				if (window.wan3.toChecksumAddress(address)) {
-					socket.emit('clientAddress', window.wan3.toChecksumAddress(address));
-				}
-			});
-		}
+	useEffect(
+		(_) => {
+			// if (window.wan3 && address) {
+			if (wanmaskConnected) {
+				socket.on('connect', (_) => {
+					console.log('Connected....................................');
+					if (window.wan3.toChecksumAddress(address)) {
+						socket.emit('clientAddress', window.wan3.toChecksumAddress(address));
+					}
+				});
+			}
+
+			// if (window.ethereum) {
+			if (metamaskConnected) {
+				if (!window.ethereum.selectedAddress) window.ethereum.enable();
+				const { web3, ethereum } = window;
+				socket.on('connect', (_) => {
+					console.log('Connected....................................');
+					socket.emit('clientAddress', web3.toChecksumAddress(ethereum.selectedAddress));
+				});
+			}
+		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+		[ wanmaskConnected, metamaskConnected ]
+	);
 	useEffect(
 		(_) => {
 			// --------------------- Orion-Wanchain Sockets -----------------------------------------------------
 
 			if (window.wan3) {
-				socket.on('balanceChange', (data) => {
-					if (window.wan3.toChecksumAddress(data.user) === window.wan3.toChecksumAddress(address)) {
+				socket.on('balanceChange', async (data) => {
+					const { web3, wan3, ethereum } = window;
+
+					if (!address) {
+						setAddress(ethereum.selectedAddress);
+					}
+
+					if (
+						(wanmaskConnected && wan3.toChecksumAddress(data.user) === wan3.toChecksumAddress(address)) ||
+						(metamaskConnected &&
+							web3.toChecksumAddress(data.user) === web3.toChecksumAddress(ethereum.selectedAddress))
+					) {
 						if (typeof contractBalances !== 'undefined' && typeof walletBalances !== 'undefined') {
 							// console.log('New Balance, ', data);
-
 							let newBal = 0;
-							if (data.asset === 'WBTC') {
+
+							if (metamaskConnected) {
+								newBal = data.newBalance;
+							} else if (wanmaskConnected && data.asset === 'WBTC') {
 								newBal = data.newBalance * 100000000;
 							} else {
 								newBal = data.newBalance * 1000000000000000000;
 							}
+
+							// console.log('newBal ', newBal, data.newBalance)
 
 							let newWalletBal = Number(data.newWalletBalance);
 							contractBalances[data.asset] = String(newBal.toFixed(8));
@@ -81,6 +110,12 @@ const Sockets = (props) => {
 			ws.onmessage = function(data) {
 				setOrderBook(JSON.parse(data.data));
 			};
+
+			//---------------------------------------   Last price ----------------------------
+
+			// let sym = symbol.split('-')[0] + symbol.split('-')[1];
+
+			// console.log('symbol ', sym);
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ symbol ]

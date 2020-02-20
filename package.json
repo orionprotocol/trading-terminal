@@ -1,5 +1,5 @@
 {
-	"name": "new-design",
+	"name": "orion-trading-terminal",
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
@@ -19,6 +19,7 @@
 		"react-scripts": "3.2.0",
 		"react-slick": "^0.25.2",
 		"react-slide-toggle": "^0.3.3",
+		"react-spinners": "^0.8.0",
 		"redux": "^4.0.4",
 		"socket.io-client": "^2.3.0",
 		"web3": "^1.2.4",

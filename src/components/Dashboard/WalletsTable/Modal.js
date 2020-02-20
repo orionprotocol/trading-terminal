@@ -1,30 +1,40 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import FadeIn from 'react-fade-in';
-// import openNotification from '../../Notification';
-import { deposit, withdraw } from '../../../services/Metamask';
+import openNotification from '../../Notification';
+import { FadeLoader } from 'react-spinners';
 
 const Modal = (props) => {
 	const [ amount, setAmount ] = useState('');
+	const [ loading, setLoading ] = useState(false);
 
 	const handleSubmit = (_) => {
-		const address = window.ethereum.selectedAddress;
 		if (props.operation === 'Withdraw') {
-			// if (Number(amount) > Number(props.maxWithdraw)) {
-			// 	openNotification({
-			// 		message: 'Insufficient balance'
-			// 	});
-			// } else {
-			// 	props.submit(amount);
-			// }
+			if (Number(amount) > Number(props.maxWithdraw)) {
+				openNotification({
+					message: 'Insufficient balance'
+				});
+			} else {
+				props.submit(amount);
+			}
 			//-------------------------------------------------------------------------
-			withdraw('wbtc', amount, address);
+			// withdraw('wbtc', amount, address);
 		} else {
-			// props.submit(amount);
+			setLoading(true);
+			props.submit(amount);
 			//-------------------------------------------------------------------------
 			// console.log('deposit', 'WBTC', amount, address);
-			deposit('wbtc', amount, address);
+			// deposit('wbtc', amount, address);
 		}
 	};
+
+	useEffect(
+		() => {
+			if (props.show === false) {
+				setLoading(false);
+			}
+		},
+		[ props.show ]
+	);
 
 	return (
 		<Fragment>
@@ -35,37 +45,62 @@ const Modal = (props) => {
 							<div className="add-wallet-2">
 								<div className="popup-top">
 									<p className="title">{props.operation}</p>
-									<img
-										className="close js-close"
-										src="./img/close.png"
-										alt="dash"
-										onClick={props.toggle}
-									/>
+									{loading ? null : (
+										<img
+											className="close js-close"
+											src="./img/close.png"
+											alt="dash"
+											onClick={props.toggle}
+										/>
+									)}
 								</div>
-								<div className="methods">
-									<div className="tabs">
-										<div className="tab-key tab">
-											<div className="private-key">
-												<span>Enter amount</span>
-												<input
-													type="number"
-													value={amount}
-													onChange={(e) => setAmount(e.target.value)}
-												/>
+								{loading ? (
+									<div className="methods">
+										<div className="tabs">
+											<div className="tab-key tab">
+												<div className="private-key wait">
+													<span>Please wait . . .</span>
+													<div>
+														<FadeLoader
+															height={15}
+															width={5}
+															radius={2}
+															margin={2}
+															color={'#84c8da'}
+															loading={loading}
+														/>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-								<div className="btns">
-									<button className="back js-go-back-to-1" onClick={props.toggle}>
-										<img src="./img/arrow-down.svg" alt="dash" />
-										<span>Go back</span>
-									</button>
-									{/* <button className="connect" onClick={_ => props.submit(amount)}> */}
-									<button className="connect" onClick={handleSubmit}>
-										<span>{props.operation}</span>
-									</button>
-								</div>
+								) : (
+									<Fragment>
+										<div className="methods">
+											<div className="tabs">
+												<div className="tab-key tab">
+													<div className="private-key">
+														<span>Enter amount</span>
+														<input
+															type="number"
+															value={amount}
+															onChange={(e) => setAmount(e.target.value)}
+														/>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div className="btns">
+											<button className="back js-go-back-to-1" onClick={props.toggle}>
+												<img src="./img/arrow-down.svg" alt="dash" />
+												<span>Go back</span>
+											</button>
+											<button className="connect" onClick={handleSubmit}>
+												<span>{props.operation}</span>
+											</button>
+										</div>
+									</Fragment>
+								)}
 							</div>
 						</div>
 					</div>
