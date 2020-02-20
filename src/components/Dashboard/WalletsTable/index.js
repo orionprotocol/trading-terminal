@@ -69,13 +69,15 @@ const WalletsTable = (props) => {
 				if (contractBalances && walletBalances) {
 					setContract({
 						...contract,
-						ETH: Number(contractBalances.WETH),
+						// ETH: Number(contractBalances.WETH),
+						ETH: Number(contractBalances.ETH),
 						BTC: Number(contractBalances.WBTC),
 						WAN: Number(contractBalances.WAN)
 					});
 					setWallet({
 						...wallet,
-						ETH: Number(walletBalances.WETH),
+						// ETH: Number(walletBalances.WETH),
+						ETH: Number(walletBalances.ETH),
 						BTC: Number(walletBalances.WBTC),
 						WAN: Number(walletBalances.WAN)
 					});

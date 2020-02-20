@@ -38,15 +38,22 @@ export const deposit = async (currency, amount, address) => {
 	}
 
 	try {
-		const res1 = await tokens[currency].methods.approve(contractAddress, newAmount).send({ from: address });
+		if (currency === 'weth') {
+			const address = window.ethereum.selectedAddress;
 
-		console.log(res1);
+			const res = await exchange.methods.depositWan().send({ from: address, value: newAmount });
+			console.log(res);
+		} else {
+			const res1 = await tokens[currency].methods.approve(contractAddress, newAmount).send({ from: address });
 
-		const res2 = await exchange.methods
-			.depositAsset(tokensAddress[currency.toUpperCase()], newAmount)
-			.send({ from: address });
+			console.log(res1);
 
-		console.log(res2);
+			const res2 = await exchange.methods
+				.depositAsset(tokensAddress[currency.toUpperCase()], newAmount)
+				.send({ from: address });
+
+			console.log(res2);
+		}
 	} catch (e) {
 		// Toastr.showError('Invalid amount, ' + newAmount);
 		// console.log('decimals error: ', newAmount);

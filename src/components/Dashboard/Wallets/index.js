@@ -53,7 +53,8 @@ const Wallets = (_) => {
 				if (walletBalances) {
 					setContract({
 						...contract,
-						ETH: Number(walletBalances.WETH) || 0,
+						// ETH: Number(walletBalances.WETH) || 0,
+						ETH: Number(walletBalances.ETH) || 0,
 						BTC: Number(walletBalances.WBTC) || 0,
 						WAN: Number(walletBalances.WAN) || 0
 					});
