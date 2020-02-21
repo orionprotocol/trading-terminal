@@ -16,7 +16,8 @@ const TotalBalances = (_) => {
 				if (contractBalances) {
 					setContract({
 						...contract,
-						ETH: Number(contractBalances.WETH) || 0,
+						// ETH: Number(contractBalances.WETH) || 0,
+						ETH: Number(contractBalances.ETH) || 0,
 						BTC: Number(contractBalances.WBTC) || 0,
 						WAN: Number(contractBalances.WAN) || 0
 					});

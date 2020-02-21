@@ -39,8 +39,6 @@ export const deposit = async (currency, amount, address) => {
 
 	try {
 		if (currency === 'weth') {
-			const address = window.ethereum.selectedAddress;
-
 			const res = await exchange.methods.depositWan().send({ from: address, value: newAmount });
 			console.log(res);
 		} else {
@@ -72,11 +70,16 @@ export const withdraw = async (currency, amount, address) => {
 	}
 
 	try {
-		const res2 = await exchange.methods
-			.withdraw(tokensAddress[currency.toUpperCase()], newAmount)
-			.send({ from: address });
+		if (currency === 'weth') {
+			const res = await exchange.methods.withdraw(ZERO_ADDRESS, newAmount).send({ from: address });
+			console.log(res);
+		} else {
+			const res2 = await exchange.methods
+				.withdraw(tokensAddress[currency.toUpperCase()], newAmount)
+				.send({ from: address });
 
-		console.log(res2);
+			console.log(res2);
+		}
 	} catch (e) {
 		// Toastr.showError('Invalid amount, ' + newAmount);
 		// console.log('decimals error: ', newAmount);

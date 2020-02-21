@@ -17,20 +17,19 @@ const Line = (props) => {
 	const handleWithdraw = (_) => {
 		toggleWithdrawModal(!withdrawModal);
 	};
-	const address = window.ethereum.selectedAddress;
 
 	const submitDeposit = async (amount) => {
-		
-		if(wanmaskConnected){
+		if (wanmaskConnected) {
 			await depositWan(props.currency.toLowerCase(), amount, currentAccount);
-		}else if(metamaskConnected){
-			let asset
+		} else if (metamaskConnected) {
+			const address = window.ethereum.selectedAddress;
+			let asset;
 			switch (props.currency.toLowerCase()) {
 				case 'btc':
-					asset = 'wbtc'
+					asset = 'wbtc';
 					break;
 				case 'eth':
-					asset = 'weth'
+					asset = 'weth';
 					break;
 				default:
 					break;
@@ -41,16 +40,17 @@ const Line = (props) => {
 	};
 
 	const submitWithdraw = async (amount) => {
-		if(wanmaskConnected){
+		if (wanmaskConnected) {
 			await withdrawWan(props.currency.toLowerCase(), amount, currentAccount);
-		}else if(metamaskConnected){
-			let asset
+		} else if (metamaskConnected) {
+			const address = window.ethereum.selectedAddress;
+			let asset;
 			switch (props.currency.toLowerCase()) {
 				case 'btc':
-					asset = 'wbtc'
+					asset = 'wbtc';
 					break;
 				case 'eth':
-					asset = 'weth'
+					asset = 'weth';
 					break;
 				default:
 					break;

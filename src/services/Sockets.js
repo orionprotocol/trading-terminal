@@ -1,8 +1,9 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-const io = require('socket.io-client'),
-	socket = io.connect(process.env.REACT_APP_SOCKET_URL);
+const io = require('socket.io-client');
+let socket;
+
 // socket = io.connect('http://localhost:3002');
 
 const Sockets = (props) => {
@@ -14,13 +15,16 @@ const Sockets = (props) => {
 	const setBalances = useCallback((data) => dispatch({ type: 'SetBalances', payload: data }), [ dispatch ]);
 	const setOrderBook = useCallback((data) => dispatch({ type: 'SetOrderBook', payload: data }), [ dispatch ]);
 	const [ address, setAddress ] = useState(localStorage.getItem('currentAccount'));
+	const [ isConn, setIsConn ] = useState(false);
 
 	useEffect(
 		(_) => {
 			// if (window.wan3 && address) {
 			if (wanmaskConnected) {
+				socket = io.connect(process.env.REACT_APP_SOCKET_URL);
 				socket.on('connect', (_) => {
 					console.log('Connected....................................');
+					setIsConn(true);
 					if (window.wan3.toChecksumAddress(address)) {
 						socket.emit('clientAddress', window.wan3.toChecksumAddress(address));
 					}
@@ -29,23 +33,45 @@ const Sockets = (props) => {
 
 			// if (window.ethereum) {
 			if (metamaskConnected) {
-				if (!window.ethereum.selectedAddress) window.ethereum.enable();
-				const { web3, ethereum } = window;
-				socket.on('connect', (_) => {
-					console.log('Connected....................................');
-					socket.emit('clientAddress', web3.toChecksumAddress(ethereum.selectedAddress));
-				});
+				// console.log('metamaskConnected');
+				if (window.ethereum && !window.ethereum.selectedAddress) {
+					window.ethereum.enable();
+				}
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ wanmaskConnected, metamaskConnected ]
 	);
+
+	useEffect(
+		(_) => {
+			if (window.ethereum) {
+				const { selectedAddress } = window.ethereum;
+				if (selectedAddress) {
+					const { web3, ethereum } = window;
+					socket = io.connect(process.env.REACT_APP_SOCKET_URL);
+					socket.on('connect', (_) => {
+						console.log('Connected....................................');
+						setIsConn(true);
+						socket.emit('clientAddress', web3.toChecksumAddress(ethereum.selectedAddress));
+					});
+				}
+			}
+		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+		[ window.ethereum ]
+	);
 	useEffect(
 		(_) => {
 			// --------------------- Orion-Wanchain Sockets -----------------------------------------------------
 
-			if (window.wan3) {
+			if (
+				isConn &&
+				(wanmaskConnected || metamaskConnected) &&
+				(typeof contractBalances !== 'undefined' && typeof walletBalances !== 'undefined')
+			) {
 				socket.on('balanceChange', async (data) => {
+					// console.log('balanceChange', data);
 					const { web3, wan3, ethereum } = window;
 
 					if (!address) {
@@ -57,28 +83,23 @@ const Sockets = (props) => {
 						(metamaskConnected &&
 							web3.toChecksumAddress(data.user) === web3.toChecksumAddress(ethereum.selectedAddress))
 					) {
-						if (typeof contractBalances !== 'undefined' && typeof walletBalances !== 'undefined') {
-							// console.log('New Balance, ', data);
-							let newBal = 0;
-
-							if (metamaskConnected) {
-								newBal = data.newBalance;
-							} else if (wanmaskConnected && data.asset === 'WBTC') {
-								newBal = data.newBalance * 100000000;
-							} else {
-								newBal = data.newBalance * 1000000000000000000;
-							}
-
-							// console.log('newBal ', newBal, data.newBalance)
-
-							let newWalletBal = Number(data.newWalletBalance);
-							contractBalances[data.asset] = String(newBal.toFixed(8));
-							walletBalances[data.asset] = String(newWalletBal.toFixed(8));
-							setBalances({
-								contractBalances,
-								walletBalances
-							});
+						let newBal = 0;
+						console.log('new balances', data);
+						if (metamaskConnected) {
+							newBal = data.newBalance;
+						} else if (wanmaskConnected && data.asset === 'WBTC') {
+							newBal = data.newBalance * 100000000;
+						} else {
+							newBal = data.newBalance * 1000000000000000000;
 						}
+
+						let newWalletBal = Number(data.newWalletBalance);
+						contractBalances[data.asset] = String(newBal.toFixed(8));
+						walletBalances[data.asset] = String(newWalletBal.toFixed(8));
+						setBalances({
+							contractBalances,
+							walletBalances
+						});
 					}
 
 					socket.emit('balanceChange', 'received balance change');
@@ -86,7 +107,7 @@ const Sockets = (props) => {
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ contractBalances, walletBalances ]
+		[ isConn, contractBalances, walletBalances ]
 	);
 	useEffect(
 		(_) => {
