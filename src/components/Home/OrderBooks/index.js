@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Bids from './Bids';
 import Asks from './Asks';
@@ -120,13 +120,13 @@ function updateOrderBookData(data, exchange, stateData, callback) {
 	callback(stateAsks, stateBids, maxBid, lastPriceStyle);
 }
 
-const OrderBooks = props => {
-	const { symbol, orderBook } = useSelector(state => state.general);
+const OrderBooks = (props) => {
+	const { symbol, orderBook } = useSelector((state) => state.general);
 	// const newData = useSelector(state => state.general);
 	// console.log('general', general);
-	const dispatch = useDispatch();
+	// const dispatch = useDispatch();
 	const [ state, setState ] = useState({ data: { lastPrice: 0 } });
-	const setLastPrice = useCallback(data => dispatch({ type: 'SetLastPrice', payload: data }), [ dispatch ]);
+	// const setLastPrice = useCallback(data => dispatch({ type: 'SetLastPrice', payload: data }), [ dispatch ]);
 	// const currentSymbol = 'ETH-BTC';
 	// All exchanges
 
@@ -167,7 +167,7 @@ const OrderBooks = props => {
 			let url =
 				urlBase +
 				'/api/v1/orderBook?symbol={SYMBOL}&depth={DEPTH}'.replace('{SYMBOL}', symbol).replace('{DEPTH}', depth);
-			axios.get(url).then(res => {
+			axios.get(url).then((res) => {
 				const { data } = res;
 				setState({
 					...state,
@@ -189,7 +189,7 @@ const OrderBooks = props => {
 	};
 
 	useEffect(
-		_ => {
+		(_) => {
 			// console.log('loadSnapshot', symbol);
 			loadSnapshot(symbol, 20);
 		},
@@ -198,7 +198,7 @@ const OrderBooks = props => {
 	);
 
 	useEffect(
-		_ => {
+		(_) => {
 			if (orderBook) {
 				let aggregatedData = {
 					asks: orderBook.aggregatedAsks,
@@ -216,7 +216,7 @@ const OrderBooks = props => {
 						}
 					});
 
-					setLastPrice(maxBid.price);
+					// setLastPrice(maxBid.price);
 				});
 				// console.log(aggregatedData);
 			}

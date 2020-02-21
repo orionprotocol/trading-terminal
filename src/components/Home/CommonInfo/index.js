@@ -22,12 +22,12 @@ const CommonInfo = (props) => {
 	const [ dollars, setDollars ] = useState({});
 
 	useEffect((_) => {
-		const url = process.env.REACT_APP_BACKEND + '/api/v1/pairs/list';
-		console.log(url);
-
-		axios.get(url).then((res) => {
-			console.log(res.data);
-		});
+		// const url = process.env.REACT_APP_BACKEND + '/api/v1/pairs/list';
+		// console.log(url);
+		// axios.get(url).then((res) => {
+		// 	console.log(res.data);
+		// });
+		// const example = ["ETH-BTC", "XRP-BTC", "HOT-BTC", "HOT-ETH"]
 	}, []);
 
 	useEffect(
