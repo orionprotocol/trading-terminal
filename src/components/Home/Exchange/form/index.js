@@ -2,17 +2,18 @@ import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import { Formik, Form, Field } from 'formik';
 import validate from './validation';
 import { useSelector, useDispatch } from 'react-redux';
-import { WanchainOrder } from '../../../../services/WanchainOrder';
+// import { WanchainOrder } from '../../../../services/WanchainOrder';
+import { EthereumOrder } from '../../../../services/EthereumOrder';
 import { loadOrderHistory } from '../../Orders/index';
 import openNotification from '../../../Notification';
 
 // type: { trade: 'buy' or 'sell, selection: 'market' or 'limit-order'}
 export default function BuyAndSellForm({ type }) {
 	const dispatch = useDispatch();
-	const { symbolA, symbolB, orderData, lastPrice } = useSelector(state => state.general);
-	const balances = useSelector(state => state.balances);
-	const setQtyForm = useCallback(data => dispatch({ type: 'SetQtyForm', payload: data }), [ dispatch ]);
-	const setSideForm = useCallback(data => dispatch({ type: 'SetSideForm', payload: data }), [ dispatch ]);
+	const { symbolA, symbolB, orderData, lastPrice } = useSelector((state) => state.general);
+	const balances = useSelector((state) => state.balances);
+	const setQtyForm = useCallback((data) => dispatch({ type: 'SetQtyForm', payload: data }), [ dispatch ]);
+	const setSideForm = useCallback((data) => dispatch({ type: 'SetSideForm', payload: data }), [ dispatch ]);
 
 	const [ values, setValues ] = useState({
 		amount: '',
@@ -28,7 +29,7 @@ export default function BuyAndSellForm({ type }) {
 	const [ total, setTotal ] = useState(0);
 	const [ prevType, setPrevType ] = useState('');
 
-	useEffect(_ => {
+	useEffect((_) => {
 		setPrevType(type.trade);
 
 		if (type.selection === 'market') {
@@ -41,7 +42,7 @@ export default function BuyAndSellForm({ type }) {
 	}, []);
 
 	useEffect(
-		_ => {
+		(_) => {
 			if (orderData['price']) {
 				setValues({
 					...values,
@@ -56,7 +57,7 @@ export default function BuyAndSellForm({ type }) {
 	);
 
 	useEffect(
-		_ => {
+		(_) => {
 			const { contractBalances } = balances;
 			if (contractBalances) {
 				for (let key in contractBalances) {
@@ -82,7 +83,7 @@ export default function BuyAndSellForm({ type }) {
 	);
 
 	useEffect(
-		_ => {
+		(_) => {
 			if (type.trade === 'buy') {
 				setAvailable(availableB);
 			} else if (type.trade === 'sell') {
@@ -105,7 +106,7 @@ export default function BuyAndSellForm({ type }) {
 		[ type, availableA, availableB ]
 	);
 
-	const handlePercent = percent => {
+	const handlePercent = (percent) => {
 		if (type.trade === 'sell') {
 			setValues({
 				...values,
@@ -121,7 +122,7 @@ export default function BuyAndSellForm({ type }) {
 		}
 	};
 
-	const handleChange = e => {
+	const handleChange = (e) => {
 		if (e.target.name === 'amount' || e.target.name === 'price') {
 			if (e.target.name === 'amount') {
 				setQtyForm(e.target.value);
@@ -144,7 +145,7 @@ export default function BuyAndSellForm({ type }) {
 		});
 	};
 
-	const submitOrder = async _ => {
+	const submitOrder = async (_) => {
 		if (values.amount === '' || Number(values.amount) <= 0) {
 			openNotification({
 				message: `Please, enter a valid amount.`
@@ -174,22 +175,20 @@ export default function BuyAndSellForm({ type }) {
 		let orderSymbolA = symbolA,
 			orderSymbolB = symbolB;
 
-		if (symbolA === 'ETH') {
-			orderSymbolA = 'WETH';
-		} else if (symbolA === 'BTC') {
+		// ----------------------------------- Ethereum --------------------------------------
+
+		if (symbolA === 'BTC') {
 			orderSymbolA = 'WBTC';
 		}
 
-		if (symbolB === 'ETH') {
-			orderSymbolB = 'WETH';
-		} else if (symbolB === 'BTC') {
+		if (symbolB === 'BTC') {
 			orderSymbolB = 'WBTC';
 		}
 
 		let orderSymbols = [ orderSymbolA, orderSymbolB ];
 
 		try {
-			const wanchainOrder = await WanchainOrder.toWanchainOrder(orderSymbols, type.trade, price, values.amount);
+			const ethereumOrder = await EthereumOrder.toEthereumOrder(orderSymbols, type.trade, price, values.amount);
 
 			loadOrderHistory();
 
@@ -201,11 +200,50 @@ export default function BuyAndSellForm({ type }) {
 			setTotal(0);
 
 			openNotification({
-				message: wanchainOrder
+				message: ethereumOrder
 			});
 		} catch (e) {
 			console.log('error', e);
 		}
+		// ----------------------------------- End - Ethereum --------------------------------------
+
+		// ----------------------------------- Wanchain --------------------------------------
+
+		// if (symbolA === 'ETH') {
+		// 	orderSymbolA = 'WETH';
+		// } else if (symbolA === 'BTC') {
+		// 	orderSymbolA = 'WBTC';
+		// }
+
+		// if (symbolB === 'ETH') {
+		// 	orderSymbolB = 'WETH';
+		// } else if (symbolB === 'BTC') {
+		// 	orderSymbolB = 'WBTC';
+		// }
+
+		// let orderSymbols = [ orderSymbolA, orderSymbolB ];
+		// console.log(orderSymbols, type.trade, price, values.amount);
+
+		// try {
+		// 	const wanchainOrder = await WanchainOrder.toWanchainOrder(orderSymbols, type.trade, price, values.amount);
+
+		// 	loadOrderHistory();
+
+		// 	setValues({
+		// 		...values,
+		// 		amount: '',
+		// 		price: ''
+		// 	});
+		// 	setTotal(0);
+
+		// 	openNotification({
+		// 		message: wanchainOrder
+		// 	});
+		// } catch (e) {
+		// 	console.log('error', e);
+		// }
+
+		// ----------------------------------- End - Wanchain --------------------------------------
 	};
 
 	return (
@@ -213,7 +251,7 @@ export default function BuyAndSellForm({ type }) {
 			<Formik
 				initialValues={values}
 				validationSchema={validate}
-				onSubmit={values => {
+				onSubmit={(values) => {
 					console.log(values);
 				}}
 			>

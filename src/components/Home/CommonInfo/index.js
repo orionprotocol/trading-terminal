@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import PairDrop from './PairDrop';
-import axios from 'axios';
+// import axios from 'axios';
 import './index.css';
 let price = require('crypto-price');
 
@@ -34,11 +34,14 @@ const CommonInfo = (props) => {
 		(_) => {
 			price.getCryptoPrice('USD', symbolB).then((object) => {
 				const last = (object.price * lastPrice).toFixed(2);
-				setDollars({ last });
+				const h = (object.price * high).toFixed(2);
+				const l = (object.price * low).toFixed(2);
+				const v = (object.price * vol).toFixed(2);
+				setDollars({ ...dollars, last, low: l, high: h, vol: v });
 			});
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ lastPrice ]
+		[ lastPrice, high, low, vol ]
 	);
 
 	return (
@@ -72,7 +75,7 @@ const CommonInfo = (props) => {
 					<div className="value">
 						<img src="./img/growth.png" alt="home" />
 						<p className="emp">
-							+{change} <span>%</span>
+							{change} <span>%</span>
 						</p>
 					</div>
 				</div>
@@ -81,19 +84,19 @@ const CommonInfo = (props) => {
 				<div className="line">
 					<span className="title">24h High</span>
 					<p className="value averta">
-						<span>{high}</span> <span className="small">${high}</span>
+						<span>{high}</span> <span className="small">${dollars.high}</span>
 					</p>
 				</div>
 				<div className="line">
 					<span className="title">24h Low</span>
 					<p className="value averta">
-						<span>{low}</span> <span className="small">${low}</span>
+						<span>{low}</span> <span className="small">${dollars.low}</span>
 					</p>
 				</div>
 				<div className="line">
 					<span className="title">24h Vol</span>
 					<p className="value averta">
-						<span>{vol}</span> <span className="small">${vol}</span>
+						<span>{vol}</span> <span className="small">${dollars.vol}</span>
 					</p>
 				</div>
 			</div>

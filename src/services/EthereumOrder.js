@@ -1,4 +1,4 @@
-import { signOrder, tokensAddress, validateSolidity } from './Wanmask';
+import { signOrder, hashOrder, validateSolidity, tokensAddress } from './Metamask';
 
 const Assets = {
 	toLongValue: function(val, decimals = 8) {
@@ -6,34 +6,38 @@ const Assets = {
 	}
 };
 
-class WanchainOrder {
+class EthereumOrder {
 	static defaultMatcherFee = 300000;
 	static defaultExpiration = 29 * 24 * 60 * 60 * 1000;
 	static matcherPublicKey = '0x43064dc5a24570dac874dc8cdd18089cd64e4988';
-	static orionUrl = process.env.REACT_APP_ORION_WAN;
-	// static orionUrl = `https://${window.location.hostname}/wanchain`;
+	// static orionUrl = process.env.REACT_APP_ORION_WAN;
+	static orionUrl = `https://demo.orionprotocol.io/wanchain`;
 	// baseAsset, es el que el cliente tiene; quoteAsset, es el activo que quiere
 	// en compra tiene c2 y quiere c1
 	// en venta tiene c1 y quiere c2
 
-	static async toWanchainOrder(symbols, side, price, amount) {
+	static async toEthereumOrder(symbols, side, price, amount) {
 		return new Promise(async (resolve, reject) => {
-			if (window.wan3.eth.accounts[0] == null) {
+			if (!window.ethereum) {
 				reject();
 			}
 
-			const senderAddress = localStorage.getItem('currentAccount');
+			const senderAddress = window.ethereum.selectedAddress;
 			let baseAsset,
 				quoteAsset = null;
 			const nowTimestamp = Date.now();
 
 			side = side.toLowerCase();
+			// if (symbols[0].toUpperCase() === 'ETH') {
+			// 	baseAsset = '0x0000000000000000000000000000000000000000';
+			// } else {
+			// }
 			baseAsset = tokensAddress[symbols[0].toUpperCase()];
 			quoteAsset = tokensAddress[symbols[1].toUpperCase()];
 
 			const order = {
 				senderAddress: senderAddress,
-				matcherAddress: WanchainOrder.matcherPublicKey,
+				matcherAddress: EthereumOrder.matcherPublicKey,
 				baseAsset: baseAsset,
 				quoteAsset: quoteAsset,
 				matcherFeeAsset: side === 'buy' ? quoteAsset : baseAsset,
@@ -49,15 +53,18 @@ class WanchainOrder {
 
 			order.signature = signedOrder;
 
-			// console.log(order);
-			// console.log('----- Message: ', hashOrder(order));
-			// console.log('----- Signature: ', signedOrder);
-			// console.log('----- Signed By: ', senderAddress);
+			console.log(order);
+			console.log('----- Message: ', hashOrder(order));
+			console.log('----- Signature: ', signedOrder);
+			console.log('----- Signed By: ', senderAddress);
 
 			let validation = await validateSolidity(order, signedOrder);
+			// console.log('validation', validation);
+			// resolve('');
+			// return;
 
 			if (validation) {
-				fetch(`${WanchainOrder.orionUrl}/api/order`, {
+				fetch(`${EthereumOrder.orionUrl}/api/order`, {
 					credentials: 'same-origin',
 					method: 'POST',
 					headers: {
@@ -88,4 +95,4 @@ class WanchainOrder {
 	}
 }
 
-export { WanchainOrder, Assets };
+export { EthereumOrder, Assets };
