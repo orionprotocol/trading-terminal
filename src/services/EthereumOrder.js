@@ -9,9 +9,9 @@ const Assets = {
 class EthereumOrder {
 	static defaultMatcherFee = 300000;
 	static defaultExpiration = 29 * 24 * 60 * 60 * 1000;
-	static matcherPublicKey = '0x43064dc5a24570dac874dc8cdd18089cd64e4988';
+	static matcherPublicKey = '0xfbCAd2c3A90FBD94C335FBdF8E22573456Da7F68';
 	// static orionUrl = process.env.REACT_APP_ORION_WAN;
-	static orionUrl = `https://demo.orionprotocol.io/wanchain`;
+	static orionUrl = process.env.REACT_APP_ORION_WAN;
 	// baseAsset, es el que el cliente tiene; quoteAsset, es el activo que quiere
 	// en compra tiene c2 y quiere c1
 	// en venta tiene c1 y quiere c2
