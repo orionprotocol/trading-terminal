@@ -1,26 +1,65 @@
-import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Line from '../Line';
 import './index.css';
 
-const PairDrop = props => {
+const PairDrop = (props) => {
 	const dispatch = useDispatch();
 
-	const setSymbolA = useCallback(data => dispatch({ type: 'SetSymbolA', payload: data }), [ dispatch ]);
+	const { assets } = useSelector((state) => state.general);
+	const [ assetsRender, setAssets ] = useState([]);
+	const [ currentQuote, setCurrentQuote ] = useState('');
 
-	const handlePair = symbolA => {
+	const setSymbolA = useCallback((data) => dispatch({ type: 'SetSymbolA', payload: data }), [ dispatch ]);
+	const setSymbolB = useCallback((data) => dispatch({ type: 'SetSymbolB', payload: data }), [ dispatch ]);
+
+	const updateRenderAssets = (_) => {
+		setAssets(
+			assets.assets1.map((e, i) => {
+				if (e === currentQuote) {
+					return (
+						<span className="active" key={i} onClick={(_) => setCurrentQuote(e)}>
+							{e}
+						</span>
+					);
+				} else {
+					return (
+						<span key={i} onClick={(_) => setCurrentQuote(e)}>
+							{e}
+						</span>
+					);
+				}
+			})
+		);
+	};
+
+	useEffect(
+		(_) => {
+			if (assets.assets1) {
+				setCurrentQuote(assets.assets1[0]);
+			}
+		},
+		[ assets ]
+	);
+
+	useEffect(
+		(_) => {
+			if (currentQuote !== '') {
+				updateRenderAssets();
+			}
+		},
+		[ currentQuote ]
+	);
+
+	const handlePair = (symbolA) => {
 		setSymbolA(symbolA);
+		setSymbolB(currentQuote);
 		props.handleWrapper();
 	};
 
 	return (
 		<div className="pair-drop js-pair-drop">
-			<div className="titles">
-				<span className="active">BTC</span>
-				<span>USD</span>
-				<span>ETH</span>
-				<span>NEO</span>
-				<span>EOS</span>
-			</div>
+			<div className="titles">{assetsRender}</div>
 			<div className="search">
 				<div className="input">
 					<input type="text" placeholder="Search pair" />
@@ -52,70 +91,10 @@ const PairDrop = props => {
 				</div>
 				<div className="lines">
 					<div className="part">
-						<div className="line" onClick={_ => handlePair('ETH')}>
-							<div className="cell">
-								<img className="img" src="./img/eth-wallet.png" alt="home" />
-								<div className="text">
-									<span className="emp">ETH</span>
-									<span className="small">Ethereum</span>
-								</div>
-							</div>
-							<div className="cell short">
-								<span className="title-m">Last Pr.</span>
-								<div className="text">
-									<span className="emp">0.0174</span>
-									<span className="small">$174.41</span>
-								</div>
-							</div>
-							<div className="cell short">
-								<span className="title-m">24h Change</span>
-								<div className="text">
-									<span className="emp">0.001500</span>
-									<span className="small">$53.41</span>
-								</div>
-							</div>
-							<div className="cell chg">
-								<img src="./img/growth.png" alt="home" />
-								<p>
-									<span className="emp">+4,42</span> <span>%</span>
-								</p>
-								<div className="star js-star">
-									<i className="fa fa-star-o" aria-hidden="true" />
-								</div>
-							</div>
-						</div>
-						<div className="line" onClick={_ => handlePair('XRP')}>
-							<div className="cell">
-								<img className="img" src="./img/xrp.jpg" alt="home" />
-								<div className="text">
-									<span className="emp">XRP</span>
-									<span className="small">Ripple</span>
-								</div>
-							</div>
-							<div className="cell short">
-								<span className="title-m">Last Pr.</span>
-								<div className="text">
-									<span className="emp">0.0174</span>
-									<span className="small">$174.41</span>
-								</div>
-							</div>
-							<div className="cell short">
-								<span className="title-m">24h Change</span>
-								<div className="text">
-									<span className="emp">0.001500</span>
-									<span className="small">$53.41</span>
-								</div>
-							</div>
-							<div className="cell chg">
-								<img src="./img/growth.png" alt="home" />
-								<p>
-									<span className="emp">+4,42</span> <span>%</span>
-								</p>
-								<div className="star js-star">
-									<i className="fa fa-star-o" aria-hidden="true" />
-								</div>
-							</div>
-						</div>
+						{currentQuote !== '' &&
+							assets.assets2[currentQuote].map((e, i) => (
+								<Line asset={e} key={i} handlePair={handlePair} />
+							))}
 					</div>
 				</div>
 			</div>

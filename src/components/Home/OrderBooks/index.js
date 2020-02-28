@@ -169,21 +169,40 @@ const OrderBooks = (props) => {
 				'/api/v1/orderBook?symbol={SYMBOL}&depth={DEPTH}'.replace('{SYMBOL}', symbol).replace('{DEPTH}', depth);
 			axios.get(url).then((res) => {
 				const { data } = res;
-				setState({
-					...state,
-					data: {
-						...data,
-						lastPrice: 0,
-						lastPriceStyle: '#000',
-						ask: data.asks[data.asks.length - 1].price,
-						bid: data.bids[0].price
-					}
-				});
 
-				setTimeout(() => {
-					const div = document.querySelector('.orders.asks');
-					if (div) div.scrollTop = div.scrollHeight;
-				}, 10);
+				if (data.asks.length > 0 && data.bids.length > 0) {
+					setState({
+						...state,
+						data: {
+							...data,
+							lastPrice: 0,
+							lastPriceStyle: '#000',
+							ask: data.asks[data.asks.length - 1].price,
+							bid: data.bids[0].price
+						}
+					});
+
+					setTimeout(() => {
+						const div = document.querySelector('.orders.asks');
+						if (div) div.scrollTop = div.scrollHeight;
+					}, 10);
+				} else {
+					setState({
+						...state,
+						data: {
+							...data,
+							lastPrice: 0,
+							lastPriceStyle: '#000'
+							// ask: data.asks[data.asks.length - 1].price,
+							// bid: data.bids[0].price
+						}
+					});
+
+					setTimeout(() => {
+						const div = document.querySelector('.orders.asks');
+						if (div) div.scrollTop = div.scrollHeight;
+					}, 10);
+				}
 			});
 		}
 	};

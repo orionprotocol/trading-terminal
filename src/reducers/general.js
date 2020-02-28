@@ -13,7 +13,8 @@ const initialState = {
 	change: 0,
 	orderData: {}, // { amount: 0, price: 0, total: 0 }
 	qtyForm: 0,
-	sideForm: 'buy'
+	sideForm: 'buy',
+	assets: []
 };
 
 export default (state = initialState, { type, ...action }) => {
@@ -64,6 +65,8 @@ export default (state = initialState, { type, ...action }) => {
 			return { ...state, symbol: action.payload };
 		case 'SetOrderBook':
 			return { ...state, orderBook: action.payload };
+		case 'SetAssets':
+			return { ...state, assets: action.payload };
 		default:
 			return state;
 	}
