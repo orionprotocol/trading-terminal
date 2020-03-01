@@ -5,6 +5,7 @@
 	"dependencies": {
 		"antd": "^3.25.3",
 		"axios": "^0.19.0",
+		"coinlist": "^3.1.2",
 		"crypto-price": "^0.0.6",
 		"formik": "^2.0.6",
 		"long": "^4.0.0",
