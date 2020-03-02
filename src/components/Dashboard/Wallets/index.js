@@ -5,6 +5,7 @@ import AddWallet1 from '../../AddWallet/AddWallet1';
 import AddWallet2 from '../../AddWallet/AddWallet2';
 import FadeIn from 'react-fade-in';
 import './index.css';
+let price = require('crypto-price');
 
 const settings = {
 	infinite: false,
@@ -35,30 +36,39 @@ const Wallets = (_) => {
 
 	const [ show1, setShow1 ] = useState(false);
 	const [ show2, setShow2 ] = useState(false);
+	const [ ethBtc, setEthBtc ] = useState(0);
 
 	useEffect(
 		(_) => {
 			try {
-				// const { contractBalances } = balances;
-				// if (contractBalances) {
-				// 	setContract({
-				// 		...contract,
-				// 		ETH: Number(contractBalances.WETH),
-				// 		BTC: Number(contractBalances.WBTC),
-				// 		WAN: Number(contractBalances.WAN)
-				// 	});
-				// }
+				const { contractBalances } = balances;
+				if (contractBalances) {
+					price.getCryptoPrice('BTC', 'ETH').then((object) => {
+						// console.log(object);
+						let amount = (Number(contractBalances.ETH) * Number(object.price)).toFixed(6);
+						setEthBtc(amount);
+						// console.log(amount);
+					});
 
-				const { walletBalances } = balances;
-				if (walletBalances) {
 					setContract({
 						...contract,
-						// ETH: Number(walletBalances.WETH) || 0,
-						ETH: Number(walletBalances.ETH) || 0,
-						BTC: Number(walletBalances.WBTC) || 0,
-						WAN: Number(walletBalances.WAN) || 0
+						// ETH: Number(contractBalances.WETH),
+						ETH: Number(contractBalances.ETH) || 0,
+						BTC: Number(contractBalances.WBTC) || 0,
+						WAN: Number(contractBalances.WAN) || 0
 					});
 				}
+
+				// const { walletBalances } = balances;
+				// if (walletBalances) {
+				// 	setContract({
+				// 		...contract,
+				// 		// ETH: Number(walletBalances.WETH) || 0,
+				// 		ETH: Number(walletBalances.ETH) || 0,
+				// 		BTC: Number(walletBalances.WBTC) || 0,
+				// 		WAN: Number(walletBalances.WAN) || 0
+				// 	});
+				// }
 			} catch (e) {
 				console.log(e);
 			}
@@ -104,7 +114,7 @@ const Wallets = (_) => {
 						<p className="money">
 							<span className="num">{contract.ETH.toFixed(6)}</span> <span className="currency">ETH</span>
 						</p>
-						<p className="currency-2">0.0000 btc</p>
+						<p className="currency-2">{ethBtc} btc</p>
 					</div>
 					<div className="wallet btc">
 						<div className="title">

@@ -61,10 +61,17 @@ const CommonInfo = (props) => {
 	useEffect(
 		(_) => {
 			price.getCryptoPrice('USD', symbolB).then((object) => {
-				const last = (object.price * lastPrice).toFixed(2);
-				const h = (object.price * high).toFixed(2);
-				const l = (object.price * low).toFixed(2);
-				const v = (object.price * vol).toFixed(2);
+				let last = (object.price * lastPrice).toFixed(2);
+				let h = (object.price * high).toFixed(2);
+				let l = (object.price * low).toFixed(2);
+				let v = (object.price * Number(vol)).toFixed(2);
+
+				last = new Intl.NumberFormat('en-US').format(last);
+				h = new Intl.NumberFormat('en-US').format(h);
+				l = new Intl.NumberFormat('en-US').format(l);
+				v = (v / 10 ** 6).toFixed(2);
+				v = new Intl.NumberFormat('en-US').format(v);
+
 				setDollars({ ...dollars, last, low: l, high: h, vol: v });
 			});
 		},
@@ -124,7 +131,8 @@ const CommonInfo = (props) => {
 				<div className="line">
 					<span className="title">24h Vol</span>
 					<p className="value averta">
-						<span>{vol}</span> <span className="small">${dollars.vol}</span>
+						<span>{new Intl.NumberFormat('en-US').format(vol)}</span>{' '}
+						<span className="small">${dollars.vol}M</span>
 					</p>
 				</div>
 			</div>

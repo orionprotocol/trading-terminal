@@ -166,9 +166,10 @@ const Sockets = (props) => {
 				let openPrice = data[2];
 				let change = ((lastPrice / openPrice - 1) * 100).toFixed(2);
 				if (change > 0) change = '+' + change;
-				let high = data[3];
-				let low = data[4];
-				let vol = data[5].toFixed(4);
+				let high = data[3].toFixed(6);
+				let low = data[4].toFixed(6);
+				let vol = data[5].toFixed(2);
+
 				setChange(change);
 				setLow(low);
 				setHigh(high);
