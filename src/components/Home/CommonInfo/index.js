@@ -47,14 +47,15 @@ const CommonInfo = (props) => {
 	const setAssets = useCallback((data) => dispatch({ type: 'SetAssets', payload: data }), [ dispatch ]);
 
 	useEffect((_) => {
-		// const url = process.env.REACT_APP_BACKEND + '/api/v1/pairs/list';
-		// // console.log(url);
-		// axios.get(url).then((res) => {
-		// 	// console.log(res.data);
-		// 	setAssets(getAssets(res.data));
-		// });
-		const example = [ 'ETH-BTC', 'XRP-BTC', 'HOT-BTC', 'HOT-ETH' ];
-		setAssets(getAssets(example));
+		const url = process.env.REACT_APP_BACKEND + '/api/v1/pairs/list';
+		// console.log(url);
+		axios.get(url).then((res) => {
+			// console.log(res.data);
+			setAssets(getAssets(res.data));
+		});
+		// const example = [ 'ETH-BTC', 'XRP-BTC', 'HOT-BTC', 'HOT-ETH' ];
+		// setAssets(getAssets(example));
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(

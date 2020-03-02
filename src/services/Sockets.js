@@ -87,6 +87,8 @@ const Sockets = (props) => {
 						setAddress(ethereum.selectedAddress);
 					}
 
+					// console.log('new balances 0', data);
+
 					if (
 						(wanmaskConnected && wan3.toChecksumAddress(data.user) === wan3.toChecksumAddress(address)) ||
 						(metamaskConnected &&
@@ -141,42 +143,68 @@ const Sockets = (props) => {
 				setOrderBook(JSON.parse(data.data));
 			};
 
-			//---------------------------------------   Last price ----------------------------
+			//---------------------------------------   Last price (a symbol) ----------------------------
 
-			// let sym = symbol.split('-')[0] + symbol.split('-')[1];
+			let sym = symbol.split('-')[0] + symbol.split('-')[1];
 
-			// const urlWS2 = `wss://candles.orionprotocol.io/api/v1/ticker/${sym}`;
+			const urlWS2 = `wss://candles.orionprotocol.io/api/v1/ticker/${sym}`;
 			// console.log('url symbol ', urlWS2);
 
-			// const ws2 = new window.WebsocketHeartbeatJs({
-			// 	url: urlWS2,
-			// 	pingTimeout: 5000,
-			// 	pongTimeout: 5000
-			// });
+			const ws2 = new window.WebsocketHeartbeatJs({
+				url: urlWS2,
+				pingTimeout: 5000,
+				pongTimeout: 5000
+			});
 
-			// // setWS(ws);
+			// setWS(ws);
 
-			// ws2.onmessage = function(data) {
-			// 	// setOrderBook(JSON.parse(data.data));
-			// 	console.log(JSON.parse(data.data)[1])
-			// 	data = JSON.parse(data.data)[1];
-			// 	let lastPrice = data[1];
-			// 	let openPrice = data[2];
-			// 	let change = ((lastPrice / openPrice - 1) * 100).toFixed(2);
-			// 	if (change > 0) change = '+' + change;
-			// 	let high = data[3];
-			// 	let low = data[4];
-			// 	let vol = data[5].toFixed(4);
-			// 	setChange(change);
-			// 	setLow(low);
-			// 	setHigh(high);
-			// 	setVol(vol);
-			// 	setLastPrice(lastPrice);
-			// };
+			ws2.onmessage = function(data) {
+				// setOrderBook(JSON.parse(data.data));
+				// console.log(JSON.parse(data.data)[1])
+				data = JSON.parse(data.data)[1];
+				let lastPrice = data[1];
+				let openPrice = data[2];
+				let change = ((lastPrice / openPrice - 1) * 100).toFixed(2);
+				if (change > 0) change = '+' + change;
+				let high = data[3];
+				let low = data[4];
+				let vol = data[5].toFixed(4);
+				setChange(change);
+				setLow(low);
+				setHigh(high);
+				setVol(vol);
+				setLastPrice(lastPrice);
+			};
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ symbol ]
 	);
+
+	useEffect((_) => {
+		// const urlWS = 'wss://candles.orionprotocol.io/api/v1/allTickers';
+		// const ws = new window.WebsocketHeartbeatJs({
+		// 	url: urlWS,
+		// 	pingTimeout: 5000,
+		// 	pongTimeout: 5000
+		// });
+		// ws.onmessage = function(data) {
+		// 	let all = JSON.parse(data.data);
+		// 	all[1].forEach((e) => {
+		// 		let lastPrice = e[1];
+		// 		let openPrice = e[2];
+		// 		let change = ((lastPrice / openPrice - 1) * 100).toFixed(2);
+		// 		if (change > 0) change = '+' + change;
+		// 		console.log(e[5]);
+		// 		// let ticker = {
+		// 		// 	pair: e[0],
+		// 		// 	lastPrice,
+		// 		// 	vol24h: e[5].toFixed(4),
+		// 		// 	change24h: change
+		// 		// };
+		// 		// console.log(ticker);
+		// 	});
+		// };
+	}, []);
 
 	return <div />;
 };

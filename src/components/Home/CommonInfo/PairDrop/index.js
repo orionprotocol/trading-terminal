@@ -48,6 +48,7 @@ const PairDrop = (props) => {
 				updateRenderAssets();
 			}
 		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ currentQuote ]
 	);
 
