@@ -62,10 +62,10 @@ export default function BuyAndSellForm({ type }) {
 			if (contractBalances) {
 				for (let key in contractBalances) {
 					switch (key) {
-						case 'WETH':
-							if (symbolA === 'ETH') setAvailableA(contractBalances[key]);
-							else if (symbolB === 'ETH') setAvailableB(contractBalances[key]);
-							break;
+						// case 'WETH':
+						// 	if (symbolA === 'ETH') setAvailableA(contractBalances[key]);
+						// 	else if (symbolB === 'ETH') setAvailableB(contractBalances[key]);
+						// 	break;
 						case 'WBTC':
 							if (symbolA === 'BTC') setAvailableA(contractBalances[key]);
 							else if (symbolB === 'BTC') setAvailableB(contractBalances[key]);

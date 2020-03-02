@@ -20,8 +20,8 @@ const { Content } = Layout;
 // 		orders[i].status == "PARTIALLY_FILLED"
 var loadOrderHistory = () => {};
 
-const Orders = _ => {
-	const { symbol, mode } = useSelector(state => state.general);
+const Orders = (_) => {
+	const { symbol, mode } = useSelector((state) => state.general);
 	const [ orders, setOrders ] = useState([]);
 	const [ ordersOrigin, setOrdersOrigin ] = useState([]);
 	const [ allOrders, setAllOrders ] = useState([]);
@@ -39,17 +39,28 @@ const Orders = _ => {
 	});
 
 	loadOrderHistory = () => {
-		let address = localStorage.getItem('currentAccount') || '';
+		let address;
+
+		const { ethereum } = window;
+
+		if (ethereum) {
+			address = ethereum.selectedAddress;
+		} else {
+			address = localStorage.getItem('currentAccount') || '';
+		}
+
 		if (address) {
 			let url = urlBase + '/api/v1/orderHistory?symbol=' + symbol + '&address=' + address;
 			axios
 				.get(url)
-				.then(res => {
+				.then((res) => {
 					if (Array.isArray(res.data)) {
 						setAllOrders(res.data);
 
 						if (state.type === 'open') {
-							let newOrders = res.data.filter(d => d.status === 'NEW' || d.status === 'PARTIALLY_FILLED');
+							let newOrders = res.data.filter(
+								(d) => d.status === 'NEW' || d.status === 'PARTIALLY_FILLED'
+							);
 							setOrders(newOrders);
 							setOrdersOrigin(newOrders);
 						} else {
@@ -58,26 +69,26 @@ const Orders = _ => {
 						}
 					}
 				})
-				.catch(err => {
+				.catch((err) => {
 					console.log('error', err);
 				});
 		}
 	};
 	useEffect(
-		_ => {
+		(_) => {
 			loadOrderHistory();
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ symbol ]
 	);
 
-	const handleType = type => {
+	const handleType = (type) => {
 		document.querySelector('#open-price-card-button').classList.toggle('active');
 		document.querySelector('#history-price-card-button').classList.toggle('active');
 
 		let newOrders = allOrders;
 		if (type === 'open') {
-			newOrders = allOrders.filter(d => d.status === 'NEW' || d.status === 'PARTIALLY_FILLED');
+			newOrders = allOrders.filter((d) => d.status === 'NEW' || d.status === 'PARTIALLY_FILLED');
 		}
 
 		setOrders(newOrders);
@@ -85,7 +96,7 @@ const Orders = _ => {
 		setState({ ...state, type });
 	};
 
-	const handleSort = type => {
+	const handleSort = (type) => {
 		let newClasses = {};
 		let sortType = 'asc';
 		for (let e in classes) {
@@ -145,10 +156,10 @@ const Orders = _ => {
 		}
 	};
 
-	const renderOrders = _ => {
+	const renderOrders = (_) => {
 		setState({ ...state, renderOrders: null });
 
-		setTimeout(_ => {
+		setTimeout((_) => {
 			let newRenderOrders = orders.map((data, i) => <Line type={state.type} key={i} data={data} />);
 
 			setState({ ...state, renderOrders: newRenderOrders });
@@ -156,7 +167,7 @@ const Orders = _ => {
 	};
 
 	useEffect(
-		_ => {
+		(_) => {
 			renderOrders();
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
@@ -164,7 +175,7 @@ const Orders = _ => {
 	);
 
 	function handleChangeA(value) {
-		let newOrders = ordersOrigin.filter(e => {
+		let newOrders = ordersOrigin.filter((e) => {
 			let symbolA = e.symbol.split('-')[0];
 
 			return symbolA === value;
@@ -173,7 +184,7 @@ const Orders = _ => {
 		setOrders(newOrders);
 	}
 	function handleChangeB(value) {
-		let newOrders = ordersOrigin.filter(e => {
+		let newOrders = ordersOrigin.filter((e) => {
 			let symbolB = e.symbol.split('-')[1];
 
 			return symbolB === value;
@@ -189,16 +200,16 @@ const Orders = _ => {
 		}
 	}
 
-	const handleDateChangeRaw = e => {
+	const handleDateChangeRaw = (e) => {
 		e.preventDefault();
 	};
 
 	useEffect(
-		_ => {
+		(_) => {
 			let newTime = moment(startDateA).unix();
 			let timeB = moment(startDateB).unix();
 
-			let newOrders = ordersOrigin.filter(e => {
+			let newOrders = ordersOrigin.filter((e) => {
 				let time = String(e.time);
 				time = time.substring(0, 10);
 				return time >= newTime && time <= timeB;
@@ -211,11 +222,11 @@ const Orders = _ => {
 	);
 
 	useEffect(
-		_ => {
+		(_) => {
 			let newTime = moment(startDateB).unix();
 			let timeA = moment(startDateA).unix();
 
-			let newOrders = ordersOrigin.filter(e => {
+			let newOrders = ordersOrigin.filter((e) => {
 				let time = String(e.time);
 				time = time.substring(0, 10);
 				return time <= newTime && time >= timeA;
@@ -240,7 +251,7 @@ const Orders = _ => {
 									<button
 										className="price-card-button active emp"
 										id="open-price-card-button"
-										onClick={_ => handleType('open')}
+										onClick={(_) => handleType('open')}
 									>
 										Orders
 									</button>
@@ -248,7 +259,7 @@ const Orders = _ => {
 										className="price-card-button emp"
 										id="history-price-card-button"
 										style={{ border: 'none !important' }}
-										onClick={_ => handleType('history')}
+										onClick={(_) => handleType('history')}
 									>
 										History
 									</button>
@@ -257,7 +268,7 @@ const Orders = _ => {
 									<div className="orders-dates">
 										<DatePicker
 											selected={startDateA}
-											onChange={date => setStartDateA(date)}
+											onChange={(date) => setStartDateA(date)}
 											calendarClassName="date"
 											dateFormat="dd.MM.Y"
 											onChangeRaw={handleDateChangeRaw}
@@ -270,7 +281,7 @@ const Orders = _ => {
 										</span>
 										<DatePicker
 											selected={startDateB}
-											onChange={date => setStartDateB(date)}
+											onChange={(date) => setStartDateB(date)}
 											calendarClassName="date"
 											dateFormat="dd.MM.Y"
 											onChangeRaw={handleDateChangeRaw}
@@ -328,33 +339,33 @@ const Orders = _ => {
 						{/* <OrdersTable /> */}
 						<div className="table-content">
 							<div className="titles">
-								<div className="title short" onClick={_ => handleSort('type')}>
+								<div className="title short" onClick={(_) => handleSort('type')}>
 									<span>Type</span>
 									<i className={`fa ${classes.type}`} aria-hidden="true" />
 								</div>
-								<div className="title" onClick={_ => handleSort('pair')}>
+								<div className="title" onClick={(_) => handleSort('pair')}>
 									<span>Pair</span>
 									<i className={`fa ${classes.pair}`} aria-hidden="true">
 										{' '}
 									</i>
 								</div>
-								<div className="title time" onClick={_ => handleSort('time')}>
+								<div className="title time" onClick={(_) => handleSort('time')}>
 									<span>Time</span>
 									<i className={`fa ${classes.time}`} aria-hidden="true" />
 								</div>
-								<div className="title" onClick={_ => handleSort('amount')}>
+								<div className="title" onClick={(_) => handleSort('amount')}>
 									<span>Amount</span>
 									<i className={`fa ${classes.amount}`} aria-hidden="true" />
 								</div>
-								<div className="title" onClick={_ => handleSort('price')}>
+								<div className="title" onClick={(_) => handleSort('price')}>
 									<span>Price</span>
 									<i className={`fa ${classes.price}`} aria-hidden="true" />
 								</div>
-								<div className="title status" onClick={_ => handleSort('status')}>
+								<div className="title status" onClick={(_) => handleSort('status')}>
 									<span>Status</span>
 									<i className={`fa ${classes.status}`} aria-hidden="true" />
 								</div>
-								<div className="title" onClick={_ => handleSort('total')}>
+								<div className="title" onClick={(_) => handleSort('total')}>
 									<span>Total</span>
 									<i className={`fa ${classes.total}`} aria-hidden="true" />
 								</div>
