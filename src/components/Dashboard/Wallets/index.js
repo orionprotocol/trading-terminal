@@ -31,7 +31,7 @@ const Wallets = (_) => {
 	const [ contract, setContract ] = useState({
 		ETH: 0,
 		BTC: 0,
-		WAN: 0
+		XRP: 0
 	});
 
 	const [ show1, setShow1 ] = useState(false);
@@ -55,20 +55,10 @@ const Wallets = (_) => {
 						// ETH: Number(contractBalances.WETH),
 						ETH: Number(contractBalances.ETH) || 0,
 						BTC: Number(contractBalances.WBTC) || 0,
-						WAN: Number(contractBalances.WAN) || 0
+						XRP: Number(contractBalances.XRP) || 0
 					});
 				}
 
-				// const { walletBalances } = balances;
-				// if (walletBalances) {
-				// 	setContract({
-				// 		...contract,
-				// 		// ETH: Number(walletBalances.WETH) || 0,
-				// 		ETH: Number(walletBalances.ETH) || 0,
-				// 		BTC: Number(walletBalances.WBTC) || 0,
-				// 		WAN: Number(walletBalances.WAN) || 0
-				// 	});
-				// }
 			} catch (e) {
 				console.log(e);
 			}
@@ -128,13 +118,13 @@ const Wallets = (_) => {
 					</div>
 					<div className="wallet dash">
 						<div className="title">
-							<img src="./img/wanchain.png" alt="dash" />
+							<img src="./img/xrp-wallet.png" alt="dash" />
 							<span>Details</span>
 						</div>
 						<p className="money">
-							<span className="num">{contract.WAN.toFixed(6)}</span> <span className="currency">WAN</span>
+							<span className="num">{contract.XRP.toFixed(6)}</span> <span className="currency">XRP</span>
 						</p>
-						<p className="currency-2">0.0000 btc</p>
+						<p className="currency-2">0.0000 xrp</p>
 					</div>
 				</Slider>
 			</div>

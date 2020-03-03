@@ -2,30 +2,29 @@ import React, { useEffect, useState } from 'react';
 
 const Web3 = require('web3');
 const exchangeArtifact = require('../contracts/Exchange.json');
-const WETHArtifact = require('../contracts/WETH.json');
 const WBTCArtifact = require('../contracts/WBTC.json');
 const Long = require('long');
 
 const contractAddress = exchangeArtifact.networks['3'].address;
-const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 const web3 = new Web3(window['ethereum']);
 
-const WBTC = WBTCArtifact.networks['3'].address;
-const WETH = WETHArtifact.networks['3'].address;
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+const WBTC = "0x335123EB7029030805864805fC95f1AB16A64D61";
+const WXRP = "0x15a3Eb660823e0a3eF4D4A86EEC0d66f405Db515";
 
 const exchange = new web3.eth.Contract(exchangeArtifact.abi, contractAddress);
 const wbtc = new web3.eth.Contract(WBTCArtifact.abi, WBTC);
-const weth = new web3.eth.Contract(WETHArtifact.abi, WETH);
+const wxrp = new web3.eth.Contract(WBTCArtifact.abi, WXRP);
 
 export const tokensAddress = {
 	ETH: ZERO_ADDRESS,
 	WBTC,
-	WETH
+	WXRP,
 };
 const tokens = {
 	// Contracts
 	wbtc,
-	weth
+	wxrp
 };
 
 // === Hash Order=== //// CONVERT LONG TO BYTES
@@ -69,8 +68,8 @@ export const deposit = async (currency, amount, address) => {
 	}
 
 	let newAmount = web3.utils.toWei(amount);
-	if (currency === 'wbtc') {
-		newAmount = (amount * 100000000).toFixed(0);
+	if (currency === 'wbtc' || currency === 'wxrp') {
+		newAmount = (amount * 1e8).toFixed(0);
 	}
 
 	try {
@@ -101,8 +100,8 @@ export const withdraw = async (currency, amount, address) => {
 	}
 
 	let newAmount = web3.utils.toWei(amount);
-	if (currency === 'wbtc') {
-		newAmount = amount * 100000000;
+	if (currency === 'wbtc' || currency === 'wxrp') {
+		newAmount = (amount * 1e8).toFixed(0);
 	}
 
 	try {

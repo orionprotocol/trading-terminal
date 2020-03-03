@@ -9,12 +9,12 @@ const WalletsTable = (props) => {
 	const [ contract, setContract ] = useState({
 		ETH: 0,
 		BTC: 0,
-		WAN: 0
+		XRP: 0
 	});
 	const [ wallet, setWallet ] = useState({
 		ETH: 0,
 		BTC: 0,
-		WAN: 0
+		XRP: 0
 	});
 	const [ classes, setClasses ] = useState({
 		token: 'fa fa-angle-down',
@@ -51,11 +51,11 @@ const WalletsTable = (props) => {
 					img: '/img/eth-wallet.png'
 				},
 				{
-					token: 'WAN',
-					wallet: wanWallet,
-					contract: wanContract,
+					token: 'XRP',
+					wallet: wallet.XRP.toFixed(8),
+					contract: contract.XRP.toFixed(8),
 					open: 0,
-					img: '/img/wanchain.png'
+					img: '/img/xrp-wallet.png'
 				}
 			]);
 		},
@@ -65,21 +65,21 @@ const WalletsTable = (props) => {
 	useEffect(
 		(_) => {
 			try {
-				const { contractBalances, walletBalances } = balances;
+				const { contractBalances, 	walletBalances } = balances;
 				if (contractBalances && walletBalances) {
 					setContract({
 						...contract,
 						// ETH: Number(contractBalances.WETH),
 						ETH: Number(contractBalances.ETH),
 						BTC: Number(contractBalances.WBTC),
-						WAN: Number(contractBalances.WAN)
+						XRP: Number(contractBalances.WXRP)
 					});
 					setWallet({
 						...wallet,
 						// ETH: Number(walletBalances.WETH),
 						ETH: Number(walletBalances.ETH),
 						BTC: Number(walletBalances.WBTC),
-						WAN: Number(walletBalances.WAN)
+						XRP: Number(walletBalances.WXRP)
 					});
 				}
 			} catch (e) {
