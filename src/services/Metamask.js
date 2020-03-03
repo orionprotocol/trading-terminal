@@ -73,7 +73,6 @@ export const deposit = async (currency, amount, address) => {
 		newAmount = amount * 100000000;
 	}
 	newAmount = Number(newAmount.toFixed(0));
-
 	try {
 		if (currency === 'weth') {
 			const res = await exchange.methods.depositWan().send({ from: address, value: newAmount });

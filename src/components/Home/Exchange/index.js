@@ -15,6 +15,9 @@ export default function Exchange() {
 	return (
 		<section>
 			<div id="exchange" className="">
+				{/* <div className="div-add-wallet-btn">
+					<span className="add-wallet-btn">Add Wallet</span>
+				</div> */}
 				{/* <div id="exchange" className="dark-mode"> */}
 				<div>
 					<div

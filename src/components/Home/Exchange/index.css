@@ -208,6 +208,22 @@
 	margin-right: 10px;
 }
 
+.div-add-wallet-btn {
+	width: 100%;
+	/* background-color: aqua; */
+	padding: 10% 0;
+	display: flex;
+	justify-content: center;
+}
+
+.div-add-wallet-btn > span {
+	font-size: 15px;
+}
+
+.div-add-wallet-btn > span:hover {
+	cursor: pointer;
+}
+
 /* End of form Css */
 
 @media (min-width: 1500px) {
