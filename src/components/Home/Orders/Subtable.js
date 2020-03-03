@@ -71,6 +71,21 @@ const Subtable = props => {
 		}
 	};
 
+	const displayStatus = (status) => {
+		switch (status) {
+			case 'NEW':
+				return "New";
+			case 'Partially_filled':
+				return 'Partial';
+			case 'Filled':
+				return 'Filled';
+			case 'Canceled':
+				return 'Canceled';
+			default:
+				return "New";
+		}
+	};
+
 	return (
 		<div className="subtable active" id="subtable0">
 			<div className="subline">
@@ -105,7 +120,7 @@ const Subtable = props => {
 							<span className="right">{data.subOrdQty}</span>
 							<span className="right">{data.price}</span>
 							<span className="right filled">
-								{data.status[0].toUpperCase() + data.status.slice(1).toLowerCase()}
+								{displayStatus(data.status)}
 							</span>
 						</div>
 					))}
