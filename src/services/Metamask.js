@@ -67,10 +67,11 @@ export const deposit = async (currency, amount, address) => {
 		window.ethereum.enable();
 	}
 
-	let newAmount = web3.utils.toWei(amount);
+	let newAmount = Number(web3.utils.toWei(amount));
 	if (currency === 'wbtc' || currency === 'wxrp') {
 		newAmount = (amount * 1e8).toFixed(0);
 	}
+	newAmount = Number(newAmount.toFixed(0));
 
 	try {
 		if (currency === 'weth') {

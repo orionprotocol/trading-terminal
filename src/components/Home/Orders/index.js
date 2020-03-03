@@ -25,7 +25,7 @@ const Orders = (_) => {
 	const [ orders, setOrders ] = useState([]);
 	const [ ordersOrigin, setOrdersOrigin ] = useState([]);
 	const [ allOrders, setAllOrders ] = useState([]);
-	const [ state, setState ] = useState({ type: 'open', renderOrders: null });
+	const [ state, setState ] = useState({ type: 'history', renderOrders: null });
 	const [ startDateA, setStartDateA ] = useState(new Date());
 	const [ startDateB, setStartDateB ] = useState(new Date());
 	const [ classes, setClasses ] = useState({
@@ -249,14 +249,14 @@ const Orders = (_) => {
 							<Row style={{ paddingTop: '5px', paddingLeft: '15px' }}>
 								<Col xs={24} md={6}>
 									<button
-										className="price-card-button active emp"
+										className="price-card-button emp"
 										id="open-price-card-button"
 										onClick={(_) => handleType('open')}
 									>
 										Orders
 									</button>
 									<button
-										className="price-card-button emp"
+										className="price-card-button active emp"
 										id="history-price-card-button"
 										style={{ border: 'none !important' }}
 										onClick={(_) => handleType('history')}

@@ -32,6 +32,7 @@ const Modal = (props) => {
 			if (props.show === false) {
 				setLoading(false);
 			}
+			setAmount('');
 		},
 		[ props.show ]
 	);

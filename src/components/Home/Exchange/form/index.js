@@ -13,7 +13,7 @@ export default function BuyAndSellForm({ type }) {
 	const { symbolA, symbolB, orderData, lastPrice } = useSelector((state) => state.general);
 	const balances = useSelector((state) => state.balances);
 	const setQtyForm = useCallback((data) => dispatch({ type: 'SetQtyForm', payload: data }), [ dispatch ]);
-	const setSideForm = useCallback((data) => dispatch({ type: 'SetSideForm', payload: data }), [ dispatch ]);
+	// const setSideForm = useCallback((data) => dispatch({ type: 'SetSideForm', payload: data }), [ dispatch ]);
 
 	const [ values, setValues ] = useState({
 		amount: '',
@@ -27,10 +27,10 @@ export default function BuyAndSellForm({ type }) {
 	const [ availableB, setAvailableB ] = useState(0);
 	const [ available, setAvailable ] = useState(0);
 	const [ total, setTotal ] = useState(0);
-	const [ prevType, setPrevType ] = useState('');
+	// const [ prevType, setPrevType ] = useState('');
 
 	useEffect((_) => {
-		setPrevType(type.trade);
+		// setPrevType(type.trade);
 
 		if (type.selection === 'market') {
 			setValues({
@@ -94,17 +94,17 @@ export default function BuyAndSellForm({ type }) {
 				setAvailable(availableA);
 			}
 
-			if (prevType !== type.trade) {
-				setPrevType(type.trade);
-				setValues({
-					...values,
-					amount: '',
-					price: ''
-				});
-				setTotal(0);
-				setSideForm(type.trade);
-				setQtyForm(0);
-			}
+			// if (prevType !== type.trade) {
+			// 	setPrevType(type.trade);
+			// 	setValues({
+			// 		...values,
+			// 		amount: '',
+			// 		price: ''
+			// 	});
+			// 	setTotal(0);
+			// 	setSideForm(type.trade);
+			// 	setQtyForm(0);
+			// }
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 		[ type, availableA, availableB ]
