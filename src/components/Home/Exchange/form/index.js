@@ -11,12 +11,14 @@ import openNotification from '../../../Notification';
 export default function BuyAndSellForm({ type }) {
 	const dispatch = useDispatch();
 
-	const { symbolA, symbolB, orderData, lastPrice } = useSelector((state) => state.general);
+	const { symbol, symbolA, symbolB, orderData, lastPrice } = useSelector((state) => state.general);
 	const { metamaskConnected } = useSelector((state) => state.wallet);
 
 	const balances = useSelector((state) => state.balances);
+
 	const setQtyForm = useCallback((data) => dispatch({ type: 'SetQtyForm', payload: data }), [ dispatch ]);
 	// const setSideForm = useCallback((data) => dispatch({ type: 'SetSideForm', payload: data }), [ dispatch ]);
+	const setAddWallet = useCallback((data) => dispatch({ type: 'SetAddWallet', payload: data }), [ dispatch ]);
 
 	const [ values, setValues ] = useState({
 		amount: '',
@@ -43,6 +45,20 @@ export default function BuyAndSellForm({ type }) {
 		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(
+		(_) => {
+			if (type.selection === 'market') {
+				// console.log('lastPrice', lastPrice);
+				setValues({
+					...values,
+					price: lastPrice
+				});
+			}
+		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+		[ lastPrice ]
+	);
 
 	useEffect(
 		(_) => {
@@ -203,6 +219,7 @@ export default function BuyAndSellForm({ type }) {
 		let orderSymbols = [ orderSymbolA, orderSymbolB ];
 
 		try {
+			// console.log(orderSymbols, type.trade, price, values.amount);
 			const ethereumOrder = await EthereumOrder.toEthereumOrder(orderSymbols, type.trade, price, values.amount);
 
 			loadOrderHistory();
@@ -374,7 +391,7 @@ export default function BuyAndSellForm({ type }) {
 							)}
 
 							{!metamaskConnected && (
-								<button className="submit-form buy" type="submit" onClick={submitOrder}>
+								<button className="submit-form buy" type="submit" onClick={(_) => setAddWallet(true)}>
 									Add Wallet
 								</button>
 							)}

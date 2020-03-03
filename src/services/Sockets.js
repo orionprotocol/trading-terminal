@@ -174,6 +174,7 @@ const Sockets = (props) => {
 				setHigh(high);
 				setVol(vol);
 				setLastPrice(lastPrice);
+				// console.log('setedLastPrice', lastPrice);
 			};
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps

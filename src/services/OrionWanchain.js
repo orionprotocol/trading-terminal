@@ -45,6 +45,7 @@ const OrionWanchain = (_) => {
 			if (metamaskConnected) {
 				let address = localStorage.getItem('address');
 				const getBalances = (address) => {
+					// console.log('object');
 					axios
 						.get(`${process.env.REACT_APP_ORION_WAN}/api/eth/balance/${address}`)
 						.then((res) => {

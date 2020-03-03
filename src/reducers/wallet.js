@@ -2,7 +2,8 @@ const initialState = {
 	walletOpt: 'wanchain',
 	wanActive: false,
 	wanmaskConnected: false,
-	metamaskConnected: false
+	metamaskConnected: false,
+	addWallet: false
 };
 
 export default (state = initialState, { type, ...action }) => {
@@ -15,6 +16,8 @@ export default (state = initialState, { type, ...action }) => {
 			return { ...state, walletOpt: action.payload };
 		case 'SetMetamaskConnect':
 			return { ...state, metamaskConnected: action.payload };
+		case 'SetAddWallet':
+			return { ...state, addWallet: action.payload };
 		default:
 			return state;
 	}

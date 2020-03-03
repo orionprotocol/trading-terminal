@@ -20,7 +20,9 @@ const Sidebar = (props) => {
 
 	const { mode } = useSelector((state) => state.general);
 	const [ actives, setActives ] = useState([ 'active', '', '' ]);
-	const { wanActive, walletOpt, wanmaskConnected, metamaskConnected } = useSelector((state) => state.wallet);
+	const { wanActive, walletOpt, wanmaskConnected, metamaskConnected, addWallet } = useSelector(
+		(state) => state.wallet
+	);
 	const [ walletActive, setWalletActive ] = useState(false);
 	const [ addWalletOpt, setAddWalletOpt ] = useState(false);
 
@@ -43,6 +45,12 @@ const Sidebar = (props) => {
 		}, 100);
 	};
 
+	useEffect(
+		(_) => {
+			// console.log('addWallet', addWallet);
+		},
+		[ addWallet ]
+	);
 	useEffect(
 		(_) => {
 			setWalletActive(wanActive);
