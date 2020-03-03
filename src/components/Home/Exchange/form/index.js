@@ -11,7 +11,7 @@ import openNotification from '../../../Notification';
 export default function BuyAndSellForm({ type }) {
 	const dispatch = useDispatch();
 
-	const { symbolA, symbolB, orderData, lastPrice } = useSelector((state) => state.general);
+	const { symbol, symbolA, symbolB, orderData, lastPrice } = useSelector((state) => state.general);
 	const { metamaskConnected } = useSelector((state) => state.wallet);
 
 	const balances = useSelector((state) => state.balances);
