@@ -68,11 +68,10 @@ export const deposit = async (currency, amount, address) => {
 		window.ethereum.enable();
 	}
 
-	let newAmount = web3.utils.toWei(amount);
+	let newAmount = Number(web3.utils.toWei(amount));
 	if (currency === 'wbtc') {
 		newAmount = amount * 100000000;
 	}
-
 	newAmount = Number(newAmount.toFixed(0));
 
 	try {
@@ -80,15 +79,15 @@ export const deposit = async (currency, amount, address) => {
 			const res = await exchange.methods.depositWan().send({ from: address, value: newAmount });
 			console.log(res);
 		} else {
-			const res1 = await tokens[currency].methods.approve(contractAddress, newAmount).send({ from: address });
+			tokens[currency].methods.approve(contractAddress, newAmount).send({ from: address });
 
-			console.log(res1);
+			// console.log(res1);
 
-			const res2 = await exchange.methods
-				.depositAsset(tokensAddress[currency.toUpperCase()], newAmount)
-				.send({ from: address });
+			setTimeout(() => {
+				exchange.methods.depositAsset(tokensAddress[currency.toUpperCase()], newAmount).send({ from: address });
+			}, 1000);
 
-			console.log(res2);
+			// console.log(res2);
 		}
 	} catch (e) {
 		// Toastr.showError('Invalid amount, ' + newAmount);

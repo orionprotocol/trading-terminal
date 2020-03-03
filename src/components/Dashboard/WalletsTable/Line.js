@@ -34,7 +34,7 @@ const Line = (props) => {
 				default:
 					break;
 			}
-			await deposit(asset, amount, address);
+			deposit(asset, amount, address);
 		}
 		handleDeposit();
 	};
@@ -58,7 +58,7 @@ const Line = (props) => {
 			setTimeout(() => {
 				handleWithdraw();
 			}, 2000);
-			await withdraw(asset, amount, address);
+			withdraw(asset, amount, address);
 		}
 		// handleWithdraw();
 	};
