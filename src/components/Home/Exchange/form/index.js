@@ -10,7 +10,7 @@ import openNotification from '../../../Notification';
 // type: { trade: 'buy' or 'sell, selection: 'market' or 'limit-order'}
 export default function BuyAndSellForm({ type }) {
 	const dispatch = useDispatch();
-	const { symbolA, symbolB, orderData, lastPrice } = useSelector((state) => state.general);
+	const { symbol, symbolA, symbolB, orderData, lastPrice } = useSelector((state) => state.general);
 	const balances = useSelector((state) => state.balances);
 	const setQtyForm = useCallback((data) => dispatch({ type: 'SetQtyForm', payload: data }), [ dispatch ]);
 	// const setSideForm = useCallback((data) => dispatch({ type: 'SetSideForm', payload: data }), [ dispatch ]);
@@ -83,7 +83,7 @@ export default function BuyAndSellForm({ type }) {
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ balances ]
+		[ balances, symbol ]
 	);
 
 	useEffect(
