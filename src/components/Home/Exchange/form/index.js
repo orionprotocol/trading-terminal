@@ -73,6 +73,10 @@ export default function BuyAndSellForm({ type }) {
 							if (symbolA === 'BTC') setAvailableA(contractBalances[key]);
 							else if (symbolB === 'BTC') setAvailableB(contractBalances[key]);
 							break;
+						case 'WXRP':
+							if (symbolA === 'XRP') setAvailableA(contractBalances[key]);
+							else if (symbolB === 'XRP') setAvailableB(contractBalances[key]);
+							break;
 						default:
 							if (symbolA === key) setAvailableA(contractBalances[key]);
 							else if (symbolB === key) setAvailableB(contractBalances[key]);
@@ -82,7 +86,7 @@ export default function BuyAndSellForm({ type }) {
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ balances ]
+		[ balances, symbol ]
 	);
 
 	useEffect(
@@ -184,8 +188,16 @@ export default function BuyAndSellForm({ type }) {
 			orderSymbolA = 'WBTC';
 		}
 
+		if (symbolA === 'XRP') {
+			orderSymbolA = 'WXRP';
+		}
+
 		if (symbolB === 'BTC') {
 			orderSymbolB = 'WBTC';
+		}
+
+		if (symbolB === 'XRP') {
+			orderSymbolB = 'WXRP';
 		}
 
 		let orderSymbols = [ orderSymbolA, orderSymbolB ];

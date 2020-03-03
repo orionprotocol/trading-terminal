@@ -28,6 +28,20 @@ const Line = props => {
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	const displayStatus = (status) => {
+		switch (status) {
+			case 'NEW':
+				return "New";
+			case 'Partially_filled':
+				return 'Partial';
+			case 'Filled':
+				return 'Filled';
+			case 'Canceled':
+				return 'Canceled';
+			default:
+				return "New";
+		}
+	};
 	// console.log(props.type);
 	return (
 		<Fragment>
@@ -46,7 +60,7 @@ const Line = props => {
 									</span>
 									<span className="cell">{state.amount}</span>
 									<span className="cell">{state.price}</span>
-									<span className="cell filled status">{state.status}</span>
+									<span className="cell filled status">{displayStatus(state.status)}</span>
 									<span className="cell">{state.total}</span>
 								</div>
 

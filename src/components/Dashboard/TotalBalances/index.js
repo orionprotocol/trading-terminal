@@ -6,7 +6,7 @@ const TotalBalances = (_) => {
 	const [ contract, setContract ] = useState({
 		ETH: 0,
 		BTC: 0,
-		WAN: 0
+		XRP: 0
 	});
 
 	useEffect(
@@ -19,7 +19,7 @@ const TotalBalances = (_) => {
 						// ETH: Number(contractBalances.WETH) || 0,
 						ETH: Number(contractBalances.ETH) || 0,
 						BTC: Number(contractBalances.WBTC) || 0,
-						WAN: Number(contractBalances.WAN) || 0
+						XRP: Number(contractBalances.WXRP) || 0
 					});
 				}
 			} catch (e) {
@@ -79,13 +79,6 @@ const TotalBalances = (_) => {
 			<div className="coins">
 				<div className="coin">
 					<div className="left">
-						<img src="./img/wanchain.png" alt="dash" />
-						<span className="name">WAN</span>
-					</div>
-					<span className="num">{contract.WAN.toFixed(6)}</span>
-				</div>
-				<div className="coin">
-					<div className="left">
 						<img src="./img/btc-wallet.png" alt="dash" />
 						<span className="name">BTC</span>
 					</div>
@@ -97,6 +90,13 @@ const TotalBalances = (_) => {
 						<span className="name">eth</span>
 					</div>
 					<span className="num">{contract.ETH.toFixed(6)}</span>
+				</div>
+				<div className="coin">
+					<div className="left">
+						<img src="./img/xrp-wallet.png" alt="dash" />
+						<span className="name">XRP</span>
+					</div>
+					<span className="num">{contract.XRP.toFixed(6)}</span>
 				</div>
 			</div>
 		</div>

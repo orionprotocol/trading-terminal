@@ -4,6 +4,8 @@ export default function(symbol) {
 			return 'BTC';
 		case 'weth':
 			return 'ETH';
+		case 'wxrp':
+			return 'XRP';
 		default:
 			return symbol.toUpperCase();
 	}

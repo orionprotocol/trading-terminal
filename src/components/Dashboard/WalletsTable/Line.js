@@ -31,6 +31,9 @@ const Line = (props) => {
 				case 'eth':
 					asset = 'weth';
 					break;
+				case 'xrp':
+					asset = 'wxrp';
+					break;
 				default:
 					break;
 			}
@@ -51,6 +54,9 @@ const Line = (props) => {
 					break;
 				case 'eth':
 					asset = 'weth';
+					break;
+				case 'xrp':
+					asset = 'wxrp';
 					break;
 				default:
 					break;
