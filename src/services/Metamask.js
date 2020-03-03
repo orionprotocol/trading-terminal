@@ -70,9 +70,10 @@ export const deposit = async (currency, amount, address) => {
 
 	let newAmount = Number(web3.utils.toWei(amount));
 	if (currency === 'wbtc') {
-		newAmount = amount * 100000000;
+		newAmount = (amount * 100000000).toFixed(0);
 	}
 	newAmount = Number(newAmount.toFixed(0));
+
 	try {
 		if (currency === 'weth') {
 			const res = await exchange.methods.depositWan().send({ from: address, value: newAmount });
