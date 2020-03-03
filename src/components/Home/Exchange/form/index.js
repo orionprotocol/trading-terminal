@@ -10,7 +10,10 @@ import openNotification from '../../../Notification';
 // type: { trade: 'buy' or 'sell, selection: 'market' or 'limit-order'}
 export default function BuyAndSellForm({ type }) {
 	const dispatch = useDispatch();
+
 	const { symbolA, symbolB, orderData, lastPrice } = useSelector((state) => state.general);
+	const { metamaskConnected } = useSelector((state) => state.wallet);
+
 	const balances = useSelector((state) => state.balances);
 	const setQtyForm = useCallback((data) => dispatch({ type: 'SetQtyForm', payload: data }), [ dispatch ]);
 	// const setSideForm = useCallback((data) => dispatch({ type: 'SetSideForm', payload: data }), [ dispatch ]);
@@ -344,14 +347,23 @@ export default function BuyAndSellForm({ type }) {
 							{/* {errors.total && touched.total ? <div>{errors.total}</div> : null} */}
 						</div>
 						<div style={{ margin: '30px 0px 20px 0' }}>
-							{type.trade === 'buy' && (
+							{metamaskConnected &&
+							type.trade === 'buy' && (
 								<button className="submit-form buy" type="submit" onClick={submitOrder}>
 									Buy {symbolA}
 								</button>
 							)}
-							{type.trade === 'sell' && (
+
+							{metamaskConnected &&
+							type.trade === 'sell' && (
 								<button className="submit-form sell" type="submit" onClick={submitOrder}>
 									Sell {symbolA}
+								</button>
+							)}
+
+							{!metamaskConnected && (
+								<button className="submit-form buy" type="submit" onClick={submitOrder}>
+									Add Wallet
 								</button>
 							)}
 						</div>
