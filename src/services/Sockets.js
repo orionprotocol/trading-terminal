@@ -14,6 +14,7 @@ const Sockets = (props) => {
 	const { wanmaskConnected, metamaskConnected } = useSelector((state) => state.wallet);
 
 	const [ websocket, setWS ] = useState(null);
+	const [ websocket2, setWS2 ] = useState(null);
 
 	const setBalances = useCallback((data) => dispatch({ type: 'SetBalances', payload: data }), [ dispatch ]);
 	const setOrderBook = useCallback((data) => dispatch({ type: 'SetOrderBook', payload: data }), [ dispatch ]);
@@ -138,6 +139,11 @@ const Sockets = (props) => {
 
 			//---------------------------------------   Last price (a symbol) ----------------------------
 
+			if (websocket2 !== null) {
+				websocket2.close();
+				setWS2(null);
+			}
+
 			let sym = symbol.split('-')[0] + symbol.split('-')[1];
 
 			const urlWS2 = `wss://candles.orionprotocol.io/api/v1/ticker/${sym}`;
@@ -149,7 +155,7 @@ const Sockets = (props) => {
 				pongTimeout: 5000
 			});
 
-			// setWS(ws);
+			setWS2(ws2);
 
 			ws2.onmessage = function(data) {
 				// setOrderBook(JSON.parse(data.data));
