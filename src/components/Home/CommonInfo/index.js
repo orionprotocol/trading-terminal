@@ -37,6 +37,10 @@ const getAssets = (pairs) => {
 	return { assets1: res1, assets2: res2 };
 };
 
+const formatNumber = (number) => {
+	return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2 }).format(number);
+};
+
 const CommonInfo = (props) => {
 	const dispatch = useDispatch();
 
@@ -66,11 +70,11 @@ const CommonInfo = (props) => {
 				let l = (object.price * low).toFixed(2);
 				let v = (object.price * Number(vol)).toFixed(2);
 
-				last = new Intl.NumberFormat('en-US').format(last);
-				h = new Intl.NumberFormat('en-US').format(h);
-				l = new Intl.NumberFormat('en-US').format(l);
+				last = formatNumber(last);
+				h = formatNumber(h);
+				l = formatNumber(l);
 				v = (v / 10 ** 6).toFixed(2);
-				v = new Intl.NumberFormat('en-US').format(v);
+				v = formatNumber(v);
 
 				setDollars({ ...dollars, last, low: l, high: h, vol: v });
 			});
