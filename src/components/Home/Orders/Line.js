@@ -30,7 +30,7 @@ const Line = props => {
 
 	const displayStatus = (status) => {
 		switch (status) {
-			case 'NEW':
+			case 'New':
 				return "New";
 			case 'Partially_filled':
 				return 'Partial';
@@ -39,7 +39,7 @@ const Line = props => {
 			case 'Canceled':
 				return 'Canceled';
 			default:
-				return "New";
+				return status;
 		}
 	};
 	// console.log(props.type);

@@ -77,12 +77,12 @@ const Subtable = props => {
 				return "New";
 			case 'Partially_filled':
 				return 'Partial';
-			case 'Filled':
+			case 'FILLED':
 				return 'Filled';
 			case 'Canceled':
 				return 'Canceled';
 			default:
-				return "New";
+				return status;
 		}
 	};
 
