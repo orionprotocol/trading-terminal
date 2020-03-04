@@ -219,7 +219,7 @@ export default function BuyAndSellForm({ type }) {
 		let orderSymbols = [ orderSymbolA, orderSymbolB ];
 
 		try {
-			// console.log(orderSymbols, type.trade, price, values.amount);
+			console.log(orderSymbols, type.trade, price, values.amount);
 			const ethereumOrder = await EthereumOrder.toEthereumOrder(orderSymbols, type.trade, price, values.amount);
 
 			loadOrderHistory();

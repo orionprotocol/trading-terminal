@@ -27,13 +27,13 @@ const WalletsTable = (props) => {
 
 	useEffect(
 		(_) => {
-			let wanWallet = 0,
-				wanContract = 0;
+			// let wanWallet = 0,
+			// 	wanContract = 0;
 
-			if (wallet.WAN && contract.WAN) {
-				wanWallet = wallet.WAN.toFixed(8);
-				wanContract = contract.WAN.toFixed(8);
-			}
+			// if (wallet.WAN && contract.WAN) {
+			// 	wanWallet = wallet.WAN.toFixed(8);
+			// 	wanContract = contract.WAN.toFixed(8);
+			// }
 
 			setLines([
 				{
@@ -65,7 +65,7 @@ const WalletsTable = (props) => {
 	useEffect(
 		(_) => {
 			try {
-				const { contractBalances, 	walletBalances } = balances;
+				const { contractBalances, walletBalances } = balances;
 				if (contractBalances && walletBalances) {
 					setContract({
 						...contract,

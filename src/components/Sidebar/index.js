@@ -11,7 +11,7 @@ const Sidebar = (props) => {
 	const dispatch = useDispatch();
 
 	const setMode = useCallback((payload) => dispatch({ type: 'SetMode', payload }), [ dispatch ]);
-
+	const setAddWallet = useCallback((payload) => dispatch({ type: 'SetAddWallet', payload }), [ dispatch ]);
 	const setWanmaskConnect = useCallback((payload) => dispatch({ type: 'SetWanmaskConnect', payload }), [ dispatch ]);
 
 	const setMetamaskConnect = useCallback((payload) => dispatch({ type: 'SetMetamaskConnect', payload }), [
@@ -45,12 +45,6 @@ const Sidebar = (props) => {
 		}, 100);
 	};
 
-	useEffect(
-		(_) => {
-			// console.log('addWallet', addWallet);
-		},
-		[ addWallet ]
-	);
 	useEffect(
 		(_) => {
 			setWalletActive(wanActive);
@@ -119,14 +113,12 @@ const Sidebar = (props) => {
 
 	const onMouseOver = (_) => {
 		document.querySelector('.js-sidebar-wrapper').classList.add('open');
-
 		const div = document.querySelector('#js-wrapper-pair');
 		if (div) div.classList.add('active');
 	};
 
 	const onMouseLeave = (_) => {
 		document.querySelector('.js-sidebar-wrapper').classList.remove('open');
-
 		const div = document.querySelector('#js-wrapper-pair');
 		if (div) div.classList.remove('active');
 	};
@@ -145,8 +137,28 @@ const Sidebar = (props) => {
 		setShow1(!show1);
 	};
 
+	useEffect(
+		(_) => {
+			if (addWallet) {
+				handleAddWallet();
+			}
+		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+		[ addWallet ]
+	);
+
+	useEffect(
+		(_) => {
+			if (show1 === false || show2 === false) {
+				setAddWallet(false);
+			}
+		},
+		//eslint-disable-next-line react-hooks/exhaustive-deps
+		[ show1, show2 ]
+	);
+
 	return (
-		<div onMouseLeave={onMouseLeave} onMouseOver={onMouseOver}>
+		<div>
 			<div className="sidebar-line js-sidebar-line">
 				<div className="line" />
 			</div>
@@ -163,7 +175,7 @@ const Sidebar = (props) => {
 				</FadeIn>
 			) : null}
 
-			<div className="sidebar-wrapper js-sidebar-wrapper">
+			<div className="sidebar-wrapper js-sidebar-wrapper" onMouseLeave={onMouseLeave} onMouseOver={onMouseOver}>
 				<div className="sidebar-content">
 					<a className="logo" href="/">
 						<img src="./img/logo.png" alt="home" />
