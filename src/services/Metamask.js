@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useCallback } from 'react';
+import openNotification from '../components/Notification';
+import { useDispatch } from 'react-redux';
 
 const Web3 = require('web3');
 const exchangeArtifact = require('../contracts/Exchange.json');
@@ -158,25 +160,27 @@ export const validateSolidity = (orderInfo, signature) =>
 	});
 
 export default function Metamask() {
-	const [ ethereum, setEthereum ] = useState(false);
+	const dispatch = useDispatch();
+
+	const setEthAddress = useCallback((data) => dispatch({ type: 'SetEthAddress', payload: data }), [ dispatch ]);
 
 	useEffect((_) => {
 		if (typeof window.ethereum !== 'undefined' || typeof window.web3 !== 'undefined') {
 			// Web3 browser user detected. You can now use the provider.
-			const provider = window['ethereum'] || window.web3.currentProvider;
+			// const provider = window['ethereum'] || window.web3.currentProvider;
 			window.ethereum.autoRefreshOnNetworkChange = false;
-			setEthereum(provider);
+
+			setEthAddress(window.ethereum.selectedAddress);
+
+			window.ethereum.on('accountsChanged', function(accounts) {
+				// Time to reload your interface with accounts[0]!
+				setEthAddress(accounts[0]);
+				openNotification({
+					message: 'Account updated'
+				});
+			});
 		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	useEffect(
-		(_) => {
-			// if (ethereum) enable();
-		},
-		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ ethereum ]
-	);
-
 	return <div />;
 }

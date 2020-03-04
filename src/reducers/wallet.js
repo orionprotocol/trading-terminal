@@ -3,7 +3,8 @@ const initialState = {
 	wanActive: false,
 	wanmaskConnected: false,
 	metamaskConnected: false,
-	addWallet: false
+	addWallet: false,
+	ethAddress: ''
 };
 
 export default (state = initialState, { type, ...action }) => {
@@ -18,6 +19,8 @@ export default (state = initialState, { type, ...action }) => {
 			return { ...state, metamaskConnected: action.payload };
 		case 'SetAddWallet':
 			return { ...state, addWallet: action.payload };
+		case 'SetEthAddress':
+			return { ...state, ethAddress: action.payload };
 		default:
 			return state;
 	}

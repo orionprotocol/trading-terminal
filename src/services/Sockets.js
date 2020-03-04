@@ -11,7 +11,7 @@ const Sockets = (props) => {
 
 	let { contractBalances, walletBalances } = useSelector((state) => state.balances);
 	const { symbol } = useSelector((state) => state.general);
-	const { wanmaskConnected, metamaskConnected } = useSelector((state) => state.wallet);
+	const { wanmaskConnected, metamaskConnected, ethAddress } = useSelector((state) => state.wallet);
 
 	const [ websocket, setWS ] = useState(null);
 	const [ websocket2, setWS2 ] = useState(null);
@@ -59,6 +59,10 @@ const Sockets = (props) => {
 				const { selectedAddress } = window.ethereum;
 				if (selectedAddress) {
 					const { web3, ethereum } = window;
+					if (socket) {
+						socket.close();
+						console.log('Socket.io closed');
+					}
 					socket = io.connect(process.env.REACT_APP_SOCKET_URL);
 					socket.on('connect', (_) => {
 						console.log('Connected....................................');
@@ -69,7 +73,7 @@ const Sockets = (props) => {
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ window.ethereum ]
+		[ window.ethereum, ethAddress ]
 	);
 	useEffect(
 		(_) => {

@@ -5,7 +5,7 @@ import axios from 'axios';
 const OrionWanchain = (_) => {
 	const balances = useSelector((state) => state.balances);
 	const dispatch = useDispatch();
-	const { wanmaskConnected, wanActive, metamaskConnected } = useSelector((state) => state.wallet);
+	const { wanmaskConnected, wanActive, metamaskConnected, ethAddress } = useSelector((state) => state.wallet);
 	const setBalances = useCallback((data) => dispatch({ type: 'SetBalances', payload: data }), [ dispatch ]);
 	useEffect(
 		() => {
@@ -43,7 +43,7 @@ const OrionWanchain = (_) => {
 	useEffect(
 		() => {
 			if (metamaskConnected) {
-				let address = localStorage.getItem('address');
+				let address = ethAddress;
 				const getBalances = (address) => {
 					// console.log('object');
 					axios
@@ -60,13 +60,14 @@ const OrionWanchain = (_) => {
 						});
 				};
 				// If no balances
-				if (Object.keys(balances).length === 0) {
-					if (address && address !== '') getBalances(address);
-				}
+				// if (Object.keys(balances).length === 0) {
+				// 	if (address && address !== '') getBalances(address);
+				// }
+				if (address && address !== '') getBalances(address);
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ metamaskConnected ]
+		[ metamaskConnected, ethAddress ]
 	);
 
 	return <Fragment />;
