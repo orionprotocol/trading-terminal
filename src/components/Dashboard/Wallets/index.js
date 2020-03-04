@@ -5,7 +5,6 @@ import AddWallet1 from '../../AddWallet/AddWallet1';
 import AddWallet2 from '../../AddWallet/AddWallet2';
 import FadeIn from 'react-fade-in';
 import './index.css';
-let price = require('crypto-price');
 
 const settings = {
 	infinite: false,
@@ -33,32 +32,44 @@ const Wallets = (_) => {
 		BTC: 0,
 		XRP: 0
 	});
+	const [ wallet, setWallet ] = useState({
+		ETH: 0,
+		BTC: 0,
+		XRP: 0
+	});
 
 	const [ show1, setShow1 ] = useState(false);
 	const [ show2, setShow2 ] = useState(false);
-	const [ ethBtc, setEthBtc ] = useState(0);
+	// const [ ethBtc, setEthBtc ] = useState(0);
 
 	useEffect(
 		(_) => {
 			try {
-				const { contractBalances } = balances;
-				if (contractBalances) {
-					price.getCryptoPrice('BTC', 'ETH').then((object) => {
-						// console.log(object);
-						let amount = (Number(contractBalances.ETH) * Number(object.price)).toFixed(6);
-						setEthBtc(amount);
-						// console.log(amount);
-					});
+				const { contractBalances, walletBalances } = balances;
+				if (contractBalances && walletBalances) {
+					// price.getCryptoPrice('BTC', 'ETH').then((object) => {
+					// 	// console.log(object);
+					// 	let amount = (Number(contractBalances.ETH) * Number(object.price)).toFixed(6);
+					// 	setEthBtc(amount);
+					// 	// console.log(amount);
+					// });
 
 					setContract({
 						...contract,
 						// ETH: Number(contractBalances.WETH),
 						ETH: Number(contractBalances.ETH) || 0,
 						BTC: Number(contractBalances.WBTC) || 0,
-						XRP: Number(contractBalances.XRP) || 0
+						XRP: Number(contractBalances.WXRP) || 0
+					});
+
+					setWallet({
+						...wallet,
+						// ETH: Number(contractBalances.WETH),
+						ETH: Number(walletBalances.ETH) || 0,
+						BTC: Number(walletBalances.WBTC) || 0,
+						XRP: Number(walletBalances.WXRP) || 0
 					});
 				}
-
 			} catch (e) {
 				console.log(e);
 			}
@@ -104,7 +115,7 @@ const Wallets = (_) => {
 						<p className="money">
 							<span className="num">{contract.ETH.toFixed(6)}</span> <span className="currency">ETH</span>
 						</p>
-						<p className="currency-2">{ethBtc} btc</p>
+						<p className="currency-2">{wallet.ETH.toFixed(6)} eth</p>
 					</div>
 					<div className="wallet btc">
 						<div className="title">
@@ -114,7 +125,7 @@ const Wallets = (_) => {
 						<p className="money">
 							<span className="num">{contract.BTC.toFixed(6)}</span> <span className="currency">BTC</span>
 						</p>
-						<p className="currency-2">{contract.BTC} btc</p>
+						<p className="currency-2">{wallet.BTC.toFixed(6)} btc</p>
 					</div>
 					<div className="wallet dash">
 						<div className="title">
@@ -124,7 +135,7 @@ const Wallets = (_) => {
 						<p className="money">
 							<span className="num">{contract.XRP.toFixed(6)}</span> <span className="currency">XRP</span>
 						</p>
-						<p className="currency-2">0.0000 xrp</p>
+						<p className="currency-2">{wallet.XRP.toFixed(6)} xrp</p>
 					</div>
 				</Slider>
 			</div>
