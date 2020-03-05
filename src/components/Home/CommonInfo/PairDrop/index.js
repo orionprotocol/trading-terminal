@@ -9,6 +9,7 @@ const PairDrop = props => {
     const { assets } = useSelector(state => state.general);
     const [assetsRender, setAssets] = useState([]);
     const [currentQuote, setCurrentQuote] = useState("");
+    const [lines, setLines] = useState([]);
 
     const setSymbolA = useCallback(
         data => dispatch({ type: "SetSymbolA", payload: data }),
@@ -56,6 +57,7 @@ const PairDrop = props => {
         _ => {
             if (currentQuote !== "") {
                 updateRenderAssets();
+                setLines(assets.assets2[currentQuote]);
             }
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,12 +70,32 @@ const PairDrop = props => {
         props.handleWrapper();
     };
 
+    const handleChange = e => {
+        let field = e.target.value;
+
+        if (field === "") {
+            setLines(assets.assets2[currentQuote]);
+        } else {
+            setLines(
+                assets.assets2[currentQuote].filter(e => {
+                    let replace = "^" + field;
+                    let regex = new RegExp(replace, "i");
+                    return regex.test(e);
+                })
+            );
+        }
+    };
+
     return (
         <div className="pair-drop js-pair-drop">
             <div className="titles">{assetsRender}</div>
             <div className="search">
                 <div className="input">
-                    <input type="text" placeholder="Search pair" />
+                    <input
+                        type="text"
+                        placeholder="Search pair"
+                        onChange={handleChange}
+                    />
                     <i className="fa fa-search" aria-hidden="true" />
                 </div>
                 <div className="favourite">
@@ -103,7 +125,7 @@ const PairDrop = props => {
                 <div className="lines">
                     <div className="part">
                         {currentQuote !== "" &&
-                            assets.assets2[currentQuote].map((e, i) => (
+                            lines.map((e, i) => (
                                 <Line
                                     asset={e}
                                     key={i}
