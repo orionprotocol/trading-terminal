@@ -42,7 +42,7 @@ const formatNumber = number => {
         number
     );
 };
-
+let intervalId = 0;
 const CommonInfo = props => {
     const dispatch = useDispatch();
 
@@ -51,6 +51,7 @@ const CommonInfo = props => {
     );
 
     const [dollars, setDollars] = useState({});
+    const [isFav, setIsFav] = useState(false);
 
     const setAssets = useCallback(
         data => dispatch({ type: "SetAssets", payload: data }),
@@ -90,6 +91,25 @@ const CommonInfo = props => {
         [lastPrice, high, low, vol]
     );
 
+    useEffect(
+        _ => {
+            clearInterval(intervalId);
+            intervalId = setInterval(() => {
+                const pair = symbolA + symbolB;
+                let favs = localStorage.getItem("favs");
+
+                if (favs) {
+                    favs = JSON.parse(favs);
+
+                    if (favs[pair] === true || favs[pair] === false) {
+                        setIsFav(favs[pair]);
+                    }
+                }
+            }, 2000);
+        },
+        [symbolA, symbolB]
+    );
+
     return (
         <div className="common-info js-panel-item js-pair">
             <div
@@ -98,7 +118,15 @@ const CommonInfo = props => {
             />
             <div className="top">
                 <div className="star">
-                    <i className="fa fa-star-o" aria-hidden="true" />
+                    {isFav ? (
+                        <i
+                            className="fa fa-star"
+                            style={{ color: "#00bbff" }}
+                            aria-hidden="true"
+                        />
+                    ) : (
+                        <i className="fa fa-star-o" aria-hidden="true" />
+                    )}
                     <span>Pair</span>
                 </div>
                 <div className="pair-select">

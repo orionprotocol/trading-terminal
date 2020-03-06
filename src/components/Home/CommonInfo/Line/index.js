@@ -12,8 +12,20 @@ const formatNumber = number => {
 export default function Line({ asset, handlePair, assetB }) {
     const { tickers } = useSelector(state => state.general);
     const [dollars, setDollars] = useState({});
+    const [isFav, setIsFav] = useState(false);
 
     const pair = asset + assetB;
+
+    useEffect(_ => {
+        let favs = localStorage.getItem("favs");
+        if (favs) {
+            favs = JSON.parse(favs);
+            if (favs[pair]) {
+                setIsFav(favs[pair]);
+            }
+        }
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(
         _ => {
@@ -36,9 +48,24 @@ export default function Line({ asset, handlePair, assetB }) {
         [tickers[pair]]
     );
 
+    const handleFav = _ => {
+        let favs = localStorage.getItem("favs");
+
+        if (!favs) {
+            favs = {};
+        } else {
+            favs = JSON.parse(favs);
+        }
+
+        favs[pair] = !isFav;
+        favs = JSON.stringify(favs);
+        localStorage.setItem("favs", favs);
+        setIsFav(!isFav);
+    };
+
     return (
-        <div className="line" onClick={_ => handlePair(asset)}>
-            <div className="cell">
+        <div className="line">
+            <div className="cell" onClick={_ => handlePair(asset)}>
                 <img
                     className="img"
                     src={`./img/${asset.toLowerCase()}.png`}
@@ -75,9 +102,15 @@ export default function Line({ asset, handlePair, assetB }) {
                     </span>{" "}
                     <span>%</span>
                 </p>
-                <div className="star js-star">
-                    <i className="fa fa-star-o" aria-hidden="true" />
-                </div>
+                {isFav ? (
+                    <div className="star js-star active" onClick={handleFav}>
+                        <i className="fa fa-star" aria-hidden="true" />
+                    </div>
+                ) : (
+                    <div className="star js-star" onClick={handleFav}>
+                        <i className="fa fa-star-o" aria-hidden="true" />
+                    </div>
+                )}
             </div>
         </div>
     );

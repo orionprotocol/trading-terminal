@@ -10,6 +10,7 @@ const PairDrop = props => {
     const [assetsRender, setAssets] = useState([]);
     const [currentQuote, setCurrentQuote] = useState("");
     const [lines, setLines] = useState([]);
+    const [favs, setFavs] = useState(false);
 
     const setSymbolA = useCallback(
         data => dispatch({ type: "SetSymbolA", payload: data }),
@@ -86,6 +87,29 @@ const PairDrop = props => {
         }
     };
 
+    const handleFavs = _ => {
+        if (assets.assets2[currentQuote]) {
+            if (!favs === false) {
+                setLines(assets.assets2[currentQuote]);
+            } else {
+                let favs = localStorage.getItem("favs");
+
+                if (favs) {
+                    favs = JSON.parse(favs);
+                    setLines(
+                        assets.assets2[currentQuote].filter(e => {
+                            let pair = e + currentQuote;
+
+                            if (favs[pair] === true) return true;
+                            return false;
+                        })
+                    );
+                }
+            }
+            setFavs(!favs);
+        }
+    };
+
     return (
         <div className="pair-drop js-pair-drop">
             <div className="titles">{assetsRender}</div>
@@ -98,8 +122,17 @@ const PairDrop = props => {
                     />
                     <i className="fa fa-search" aria-hidden="true" />
                 </div>
-                <div className="favourite">
-                    <i className="fa fa-star-o" aria-hidden="true" />
+                <div className="favourite" onClick={handleFavs}>
+                    {favs ? (
+                        <i
+                            className="fa fa-star"
+                            style={{ color: "#00bbff" }}
+                            aria-hidden="true"
+                        />
+                    ) : (
+                        <i className="fa fa-star-o" aria-hidden="true" />
+                    )}
+
                     <span>Favourites</span>
                 </div>
             </div>
