@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import coins from "coinlist";
-import { useSelector } from "react-redux";
-let price = require("crypto-price");
+import React, { useEffect, useState } from 'react';
+import coins from 'coinlist';
+import { useSelector } from 'react-redux';
+let price = require('crypto-price');
 
 const formatNumber = number => {
-    return new Intl.NumberFormat("en-US", { minimumFractionDigits: 1 }).format(
+    return new Intl.NumberFormat('en-US', { minimumFractionDigits: 1 }).format(
         number
     );
 };
@@ -17,7 +17,7 @@ export default function Line({ asset, handlePair, assetB }) {
     const pair = asset + assetB;
 
     useEffect(_ => {
-        let favs = localStorage.getItem("favs");
+        let favs = localStorage.getItem('favs');
         if (favs) {
             favs = JSON.parse(favs);
             if (favs[pair]) {
@@ -30,7 +30,7 @@ export default function Line({ asset, handlePair, assetB }) {
     useEffect(
         _ => {
             if (tickers[pair]) {
-                price.getCryptoPrice("USD", assetB).then(object => {
+                price.getCryptoPrice('USD', assetB).then(object => {
                     let vol = Number(tickers[pair].vol24h) * object.price;
                     vol = (vol / 10 ** 6).toFixed(2);
                     let last = (
@@ -49,7 +49,7 @@ export default function Line({ asset, handlePair, assetB }) {
     );
 
     const handleFav = _ => {
-        let favs = localStorage.getItem("favs");
+        let favs = localStorage.getItem('favs');
 
         if (!favs) {
             favs = {};
@@ -59,7 +59,7 @@ export default function Line({ asset, handlePair, assetB }) {
 
         favs[pair] = !isFav;
         favs = JSON.stringify(favs);
-        localStorage.setItem("favs", favs);
+        localStorage.setItem('favs', favs);
         setIsFav(!isFav);
     };
 
@@ -89,9 +89,14 @@ export default function Line({ asset, handlePair, assetB }) {
                 <span className="title-m">24h Change</span>
                 <div className="text">
                     <span className="emp">
-                        {tickers[pair] ? formatNumber(tickers[pair].vol24h) : 0}
+                        {tickers[pair]
+                            ? formatNumber(tickers[pair].vol24h) > 1000000
+                                ? formatNumber(tickers[pair].vol24h / 1000000) +
+                                  'M'
+                                : formatNumber(tickers[pair].vol24h)
+                            : 0}
                     </span>
-                    <span className="small">${dollars.vol}M</span>
+                    <span className="small">${formatNumber(dollars.vol)}M</span>
                 </div>
             </div>
             <div className="cell chg">
@@ -99,7 +104,7 @@ export default function Line({ asset, handlePair, assetB }) {
                 <p>
                     <span className="emp">
                         {tickers[pair] ? tickers[pair].change24h : 0}
-                    </span>{" "}
+                    </span>{' '}
                     <span>%</span>
                 </p>
                 {isFav ? (
