@@ -7,7 +7,7 @@ import { deposit as depositWan, withdraw as withdrawWan } from '../../../service
 const Line = (props) => {
 	const [ depositModal, toggleDepositModal ] = useState(false);
 	const [ withdrawModal, toggleWithdrawModal ] = useState(false);
-	const { wanmaskConnected, metamaskConnected } = useSelector((state) => state.wallet);
+	const { wanmaskConnected, metamaskConnected, assets } = useSelector((state) => state.wallet);
 
 	const currentAccount = localStorage.getItem('currentAccount');
 	const handleTrade = (_) => props.history.push('/home');
@@ -23,20 +23,7 @@ const Line = (props) => {
 			await depositWan(props.currency.toLowerCase(), amount, currentAccount);
 		} else if (metamaskConnected) {
 			const address = window.ethereum.selectedAddress;
-			let asset;
-			switch (props.currency.toLowerCase()) {
-				case 'btc':
-					asset = 'wbtc';
-					break;
-				case 'eth':
-					asset = 'weth';
-					break;
-				case 'xrp':
-					asset = 'wxrp';
-					break;
-				default:
-					break;
-			}
+			let asset = assets[props.currency.toUpperCase()].toLowerCase();
 			deposit(asset, amount, address);
 		}
 		handleDeposit();
@@ -47,20 +34,7 @@ const Line = (props) => {
 			await withdrawWan(props.currency.toLowerCase(), amount, currentAccount);
 		} else if (metamaskConnected) {
 			const address = window.ethereum.selectedAddress;
-			let asset;
-			switch (props.currency.toLowerCase()) {
-				case 'btc':
-					asset = 'wbtc';
-					break;
-				case 'eth':
-					asset = 'weth';
-					break;
-				case 'xrp':
-					asset = 'wxrp';
-					break;
-				default:
-					break;
-			}
+			let asset = assets[props.currency.toUpperCase()].toLowerCase();
 			setTimeout(() => {
 				handleWithdraw();
 			}, 2000);
