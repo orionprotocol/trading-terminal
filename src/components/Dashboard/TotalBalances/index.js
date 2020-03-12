@@ -1,24 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-let price = require("crypto-price");
+let price = require('crypto-price');
 
 const TotalBalances = _ => {
     const balances = useSelector(state => state.balances);
-    const [contract, setContract] = useState({
-        ETH: 0,
-        BTC: 0,
-        XRP: 0
-    });
+    const { assets } = useSelector(state => state.wallet);
+
+    const [contract, setContract] = useState(null);
     const [total, setTotal] = useState(0);
     const [inBTC, setInBTC] = useState({});
+
+    useEffect(
+        _ => {
+            let newContract = {};
+            for (let a in assets) {
+                a = a.toUpperCase();
+                newContract[a] = 0;
+            }
+            setContract(newContract);
+        },
+        [assets]
+    );
 
     const setBTCTotal = async _ => {
         let newTotal = 0;
         let newInBTC = {};
 
         for (let asset in contract) {
-            let res = await price.getCryptoPrice("BTC", asset);
+            let res = await price.getCryptoPrice('BTC', asset);
             let amount = 0;
             if (res) {
                 amount = Number(contract[asset]) * Number(res.price);
@@ -29,6 +39,7 @@ const TotalBalances = _ => {
                 newInBTC[asset] = contract[asset];
             }
         }
+
         setTotal(newTotal);
         setInBTC(newInBTC);
     };
@@ -46,12 +57,18 @@ const TotalBalances = _ => {
             try {
                 const { contractBalances } = balances;
                 if (contractBalances) {
+                    let newContract = {};
+
+                    for (let a in assets) {
+                        if (contractBalances[assets[a.toUpperCase()]]) {
+                            newContract[a.toUpperCase()] =
+                                contractBalances[assets[a.toUpperCase()]];
+                        }
+                    }
+
                     setContract({
-                        ...contract,
-                        // ETH: Number(contractBalances.WETH) || 0,
-                        ETH: Number(contractBalances.ETH) || 0,
-                        BTC: Number(contractBalances.WBTC) || 0,
-                        XRP: Number(contractBalances.WXRP) || 0
+                        // ...contract,
+                        ...newContract
                     });
                 }
             } catch (e) {
@@ -64,6 +81,7 @@ const TotalBalances = _ => {
 
     useEffect(
         _ => {
+            if (total === 0) return;
             window.am4core.ready(function() {
                 let data = [];
 
@@ -82,7 +100,7 @@ const TotalBalances = _ => {
                  */
                 // Create chart instance
                 var chart = window.am4core.create(
-                    "pie",
+                    'pie',
                     window.am4charts.PieChart
                 );
                 chart.data = data;
@@ -104,22 +122,22 @@ const TotalBalances = _ => {
                 var label = chart.seriesContainer.createChild(
                     window.am4core.Label
                 );
-                label.text = total.toFixed(8) + " BTC";
-                label.horizontalCenter = "middle";
-                label.verticalCenter = "middle";
+                label.text = total.toFixed(8) + ' BTC';
+                label.horizontalCenter = 'middle';
+                label.verticalCenter = 'middle';
                 label.fontSize = 20;
                 chart.innerRadius = window.am4core.percent(90); // Add and configure Series
                 var pieSeries = chart.series.push(
                     new window.am4charts.PieSeries()
                 );
-                pieSeries.dataFields.value = "val";
-                pieSeries.dataFields.category = "name";
+                pieSeries.dataFields.value = 'val';
+                pieSeries.dataFields.category = 'name';
                 pieSeries.labels.template.disabled = true;
                 pieSeries.ticks.template.disabled = true;
                 pieSeries.colors.list = [
-                    window.am4core.color("#424054"),
-                    window.am4core.color("#f7931a"),
-                    window.am4core.color("#8800ff")
+                    window.am4core.color('#424054'),
+                    window.am4core.color('#f7931a'),
+                    window.am4core.color('#8800ff')
                 ];
             });
         },
@@ -131,27 +149,21 @@ const TotalBalances = _ => {
             <h2>Total Balance</h2>
             <div className="graph-container" id="pie" />
             <div className="coins">
-                <div className="coin">
-                    <div className="left">
-                        <img src="./img/btc-wallet.png" alt="dash" />
-                        <span className="name">BTC</span>
-                    </div>
-                    <span className="num">{contract.BTC.toFixed(6)}</span>
-                </div>
-                <div className="coin">
-                    <div className="left">
-                        <img src="./img/eth-wallet.png" alt="dash" />
-                        <span className="name">eth</span>
-                    </div>
-                    <span className="num">{contract.ETH.toFixed(6)}</span>
-                </div>
-                <div className="coin">
-                    <div className="left">
-                        <img src="./img/xrp-wallet.png" alt="dash" />
-                        <span className="name">XRP</span>
-                    </div>
-                    <span className="num">{contract.XRP.toFixed(6)}</span>
-                </div>
+                {contract &&
+                    Object.keys(contract).map(a => (
+                        <div className="coin" key={a}>
+                            <div className="left">
+                                <img
+                                    src={`./img/${a.toLowerCase()}-wallet.png`}
+                                    alt="dash"
+                                />
+                                <span className="name">{a.toUpperCase()}</span>
+                            </div>
+                            <span className="num">
+                                {contract[a.toUpperCase()].toFixed(6)}
+                            </span>
+                        </div>
+                    ))}
             </div>
         </div>
     );
