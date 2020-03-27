@@ -33,9 +33,9 @@ const TotalBalances = _ => {
             if (res) {
                 amount = Number(contract[asset]) * Number(res.price);
                 newInBTC[asset] = amount;
-                newTotal += amount;
+                newTotal += Number(amount);
             } else {
-                newTotal += contract[asset];
+                newTotal += Number(contract[asset]);
                 newInBTC[asset] = contract[asset];
             }
         }
@@ -122,7 +122,7 @@ const TotalBalances = _ => {
                 var label = chart.seriesContainer.createChild(
                     window.am4core.Label
                 );
-                label.text = total.toFixed(8) + ' BTC';
+                label.text = Number(total).toFixed(8) + ' BTC';
                 label.horizontalCenter = 'middle';
                 label.verticalCenter = 'middle';
                 label.fontSize = 20;

@@ -18,10 +18,10 @@ export default function Withdraws() {
 	const [ startDateA, setStartDateA ] = useState(new Date());
 	const [ startDateB, setStartDateB ] = useState(new Date());
 	const [ classes, setClasses ] = useState({
-		date: 'fa-angle-down',
-		asset: 'fa-angle-down',
-		amount: 'fa-angle-down',
-		status: 'fa-angle-down'
+		date: 'fa-angle-up',
+		asset: 'fa-angle-up',
+		amount: 'fa-angle-up',
+		status: 'fa-angle-up'
 	});
 	const [ offset, setOffset ] = useState(0);
 	const [ elements, setElements ] = useState([]);

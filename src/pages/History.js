@@ -75,9 +75,6 @@ function History() {
                                 return e;
                             });
 
-                            console.log('deposits ', d);
-                            console.log('withdrawls ', w);
-
                             setDeposits(d);
                             setWithdrawls(w);
                         }
