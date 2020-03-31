@@ -22,7 +22,6 @@ const DEFAULT_SYMBOL_INFO = {
 };
 
 class SymbolInfoService {
-
     get(symbolName, exchange) {
         const [partOne, partTwo] = symbolName.split('-');
 
@@ -34,7 +33,6 @@ class SymbolInfoService {
     }
 
     _createSymbolInfo(assetOneId, assetTwoId, exchange) {
-
         const ticker = `${assetOneId}${assetTwoId}`;
         const symbolName = `${assetOneId}/${assetTwoId}`;
 
@@ -44,16 +42,15 @@ class SymbolInfoService {
             volume_precision: 8,
             exchange: exchange,
             description: symbolName,
-            name: symbolName, ticker,
+            name: symbolName,
+            ticker
         });
     }
-
 }
 
 const symbolInfoService = new SymbolInfoService();
 
 class CandlesService {
-
     constructor(exchange) {
         this._lastTime = 0;
         this._subscriber = null;
@@ -61,12 +58,22 @@ class CandlesService {
     }
 
     onReady(callback) {
-        setTimeout(() => callback({
-                supported_resolutions: ['15', '30', '60', '240', '1D', '1W'],
-                supports_time: true,
-                supports_marks: false,
-                supports_timescale_marks: false
-            }), 0
+        setTimeout(
+            () =>
+                callback({
+                    supported_resolutions: [
+                        '15',
+                        '30',
+                        '60',
+                        '240',
+                        '1D',
+                        '1W'
+                    ],
+                    supports_time: true,
+                    supports_marks: false,
+                    supports_timescale_marks: false
+                }),
+            0
         );
     }
 
@@ -75,31 +82,34 @@ class CandlesService {
             return;
         }
 
-        symbolInfoService.get(symbolName, this._exchange)
+        symbolInfoService
+            .get(symbolName, this._exchange)
             .then(resolve)
             .catch(reject); // TODO
     }
 
-    getBars(symbolInfo, resolution, from, to = (Date.now() / 1000), onHistoryCallback, onErrorCallback) {
+    getBars(
+        symbolInfo,
+        resolution,
+        from,
+        to = Date.now() / 1000,
+        onHistoryCallback,
+        onErrorCallback
+    ) {
         //from = CandlesService.convertToMilliseconds(from);
         //to = CandlesService.convertToMilliseconds(to);
-        const handleCandles = (candles) => {
-                candles = CandlesService.filterCandlesByTime(
-                    candles,
-                    from,
-                    to
-                );
+        const handleCandles = candles => {
+            candles = CandlesService.filterCandlesByTime(candles, from, to);
 
-                if (candles.length) {
-                    this._updateLastTime(candles);
-                    onHistoryCallback(candles);
-                } else {
-                    onHistoryCallback([], {
-                        noData: true
-                    });
-                }
+            if (candles.length) {
+                this._updateLastTime(candles);
+                onHistoryCallback(candles);
+            } else {
+                onHistoryCallback([], {
+                    noData: true
+                });
             }
-        ;
+        };
         CandlesService._getAndHandleCandles(
             symbolInfo,
             from,
@@ -110,13 +120,19 @@ class CandlesService {
         );
     }
 
-    subscribeBars(symbolInfo, resolution, onRealtimeCallback, subscriberUID, onResetCacheNeededCallback) {
+    subscribeBars(
+        symbolInfo,
+        resolution,
+        onRealtimeCallback,
+        subscriberUID,
+        onResetCacheNeededCallback
+    ) {
         this._subscriber = subscriberUID;
 
         const from = this._lastTime;
         const to = Math.round(Date.now() / 1000);
 
-        const handleCandles = (candles) => {
+        const handleCandles = candles => {
             if (this._subscriber !== subscriberUID) {
                 return;
             }
@@ -131,33 +147,31 @@ class CandlesService {
 
             if (candles.length > 1) {
                 this._updateLastTime(candles);
-                CandlesService
-                    .filterCandlesByTime(candles, from, to)
-                    .forEach(onRealtimeCallback);
+                CandlesService.filterCandlesByTime(candles, from, to).forEach(
+                    onRealtimeCallback
+                );
             }
         };
 
         var timerId = setTimeout(() => {
-                CandlesService._getAndHandleCandles(
-                    symbolInfo,
-                    this._lastTime,
-                    Math.round(Date.now() / 1000),
-                    resolution,
-                    handleCandles
-                );
-            },
-            POLL_DELAY)
-        ;
+            CandlesService._getAndHandleCandles(
+                symbolInfo,
+                this._lastTime,
+                Math.round(Date.now() / 1000),
+                resolution,
+                handleCandles
+            );
+        }, POLL_DELAY);
     }
 
     calculateHistoryDepth(resolution, resolutionBack, intervalBack) {
         switch (resolution) {
-            case "30":
+            case '30':
                 return {
                     resolutionBack: 'D',
                     intervalBack: 10
                 };
-            case "60":
+            case '60':
                 return {
                     resolutionBack: 'D',
                     intervalBack: 20
@@ -165,7 +179,7 @@ class CandlesService {
             default:
                 return undefined;
         }
-    };
+    }
 
     unsubscribeBars(subscriberUID) {
         if (this._subscriber === subscriberUID) {
@@ -183,21 +197,22 @@ class CandlesService {
 
     static filterCandlesByTime(candles = [], from, to) {
         return candles
-            .filter(({time}) => time <= to && time >= from
-            )
+            .filter(({ time }) => time <= to && time >= from)
             .map(candle => {
                 candle.time = candle.timeStart * 1000;
                 return candle;
-            })
-            ;
+            });
     }
 
-    static _getAndHandleCandles(symbolInfo, from, to, resolution, handleCandles, handleError) {
-        CandlesService._getCandles(
-            symbolInfo,
-            from,
-            to,
-            resolution)
+    static _getAndHandleCandles(
+        symbolInfo,
+        from,
+        to,
+        resolution,
+        handleCandles,
+        handleError
+    ) {
+        CandlesService._getCandles(symbolInfo, from, to, resolution)
             .then(handleCandles)
             .catch(handleError);
     }
@@ -210,8 +225,16 @@ class CandlesService {
         const exchange = symbolInfo.exchange;
         //const path = `${baseUrl}/candles/${amountId}/${priceId}`;
         const path = 'https://candles.orionprotocol.io/api/v1/candles';
-        const fetchPath = exchange == 'all' ? `${path}?symbol=${symbolInfo.ticker}&timeStart=${from}&timeEnd=${to}&interval=${interval}` : `${path}?symbol=${symbolInfo.ticker}&timeStart=${from}&timeEnd=${to}&interval=${interval}&exchange=${exchange}`;
-        return fetch(fetchPath).then((res) => res.json()).then((res) => res.candles);
+
+        from = from + 3600;
+
+        const fetchPath =
+            exchange == 'all'
+                ? `${path}?symbol=${symbolInfo.ticker}&timeStart=${from}&timeEnd=${to}&interval=${interval}`
+                : `${path}?symbol=${symbolInfo.ticker}&timeStart=${from}&timeEnd=${to}&interval=${interval}&exchange=${exchange}`;
+        return fetch(fetchPath)
+            .then(res => res.json())
+            .then(res => res.candles);
     }
 
     static _normalizeInterval(interval) {
@@ -228,12 +251,10 @@ class CandlesService {
                 } else {
                     return interval + 'm';
                 }
-
         }
     }
 
     static convertToMilliseconds(seconds) {
         return seconds * 1000;
     }
-
 }
