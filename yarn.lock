@@ -5387,6 +5387,11 @@ formik@^2.0.6:
     tiny-warning "^1.0.2"
     tslib "^1.10.0"
 
+fortmatic@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/fortmatic/-/fortmatic-2.0.6.tgz#785972511aea662558fd2cd9a285d3b25c3a49ca"
+  integrity sha512-/xT4QpZ3YxqTq6sSHMYw1rzApoHEQVJs8+gADDL39SVccEmBtCuHJIrztgasC8fAgrQkjTCWjDBlKtU/ChMyrA==
+
 forwarded@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.1.2.tgz#98c23dab1175657b8c0573e8ceccd91b0ff18c84"

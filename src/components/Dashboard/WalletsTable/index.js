@@ -37,7 +37,7 @@ const WalletsTable = props => {
         _ => {
             setLines(
                 Object.keys(contract).map(a => {
-                    console.log(wallet[a.toUpperCase()]);
+                    // console.log(wallet[a.toUpperCase()]);
                     if (typeof wallet[a.toUpperCase()] === 'number') {
                         return {
                             token: a.toUpperCase(),

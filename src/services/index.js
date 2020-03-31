@@ -3,34 +3,36 @@ import Sockets from './Sockets';
 import WanmaskVerification from './WanmaskVerification';
 import OrionWanchain from './OrionWanchain';
 import Metamask from './Metamask';
+import Fortmatic from './Fortmatic';
 import { useSelector } from 'react-redux';
 
-const Index = (_) => {
-	const { wanmaskConnected } = useSelector((state) => state.wallet);
+const Index = _ => {
+    const { wanmaskConnected } = useSelector(state => state.wallet);
 
-	const [ render, setRender ] = useState(null);
+    const [render, setRender] = useState(null);
 
-	useEffect(
-		(_) => {
-			if (window.wan3 !== undefined && wanmaskConnected) {
-				setRender(
-					<Fragment>
-						<WanmaskVerification />
-					</Fragment>
-				);
-			}
-		},
-		[ wanmaskConnected ]
-	);
+    useEffect(
+        _ => {
+            if (window.wan3 !== undefined && wanmaskConnected) {
+                setRender(
+                    <Fragment>
+                        <WanmaskVerification />
+                    </Fragment>
+                );
+            }
+        },
+        [wanmaskConnected]
+    );
 
-	return (
-		<Fragment>
-			<Sockets />
-			<Metamask />
-			<OrionWanchain />
-			{render}
-		</Fragment>
-	);
+    return (
+        <Fragment>
+            <Sockets />
+            <Metamask />
+            <OrionWanchain />
+            <Fortmatic />
+            {render}
+        </Fragment>
+    );
 };
 
 export default Index;
