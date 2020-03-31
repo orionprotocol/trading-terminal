@@ -36,13 +36,26 @@ const WalletsTable = props => {
     useEffect(
         _ => {
             setLines(
-                Object.keys(contract).map(a => ({
-                    token: a.toUpperCase(),
-                    wallet: wallet[a.toUpperCase()].toFixed(8),
-                    contract: contract[a.toUpperCase()].toFixed(8),
-                    open: 0,
-                    img: `./img/${a.toLowerCase()}-wallet.png`
-                }))
+                Object.keys(contract).map(a => {
+                    console.log(wallet[a.toUpperCase()]);
+                    if (typeof wallet[a.toUpperCase()] === 'number') {
+                        return {
+                            token: a.toUpperCase(),
+                            wallet: wallet[a.toUpperCase()].toFixed(8),
+                            contract: contract[a.toUpperCase()].toFixed(8),
+                            open: 0,
+                            img: `./img/${a.toLowerCase()}-wallet.png`
+                        };
+                    } else {
+                        return {
+                            token: null,
+                            wallet: null,
+                            contract: null,
+                            open: 0,
+                            img: null
+                        };
+                    }
+                })
             );
         },
         [contract, wallet]
