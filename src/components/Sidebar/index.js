@@ -40,8 +40,7 @@ const Sidebar = props => {
         wanmaskConnected,
         metamaskConnected,
         fortmaticConnected,
-        addWallet,
-        ethAddress
+        addWallet
     } = useSelector(state => state.wallet);
     const [walletActive, setWalletActive] = useState(false);
     const [addWalletOpt, setAddWalletOpt] = useState(false);
@@ -109,7 +108,7 @@ const Sidebar = props => {
             }
 
             if (fortmatic || fortmaticConnected) {
-                console.log('fm connected', ethAddress);
+                // console.log('fm connected', ethAddress);
                 setAddWalletOpt(true);
                 setFortmaticConnect(true);
                 setWalletActive(true);

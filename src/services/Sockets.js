@@ -1,10 +1,10 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { web3 } from './Fortmatic';
+
 const io = require('socket.io-client');
 let socket;
-
-// socket = io.connect('http://localhost:3002');
 
 const Sockets = props => {
     const dispatch = useDispatch();
@@ -94,10 +94,22 @@ const Sockets = props => {
 
     useEffect(
         _ => {
-            if (window.ethereum) {
-                const { selectedAddress } = window.ethereum;
-                if (selectedAddress) {
-                    const { web3, ethereum } = window;
+            if (window.ethereum || (fortmaticConnected && ethAddress !== '')) {
+                // console.log('window.ethereum');
+
+                let address;
+
+                if (metamaskConnected) {
+                    const { selectedAddress } = window.ethereum;
+                    address = selectedAddress;
+                }
+
+                if (!address) address = ethAddress;
+
+                if (address) {
+                    // console.log('selectedAddress', address);
+                    localStorage.setItem('ethAddress', address);
+                    // const { web3, ethereum } = window;
                     if (socket) {
                         socket.close();
                         console.log('Socket.io closed');
@@ -110,7 +122,7 @@ const Sockets = props => {
                         setIsConn(true);
                         socket.emit(
                             'clientAddress',
-                            web3.toChecksumAddress(ethereum.selectedAddress)
+                            web3.utils.toChecksumAddress(address)
                         );
                     });
                 }
@@ -130,7 +142,7 @@ const Sockets = props => {
                 typeof walletBalances !== 'undefined'
             ) {
                 socket.on('balanceChange', async data => {
-                    // console.log('balanceChange', data);
+                    console.log('balanceChange', data);
                     const { web3, wan3, ethereum } = window;
 
                     if (!address) {

@@ -64,13 +64,18 @@ const Wallets = _ => {
                         newWallet = {};
 
                     for (let a in assets) {
-                        if (contractBalances[assets[a.toUpperCase()]]) {
+                        if (
+                            Number(contractBalances[assets[a.toUpperCase()]]) >=
+                            0
+                        ) {
                             newContract[a.toUpperCase()] = Number(
                                 contractBalances[assets[a.toUpperCase()]]
                             );
                         }
 
-                        if (walletBalances[assets[a.toUpperCase()]]) {
+                        if (
+                            Number(walletBalances[assets[a.toUpperCase()]]) >= 0
+                        ) {
                             newWallet[a.toUpperCase()] = Number(
                                 walletBalances[assets[a.toUpperCase()]]
                             );
@@ -99,7 +104,7 @@ const Wallets = _ => {
         let newTotal = {},
             newInBTC = {};
         for (let asset in contract) {
-            if (contract[asset] && wallet[asset]) {
+            if (Number(contract[asset]) >= 0 && Number(wallet[asset]) >= 0) {
                 newTotal[asset] = (contract[asset] + wallet[asset]).toFixed(6);
                 newInBTC[asset] = newTotal[asset];
                 let res = await price.getCryptoPrice('BTC', asset);

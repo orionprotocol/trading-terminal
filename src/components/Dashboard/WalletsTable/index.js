@@ -70,13 +70,18 @@ const WalletsTable = props => {
                         newWallet = {};
 
                     for (let a in assets) {
-                        if (contractBalances[assets[a.toUpperCase()]]) {
+                        if (
+                            Number(contractBalances[assets[a.toUpperCase()]]) >=
+                            0
+                        ) {
                             newContract[a.toUpperCase()] = Number(
                                 contractBalances[assets[a.toUpperCase()]]
                             );
                         }
 
-                        if (walletBalances[assets[a.toUpperCase()]]) {
+                        if (
+                            Number(walletBalances[assets[a.toUpperCase()]]) >= 0
+                        ) {
                             newWallet[a.toUpperCase()] = Number(
                                 walletBalances[assets[a.toUpperCase()]]
                             );

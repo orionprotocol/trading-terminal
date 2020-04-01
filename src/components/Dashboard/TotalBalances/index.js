@@ -60,7 +60,10 @@ const TotalBalances = _ => {
                     let newContract = {};
 
                     for (let a in assets) {
-                        if (contractBalances[assets[a.toUpperCase()]]) {
+                        if (
+                            Number(contractBalances[assets[a.toUpperCase()]]) >=
+                            0
+                        ) {
                             newContract[a.toUpperCase()] =
                                 contractBalances[assets[a.toUpperCase()]];
                         }
@@ -81,7 +84,7 @@ const TotalBalances = _ => {
 
     useEffect(
         _ => {
-            if (total === 0) return;
+            if (total < 0) return;
             window.am4core.ready(function() {
                 let data = [];
 

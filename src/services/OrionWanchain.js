@@ -58,7 +58,7 @@ const OrionWanchain = _ => {
                     address = localStorage.getItem('currentAccount');
                 }
 
-                console.log('getBalances', address);
+                // console.log('getBalances', address);
                 const getBalances = address => {
                     // console.log('object');
                     axios
@@ -68,7 +68,7 @@ const OrionWanchain = _ => {
                         .then(res => {
                             if (res.data.walletBalances) {
                                 let all = res.data;
-                                // console.log(all);
+                                // console.log('all balances', all);
                                 setBalances(all);
                             }
                         })
