@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Dark, Light } from '../funtions/handleMode';
@@ -26,6 +26,10 @@ const Sidebar = props => {
         payload => dispatch({ type: 'SetFortmaticConnect', payload }),
         [dispatch]
     );
+    // const setEthAddress = useCallback(
+    //     payload => dispatch({ type: 'SetEthAddress', payload }),
+    //     [dispatch]
+    // );
 
     const setMetamaskConnect = useCallback(
         payload => dispatch({ type: 'SetMetamaskConnect', payload }),
@@ -40,7 +44,7 @@ const Sidebar = props => {
         wanmaskConnected,
         metamaskConnected,
         fortmaticConnected,
-        addWallet
+        addWallet,
     } = useSelector(state => state.wallet);
     const [walletActive, setWalletActive] = useState(false);
     const [addWalletOpt, setAddWalletOpt] = useState(false);
@@ -120,7 +124,7 @@ const Sidebar = props => {
             walletOpt,
             wanmaskConnected,
             metamaskConnected,
-            fortmaticConnected
+            fortmaticConnected,
         ]
     );
 
@@ -177,6 +181,26 @@ const Sidebar = props => {
 
     const handleAddWallet = _ => {
         setShow1(!show1);
+    };
+
+    const clearLocalStorage = _ => {
+        localStorage.removeItem('wanmaskConnected');
+        localStorage.removeItem('metamaskConnected');
+        localStorage.removeItem('fortmaticConnected');
+        localStorage.removeItem('ethAddress');
+        localStorage.removeItem('address');
+    };
+
+    const handleDisconnect = _ => {
+        clearLocalStorage();
+        // setWanmaskConnect(false);
+        // setMetamaskConnect(false);
+        // setFortmaticConnect(false);
+        // setEthAddress('');
+        // setWalletActive(false);
+        setTimeout(() => {
+            window.location.replace('/');
+        }, 1000);
     };
 
     useEffect(
@@ -282,7 +306,7 @@ const Sidebar = props => {
                                     <span className="text">Wanchain</span>
                                 </div>
                             ) : null}
-                            {metamaskConnected ? (
+                            {metamaskConnected || fortmaticConnected ? (
                                 <div className="coin">
                                     <img src="./img/eth-aside.svg" alt="home" />
                                     <span className="text">Ethereum</span>
@@ -302,19 +326,20 @@ const Sidebar = props => {
                         {/* <button className="add-wallet"> */}
                         {/* <Link className="add-wallet" to="/wallet"> */}
                         <Link className="add-wallet" to="#">
-                            <img src="./img/close.png" alt="home" />
-
                             {addWalletOpt ? (
-                                <span className="" onClick={handleAddWallet}>
-                                    Add Wallet
+                                <span className="" onClick={handleDisconnect}>
+                                    - Disconnect
                                 </span>
                             ) : (
-                                <span
-                                    className="add-wallet-btn"
-                                    onClick={handleAddWallet}
-                                >
-                                    Add Wallet
-                                </span>
+                                <Fragment>
+                                    <img src="./img/close.png" alt="home" />
+                                    <span
+                                        className="add-wallet-btn"
+                                        onClick={handleAddWallet}
+                                    >
+                                        Add Wallet
+                                    </span>
+                                </Fragment>
                             )}
                         </Link>
 

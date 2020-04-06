@@ -1,9 +1,9 @@
 import Contract, { tokensAddress } from './Contract';
 
 const Assets = {
-    toLongValue: function(val, decimals = 8) {
+    toLongValue: function (val, decimals = 8) {
         return Number((Number(val) * Math.pow(10, decimals)).toFixed(0));
-    }
+    },
 };
 
 class EthereumOrder {
@@ -54,7 +54,7 @@ class EthereumOrder {
                 matcherFee: 300000,
                 nonce: nowTimestamp,
                 expiration: nowTimestamp + 29 * 24 * 60 * 60 * 1000,
-                side: side //true = buy, false = sell
+                side: side, //true = buy, false = sell
             };
 
             let signedOrder = await this.signOrder(order);
@@ -77,9 +77,9 @@ class EthereumOrder {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(order)
+                    body: JSON.stringify(order),
                 })
                     .then(results => {
                         return results.json();

@@ -6,13 +6,20 @@ import Deposits from '../components/History/Deposits';
 import Withdraws from '../components/History/Withdraws';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Web3 from 'web3';
+
+const web3 = new Web3();
+
 function History() {
     const dispatch = useDispatch();
 
     const [url, setUrl] = useState('');
-    const { wanmaskConnected, metamaskConnected } = useSelector(
-        state => state.wallet
-    );
+    const {
+        wanmaskConnected,
+        metamaskConnected,
+        ethAddress,
+        fortmaticConnected,
+    } = useSelector(state => state.wallet);
 
     const setDeposits = useCallback(
         data => dispatch({ type: 'SetDeposits', payload: data }),
@@ -37,25 +44,27 @@ function History() {
                     );
                 }
             }
-            if (metamaskConnected) {
-                const { ethereum, web3 } = window;
 
-                if (!ethereum) ethereum.enable();
-                const address = web3.toChecksumAddress(
-                    ethereum.selectedAddress
-                );
+            if (
+                (metamaskConnected || fortmaticConnected) &&
+                ethAddress !== ''
+            ) {
+                // const { ethereum, web3 } = window;
+                // if (!ethereum) ethereum.enable();
+                const address = web3.utils.toChecksumAddress(ethAddress);
                 setUrl(
                     process.env.REACT_APP_ORION_WAN + '/api/history/' + address
                 );
             }
         },
-        [wanmaskConnected, metamaskConnected]
+        [wanmaskConnected, metamaskConnected, fortmaticConnected, ethAddress]
     );
 
     useEffect(
         _ => {
+            // console.log('url ', url);
             if (url !== '') {
-                console.log(url);
+                // console.log(url);
                 axios
                     .get(url)
                     .then(res => {
@@ -74,6 +83,9 @@ function History() {
                                 }
                                 return e;
                             });
+
+                            // console.log('d', d);
+                            // console.log('w', w);
 
                             setDeposits(d);
                             setWithdrawls(w);

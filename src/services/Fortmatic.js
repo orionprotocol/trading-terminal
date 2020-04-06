@@ -27,8 +27,11 @@ export default function FortmaticService() {
     useEffect(
         _ => {
             // console.log(web3.enable());
+
             if (fortmaticConnected) {
                 web3.eth.getAccounts((error, accounts) => {
+                    // console.log('fortmaticConnected 88', fortmaticConnected);
+                    // console.log('accounts', accounts);
                     if (accounts.length > 0) {
                         setFortmaticConnect(true);
                         setEthAddress(accounts[0]);
