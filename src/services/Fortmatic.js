@@ -8,7 +8,7 @@ const Web3 = require('web3');
 export const FORTMATIC_API_KEY = 'pk_test_4BEC597B2A4DA352';
 // const FORTMATIC_API_KEY = 'pk_live_3C26F25E5BAEAF0D';
 
-const fm = new Fortmatic(FORTMATIC_API_KEY);
+const fm = new Fortmatic(FORTMATIC_API_KEY, 'ropsten');
 export const web3 = new Web3(fm.getProvider());
 
 export default function FortmaticService() {

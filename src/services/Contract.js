@@ -24,7 +24,7 @@ export default class Contract {
                 this.web3 = new Web3(window['ethereum']);
                 break;
             case 'fortmatic':
-                const fm = new Fortmatic(FORTMATIC_API_KEY);
+                const fm = new Fortmatic(FORTMATIC_API_KEY, 'ropsten');
                 this.web3 = new Web3(fm.getProvider());
                 break;
             default:
