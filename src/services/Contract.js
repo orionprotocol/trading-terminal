@@ -127,18 +127,17 @@ export default class Contract {
             } else {
                 this.tokensContracts[currency].methods
                     .approve(contractAddress, newAmount)
-                    .send({ from: address });
-
-                setTimeout(() => {
-                    this.exchange.methods
-                        .depositAsset(
-                            tokensAddress[currency.toUpperCase()],
-                            newAmount
-                        )
-                        .send({ from: address });
-                }, 1000);
-
-                // console.log(res2);
+                    .send({ from: address })
+                    .once('transactionHash', (hash) => {
+                        this.exchange.methods
+                            .depositAsset(
+                                tokensAddress[currency.toUpperCase()],
+                                newAmount
+                            )
+                            .send({ from: address })
+                            .on('error', console.error);
+                    })
+                    .on('error', console.error);
             }
         } catch (e) {
             // Toastr.showError('Invalid amount, ' + newAmount);
