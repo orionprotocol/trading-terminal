@@ -107,7 +107,7 @@ const AddWallet2 = props => {
                 break;
             case 'Fortmatic':
                 web3.eth.getAccounts((error, accounts) => {
-                    if (accounts.length > 0) {
+                    if (accounts!==undefined && accounts.length > 0) {
                         // console.log('ethAddress', ethAddress);
                         setFortmaticConnect(true);
                         setEthAddress(accounts[0]);

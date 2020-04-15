@@ -112,7 +112,7 @@ export default function Withdraws() {
 	useEffect(
 		(_) => {
 			// console.log('length ', depositsRender.length)
-			if (withdrawsRender.length > 0) {
+			if (withdrawsRender.length >= 0) {
 				setElementsForCurrentPage();
 			}
 		},
@@ -226,10 +226,13 @@ export default function Withdraws() {
 					<div className="all">
 						<Select
 							className="price-card-selector emp"
-							defaultValue="BTC"
+							defaultValue="ALL"
 							style={{ width: 80, padding: 0, border: 'none' }}
 							onChange={handleAsset}
 						>
+							<Option value="ALL" className={optsClass}>
+								ALL
+							</Option>
 							<Option value="BTC" className={optsClass}>
 								BTC
 							</Option>
@@ -238,9 +241,6 @@ export default function Withdraws() {
 							</Option>
 							<Option value="XRP" className={optsClass}>
 								XRP
-							</Option>
-							<Option value="ALL" className={optsClass}>
-								ALL
 							</Option>
 						</Select>
 					</div>

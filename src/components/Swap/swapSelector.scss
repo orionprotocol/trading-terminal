@@ -1,0 +1,105 @@
+@mixin center() {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}          
+
+.swap-container{
+    height: 95vh;
+    @include center;
+    
+    .swap-card{
+        padding: 20px 00;
+        display: flex;
+        flex-direction: column;
+        height: 50%;
+        width: 70%;
+        background-color: white;
+        border-radius: 5px;
+        filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.2));
+        
+        .selectors-container{
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin: 20px 0;
+            .swap-selectors{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+    
+                .selector{
+                    display: flex;
+                    .price-card-selector{
+                        border-radius: 5px 0 0 5px;
+                    margin: 0 !important;   
+                    }
+    
+                    .ant-select-selection.ant-select-selection--single{
+                        &.ant-select-selection--single .ant-select-selection__rendered  {
+                            margin-right: 30;
+                        }
+                        display: flex;
+                        
+                        .ant-select-arrow{
+                            position: relative;
+                        }
+    
+                        .ant-select-selection-selected-value{
+                            display: flex !important;
+                            justify-content: space-around;
+                            align-items: center;
+                            .image{
+                                width: 25px;
+                            }
+                            .text{
+                                margin-left: 5px;
+                                width: 35px;
+                            }
+                        }
+                    }
+    
+                  
+                }
+                input{
+                    background-color: #fafafa;
+                    border: none;
+                    border-radius: 0 5px 5px 0;
+                   text-align: end;
+                   padding: 0 10px;
+                }
+               
+            
+            }
+            li{
+                display: flex !important;
+            }
+            .swap-icon{
+                @include center;
+                cursor: pointer;
+                font-size: 20px;
+                &:hover{
+                    color: #00bbff;
+                }
+            }
+            .to{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+
+        .price-container{
+            display: flex;
+           justify-content: space-around;
+            width: 100%;
+            text-align: end;
+            span{
+                color: red;
+                font-size: 13px;
+           
+            }
+        }
+
+    }
+}
