@@ -282,22 +282,24 @@ const Sidebar = props => {
                             </Link>
 
                             {walletActive ? (
-                                <Link
-                                    className={`nav-link ${actives[1]}`}
-                                    to="/dashboard"
-                                >
-                                    <span className="icon-link-2 icon" />
-                                    <span className="text">Dashboard</span>
-                                </Link>
-                            ) : null}
+                                <Fragment>
+                                    <Link
+                                        className={`nav-link ${actives[1]}`}
+                                        to="/dashboard"
+                                    >
+                                        <span className="icon-link-2 icon" />
+                                        <span className="text">Dashboard</span>
+                                    </Link>
 
-                            <Link
-                                className={`nav-link ${actives[2]}`}
-                                to="/history"
-                            >
-                                <span className="icon-link-3 icon" />
-                                <span className="text">History</span>
-                            </Link>
+                                    <Link
+                                        className={`nav-link ${actives[2]}`}
+                                        to="/history"
+                                    >
+                                        <span className="icon-link-3 icon" />
+                                        <span className="text">History</span>
+                                    </Link>
+                                </Fragment>
+                            ) : null}
                         </nav>
                         <div className="aside-coins">
                             {wanmaskConnected ? (
