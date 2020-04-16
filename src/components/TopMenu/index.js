@@ -3,9 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const TopMenu = _ => {
-    const [actives, setActives] = useState(['active', '', '']);
+    const [actives, setActives] = useState(['active', '', '', '']);
 
-    const { fortmaticConnected } = useSelector(state => state.wallet);
+    const { fortmaticConnected, metamaskConnected } = useSelector(
+        state => state.wallet
+    );
     const dispatch = useDispatch();
 
     const setAddWallet = useCallback(
@@ -19,14 +21,17 @@ const TopMenu = _ => {
 
             switch (pathname) {
                 case '/home':
-                    setActives(['active', '', '']);
+                    setActives(['active', '', '', '']);
                     break;
 
                 case '/dashboard':
-                    setActives(['', 'active', '']);
+                    setActives(['', 'active', '', '']);
                     break;
                 case '/history':
-                    setActives(['', '', 'active']);
+                    setActives(['', '', '', 'active']);
+                    break;
+                case '/swap':
+                    setActives(['', '', 'active', '']);
                     break;
                 default:
                     break;
@@ -61,7 +66,7 @@ const TopMenu = _ => {
                     <span className="icon-link-1 icon" />
                 </Link>
 
-                {fortmaticConnected ? (
+                {fortmaticConnected || metamaskConnected ? (
                     <Fragment>
                         <Link
                             className={`nav-link ${actives[1]}`}
@@ -69,8 +74,15 @@ const TopMenu = _ => {
                         >
                             <span className="icon-link-2 icon" />
                         </Link>
+
+                        <Link className={`nav-link ${actives[2]}`} to="/swap">
+                            <span>
+                                <i className="fas fa-exchange-alt"></i>
+                            </span>
+                        </Link>
+
                         <Link
-                            className={`nav-link ${actives[2]}`}
+                            className={`nav-link ${actives[3]}`}
                             to="/history"
                         >
                             <span className="icon-link-3 icon" />
@@ -78,7 +90,7 @@ const TopMenu = _ => {
                     </Fragment>
                 ) : null}
             </div>
-            {fortmaticConnected ? (
+            {fortmaticConnected || metamaskConnected ? (
                 <div className="add" onClick={handleDisconnect}>
                     -
                 </div>
