@@ -1,6 +1,7 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { useSelector } from 'react-redux';
 import { Select } from 'antd';
+import './selector.scss' 
 import { reformatNameCoins } from '../../funtions/formatCoinName'
 let price = require('crypto-price');
 const { Option } = Select;
@@ -100,14 +101,14 @@ const index = memo(({ swapCoins, setswapCoins, swapValue, setswapValue }) => {
 
 
     return (
-        <div className="selectors-container">
+        <div className="selectors-container ${mode === 'Light'} ">
             <div className="swap-selectors">
                 <div className="title">
                     <h6>From:</h6>
                 </div>
                 <div className="selector">
                     <Select
-                        className="price-card-selector emp"
+                        className="price-card-selector emp "
                         value={swapCoins.from}
                         style={{ width: '100%', padding: 0, border: 'none' }}
                         onChange={e => setswapCoins({ ...swapCoins, from: e })}
