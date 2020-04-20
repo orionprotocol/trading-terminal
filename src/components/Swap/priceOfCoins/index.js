@@ -1,5 +1,4 @@
 import React, { memo, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { reformatNameCoins } from '../../../components/funtions/formatCoinName';
 let price = require('crypto-price');
 
@@ -62,9 +61,7 @@ const index = memo(({ swapCoins,errorMessage,seterrorMessage }) => {
                     } ${swapCoins.to}  ${
                         priceOfCoins.usd !== null ? priceOfCoins.usd : ''
                     }`
-                ) : (
-                    <span className='error'>{errorMessage.msg}</span>
-                )}
+                ) : null}
             </div>
         </div>
     );

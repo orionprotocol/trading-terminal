@@ -27,7 +27,6 @@ const index = memo(() => {
     const [symbolsB, setSymbolsB] = useState([]);
 
 useEffect(() => {
-    
     const checkAmountAvailable=()=>{
         for (let x in balances.contractBalances){
             if(swapCoins.from===x){
@@ -43,6 +42,7 @@ useEffect(() => {
     }
     checkAmountAvailable()
 }, [swapValue.from]);
+console.log(balances.contractBalances)
     useEffect(
         _ => {
             if (allAssets.assets1 && allAssets.assets1.length > 0) {
@@ -104,20 +104,21 @@ useEffect(() => {
             if (fortmaticConnected) {
                 let ethereumOrder = new EthereumOrder('fortmatic');
                 ethereumOrderMessage = await ethereumOrder
-                    .toEthereumOrder
-                    /*  setSymbols(),
+                    .toEthereumOrder(
+                      setSymbols(),
                      setTypeOfTrade(),
                      setPrice(),
-                     swapValue.from */
+                     swapValue.from 
+                     )
                     ();
             } else if (metamaskConnected) {
                 let ethereumOrder = new EthereumOrder('metamask');
                 ethereumOrderMessage = await ethereumOrder
-                    .toEthereumOrder
-                    /*  setSymbols(),
+                    .toEthereumOrder(
+                   setSymbols(),
                     setTypeOfTrade(),
                     setPrice(),
-                    swapValue.from */
+                    swapValue.from)
                     ();
             }
 
