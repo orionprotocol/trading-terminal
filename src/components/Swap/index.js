@@ -24,7 +24,7 @@ const index = memo(() => {
         from: 0,
         to: 0
     })
-      console.log(assets,tickers, "tickers") 
+/*       console.log(assets,tickers, "tickers")  */
     const [errorMessage, seterrorMessage] = useState({ error: false, msg: '' })
 
     const setTypeOfTrade = () => {
@@ -51,9 +51,14 @@ const index = memo(() => {
     }
 
     const setPrice = () => {
-
+        /* In here this logic only will work if the coins have names without the W in his name */
+            let from = swapCoins.from.replace('W',''),to = swapCoins.to.replace('W','');
+            for ( let x in tickers){
+                if( x.includes(from) && x.includes(to)) return tickers[x].lastPrice
+            }
     }
-
+   
+ 
     const swap = async () => {
 
         try {
@@ -66,7 +71,7 @@ const index = memo(() => {
                 ethereumOrderMessage = await ethereumOrder.toEthereumOrder(
                     /*  setSymbols(),
                      setTypeOfTrade(),
-                     price,
+                     setPrice(),
                      values.amount */
                 );
             } else if (metamaskConnected) {
@@ -74,7 +79,7 @@ const index = memo(() => {
                 ethereumOrderMessage = await ethereumOrder.toEthereumOrder(
                     /*  setSymbols(),
                     setTypeOfTrade(),
-                    price,
+                    setPrice(),
                     values.amount */
                 );
             }
