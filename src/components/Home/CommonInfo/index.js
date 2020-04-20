@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback, Fragment } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useState, Fragment } from 'react';
+import { useSelector } from 'react-redux';
 import PairDrop from './PairDrop';
-import axios from 'axios';
+
 import './index.css';
 let price = require('crypto-price');
 
@@ -16,26 +16,7 @@ function handleWrapper() {
     drop.classList.toggle('active');
 }
 
-const getAssets = pairs => {
-    let res1 = [];
-    let res2 = [];
 
-    pairs.forEach(e => {
-        let quote = e.split('-')[1];
-
-        if (res1.indexOf(quote) < 0) res1.push(quote);
-
-        if (!res2[quote]) {
-            res2[quote] = [];
-            res2[quote].push(e.split('-')[0]);
-        } else {
-            res2[quote].push(e.split('-')[0]);
-        }
-    });
-    // console.log('res1', res1, 'res2', res2);
-
-    return { assets1: res1, assets2: res2 };
-};
 
 const formatNumber = number => {
     return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2 }).format(
@@ -44,7 +25,6 @@ const formatNumber = number => {
 };
 let intervalId = 0;
 const CommonInfo = props => {
-    const dispatch = useDispatch();
 
     const { symbolA, symbolB, lastPrice, high, low, vol, change } = useSelector(
         state => state.general
@@ -53,22 +33,9 @@ const CommonInfo = props => {
     const [dollars, setDollars] = useState({});
     const [isFav, setIsFav] = useState(false);
 
-    const setAssets = useCallback(
-        data => dispatch({ type: 'SetAssets', payload: data }),
-        [dispatch]
-    );
+   
 
-    useEffect(_ => {
-        const url = process.env.REACT_APP_BACKEND + '/api/v1/pairs/list';
-        // console.log(url);
-        axios.get(url).then(res => {
-            // console.log(res.data);
-            setAssets(getAssets(res.data));
-        });
-        // const example = [ 'ETH-BTC', 'XRP-BTC', 'HOT-BTC', 'HOT-ETH' ];
-        // setAssets(getAssets(example));
-        //eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    
 
     useEffect(
         _ => {

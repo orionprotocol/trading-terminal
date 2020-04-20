@@ -4,6 +4,7 @@ import WanmaskVerification from './WanmaskVerification';
 import OrionWanchain from './OrionWanchain';
 import Metamask from './Metamask';
 import Fortmatic from './Fortmatic';
+import Assests from './possibleAssests';
 import { useSelector } from 'react-redux';
 
 const Index = _ => {
@@ -30,6 +31,7 @@ const Index = _ => {
             <Metamask />
             <OrionWanchain />
             <Fortmatic />
+            <Assests/>
             {render}
         </Fragment>
     );

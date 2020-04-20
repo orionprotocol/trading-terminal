@@ -7,10 +7,11 @@ let price = require('crypto-price');
 const { Option } = Select;
 
 const index = memo(({ swapCoins, setswapCoins, swapValue, setswapValue }) => {
+  
     const { mode } = useSelector(state => state.general);
     const { assets } = useSelector(state => state.wallet);
-
-    /*    price.getCryptoPrice(reformatNameCoins(swapCoins.to), reformatNameCoins(swapCoins.from)).then(res2 => { // Base for ex - USD, Crypto for ex - ETH 
+    
+   /*    price.getCryptoPrice(reformatNameCoins(swapCoins.to), reformatNameCoins(swapCoins.from)).then(res2 => { // Base for ex - USD, Crypto for ex - ETH 
            result.to=res2.price
            setpriceOfCoins(result)
            setloadingPrice(true)
@@ -28,6 +29,7 @@ const index = memo(({ swapCoins, setswapCoins, swapValue, setswapValue }) => {
         coins.push(assets[key])
     }
     let options = coins.map((res, key) => {
+        
         return (
             <Option key={key} value={res} className={optsClass}>
                 <div className="image">

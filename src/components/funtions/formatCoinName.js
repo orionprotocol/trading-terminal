@@ -5,6 +5,8 @@ export const reformatNameCoins =(coin)=>{
             return 'BTC'
         case 'WXRP':
             return 'XRP'
+        case 'USDT':
+            return 'USD'    
         default:
             return coin
     }
