@@ -41,7 +41,12 @@ class EthereumOrder {
             } else {
                 baseAsset = tokensAddress[symbols[0].toUpperCase()];
             }
-            quoteAsset = tokensAddress[symbols[1].toUpperCase()];
+
+            if (symbols[1].toUpperCase() === 'ETH') {
+                quoteAsset = '0x0000000000000000000000000000000000000000';
+            } else {
+                quoteAsset = tokensAddress[symbols[1].toUpperCase()];
+            }
 
             const order = {
                 senderAddress: senderAddress,

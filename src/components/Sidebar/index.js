@@ -37,7 +37,7 @@ const Sidebar = props => {
     );
 
     const { mode } = useSelector(state => state.general);
-    const [actives, setActives] = useState(['active', '', '']);
+    const [actives, setActives] = useState(['active', '', '','']);
     const {
         wanActive,
         walletOpt,
@@ -143,13 +143,16 @@ const Sidebar = props => {
 
         switch (pathname) {
             case '/home':
-                setActives(['active', '', '']);
+                setActives(['active', '', '','']);
                 break;
             case '/dashboard':
-                setActives(['', 'active', '']);
+                setActives(['', 'active', '','']);
+                break;
+            case '/swap':
+                setActives(['', '', 'active','']);
                 break;
             case '/history':
-                setActives(['', '', 'active']);
+                setActives(['', '', '','active']);
                 break;
             default:
                 break;
@@ -290,9 +293,20 @@ const Sidebar = props => {
                                     <span className="text">Dashboard</span>
                                 </Link>
                             ) : null}
-
+                            {walletActive ? (
+                                <Link
+                                    className={`nav-link ${actives[2]}`}
+                                    to="/swap"
+                                >
+                                    <span>
+                                    <i className="fas fa-exchange-alt"></i>
+                                    </span>
+                                  
+                                    <span className="text">Swap</span>
+                                </Link>
+                            ) : null}
                             <Link
-                                className={`nav-link ${actives[2]}`}
+                                className={`nav-link ${actives[3]}`}
                                 to="/history"
                             >
                                 <span className="icon-link-3 icon" />

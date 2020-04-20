@@ -1,0 +1,77 @@
+@import '../../css/resposiveSize';
+@mixin center() {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}          
+
+.swap-container{
+    height: 95vh;
+    @include center;
+   
+    &.dark-mode{
+        color: rgba(224, 224, 255, 0.8) !important;
+        h6{
+            color: rgba(224, 224, 255, 0.8) !important;
+        }
+        .swap-card{
+            background-color: #2a2a41 !important;
+        } 
+        input{
+             background-color: #2e2e45 !important;
+        }
+        .swap-button{
+            background-image: linear-gradient(117deg, #00ffaa, #00bbff 53%, #4579f5);
+        }     
+
+    }
+    .swap-card{
+        padding: 20px 00;
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        width: 70%;
+        background-color: white;
+        border-radius: 5px;
+        filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.2));
+        @include media ('lg'){
+            padding: 20px 10px;
+        }
+
+       
+        @include media ('sm'){
+            height: 60%;
+            width: 95%;
+        }
+
+        .price-container{
+            display: flex;
+           justify-content: space-around;
+            width: 100%;
+            text-align: end;
+            span{
+                color: red;
+                font-size: 13px;
+           
+            }
+        }
+        .swap-button{
+            align-self: center;
+            margin: 10px;
+            width: 20vw;
+            border: none;
+            border-radius: 5px;
+            height: 50px;
+            background-color: rgb(247,147,26);
+            cursor: pointer;
+            h6{
+                color: white;
+                margin:0;
+            }
+                
+        @include media ('sm'){
+            width: 40vw;
+        }
+        }
+    } 
+}

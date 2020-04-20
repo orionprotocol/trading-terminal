@@ -17,7 +17,7 @@ const Sockets = props => {
         wanmaskConnected,
         metamaskConnected,
         ethAddress,
-        fortmaticConnected
+        fortmaticConnected,
     } = useSelector(state => state.wallet);
 
     const [websocket, setWS] = useState(null);
@@ -56,9 +56,7 @@ const Sockets = props => {
         [dispatch]
     );
 
-    const [address, setAddress] = useState(
-        localStorage.getItem('currentAccount')
-    );
+    const [address] = useState(localStorage.getItem('currentAccount'));
     const [isConn, setIsConn] = useState(false);
 
     useEffect(
@@ -137,17 +135,17 @@ const Sockets = props => {
 
             if (
                 isConn &&
-                (wanmaskConnected || metamaskConnected) &&
+                (wanmaskConnected || metamaskConnected || fortmaticConnected) &&
                 typeof contractBalances !== 'undefined' &&
                 typeof walletBalances !== 'undefined'
             ) {
                 socket.on('balanceChange', async data => {
-                    console.log('balanceChange', data);
-                    const { web3, wan3, ethereum } = window;
+                    // console.log('balanceChange', data);
+                    const { wan3 } = window;
 
-                    if (!address) {
-                        setAddress(ethereum.selectedAddress);
-                    }
+                    // if (!address) {
+                    //     setAddress(ethereum.selectedAddress);
+                    // }
 
                     // console.log('new balances 0', data);
 
@@ -155,11 +153,9 @@ const Sockets = props => {
                         (wanmaskConnected &&
                             wan3.toChecksumAddress(data.user) ===
                                 wan3.toChecksumAddress(address)) ||
-                        (metamaskConnected &&
-                            web3.toChecksumAddress(data.user) ===
-                                web3.toChecksumAddress(
-                                    ethereum.selectedAddress
-                                ))
+                        ((metamaskConnected || fortmaticConnected) &&
+                            web3.utils.toChecksumAddress(data.user) ===
+                                web3.utils.toChecksumAddress(ethAddress))
                     ) {
                         console.log('new balances', data);
                         const newBal = data.newBalance;
@@ -173,7 +169,7 @@ const Sockets = props => {
                         );
                         setBalances({
                             contractBalances,
-                            walletBalances
+                            walletBalances,
                         });
                     }
 
@@ -198,12 +194,12 @@ const Sockets = props => {
             const ws = new window.WebsocketHeartbeatJs({
                 url: urlWS,
                 pingTimeout: 5000,
-                pongTimeout: 5000
+                pongTimeout: 5000,
             });
 
             setWS(ws);
 
-            ws.onmessage = function(data) {
+            ws.onmessage = function (data) {
                 setOrderBook(JSON.parse(data.data));
             };
 
@@ -222,12 +218,12 @@ const Sockets = props => {
             const ws2 = new window.WebsocketHeartbeatJs({
                 url: urlWS2,
                 pingTimeout: 5000,
-                pongTimeout: 5000
+                pongTimeout: 5000,
             });
 
             setWS2(ws2);
 
-            ws2.onmessage = function(data) {
+            ws2.onmessage = function (data) {
                 // setOrderBook(JSON.parse(data.data));
                 // console.log(JSON.parse(data.data)[1])
                 data = JSON.parse(data.data)[1];
@@ -257,7 +253,7 @@ const Sockets = props => {
         const ws = new window.WebsocketHeartbeatJs({
             url: urlWS,
             pingTimeout: 5000,
-            pongTimeout: 5000
+            pongTimeout: 5000,
         });
         ws.onmessage = data => {
             let all = JSON.parse(data.data);
@@ -274,7 +270,7 @@ const Sockets = props => {
                 let ticker = {
                     lastPrice: lastPrice.toFixed(6),
                     vol24h: e[5].toFixed(2),
-                    change24h: change
+                    change24h: change,
                 };
                 tickers[e[0]] = ticker;
                 setTickers(tickers);
