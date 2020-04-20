@@ -13,7 +13,7 @@ const WalletsTable = props => {
         token: 'fa fa-angle-down',
         wallet: 'fa fa-angle-down',
         contract: 'fa fa-angle-down',
-        open: 'fa fa-angle-down'
+        open: 'fa fa-angle-down',
     });
 
     const [lines, setLines] = useState([]);
@@ -44,7 +44,7 @@ const WalletsTable = props => {
                             wallet: wallet[a.toUpperCase()].toFixed(8),
                             contract: contract[a.toUpperCase()].toFixed(8),
                             open: 0,
-                            img: `./img/${a.toLowerCase()}-wallet.png`
+                            img: `./img/${a.toLowerCase()}-wallet.png`,
                         };
                     } else {
                         return {
@@ -52,7 +52,7 @@ const WalletsTable = props => {
                             wallet: null,
                             contract: null,
                             open: 0,
-                            img: null
+                            img: null,
                         };
                     }
                 })
@@ -77,6 +77,8 @@ const WalletsTable = props => {
                             newContract[a.toUpperCase()] = Number(
                                 contractBalances[assets[a.toUpperCase()]]
                             );
+                        } else {
+                            newContract[a.toUpperCase()] = 0;
                         }
 
                         if (
@@ -85,17 +87,19 @@ const WalletsTable = props => {
                             newWallet[a.toUpperCase()] = Number(
                                 walletBalances[assets[a.toUpperCase()]]
                             );
+                        } else {
+                            newWallet[a.toUpperCase()] = 0;
                         }
                     }
 
                     setContract({
                         // ...contract,
-                        ...newContract
+                        ...newContract,
                     });
 
                     setWallet({
                         // ...contract,
-                        ...newWallet
+                        ...newWallet,
                     });
                 }
             } catch (e) {

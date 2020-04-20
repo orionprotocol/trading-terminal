@@ -26,6 +26,7 @@ export default function Line({ asset, handlePair, assetB }) {
                 setIsFav(favs[pair]);
             }
         }
+
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -33,6 +34,13 @@ export default function Line({ asset, handlePair, assetB }) {
         _ => {
             if (tickers[pair]) {
                 price.getCryptoPrice('USD', assetB).then(object => {
+                    if (assetB === 'USDT') {
+                        object = {};
+                        object.price = 1;
+                    }
+
+                    if (object === undefined) return;
+
                     let vol = Number(tickers[pair].vol24h) * object.price;
                     vol = (vol / 10 ** 6).toFixed(2);
                     let last = (
@@ -41,7 +49,7 @@ export default function Line({ asset, handlePair, assetB }) {
                     setDollars({
                         ...dollars,
                         last: last,
-                        vol: vol
+                        vol: vol,
                     });
                 });
 

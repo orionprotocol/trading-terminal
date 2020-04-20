@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 // import { deposit, withdraw } from '../../../services/Metamask';
 import {
     deposit as depositWan,
-    withdraw as withdrawWan
+    withdraw as withdrawWan,
 } from '../../../services/Wanmask';
 
 import Contract from '../../../services/Contract';
@@ -17,7 +17,7 @@ const Line = props => {
         metamaskConnected,
         fortmaticConnected,
         assets,
-        ethAddress
+        ethAddress,
     } = useSelector(state => state.wallet);
     const [contract, setContract] = useState();
 
@@ -79,7 +79,7 @@ const Line = props => {
             <div className="cell emp coins">
                 <img
                     src={props.img}
-                    alt="dash"
+                    alt={props.currency}
                     style={{ width: 20, height: 20 }}
                 />
                 <span>{props.currency}</span>
