@@ -49,11 +49,7 @@
            justify-content: space-around;
             width: 100%;
             text-align: end;
-            span{
-                color: red;
-                font-size: 13px;
-           
-            }
+            
         }
         .swap-button{
             align-self: center;
@@ -68,10 +64,18 @@
                 color: white;
                 margin:0;
             }
-                
+            &:disabled{
+                background-color: rgb(240, 176, 97);
+            }
         @include media ('sm'){
             width: 40vw;
         }
         }
     } 
+
+    span.error{
+        color: red;
+        font-size: 13px;
+        text-align: center;
+    }
 }
