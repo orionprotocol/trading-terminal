@@ -21,10 +21,10 @@ const settings = {
                 slidesToScroll: 1,
                 infinite: true,
                 autoplay: true,
-                speed: 1000
-            }
-        }
-    ]
+                speed: 1000,
+            },
+        },
+    ],
 };
 
 const Wallets = _ => {
@@ -71,6 +71,8 @@ const Wallets = _ => {
                             newContract[a.toUpperCase()] = Number(
                                 contractBalances[assets[a.toUpperCase()]]
                             );
+                        } else {
+                            newContract[a.toUpperCase()] = 0;
                         }
 
                         if (
@@ -79,17 +81,19 @@ const Wallets = _ => {
                             newWallet[a.toUpperCase()] = Number(
                                 walletBalances[assets[a.toUpperCase()]]
                             );
+                        } else {
+                            newWallet[a.toUpperCase()] = 0;
                         }
                     }
 
                     setContract({
                         // ...contract,
-                        ...newContract
+                        ...newContract,
                     });
 
                     setWallet({
                         // ...contract,
-                        ...newWallet
+                        ...newWallet,
                     });
                 }
             } catch (e) {

@@ -66,12 +66,14 @@ const TotalBalances = _ => {
                         ) {
                             newContract[a.toUpperCase()] =
                                 contractBalances[assets[a.toUpperCase()]];
+                        } else {
+                            newContract[a.toUpperCase()] = 0;
                         }
                     }
 
                     setContract({
                         // ...contract,
-                        ...newContract
+                        ...newContract,
                     });
                 }
             } catch (e) {
@@ -85,7 +87,7 @@ const TotalBalances = _ => {
     useEffect(
         _ => {
             if (total < 0) return;
-            window.am4core.ready(function() {
+            window.am4core.ready(function () {
                 let data = [];
 
                 for (let asset in inBTC) {
@@ -93,7 +95,7 @@ const TotalBalances = _ => {
 
                     data.push({
                         name: asset,
-                        val: percent
+                        val: percent,
                     });
                 }
 
@@ -140,7 +142,7 @@ const TotalBalances = _ => {
                 pieSeries.colors.list = [
                     window.am4core.color('#424054'),
                     window.am4core.color('#f7931a'),
-                    window.am4core.color('#8800ff')
+                    window.am4core.color('#8800ff'),
                 ];
             });
         },
@@ -158,7 +160,7 @@ const TotalBalances = _ => {
                             <div className="left">
                                 <img
                                     src={`./img/${a.toLowerCase()}-wallet.png`}
-                                    alt="dash"
+                                    alt={a}
                                 />
                                 <span className="name">{a.toUpperCase()}</span>
                             </div>
