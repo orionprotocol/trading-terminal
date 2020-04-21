@@ -7,7 +7,7 @@ const Long = require('long');
 export const tokensAddress = {
     WBTC: '0x335123EB7029030805864805fC95f1AB16A64D61',
     WXRP: '0x15a3Eb660823e0a3eF4D4A86EEC0d66f405Db515',
-    USDT: '0xfe2277A8790C6CFfA33bfe832D186385C45201A0'
+    USDT: '0xfC1CD13A7f126eFD823E373C4086F69beB8611C2'
 };
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
@@ -113,11 +113,12 @@ export default class Contract {
 
         address = this.web3.utils.toChecksumAddress(address);
 
-        let newAmount = Number(this.web3.utils.toWei(amount));
-        if (currency === 'wbtc' || currency === 'wxrp') {
+        let newAmount = 0;
+        if (currency === 'eth') {
+            newAmount = Number(this.web3.utils.toWei(amount)).toFixed(0);
+        } else {
             newAmount = Number((amount * 1e8).toFixed(0));
         }
-        newAmount = Number(newAmount.toFixed(0));
 
         try {
             if (currency === 'eth') {
