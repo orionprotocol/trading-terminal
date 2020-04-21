@@ -26,23 +26,6 @@ const index = memo(() => {
     const [errorMessage, seterrorMessage] = useState({ error: false, msg: '' });
     const [symbolsB, setSymbolsB] = useState([]);
 
-useEffect(() => {
-    const checkAmountAvailable=()=>{
-        for (let x in balances.contractBalances){
-            if(swapCoins.from===x){
-                if(swapValue.from>balances.contractBalances[x]){
-                    seterrorMessage({ error: true, msg: `Your don't have enough ${x} in your wallet, to perform this action` })
-                }else{
-                    seterrorMessage({ error: false, msg: '' })
-                }
-                
-                
-            }
-        }
-    }
-    checkAmountAvailable()
-}, [swapValue.from]);
-console.log(balances.contractBalances)
     useEffect(
         _ => {
             if (allAssets.assets1 && allAssets.assets1.length > 0) {
@@ -61,6 +44,45 @@ console.log(balances.contractBalances)
         },
         [allAssets, assets]
     );
+
+    useEffect(() => {
+       const checkAmountAvailable=()=>{
+            for (let x in balances.contractBalances){
+                if(swapCoins.from===x){
+                    if(swapValue.from>balances.contractBalances[x]){
+                        seterrorMessage({ error: true, msg: `Your don't have enough ${x} in your wallet, to perform this action` })
+                    }else{
+                        seterrorMessage({ error: false, msg: '' })
+                    }
+                }
+            }
+          
+        }
+        checkAmountAvailable()
+    }, [swapValue.from]);
+
+useEffect(() => {
+    let regex = new RegExp(swapCoins.from.replace('W',''));
+    let regex2= new RegExp(swapCoins.to.replace('W',''))
+    if(Object.keys(tickers).length>0){
+        let exist= true
+            for (let x in tickers){
+                if(regex.test(x) && regex2.test(x)){
+                    
+                  exist=false
+                } 
+            }
+            exist ?seterrorMessage({ error: true, msg: `You can not swap this Pair for the moment` }) :seterrorMessage({ error: false, msg: '' }) 
+    }
+}, [swapCoins,tickers])
+
+  
+  
+  /*   if (regex.test(swapCoins.from) && regex.test(swapCoins.to)) {
+        console.log("El swap existe")
+    }else{
+        console.log("Dejalo asi mi loco")
+    }  */
 
     const setTypeOfTrade = () => {
         let regex = new RegExp(symbolsB.join('|'));
@@ -93,7 +115,7 @@ console.log(balances.contractBalances)
     }
 
     
- /*   console.log(setTypeOfTrade(),setSymbols(),setPrice(),balances.contractBalances,`${swapValue.from} es mayor a ${balances.contractBalances} =  ${swapValue.from>balances.contractBalances}`) */
+/*    console.log(setTypeOfTrade(),setSymbols(),setPrice(),balances.contractBalances,`${swapValue.from} es mayor a ${balances.contractBalances} =  ${swapValue.from>balances.contractBalances}`) */
  
     const swap = async () => {
         try {
