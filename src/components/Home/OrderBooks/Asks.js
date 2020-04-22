@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import ExchangeImg from './ExchangeImg';
 
 function handleExchanges(e) {
@@ -63,9 +63,10 @@ const renderSize = data => {
 const Asks = props => {
 	const dispatch = useDispatch();
 	const [ asks, setAsks ] = useState();
+	const { symbolB } = useSelector(state => state.general);
 	const setOrderData = useCallback(data => dispatch({ type: 'SetOrderData', payload: data }), [ dispatch ]);
 	const [ dataAsks, setDataAsks ] = useState([]);
-
+console.log(symbolB)
 	useEffect(
 		_ => {
 			if (props.data) {
@@ -174,11 +175,13 @@ const Asks = props => {
 						<span className="progress-light l-red" style={{ width: percentStyle }} />
 						{/* Max width 27% */}
 						<span className="progress-light d-red" style={{ width: percentStyle27 }} />
-						<span className="cell emp">{asks[i].price.toFixed(8)}</span>
+						{ symbolB==='BTC' && <span className="cell emp">{asks[i].price.toFixed(8)}</span>}
+						{ symbolB==='USDT' && <span className="cell emp">{asks[i].price.toFixed(2)}</span>}
 						{/* <span className="cell">{asks[i].size.toFixed(3)}</span> */}
 						{renderSize(asks[i])}
-
-						<span className="cell">{asks[i].total.toFixed(8)}</span>
+						{ symbolB==='BTC' && <span className="cell emp">{asks[i].total.toFixed(8)}</span>}
+						{ symbolB==='USDT' && <span className="cell emp">{asks[i].total.toFixed(2)}</span>}
+						
 						<div className="cell exch">
 							<div
 								className="exch-content js-exch-content"

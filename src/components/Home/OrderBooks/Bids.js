@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector  } from 'react-redux';
 import ExchangeImg from './ExchangeImg';
 
 function calculateTotalBids(array) {
@@ -89,6 +89,7 @@ const Bids = props => {
 	const dispatch = useDispatch();
 	const [ bids, setBids ] = useState();
 	const [ dataBids, setDataBids ] = useState([]);
+	const { symbolB } = useSelector(state => state.general);
 	const setOrderData = useCallback(data => dispatch({ type: 'SetOrderData', payload: data }), [ dispatch ]);
 
 	useEffect(
@@ -195,10 +196,14 @@ const Bids = props => {
 						<span className="progress-light l-green" style={{ width: percentStyle }} />
 						{/* Max width 27% */}
 						<span className="progress-light d-green" style={{ width: percentStyle27 }} />
-						<span className="cell emp">{bids[i].price.toFixed(8)}</span>
+						{ symbolB==='BTC' && <span className="cell emp">{bids[i].price.toFixed(8)}</span>}
+						{ symbolB==='USDT' && <span className="cell emp">{bids[i].price.toFixed(2)}</span>}
+					
 						{/* <span className="cell">{bids[i].size.toFixed(3)}</span> */}
 						{renderSize(bids[i])}
-						<span className="cell">{bids[i].total.toFixed(8)}</span>
+						{ symbolB==='BTC' && <span className="cell emp">{bids[i].total.toFixed(8)}</span>}
+						{ symbolB==='USDT' && <span className="cell emp">{bids[i].total.toFixed(2)}</span>}
+					
 						<div className="cell exch">
 							<div
 								className={`exch-content js-exch-content`}
