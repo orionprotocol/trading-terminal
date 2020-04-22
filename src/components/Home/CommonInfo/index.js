@@ -16,8 +16,6 @@ function handleWrapper() {
     drop.classList.toggle('active');
 }
 
-
-
 const formatNumber = number => {
     return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2 }).format(
         number
@@ -25,17 +23,12 @@ const formatNumber = number => {
 };
 let intervalId = 0;
 const CommonInfo = props => {
-
     const { symbolA, symbolB, lastPrice, high, low, vol, change } = useSelector(
         state => state.general
     );
 
     const [dollars, setDollars] = useState({});
     const [isFav, setIsFav] = useState(false);
-
-   
-
-    
 
     useEffect(
         _ => {
@@ -117,8 +110,20 @@ const CommonInfo = props => {
                 <div className="last-price">
                     <span className="title">Last price</span>
                     <div className="value">
-                        <span className="emp">{lastPrice.toFixed(5)}</span>
-                        <span className="dollars">${dollars.last}</span>
+                        {symbolB !== 'USDT' ? (
+                            <Fragment>
+                                <span className="emp">
+                                    {lastPrice.toFixed(5)}
+                                </span>
+                                <span className="dollars">${dollars.last}</span>
+                            </Fragment>
+                        ) : (
+                            <Fragment>
+                                <span className="emp">
+                                    {lastPrice.toFixed(2)}
+                                </span>
+                            </Fragment>
+                        )}
                     </div>
                 </div>
                 <div className="change">
@@ -155,23 +160,33 @@ const CommonInfo = props => {
                     <span className="title">24h High</span>
                     <p className="value averta">
                         <span>{high}</span>{' '}
-                        <span className="small">${dollars.high}</span>
+                        {symbolB !== 'USDT' && (
+                            <span className="small">${dollars.high}</span>
+                        )}
                     </p>
                 </div>
                 <div className="line">
                     <span className="title">24h Low</span>
                     <p className="value averta">
                         <span>{low}</span>{' '}
-                        <span className="small">${dollars.low}</span>
+                        {symbolB !== 'USDT' && (
+                            <span className="small">${dollars.low}</span>
+                        )}
                     </p>
                 </div>
                 <div className="line">
                     <span className="title">24h Vol</span>
                     <p className="value averta">
-                        <span>
-                            {new Intl.NumberFormat('en-US').format(vol)}
-                        </span>{' '}
-                        <span className="small">${dollars.vol}M</span>
+                        {symbolB === 'USDT' ? (
+                            <Fragment>{formatNumber(vol / 10 ** 6)}M</Fragment>
+                        ) : (
+                            <Fragment>
+                                <span>
+                                    {new Intl.NumberFormat('en-US').format(vol)}
+                                </span>{' '}
+                                <span className="small">${dollars.vol}M</span>
+                            </Fragment>
+                        )}
                     </p>
                 </div>
             </div>
