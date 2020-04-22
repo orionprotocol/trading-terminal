@@ -106,6 +106,14 @@ export default class Contract {
             );
         });
 
+    decimalToBaseUnit = (currency, amount) => {
+        if (currency === 'eth') {
+            return Number(this.web3.utils.toWei(amount)).toFixed(0);
+        } else {
+            return (amount * 1e8).toFixed(0);
+        }
+    };
+
     deposit = async (currency, amount, address) => {
         // if (!window.ethereum.selectedAddress) {
         //     window.ethereum.enable();
@@ -113,12 +121,7 @@ export default class Contract {
 
         address = this.web3.utils.toChecksumAddress(address);
 
-        let newAmount = 0;
-        if (currency === 'eth') {
-            newAmount = Number(this.web3.utils.toWei(amount)).toFixed(0);
-        } else {
-            newAmount = Number((amount * 1e8).toFixed(0));
-        }
+        const newAmount = this.decimalToBaseUnit(currency, amount);
 
         try {
             if (currency === 'eth') {
@@ -153,10 +156,7 @@ export default class Contract {
             window.ethereum.enable();
         }
 
-        let newAmount = this.web3.utils.toWei(amount);
-        if (currency === 'wbtc' || currency === 'wxrp') {
-            newAmount = (amount * 1e8).toFixed(0);
-        }
+        const newAmount = this.decimalToBaseUnit(currency, amount);
 
         try {
             if (currency === 'eth') {
