@@ -142,7 +142,8 @@ export default function Line({ asset, handlePair, assetB }) {
                     </div>
                 ) : (
                     <div className="star js-star" onClick={handleFav}>
-                        <i className="fa fa-star-o" aria-hidden="true" />
+                        <i class="far fa-star"></i>
+                       
                     </div>
                 )}
             </div>

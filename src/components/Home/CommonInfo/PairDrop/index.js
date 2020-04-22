@@ -130,7 +130,9 @@ const PairDrop = props => {
                             aria-hidden="true"
                         />
                     ) : (
-                        <i className="fa fa-star-o" aria-hidden="true" />
+                        <>
+                        <i class="far fa-star"></i>
+                        </>
                     )}
 
                     <span>Favourites</span>
