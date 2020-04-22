@@ -516,7 +516,8 @@ a:active {
   font-weight: 600;
 }
 
-.index .common-info .table .line {
+
+.index .common-info .table .container-line .line {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

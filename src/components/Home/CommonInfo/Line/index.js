@@ -88,6 +88,8 @@ export default function Line({ asset, handlePair, assetB }) {
     };
 
     return (
+   
+
         <div className="line" onClick={_ => handlePair(asset)}>
     
             <div className="cell" >
@@ -101,7 +103,7 @@ export default function Line({ asset, handlePair, assetB }) {
                     <span className="small">{coins.get(asset).name}</span>
                 </div>
             </div>
-            <div className="cell short">
+            <div className="cell short" onClick={_ => handlePair(asset)}>
                 <span className="title-m">Last Pr.</span>
                 <div className="text">
                     <span className="emp">
@@ -110,7 +112,7 @@ export default function Line({ asset, handlePair, assetB }) {
                     <span className="small">${dollars.last}</span>
                 </div>
             </div>
-            <div className="cell short">
+            <div className="cell short" onClick={_ => handlePair(asset)}>
                 <span className="title-m">24h Vol</span>
                 <div className="text">
                     <span className="emp">{vol24h}</span>
@@ -120,19 +122,19 @@ export default function Line({ asset, handlePair, assetB }) {
  
             <div className="cell chg">
                 {change24h >= 0 ? (
-                    <img
+                    <img onClick={_ => handlePair(asset)}
                         src="./img/growth.png"
                         alt="home"
                         style={{ width: '10px', height: '10px' }}
                     />
                 ) : (
-                    <img
+                    <img onClick={_ => handlePair(asset)}
                         src="./img/red-arrow.png"
                         style={{ width: '10px', height: '10px' }}
                         alt="home"
                     />
                 )}
-                <p>
+                <p onClick={_ => handlePair(asset)}>
                     <span className="emp">{change24h}</span> <span>%</span>
                 </p>
 
@@ -148,5 +150,6 @@ export default function Line({ asset, handlePair, assetB }) {
                 )}
             </div>
         </div>
+        
     );
 }
