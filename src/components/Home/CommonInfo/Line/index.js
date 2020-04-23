@@ -1,4 +1,4 @@
-import React, { useEffect, useState,Fragment } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import coins from 'coinlist';
 import { useSelector } from 'react-redux';
 let price = require('crypto-price');
@@ -88,11 +88,8 @@ export default function Line({ asset, handlePair, assetB }) {
     };
 
     return (
-   
-
         <div className="line" onClick={_ => handlePair(asset)}>
-    
-            <div className="cell" >
+            <div className="cell">
                 <img
                     className="img"
                     src={`./img/${asset.toLowerCase()}.png`}
@@ -119,16 +116,18 @@ export default function Line({ asset, handlePair, assetB }) {
                     <span className="small">${formatNumber(dollars.vol)}M</span>
                 </div>
             </div>
- 
+
             <div className="cell chg">
                 {change24h >= 0 ? (
-                    <img onClick={_ => handlePair(asset)}
+                    <img
+                        onClick={_ => handlePair(asset)}
                         src="./img/growth.png"
                         alt="home"
                         style={{ width: '10px', height: '10px' }}
                     />
                 ) : (
-                    <img onClick={_ => handlePair(asset)}
+                    <img
+                        onClick={_ => handlePair(asset)}
                         src="./img/red-arrow.png"
                         style={{ width: '10px', height: '10px' }}
                         alt="home"
@@ -144,12 +143,10 @@ export default function Line({ asset, handlePair, assetB }) {
                     </div>
                 ) : (
                     <div className="star js-star" onClick={handleFav}>
-                        <i class="far fa-star"></i>
-                       
+                        <i className="far fa-star"></i>
                     </div>
                 )}
             </div>
         </div>
-        
     );
 }

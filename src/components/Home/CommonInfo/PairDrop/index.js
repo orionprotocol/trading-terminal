@@ -1,23 +1,23 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Line from "../Line";
-import "./index.css";
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Line from '../Line';
+import './index.css';
 
 const PairDrop = props => {
     const dispatch = useDispatch();
 
     const { assets } = useSelector(state => state.general);
     const [assetsRender, setAssets] = useState([]);
-    const [currentQuote, setCurrentQuote] = useState("");
+    const [currentQuote, setCurrentQuote] = useState('');
     const [lines, setLines] = useState([]);
     const [favs, setFavs] = useState(false);
 
     const setSymbolA = useCallback(
-        data => dispatch({ type: "SetSymbolA", payload: data }),
+        data => dispatch({ type: 'SetSymbolA', payload: data }),
         [dispatch]
     );
     const setSymbolB = useCallback(
-        data => dispatch({ type: "SetSymbolB", payload: data }),
+        data => dispatch({ type: 'SetSymbolB', payload: data }),
         [dispatch]
     );
 
@@ -56,9 +56,14 @@ const PairDrop = props => {
 
     useEffect(
         _ => {
-            if (currentQuote !== "") {
+            if (currentQuote !== '') {
                 updateRenderAssets();
-                setLines(assets.assets2[currentQuote]);
+
+                setLines([]);
+
+                setTimeout(() => {
+                    setLines(assets.assets2[currentQuote]);
+                }, 0);
             }
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,13 +79,13 @@ const PairDrop = props => {
     const handleChange = e => {
         let field = e.target.value;
 
-        if (field === "") {
+        if (field === '') {
             setLines(assets.assets2[currentQuote]);
         } else {
             setLines(
                 assets.assets2[currentQuote].filter(e => {
-                    let replace = "^" + field;
-                    let regex = new RegExp(replace, "i");
+                    let replace = '^' + field;
+                    let regex = new RegExp(replace, 'i');
                     return regex.test(e);
                 })
             );
@@ -90,20 +95,28 @@ const PairDrop = props => {
     const handleFavs = _ => {
         if (assets.assets2[currentQuote]) {
             if (!favs === false) {
-                setLines(assets.assets2[currentQuote]);
+                setLines([]);
+                setTimeout(() => {
+                    setLines(assets.assets2[currentQuote]);
+                }, 0);
             } else {
-                let favs = localStorage.getItem("favs");
+                let favs = localStorage.getItem('favs');
 
                 if (favs) {
                     favs = JSON.parse(favs);
-                    setLines(
-                        assets.assets2[currentQuote].filter(e => {
-                            let pair = e + currentQuote;
 
-                            if (favs[pair] === true) return true;
-                            return false;
-                        })
-                    );
+                    setLines([]);
+
+                    setTimeout(() => {
+                        setLines(
+                            assets.assets2[currentQuote].filter(e => {
+                                let pair = e + currentQuote;
+
+                                if (favs[pair] === true) return true;
+                                return false;
+                            })
+                        );
+                    }, 0);
                 }
             }
             setFavs(!favs);
@@ -126,12 +139,12 @@ const PairDrop = props => {
                     {favs ? (
                         <i
                             className="fa fa-star"
-                            style={{ color: "#00bbff" }}
+                            style={{ color: '#00bbff' }}
                             aria-hidden="true"
                         />
                     ) : (
                         <>
-                        <i class="far fa-star"></i>
+                            <i className="far fa-star"></i>
                         </>
                     )}
 
@@ -159,7 +172,7 @@ const PairDrop = props => {
                 </div>
                 <div className="lines">
                     <div className="part">
-                        {currentQuote !== "" &&
+                        {currentQuote !== '' &&
                             lines.map((e, i) => (
                                 <Line
                                     asset={e}

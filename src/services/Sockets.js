@@ -21,7 +21,7 @@ const Sockets = props => {
     } = useSelector(state => state.wallet);
 
     const [websocket, setWS] = useState(null);
-    const [websocket2, setWS2] = useState(null);
+    let [websocket2, setWS2] = useState(null);
 
     const setBalances = useCallback(
         data => dispatch({ type: 'SetBalances', payload: data }),
@@ -180,6 +180,7 @@ const Sockets = props => {
         //eslint-disable-next-line react-hooks/exhaustive-deps
         [isConn, contractBalances, walletBalances]
     );
+
     useEffect(
         _ => {
             // ---------------------------------------- Orion Backend Sockets Aks - Bids ---------------
@@ -205,6 +206,8 @@ const Sockets = props => {
 
             //---------------------------------------   Last price (a symbol) ----------------------------
 
+            // let ws2;
+
             if (websocket2 !== null) {
                 websocket2.close();
                 setWS2(null);
@@ -215,15 +218,15 @@ const Sockets = props => {
             const urlWS2 = `wss://candles.orionprotocol.io/api/v1/ticker/${sym}`;
             // console.log('url symbol ', urlWS2);
 
-            const ws2 = new window.WebsocketHeartbeatJs({
+            websocket2 = new window.WebsocketHeartbeatJs({
                 url: urlWS2,
                 pingTimeout: 5000,
                 pongTimeout: 5000,
             });
 
-            setWS2(ws2);
+            setWS2(websocket2);
 
-            ws2.onmessage = function (data) {
+            websocket2.onmessage = function (data) {
                 // setOrderBook(JSON.parse(data.data));
                 // console.log(JSON.parse(data.data)[1])
                 data = JSON.parse(data.data)[1];
@@ -247,6 +250,8 @@ const Sockets = props => {
         //eslint-disable-next-line react-hooks/exhaustive-deps
         [symbol]
     );
+
+    //----------------------------------------------------------------------------------
 
     useEffect(_ => {
         const urlWS = 'wss://candles.orionprotocol.io/api/v1/allTickers';

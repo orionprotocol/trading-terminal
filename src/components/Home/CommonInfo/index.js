@@ -92,7 +92,7 @@ const CommonInfo = props => {
                             aria-hidden="true"
                         />
                     ) : (
-                        <i class="far fa-star"></i>
+                        <i className="far fa-star"></i>
                     )}
                     <span>Pair</span>
                 </div>
