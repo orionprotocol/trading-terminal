@@ -37,7 +37,7 @@ const Sidebar = props => {
     );
 
     const { mode } = useSelector(state => state.general);
-    const [actives, setActives] = useState(['active', '', '','']);
+    const [actives, setActives] = useState(['active', '', '', '']);
     const {
         wanActive,
         walletOpt,
@@ -143,16 +143,16 @@ const Sidebar = props => {
 
         switch (pathname) {
             case '/home':
-                setActives(['active', '', '','']);
+                setActives(['active', '', '', '']);
                 break;
             case '/dashboard':
-                setActives(['', 'active', '','']);
+                setActives(['', 'active', '', '']);
                 break;
             case '/swap':
-                setActives(['', '', 'active','']);
+                setActives(['', '', 'active', '']);
                 break;
             case '/history':
-                setActives(['', '', '','active']);
+                setActives(['', '', '', 'active']);
                 break;
             default:
                 break;
@@ -284,34 +284,41 @@ const Sidebar = props => {
                                 <span className="text">Trading Terminal</span>
                             </Link>
 
-                            {walletActive ? (
-                                <Link
-                                    className={`nav-link ${actives[1]}`}
-                                    to="/dashboard"
-                                >
-                                    <span className="icon-link-2 icon" />
-                                    <span className="text">Dashboard</span>
-                                </Link>
+                            {walletActive && (
+                                <Fragment>
+                                    <Link
+                                        className={`nav-link ${actives[1]}`}
+                                        to="/dashboard"
+                                    >
+                                        <span className="icon-link-2 icon" />
+                                        <span className="text">Dashboard</span>
+                                    </Link>
+                                    <Link
+                                        className={`nav-link ${actives[2]}`}
+                                        to="/swap"
+                                    >
+                                        <span>
+                                            <i className="fas fa-exchange-alt"></i>
+                                        </span>
+
+                                        <span className="text">Swap</span>
+                                    </Link>
+                                    <Link
+                                        className={`nav-link ${actives[3]}`}
+                                        to="/history"
+                                    >
+                                        <span className="icon-link-3 icon" />
+                                        <span className="text">History</span>
+                                    </Link>
+                                </Fragment>
+                            )}
+
+                            {/* {walletActive ? (
+                                
                             ) : null}
                             {walletActive ? (
-                                <Link
-                                    className={`nav-link ${actives[2]}`}
-                                    to="/swap"
-                                >
-                                    <span>
-                                    <i className="fas fa-exchange-alt"></i>
-                                    </span>
-                                  
-                                    <span className="text">Swap</span>
-                                </Link>
-                            ) : null}
-                            <Link
-                                className={`nav-link ${actives[3]}`}
-                                to="/history"
-                            >
-                                <span className="icon-link-3 icon" />
-                                <span className="text">History</span>
-                            </Link>
+                               
+                            ) : null} */}
                         </nav>
                         <div className="aside-coins">
                             {wanmaskConnected ? (
