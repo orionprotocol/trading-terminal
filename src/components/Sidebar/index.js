@@ -312,13 +312,6 @@ const Sidebar = props => {
                                     </Link>
                                 </Fragment>
                             )}
-
-                            {/* {walletActive ? (
-                                
-                            ) : null}
-                            {walletActive ? (
-                               
-                            ) : null} */}
                         </nav>
                         <div className="aside-coins">
                             {wanmaskConnected ? (

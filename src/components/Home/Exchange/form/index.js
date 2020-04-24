@@ -35,7 +35,7 @@ export default function BuyAndSellForm({ type }) {
         available: '0',
         price: '',
         percent: '',
-        total: ''
+        total: '',
     });
 
     const [availableA, setAvailableA] = useState(0);
@@ -50,7 +50,7 @@ export default function BuyAndSellForm({ type }) {
         if (type.selection === 'market') {
             setValues({
                 ...values,
-                price: lastPrice
+                price: lastPrice,
             });
         }
         //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -62,7 +62,7 @@ export default function BuyAndSellForm({ type }) {
                 // console.log('lastPrice', lastPrice);
                 setValues({
                     ...values,
-                    price: lastPrice
+                    price: lastPrice,
                 });
             }
         },
@@ -76,7 +76,7 @@ export default function BuyAndSellForm({ type }) {
                 setValues({
                     ...values,
                     amount: orderData.amount.toFixed(8),
-                    price: orderData.price.toFixed(8)
+                    price: orderData.price.toFixed(8),
                 });
                 setTotal(orderData.total.toFixed(8));
             }
@@ -147,15 +147,17 @@ export default function BuyAndSellForm({ type }) {
 
     const handlePercent = percent => {
         if (type.trade === 'sell') {
+            setQtyForm((available * percent).toFixed(8));
             setValues({
                 ...values,
-                amount: (available * percent).toFixed(8)
+                amount: (available * percent).toFixed(8),
             });
             setTotal((available * percent * lastPrice).toFixed(8));
         } else {
+            setQtyForm(((available * percent) / lastPrice).toFixed(8));
             setValues({
                 ...values,
-                amount: ((available * percent) / lastPrice).toFixed(8)
+                amount: ((available * percent) / lastPrice).toFixed(8),
             });
             setTotal((available * percent).toFixed(8));
         }
@@ -180,14 +182,14 @@ export default function BuyAndSellForm({ type }) {
 
         setValues({
             ...values,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
         });
     };
 
     const submitOrder = async _ => {
         if (values.amount === '' || Number(values.amount) <= 0) {
             openNotification({
-                message: `Please, enter a valid amount.`
+                message: `Please, enter a valid amount.`,
             });
             return;
         }
@@ -195,7 +197,7 @@ export default function BuyAndSellForm({ type }) {
         if (type.trade === 'buy') {
             if (Number(total) > Number(available)) {
                 openNotification({
-                    message: `Insufficient ${symbolB} balance`
+                    message: `Insufficient ${symbolB} balance`,
                 });
 
                 return;
@@ -203,7 +205,7 @@ export default function BuyAndSellForm({ type }) {
         } else if (type.trade === 'sell') {
             if (Number(values.amount) > Number(available)) {
                 openNotification({
-                    message: `Insufficient ${symbolA} balance`
+                    message: `Insufficient ${symbolA} balance`,
                 });
 
                 return;
@@ -270,19 +272,19 @@ export default function BuyAndSellForm({ type }) {
             setValues({
                 ...values,
                 amount: '',
-                price: ''
+                price: '',
             });
             setTotal(0);
 
             openNotification({
-                message: ethereumOrderMessage
+                message: ethereumOrderMessage,
             });
         } catch (e) {
             console.log('error', e);
 
             if (e.msg) {
                 openNotification({
-                    message: e.msg
+                    message: e.msg,
                 });
             }
         }
@@ -354,7 +356,7 @@ export default function BuyAndSellForm({ type }) {
                                     fontSize: '14px',
                                     color: '#706E7D',
                                     marginLeft: '-40px',
-                                    marginTop: '7px'
+                                    marginTop: '7px',
                                 }}
                             >
                                 {symbolA}
@@ -384,7 +386,7 @@ export default function BuyAndSellForm({ type }) {
                             style={{
                                 justifyContent: 'space-between',
                                 display: 'flex',
-                                paddingTop: '5px'
+                                paddingTop: '5px',
                             }}
                         >
                             <span style={{ marginLeft: '10px' }}>
@@ -447,7 +449,7 @@ export default function BuyAndSellForm({ type }) {
                                     fontSize: '14px',
                                     color: '#706E7D',
                                     marginLeft: '-40px',
-                                    marginTop: '7px'
+                                    marginTop: '7px',
                                 }}
                             >
                                 {symbolB}
