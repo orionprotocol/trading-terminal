@@ -1,13 +1,17 @@
 import Fortmatic from 'fortmatic';
 import { FORTMATIC_API_KEY } from './Fortmatic';
 
+// Web3 Docs - https://web3js.readthedocs.io/en/v1.2.4/
 const Web3 = require('web3');
 const Long = require('long');
 
+/* En este objeto (tokensAddress) se deben declarar cada una de las direcciones de los
+    contratos de los tokens a utlizar en la plataforma
+*/
 export const tokensAddress = {
     WBTC: '0x335123EB7029030805864805fC95f1AB16A64D61',
     WXRP: '0x15a3Eb660823e0a3eF4D4A86EEC0d66f405Db515',
-    USDT: '0xfC1CD13A7f126eFD823E373C4086F69beB8611C2'
+    USDT: '0xfC1CD13A7f126eFD823E373C4086F69beB8611C2',
 };
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
@@ -15,7 +19,16 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 const exchangeArtifact = require('../contracts/Exchange.json');
 const contractAddress = exchangeArtifact.networks['3'].address;
 
+// En esta clase se creara la instancia del contrato con web3, para poder invocar las funciones definidas
+// en el contrato inteligente, las funciones del contrato que se invocan aqui son:
+// withdraw, depositWan, depositAsset
+
 export default class Contract {
+    // el constructor recibe provider que puede ser 'metamask' o 'fortmatic',
+    // dependiendo del provider se inicializa el Web3
+    // para usarlo posteriormente para instanciar los contratos,
+    // tanto del exchange como el de los tokens
+
     constructor(provider) {
         // console.log('contract ', provider);
         this.web3 = null;
@@ -32,6 +45,7 @@ export default class Contract {
                 break;
         }
 
+        // Asi se instancia el contrato del exchange
         // Exchange contract
         this.exchange = new this.web3.eth.Contract(
             exchangeArtifact.abi,
@@ -92,6 +106,29 @@ export default class Contract {
         return message;
     };
 
+    /*
+    La funcion signOrder se utliza para firmar la orden (de compra o venta) recibe un objeto orderInfo,
+    con los siguientes parametros:
+
+    orderInfo = {
+        senderAddress: senderAddress,
+        matcherAddress: EthereumOrder.matcherPublicKey,
+        baseAsset: baseAsset,
+        quoteAsset: quoteAsset,
+        matcherFeeAsset: side === 'buy' ? quoteAsset : baseAsset,
+        amount: Assets.toLongValue(amount),
+        price: Assets.toLongValue(price),
+        matcherFee: 300000,
+        nonce: nowTimestamp,
+        expiration: nowTimestamp + 29 * 24 * 60 * 60 * 1000,
+        side: side, //true = buy, false = sell
+    };
+
+    esta funcion signOrder es llamada en EthereumOrder
+
+    Utiliza la libreria web3
+    */
+
     signOrder = orderInfo =>
         new Promise((resolve, reject) => {
             let message = this.hashOrder(orderInfo);
@@ -107,17 +144,33 @@ export default class Contract {
         });
 
     decimalToBaseUnit = (currency, amount) => {
+        // el exponente a multiplicar dependera del numero de decimales utilizados en el contrato inteligente
+        // en este caso se usa (toWei) 1**18 y 1**8
+        // https://web3js.readthedocs.io/en/v1.2.0/web3-utils.html#towei
+        // Hay que realizar esta conversion porque asi es que trabaja la blockchain de ethereum, con weis
+
+        // 1 ether = 1000000000000000000 wei
+
         if (currency === 'eth') {
-            return Number(this.web3.utils.toWei(amount)).toFixed(0);
+            return Number(this.web3.utils.toWei(amount)).toFixed(0); // toWei multiplica el numero por 1**16
         } else {
             return (amount * 1e8).toFixed(0);
         }
     };
 
+    // address es la direccion de la wallet del cliente
     deposit = async (currency, amount, address) => {
-        // if (!window.ethereum.selectedAddress) {
-        //     window.ethereum.enable();
-        // }
+        /**
+         * Como la plataforma esta corriendo sobre la blockchain de ethereum, para depositar eth
+         * solo es necesario llamar a una funcion para transferir eth del cliente al contrato inteligente (exchange),
+         * para realizar esto se invoca la funcion depositWan del contrato inteligente (exchange).
+         *
+         * Para transferir otros tokens diferentes a eth del usuario al contrato inteligente (exchange),
+         * primero se debe solicitar la aprobacion del cliente con la funcion approve
+         * y luego de tener la aprobacion invocar la funcion depositAsset, la cual
+         * recibe dos parametros
+         *
+         * */
 
         address = this.web3.utils.toChecksumAddress(address);
 
@@ -133,7 +186,7 @@ export default class Contract {
                 this.tokensContracts[currency].methods
                     .approve(contractAddress, newAmount)
                     .send({ from: address })
-                    .once('transactionHash', (hash) => {
+                    .once('transactionHash', hash => {
                         this.exchange.methods
                             .depositAsset(
                                 tokensAddress[currency.toUpperCase()],
@@ -151,6 +204,13 @@ export default class Contract {
         }
     };
 
+    // Como la plataforma esta corriendo sobre la blockchain de ethereum,
+    // al momento de retirar eth el primer parametro que es la address del
+    // token es 0x0000000000000000000000000000000000000000
+    // de lo contrario, para cualquier otro token se debe usar
+    // su address correspondiente
+
+    // address es la direccion de la wallet del cliente
     withdraw = async (currency, amount, address) => {
         if (!window.ethereum.selectedAddress) {
             window.ethereum.enable();
