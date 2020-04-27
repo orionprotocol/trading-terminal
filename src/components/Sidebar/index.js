@@ -46,6 +46,10 @@ const Sidebar = props => {
         fortmaticConnected,
         addWallet,
     } = useSelector(state => state.wallet);
+    const {
+        symbolA,
+        symbolB
+    } = useSelector(state => state.general);
     const [walletActive, setWalletActive] = useState(false);
     const [addWalletOpt, setAddWalletOpt] = useState(false);
 
@@ -278,7 +282,7 @@ const Sidebar = props => {
                         <nav>
                             <Link
                                 className={`nav-link ${actives[0]}`}
-                                to="/home"
+                                to={`/trade/${symbolA}${symbolB}`}
                             >
                                 <span className="icon-link-1 icon" />
                                 <span className="text">Trading Terminal</span>

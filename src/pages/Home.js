@@ -26,6 +26,7 @@ function removeClass() {
 }
 
 function Home(props) {
+
     const { orderbook, active, pair, exchange, chart, history } = useSelector(
         state => state.responsive.home
     );
@@ -66,7 +67,7 @@ function Home(props) {
                     <div className="my-row">
                         <div className="left-panel js-panel">
                             {!active || (active && pair) ? (
-                                <CommonInfo />
+                                <CommonInfo History={props} />
                             ) : null}
 
                             {!active || (active && exchange) ? (

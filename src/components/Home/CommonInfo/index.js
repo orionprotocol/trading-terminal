@@ -22,7 +22,8 @@ const formatNumber = number => {
     );
 };
 let intervalId = 0;
-const CommonInfo = props => {
+const CommonInfo = ({History}) => {
+  
     const { symbolA, symbolB, lastPrice, high, low, vol, change } = useSelector(
         state => state.general
     );
@@ -103,7 +104,7 @@ const CommonInfo = props => {
                         </span>
                         <span className="icon-arrow-d" />
                     </div>
-                    <PairDrop handleWrapper={handleWrapper} />
+                    <PairDrop History={History} handleWrapper={handleWrapper} />
                 </div>
             </div>
             <div className="price">
