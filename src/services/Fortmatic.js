@@ -5,10 +5,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const Web3 = require('web3');
 
-// Para usar Fortmatic son necesarias unas api keys
-// https://fortmatic.com/
-
-// Estas keys son de la cuenta de Juan Navas
 export const FORTMATIC_API_KEY = 'pk_test_4BEC597B2A4DA352';
 // const FORTMATIC_API_KEY = 'pk_live_3C26F25E5BAEAF0D';
 
@@ -33,15 +29,12 @@ export default function FortmaticService() {
             // console.log(web3.enable());
 
             if (fortmaticConnected) {
-                // la funcion getAccounts es llamada al momento de conectar esta wallet
-                // al exchange
                 web3.eth.getAccounts((error, accounts) => {
                     // console.log('fortmaticConnected 88', fortmaticConnected);
                     // console.log('accounts', accounts);
                     if (accounts.length > 0) {
                         setFortmaticConnect(true);
                         setEthAddress(accounts[0]);
-                        localStorage.setItem('ethAddress', accounts[0]);
                     }
                 });
             }

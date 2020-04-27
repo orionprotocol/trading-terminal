@@ -1,9 +1,6 @@
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo ,useCallback,useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-
-// Este componente es para obtener la lista de pares con los cuales
-// el exchange va a trabajar, se obtiene desde el backend
 const possibleAssests = memo(() => {
     const dispatch = useDispatch();
     const setAssets = useCallback(
@@ -13,12 +10,12 @@ const possibleAssests = memo(() => {
     const getAssets = pairs => {
         let res1 = [];
         let res2 = [];
-
+    
         pairs.forEach(e => {
             let quote = e.split('-')[1];
-
+    
             if (res1.indexOf(quote) < 0) res1.push(quote);
-
+    
             if (!res2[quote]) {
                 res2[quote] = [];
                 res2[quote].push(e.split('-')[0]);
@@ -27,7 +24,7 @@ const possibleAssests = memo(() => {
             }
         });
         // console.log('res1', res1, 'res2', res2);
-
+    
         return { assets1: res1, assets2: res2 };
     };
     useEffect(_ => {
@@ -41,7 +38,8 @@ const possibleAssests = memo(() => {
         // setAssets(getAssets(example));
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return null;
+    return null
+
 });
 
 export default possibleAssests;

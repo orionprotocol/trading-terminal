@@ -23,16 +23,13 @@ export default function Metamask() {
                     // const provider = window['ethereum'] || window.web3.currentProvider;
                     window.ethereum.autoRefreshOnNetworkChange = false;
 
-                    // selectedAddress es la direccion de la wallet del cliente
                     setEthAddress(window.ethereum.selectedAddress);
 
-                    // Para detectar los cambios de direccion de la wallet del cliente
-                    window.ethereum.on('accountsChanged', function (accounts) {
+                    window.ethereum.on('accountsChanged', function(accounts) {
                         // Time to reload your interface with accounts[0]!
                         setEthAddress(accounts[0]);
-                        localStorage.setItem('ethAddress', accounts[0]);
                         openNotification({
-                            message: 'Account updated',
+                            message: 'Account updated'
                         });
                     });
                 }

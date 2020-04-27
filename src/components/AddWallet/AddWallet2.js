@@ -51,7 +51,7 @@ const AddWallet2 = props => {
     const [tabs] = useState({
         wallet: ['active', true],
         key: ['', false],
-        seed: ['', false],
+        seed: ['', false]
     });
 
     const handleClick = wallet => {
@@ -107,7 +107,7 @@ const AddWallet2 = props => {
                 break;
             case 'Fortmatic':
                 web3.eth.getAccounts((error, accounts) => {
-                    if (accounts !== undefined && accounts.length > 0) {
+                    if (accounts!==undefined && accounts.length > 0) {
                         // console.log('ethAddress', ethAddress);
                         setFortmaticConnect(true);
                         setEthAddress(accounts[0]);

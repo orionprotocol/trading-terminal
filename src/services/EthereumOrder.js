@@ -24,30 +24,17 @@ class EthereumOrder {
         this.validateSolidity = contract.validateSolidity;
     }
 
-    /**
-     * symbols = ['symbolA', 'symbolB']
-     * side = 'buy' || 'sell'
-     * price
-     * amount // cantidad a comprar o vender
-     *
-     */
     toEthereumOrder = async (symbols, side, price, amount) => {
         return new Promise(async (resolve, reject) => {
-            // if (!window.ethereum) {
-            //     reject();
-            // }
+            if (!window.ethereum) {
+                reject();
+            }
 
-            // senderAddress -> address de la wallet del cliente
             const senderAddress = localStorage.getItem('ethAddress');
-
-            // baseAsset -> symbolA
-            // quoteAsset -> symbolB
             let baseAsset,
                 quoteAsset = null;
             const nowTimestamp = Date.now();
 
-            // Se procede asignar las direcciones correspondientes para baseAsset y quoteAsset,
-            // que dependera de las siguientes condiciones
             side = side.toLowerCase();
             if (symbols[0].toUpperCase() === 'ETH') {
                 baseAsset = '0x0000000000000000000000000000000000000000';
@@ -61,8 +48,6 @@ class EthereumOrder {
                 quoteAsset = tokensAddress[symbols[1].toUpperCase()];
             }
 
-            // matcher es el que ejecuta la orden, en este caso el exchange
-
             const order = {
                 senderAddress: senderAddress,
                 matcherAddress: EthereumOrder.matcherPublicKey,
@@ -71,7 +56,7 @@ class EthereumOrder {
                 matcherFeeAsset: side === 'buy' ? quoteAsset : baseAsset,
                 amount: Assets.toLongValue(amount),
                 price: Assets.toLongValue(price),
-                matcherFee: 300000, // Este monto es fijado por el exchange
+                matcherFee: 300000,
                 nonce: nowTimestamp,
                 expiration: nowTimestamp + 29 * 24 * 60 * 60 * 1000,
                 side: side, //true = buy, false = sell
@@ -86,13 +71,11 @@ class EthereumOrder {
             console.log('----- Signature: ', signedOrder);
             console.log('----- Signed By: ', senderAddress);
 
-            // Luego de que es firmada la orden por el cliente se realiza la validacion
             let validation = await this.validateSolidity(order, signedOrder);
             // console.log('validation', validation);
             // resolve('');
             // return;
 
-            // Si la validacion es exitosa entonces se envia la orden al back
             if (validation) {
                 fetch(`${EthereumOrder.orionUrl}/api/order`, {
                     credentials: 'same-origin',
