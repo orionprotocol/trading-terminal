@@ -97,16 +97,16 @@ const Line = props => {
             <div className="cell actions">
                 <button className="action" onClick={handleDeposit}>
                     {' '}
-                    <img src="./img/arrow.png" alt="dash" />
+                    <img src="/img/arrow.png" alt="dash" />
                     <span>Deposit</span>
                 </button>
                 <button className="action withdraw" onClick={handleWithdraw}>
-                    <img src="./img/arrow.png" alt="dash" />
+                    <img src="/img/arrow.png" alt="dash" />
                     <span>Withdraw</span>
                 </button>
                 <button className="action" onClick={handleTrade}>
                     {' '}
-                    <img src="./img/trade.png" alt="dash" />
+                    <img src="/img/trade.png" alt="dash" />
                     <span>Trade</span>
                 </button>
             </div>

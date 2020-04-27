@@ -155,19 +155,19 @@ const PairDrop = props => {
                 <div className="titles-p">
                     <div className="title">
                         <span>Pair</span>
-                        <img src="./img/arrow-down.svg" alt="home" />
+                        <img src="/img/arrow-down.svg" alt="home" />
                     </div>
                     <div className="title short">
                         <span>Last Pr.</span>
-                        <img src="./img/arrow-down.svg" alt="home" />
+                        <img src="/img/arrow-down.svg" alt="home" />
                     </div>
                     <div className="title short">
                         <span>24h Vol</span>
-                        <img src="./img/arrow-down.svg" alt="home" />
+                        <img src="/img/arrow-down.svg" alt="home" />
                     </div>
                     <div className="title chg">
                         <span>24h Change</span>
-                        <img src="./img/arrow-down.svg" alt="home" />
+                        <img src="/img/arrow-down.svg" alt="home" />
                     </div>
                 </div>
                 <div className="lines">

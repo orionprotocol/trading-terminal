@@ -130,7 +130,7 @@ const Asks = props => {
                     imgExchanges = [];
                     for (let j = 0; j < exchanges.length; j++) {
                         let time = new Date().getTime();
-                        let imagePath = 'img/exchanges/{exchange}.png'.replace(
+                        let imagePath = '/img/exchanges/{exchange}.png'.replace(
                             '{exchange}',
                             exchanges[j]
                         );
@@ -149,7 +149,7 @@ const Asks = props => {
                     imgExchanges = [];
                     for (let j = 0; j < 2; j++) {
                         let time = new Date().getTime();
-                        let imagePath = 'img/exchanges/{exchange}.png'.replace(
+                        let imagePath = '/img/exchanges/{exchange}.png'.replace(
                             '{exchange}',
                             exchanges[j]
                         );
@@ -168,7 +168,7 @@ const Asks = props => {
                     let extras = [];
                     for (let j = 2; j < exchanges.length; j++) {
                         let time = new Date().getTime();
-                        let imagePath = 'img/exchanges/{exchange}.png'.replace(
+                        let imagePath = '/img/exchanges/{exchange}.png'.replace(
                             '{exchange}',
                             exchanges[j]
                         );
@@ -182,7 +182,7 @@ const Asks = props => {
                     arrow = (
                         <img
                             className={`arrow ask-${key}`}
-                            src="./img/arrow-down.svg"
+                            src="/img/arrow-down.svg"
                             alt="home"
                         />
                     );

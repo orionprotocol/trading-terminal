@@ -132,7 +132,7 @@ const CommonInfo = props => {
                         {change >= 0 ? (
                             <Fragment>
                                 <img
-                                    src="./img/growth.png"
+                                    src="/img/growth.png"
                                     style={{ width: '10px', height: '10px' }}
                                     alt="home"
                                 />
@@ -143,7 +143,7 @@ const CommonInfo = props => {
                         ) : (
                             <Fragment>
                                 <img
-                                    src="./img/red-arrow.png"
+                                    src="/img/red-arrow.png"
                                     style={{ width: '10px', height: '10px' }}
                                     alt="home"
                                 />

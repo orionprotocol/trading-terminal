@@ -60,7 +60,7 @@ const TopMenu = _ => {
         <div className="top-menu">
             <div className="links">
                 <Link className="logo" to="/home">
-                    <img src="./img/logo.png" alt="home" />
+                    <img src="/img/logo.png" alt="home" />
                 </Link>
                 <Link className={`nav-link ${actives[0]}`} to="/home">
                     <span className="icon-link-1 icon" />

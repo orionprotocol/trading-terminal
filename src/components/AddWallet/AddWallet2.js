@@ -133,7 +133,7 @@ const AddWallet2 = props => {
                         </div>
                         <img
                             className="close js-close"
-                            src="./img/close.png"
+                            src="/img/close.png"
                             alt="dash"
                             onClick={props.hide2}
                         />
@@ -239,12 +239,12 @@ const AddWallet2 = props => {
                             className="back js-go-back-to-1"
                             onClick={props.show1}
                         >
-                            <img src="./img/arrow-down.svg" alt="dash" />
+                            <img src="/img/arrow-down.svg" alt="dash" />
                             <span>Go back</span>
                         </button>
                         <button className="connect" onClick={handleConnect}>
                             {opt === 'MetaMask' ? (
-                                <img src="./img/fox.png" alt="dash" />
+                                <img src="/img/fox.png" alt="dash" />
                             ) : null}
                             <span>Connect</span>
                         </button>

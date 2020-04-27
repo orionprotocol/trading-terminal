@@ -257,12 +257,12 @@ const Sidebar = props => {
             >
                 <div className="sidebar-content">
                     <a className="logo" href="/">
-                        <img src="./img/logo.png" alt="home" />
+                        <img src="/img/logo.png" alt="home" />
                     </a>
                     <div className="links">
                         <div className="dark-mode" id="moon">
                             <div className="night">
-                                <img src="./img/night.png" alt="home" />
+                                <img src="/img/night.png" alt="home" />
                             </div>
                             <div className="text mode-toggler">
                                 <span>Dark Mode</span>
@@ -316,24 +316,24 @@ const Sidebar = props => {
                         <div className="aside-coins">
                             {wanmaskConnected ? (
                                 <div className="coin">
-                                    <img src="./img/wanchain2.png" alt="home" />
+                                    <img src="/img/wanchain2.png" alt="home" />
                                     <span className="text">Wanchain</span>
                                 </div>
                             ) : null}
                             {metamaskConnected || fortmaticConnected ? (
                                 <div className="coin">
-                                    <img src="./img/eth-aside.svg" alt="home" />
+                                    <img src="/img/eth-aside.svg" alt="home" />
                                     <span className="text">Ethereum</span>
                                 </div>
                             ) : null}
                             {/*
 							<div className="coin">
-								<img src="./img/bit-aside.svg" alt="home" />
+								<img src="/img/bit-aside.svg" alt="home" />
 								<span className="text">Bitcoin</span>
 							</div>
 							
 							<div className="coin">
-								<img src="./img/dash-small.png" alt="home" />
+								<img src="/img/dash-small.png" alt="home" />
 								<span className="text">Dash</span>
 							</div> */}
                         </div>
@@ -346,7 +346,7 @@ const Sidebar = props => {
                                 </span>
                             ) : (
                                 <Fragment>
-                                    <img src="./img/close.png" alt="home" />
+                                    <img src="/img/close.png" alt="home" />
                                     <span
                                         className="add-wallet-btn"
                                         onClick={handleAddWallet}

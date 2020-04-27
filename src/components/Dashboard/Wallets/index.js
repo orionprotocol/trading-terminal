@@ -161,7 +161,7 @@ const Wallets = _ => {
             <div className="top">
                 <h2>Wallets</h2>
                 <button className="add js-add-wallet" onClick={handleAddWallet}>
-                    <img src="./img/add.png" alt="dash" />
+                    <img src="/img/add.png" alt="dash" />
                     <span>Add Wallet</span>
                 </button>
             </div>

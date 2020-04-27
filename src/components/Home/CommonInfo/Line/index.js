@@ -121,14 +121,14 @@ export default function Line({ asset, handlePair, assetB }) {
                 {change24h >= 0 ? (
                     <img
                         onClick={_ => handlePair(asset)}
-                        src="./img/growth.png"
+                        src="/img/growth.png"
                         alt="home"
                         style={{ width: '10px', height: '10px' }}
                     />
                 ) : (
                     <img
                         onClick={_ => handlePair(asset)}
-                        src="./img/red-arrow.png"
+                        src="/img/red-arrow.png"
                         style={{ width: '10px', height: '10px' }}
                         alt="home"
                     />
