@@ -4,7 +4,7 @@ let height = 0;
 document.addEventListener('DOMContentLoaded', _ => {
 	let { pathname } = window.location;
 
-	if (pathname === '/home') {
+	if (pathname === "/trade") {
 		const dataChart = document.querySelector('#chart-data');
 
 		let { exchange, symbol, mode } = dataChart.dataset;

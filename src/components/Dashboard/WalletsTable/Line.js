@@ -33,7 +33,7 @@ const Line = props => {
     );
 
     const currentAccount = localStorage.getItem('currentAccount');
-    const handleTrade = _ => props.history.push('/home');
+    const handleTrade = _ => props.history.push("/trade");
     const handleDeposit = _ => {
         toggleDepositModal(!depositModal);
     };
