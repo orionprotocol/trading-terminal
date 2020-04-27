@@ -2,6 +2,10 @@ import React, { Fragment, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
+// Este componente es para setear los balances de una direccion en el redux
+// La consulta de estos balances se debe ejecutar cuando
+// se conecte alguna wallet y/o cambie la direccion de la wallet
+
 const OrionWanchain = _ => {
     // const balances = useSelector(state => state.balances);
     const dispatch = useDispatch();
@@ -10,7 +14,7 @@ const OrionWanchain = _ => {
         wanActive,
         metamaskConnected,
         ethAddress,
-        fortmaticConnected
+        fortmaticConnected,
     } = useSelector(state => state.wallet);
     const setBalances = useCallback(
         data => dispatch({ type: 'SetBalances', payload: data }),
@@ -89,7 +93,7 @@ const OrionWanchain = _ => {
             metamaskConnected,
             fortmaticConnected,
             ethAddress,
-            wanActive
+            wanActive,
         ]
     );
 

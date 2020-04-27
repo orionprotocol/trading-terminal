@@ -9,8 +9,9 @@ const Swap = memo(() => {
             <TopMenu />
             <div className="history">
                 <Sidebar />
+
                 <div className="my-container">
-                   <SwapSelector/>
+                    <SwapSelector />
                 </div>
             </div>
         </div>

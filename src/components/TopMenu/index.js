@@ -20,7 +20,7 @@ const TopMenu = _ => {
             const { pathname } = window.location;
 
             switch (pathname) {
-                case "/trade":
+                case '/home':
                     setActives(['active', '', '', '']);
                     break;
 
@@ -59,10 +59,10 @@ const TopMenu = _ => {
     return (
         <div className="top-menu">
             <div className="links">
-                <Link className="logo" to="/trade">
+                <Link className="logo" to="/home">
                     <img src="./img/logo.png" alt="home" />
                 </Link>
-                <Link className={`nav-link ${actives[0]}`} to="/trade">
+                <Link className={`nav-link ${actives[0]}`} to="/home">
                     <span className="icon-link-1 icon" />
                 </Link>
 

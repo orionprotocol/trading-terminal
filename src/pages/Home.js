@@ -43,7 +43,7 @@ function Home(props) {
 		(_) => {
 			const { pathname } = window.location;
 
-			if (pathname === "/trade") {
+			if (pathname === '/home') {
 				window.renderChart('all', symbol, mode);
 			}
 		},

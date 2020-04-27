@@ -6,6 +6,9 @@ import { web3 } from './Fortmatic';
 const io = require('socket.io-client');
 let socket;
 
+// websocketHeartbeatJs https://github.com/zimv/websocket-heartbeat-js
+// el codigo de esta libreria esta en public/js/websocketHeartbeat.js
+
 const Sockets = props => {
     const dispatch = useDispatch();
 
@@ -59,6 +62,7 @@ const Sockets = props => {
     const [address] = useState(localStorage.getItem('currentAccount'));
     const [isConn, setIsConn] = useState(false);
 
+    // Normal connection for Socket.io - only Wanmask
     useEffect(
         _ => {
             // if (window.wan3 && address) {
@@ -70,6 +74,7 @@ const Sockets = props => {
                     );
                     setIsConn(true);
                     if (window.wan3.toChecksumAddress(address)) {
+                        // Este emit es para subscribirse a los cambios de los balances de esta direccion
                         socket.emit(
                             'clientAddress',
                             window.wan3.toChecksumAddress(address)
@@ -90,6 +95,7 @@ const Sockets = props => {
         [wanmaskConnected, metamaskConnected, fortmaticConnected]
     );
 
+    // Normal connection for Socket.io - only Metamask and Fortmatic
     useEffect(
         _ => {
             if (window.ethereum || (fortmaticConnected && ethAddress !== '')) {
@@ -118,6 +124,7 @@ const Sockets = props => {
                             'Connected....................................'
                         );
                         setIsConn(true);
+                        // Este emit es para subscribirse a los cambios de los balances de esta direccion
                         socket.emit(
                             'clientAddress',
                             web3.utils.toChecksumAddress(address)
@@ -131,7 +138,7 @@ const Sockets = props => {
     );
     useEffect(
         _ => {
-            // --------------------- Orion-Wanchain Sockets -----------------------------------------------------
+            // --------------------- Orion-Wanchain Sockets -- Balances -----------------------------------------------------
 
             if (
                 isConn &&
@@ -239,7 +246,7 @@ const Sockets = props => {
                 let low = data[4].toFixed(6);
                 let vol = data[5].toFixed(2);
 
-                setChange(change);
+                setChange(change); // 24h % change, porcentaje de cambio de las ultimas 24h
                 setLow(low);
                 setHigh(high);
                 setVol(vol);
@@ -251,7 +258,7 @@ const Sockets = props => {
         [symbol]
     );
 
-    //----------------------------------------------------------------------------------
+    //------------------------------------ All tickers for CommonInfo, all pairs ----------------------------------------------
 
     useEffect(_ => {
         const urlWS = 'wss://candles.orionprotocol.io/api/v1/allTickers';

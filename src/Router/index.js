@@ -9,12 +9,12 @@ const Router = () => {
 	return (
 		<Fragment>
 			<Switch>
-				<Route path="/trade" component={Home} />
+				<Route path="/home" component={Home} />
 				<Route path="/history" component={History} />
 				<Route path="/dashboard" component={Dahsboard} />
 				<Route path="/swap" component={Swap} />
 				<Route path="/wallet" component={Wallet} />
-				<Redirect from="/" to="/trade" />
+				<Redirect from="/" to="/home" />
 			</Switch>
 		</Fragment>
 	);

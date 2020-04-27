@@ -82,8 +82,8 @@ const Sidebar = props => {
             // }
 
             // const { pathname } = window.location;
-            // if (!wanActive && pathname !== "/trade") {
-            // 	history.push("/trade");
+            // if (!wanActive && pathname !== '/home') {
+            // 	history.push('/home');
             // }
 
             const wanmask =
@@ -142,7 +142,7 @@ const Sidebar = props => {
         let { pathname } = window.location;
 
         switch (pathname) {
-            case "/trade":
+            case '/home':
                 setActives(['active', '', '', '']);
                 break;
             case '/dashboard':
@@ -278,7 +278,7 @@ const Sidebar = props => {
                         <nav>
                             <Link
                                 className={`nav-link ${actives[0]}`}
-                                to="/trade"
+                                to="/home"
                             >
                                 <span className="icon-link-1 icon" />
                                 <span className="text">Trading Terminal</span>
