@@ -282,7 +282,7 @@ const Sidebar = props => {
                         <nav>
                             <Link
                                 className={`nav-link ${actives[0]}`}
-                                to={`/trade/${symbolA}${symbolB}`}
+                                to={`/trade/${symbolA}_${symbolB}`}
                             >
                                 <span className="icon-link-1 icon" />
                                 <span className="text">Trading Terminal</span>

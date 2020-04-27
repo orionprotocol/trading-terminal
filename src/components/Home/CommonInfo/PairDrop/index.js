@@ -4,7 +4,7 @@ import Line from '../Line';
 import './index.css';
 
 const PairDrop = ({handleWrapper,History}) => {
-console.log(History)
+
     const dispatch = useDispatch();
 
     const { assets } = useSelector(state => state.general);
@@ -74,7 +74,7 @@ console.log(History)
     const handlePair = symbolA => {
         setSymbolA(symbolA);
         setSymbolB(currentQuote);
-       History.history.push(`/trade/${symbolA}${currentQuote}`) 
+       History.history.push(`/trade/${symbolA}_${currentQuote}`) 
         handleWrapper();
     };
 
