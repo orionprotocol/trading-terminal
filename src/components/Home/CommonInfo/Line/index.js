@@ -92,7 +92,7 @@ export default function Line({ asset, handlePair, assetB }) {
             <div className="cell">
                 <img
                     className="img"
-                    src={`./img/${asset.toLowerCase()}.png`}
+                    src={`/img/${asset.toLowerCase()}.png`}
                     alt="home"
                 />
                 <div className="text">
