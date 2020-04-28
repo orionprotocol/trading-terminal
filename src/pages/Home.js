@@ -1,5 +1,5 @@
-import React, { useEffect,useCallback } from 'react';
-import { useSelector,useDispatch } from 'react-redux';
+import React, { useEffect, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import TopMenu from '../components/TopMenu';
 import IndexNav from '../components/Home/IndexNav';
@@ -26,9 +26,11 @@ function removeClass() {
 }
 
 function Home(props) {
-
-    const dispatch=useDispatch()
-    const setSymbol = useCallback(payload => dispatch({ type: 'SetSymbol', payload }), [ dispatch ]);
+    const dispatch = useDispatch();
+    const setSymbol = useCallback(
+        payload => dispatch({ type: 'SetSymbol', payload }),
+        [dispatch]
+    );
     const setSymbolA = useCallback(
         data => dispatch({ type: 'SetSymbolA', payload: data }),
         [dispatch]
@@ -39,21 +41,23 @@ function Home(props) {
     );
 
     useEffect(() => {
-        let aux=props.history.location.pathname.split('/')
-        console.log(props.history.location.pathname)
-        if(aux.length===3){
-            aux=aux[2].split('_')
-            if(props.history.location.pathname.includes('trade') && aux.length===2 ){
-                console.log(aux)
-              /*   console.log(props.history)
+        let aux = props.history.location.pathname.split('/');
+        console.log(props.history.location.pathname);
+        if (aux.length === 3) {
+            aux = aux[2].split('_');
+            if (
+                props.history.location.pathname.includes('trade') &&
+                aux.length === 2
+            ) {
+                console.log(aux);
+                /*   console.log(props.history)
                 console.log(props.history.location.pathname) */
                 setSymbolA(aux[0]);
-                setSymbolB(aux[1]); 
-                setSymbol(`${aux[0]}-${aux[1]}`) 
+                setSymbolB(aux[1]);
+                setSymbol(`${aux[0]}-${aux[1]}`);
             }
         }
-         
-    }, [props.history.location.pathname]); 
+    }, [props.history.location.pathname]);
     const { orderbook, active, pair, exchange, chart, history } = useSelector(
         state => state.responsive.home
     );

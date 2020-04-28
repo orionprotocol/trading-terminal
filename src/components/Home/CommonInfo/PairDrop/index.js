@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Line from '../Line';
 import './index.css';
 
-const PairDrop = ({handleWrapper,History}) => {
-
+const PairDrop = ({ handleWrapper, History }) => {
     const dispatch = useDispatch();
 
     const { assets } = useSelector(state => state.general);
@@ -74,7 +73,7 @@ const PairDrop = ({handleWrapper,History}) => {
     const handlePair = symbolA => {
         setSymbolA(symbolA);
         setSymbolB(currentQuote);
-       History.history.push(`/trade/${symbolA}_${currentQuote}`) 
+        //    History.history.push(`/trade/${symbolA}_${currentQuote}`)
         handleWrapper();
     };
 
