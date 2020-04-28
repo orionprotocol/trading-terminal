@@ -40,6 +40,7 @@ function Home(props) {
 
     useEffect(() => {
         let aux=props.history.location.pathname.split('/')
+        onsole.log(props.history.location.pathname)
         if(aux.length===3){
             aux=aux[2].split('_')
             if(props.history.location.pathname.includes('trade') && aux.length===2 ){
