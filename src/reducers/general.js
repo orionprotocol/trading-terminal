@@ -1,10 +1,10 @@
-const element = document.querySelector("#chart-data");
+const element = document.querySelector('#chart-data');
 
 const initialState = {
-    symbol: "ETH-BTC",
-    mode: "Light",
-    symbolA: "ETH",
-    symbolB: "BTC",
+    symbol: 'ETH-BTC',
+    mode: 'Light',
+    symbolA: 'ETH',
+    symbolB: 'BTC',
     lastPrice: 0,
     orderBook: null,
     high: 0,
@@ -13,62 +13,62 @@ const initialState = {
     change: 0,
     orderData: {}, // { amount: 0, price: 0, total: 0 }
     qtyForm: 0,
-    sideForm: "buy",
+    sideForm: 'buy',
     assets: [],
-    tickers: {}
+    tickers: {},
 };
 
 export default (state = initialState, { type, ...action }) => {
-    let newSymbol = "";
+    let newSymbol = '';
     switch (type) {
-        case "SetQtyForm":
+        case 'SetQtyForm':
             return { ...state, qtyForm: action.payload };
-        case "SetSideForm":
+        case 'SetSideForm':
             return { ...state, sideForm: action.payload };
-        case "SetOrderData":
+        case 'SetOrderData':
             return { ...state, orderData: action.payload };
-        case "SetMode":
+        case 'SetMode':
             element.dataset.mode = action.payload;
-            localStorage.setItem("mode", action.payload);
+            localStorage.setItem('mode', action.payload);
             return { ...state, mode: action.payload };
-        case "SetChange":
+        case 'SetChange':
             return { ...state, change: action.payload };
-        case "SetHigh":
+        case 'SetHigh':
             return { ...state, high: action.payload };
-        case "SetLow":
+        case 'SetLow':
             return { ...state, low: action.payload };
-        case "SetVol":
+        case 'SetVol':
             return { ...state, vol: action.payload };
-        case "SetLastPrice":
+        case 'SetLastPrice':
             newSymbol = `${action.payload}-${state.symbolB}`;
             return {
                 ...state,
-                lastPrice: action.payload
+                lastPrice: action.payload,
             };
-        case "SetSymbolA":
+        case 'SetSymbolA':
             newSymbol = `${action.payload}-${state.symbolB}`;
             element.dataset.symbol = newSymbol;
             return {
                 ...state,
                 symbolA: action.payload,
-                symbol: newSymbol
+                symbol: newSymbol,
             };
-        case "SetSymbolB":
+        case 'SetSymbolB':
             newSymbol = `${state.symbolA}-${action.payload}`;
             element.dataset.symbol = newSymbol;
             return {
                 ...state,
                 symbolB: action.payload,
-                symbol: newSymbol
+                symbol: newSymbol,
             };
-        case "SetSymbol":
+        case 'SetSymbol':
             element.dataset.symbol = action.payload;
             return { ...state, symbol: action.payload };
-        case "SetOrderBook":
+        case 'SetOrderBook':
             return { ...state, orderBook: action.payload };
-        case "SetAssets":
+        case 'SetAssets':
             return { ...state, assets: action.payload };
-        case "SetTickers":
+        case 'SetTickers':
             return { ...state, tickers: action.payload };
         default:
             return state;

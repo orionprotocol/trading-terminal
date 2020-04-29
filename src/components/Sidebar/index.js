@@ -46,10 +46,7 @@ const Sidebar = props => {
         fortmaticConnected,
         addWallet,
     } = useSelector(state => state.wallet);
-    const {
-        symbolA,
-        symbolB
-    } = useSelector(state => state.general);
+    const { symbolA, symbolB } = useSelector(state => state.general);
     const [walletActive, setWalletActive] = useState(false);
     const [addWalletOpt, setAddWalletOpt] = useState(false);
 
@@ -135,7 +132,7 @@ const Sidebar = props => {
     useEffect(_ => {
         let lastmode = localStorage.getItem('mode');
 
-        if (lastmode === 'Dark') {
+        if (lastmode === 'Dark' || !lastmode) {
             Dark();
             setMode('Dark');
         } else {

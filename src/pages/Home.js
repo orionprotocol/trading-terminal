@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import TVChart from "../components/TVChartContainer"
+import TVChart from '../components/TVChartContainer';
 import TopMenu from '../components/TopMenu';
 import IndexNav from '../components/Home/IndexNav';
 import Sidebar from '../components/Sidebar';
@@ -112,11 +112,11 @@ function Home(props) {
                         {!active ? (
                             <div className="center-panel js-panel">
                                 <div className="image js-chart js-panel-item">
-                                    <TVChart/>
-                                  {/*   <div id="chart-container" />*/}
+                                    <TVChart />
+                                    {/*   <div id="chart-container" />*/}
                                 </div>
 
-                                <Orders /> 
+                                <Orders />
                             </div>
                         ) : null}
 
@@ -125,7 +125,8 @@ function Home(props) {
                             <div className="center-panel js-panel">
                                 {active && chart ? (
                                     <div className="image js-chart js-panel-item">
-                                        <div id="chart-container" />
+                                        {/* <div id="chart-container" /> */}
+                                        <TVChart />
                                     </div>
                                 ) : null}
 
