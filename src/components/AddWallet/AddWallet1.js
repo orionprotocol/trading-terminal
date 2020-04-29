@@ -52,7 +52,7 @@ const AddWallet1 = props => {
                                 alt="dash"
                             />
                         </div>
-                        <div
+                        {/* <div
                             className="item js-next-step"
                             onClick={_ => handleClick('wanchain')}
                         >
@@ -72,7 +72,7 @@ const AddWallet1 = props => {
                                 src="/img/arrow-down.svg"
                                 alt="dash"
                             />
-                        </div>
+                        </div> */}
                         {/* <div className="item js-next-step" onClick={_ => handleClick('waves')}>
 							<img className="icon" src="/img/waves.png" alt="dash" />
 							<div className="text">
