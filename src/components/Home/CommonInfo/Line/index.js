@@ -88,8 +88,8 @@ export default function Line({ asset, handlePair, assetB }) {
     };
 
     return (
-        <div className="line" onClick={_ => handlePair(asset)}>
-            <div className="cell">
+        <div className="line" >
+            <div className="cell" onClick={_ => handlePair(asset)}>
                 <img
                     className="img"
                     src={`/img/${asset.toLowerCase()}.png`}

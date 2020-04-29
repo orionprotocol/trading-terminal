@@ -83,6 +83,7 @@ const CommonInfo = ({History}) => {
             <div
                 className="wrapper-pair js-wrapper-pair"
                 id="js-wrapper-pair"
+                onClick={handleWrapper}
             />
             <div className="top">
                 <div className="star">

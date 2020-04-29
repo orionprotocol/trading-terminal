@@ -172,6 +172,7 @@
 	box-shadow: 1px 1px 1px #f4f4f4;
 	outline: none;
 	cursor: pointer;
+	width: 6vw;
 }
 .price-card-button.active {
 	background-color: transparent;
