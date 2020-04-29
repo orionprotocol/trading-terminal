@@ -125,7 +125,9 @@ const state = {
     },
 };
 
-const renderChart = (exchange, symbol, mode) => {
+let overrides, studies_overrides, custom_css_url, toolbar_bg, disabled_features;
+
+const renderChart = mode => {
     let themeConf = {};
     let modeLow = mode.toLowerCase();
 
@@ -135,17 +137,18 @@ const renderChart = (exchange, symbol, mode) => {
         themeConf = state.themesConf.dark.tradingView;
     }
 
-    const custom_css_url = themeConf.customCssUrl;
-    const toolbar_bg = themeConf.toolbarBg;
+    custom_css_url = themeConf.customCssUrl;
+    toolbar_bg = themeConf.toolbarBg;
     const DISABLED_FEATURES = [
-        'header_screenshot',
+        // 'header_screenshot',
         'header_symbol_search',
         'symbol_search_hot_key',
         'display_market_status',
         'control_bar',
         'timeframes_toolbar',
-        'volume_force_overlay',
+        // 'volume_force_overlay',
     ];
+    disabled_features = DISABLED_FEATURES;
 
     const getOverrides = (candleUpColor, candleDownColor) => {
         return {
@@ -185,7 +188,7 @@ const renderChart = (exchange, symbol, mode) => {
 
     const overridesResult = getOverrides(up, down);
 
-    const overrides = {
+    overrides = {
         ...overridesResult,
         ...themeConf.OVERRIDES,
         // 'mainSeriesProperties.priceAxisProperties.autoScale': false,
@@ -195,7 +198,7 @@ const renderChart = (exchange, symbol, mode) => {
         // 'mainSeriesProperties.style': 2
     };
 
-    const studies_overrides = {
+    studies_overrides = {
         ...getStudiesOverrides({ volume0, volume1 }),
         ...themeConf.STUDIES_OVERRIDES,
     };
@@ -206,27 +209,36 @@ const renderChart = (exchange, symbol, mode) => {
     const width = element.offsetWidth - 5;
     const height = element.offsetHeight - 5;
 
-    new TradingView.widget({
-        width: width,
-        height: height,
-        symbol,
-        interval: '30',
-        // "timezone": "Etc/UTC",
-        locale: 'en',
-        container_id: 'chart-container',
-        datafeed: new CandlesService(exchange),
-        overrides,
-        library_path: 'charting_library/',
-        custom_css_url,
-        toolbar_bg,
-        disabled_features: DISABLED_FEATURES,
-        studies_overrides,
-        favorites: {
-            chartTypes: ['Line'],
-        },
-        // style: '2',
-        theme: mode,
-    });
+    // new TradingView.widget({
+    //     width: width,
+    //     height: height,
+    //     symbol,
+    //     interval: '30',
+    //     // "timezone": "Etc/UTC",
+    //     locale: 'en',
+    //     container_id: 'chart-container',
+    //     datafeed: new CandlesService(exchange),
+    //     overrides,
+    //     library_path: 'charting_library/',
+    //     custom_css_url,
+    //     toolbar_bg,
+    //     disabled_features: DISABLED_FEATURES,
+    //     studies_overrides,
+    //     favorites: {
+    //         chartTypes: ['Line'],
+    //     },
+    //     // style: '2',
+    //     theme: mode,
+    // });
 };
 
-window.renderChart = renderChart;
+// renderChart();
+
+export {
+    overrides,
+    studies_overrides,
+    custom_css_url,
+    toolbar_bg,
+    disabled_features,
+    renderChart,
+};

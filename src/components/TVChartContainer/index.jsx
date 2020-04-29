@@ -4,6 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import './index.css';
 import { widget } from '../../charting_library/charting_library.min';
 
+import {
+    overrides,
+    studies_overrides,
+    custom_css_url,
+    toolbar_bg,
+    disabled_features,
+    renderChart,
+} from './renderChart';
+
 function getLanguageFromURL() {
     const regex = new RegExp('[\\?&]lang=([^&#]*)');
     const results = regex.exec(window.location.search);
@@ -38,7 +47,8 @@ const TVChartContainer = memo(() => {
     };
     let tvWidgetGeneral = null;
     useEffect(() => {
-        console.log('mounted');
+        renderChart(mode);
+
         const widgetOptions = {
             symbol: defaultProps.symbol,
             // BEWARE: no trailing slash is expected in feed URL
@@ -52,7 +62,14 @@ const TVChartContainer = memo(() => {
 			enabled_features: ['study_templates'], */
             fullscreen: defaultProps.fullscreen,
             autosize: defaultProps.autosize,
-            studies_overrides: defaultProps.studiesOverrides,
+            // studies_overrides: defaultProps.studiesOverrides,
+            //------------------------------------------------------
+            overrides,
+            studies_overrides,
+            custom_css_url,
+            toolbar_bg,
+            disabled_features,
+            theme: mode.toLowerCase(),
         };
 
         const tvWidget = new widget(widgetOptions);
@@ -86,7 +103,7 @@ const TVChartContainer = memo(() => {
                 tvWidgetGeneral = null;
             }
         };
-    }, [symbolA, symbolB]);
+    }, [symbolA, symbolB, mode]);
 
     return <div id={defaultProps.containerId} className={'TVChartContainer'} />;
 });
