@@ -74,17 +74,17 @@ function Home(props) {
         else addClass();
     }, []);
 
-    useEffect(
-        _ => {
-            const { pathname } = window.location;
+    // useEffect(
+    //     _ => {
+    //         const { pathname } = window.location;
 
-            if (pathname.includes('trade')) {
-                window.renderChart('all', symbol, mode);
-            }
-        },
-        //eslint-disable-next-line react-hooks/exhaustive-deps
-        [window.location.pathname, mode, symbol]
-    );
+    //         if (pathname.includes('trade')) {
+    //             window.renderChart('all', symbol, mode);
+    //         }
+    //     },
+    //     //eslint-disable-next-line react-hooks/exhaustive-deps
+    //     [window.location.pathname, mode, symbol]
+    // );
 
     return (
         <div className="">
