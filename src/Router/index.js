@@ -16,7 +16,7 @@ const Router = () => {
                 <Route path="/dashboard" component={Dahsboard} />
                 <Route path="/swap" component={Swap} />
                 <Route path="/wallet" component={Wallet} />
-                <Redirect from="/" to="/trade" />
+                <Redirect from="/" to="/trade/ETH_BTC" />
             </Switch>
         </Fragment>
     );

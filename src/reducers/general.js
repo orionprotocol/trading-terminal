@@ -1,4 +1,4 @@
-const element = document.querySelector('#chart-data');
+
 
 const initialState = {
     symbol: 'ETH-BTC',
@@ -28,7 +28,7 @@ export default (state = initialState, { type, ...action }) => {
         case 'SetOrderData':
             return { ...state, orderData: action.payload };
         case 'SetMode':
-            element.dataset.mode = action.payload;
+
             localStorage.setItem('mode', action.payload);
             return { ...state, mode: action.payload };
         case 'SetChange':
@@ -47,7 +47,7 @@ export default (state = initialState, { type, ...action }) => {
             };
         case 'SetSymbolA':
             newSymbol = `${action.payload}-${state.symbolB}`;
-            element.dataset.symbol = newSymbol;
+       
             return {
                 ...state,
                 symbolA: action.payload,
@@ -55,14 +55,12 @@ export default (state = initialState, { type, ...action }) => {
             };
         case 'SetSymbolB':
             newSymbol = `${state.symbolA}-${action.payload}`;
-            element.dataset.symbol = newSymbol;
             return {
                 ...state,
                 symbolB: action.payload,
                 symbol: newSymbol,
             };
         case 'SetSymbol':
-            element.dataset.symbol = action.payload;
             return { ...state, symbol: action.payload };
         case 'SetOrderBook':
             return { ...state, orderBook: action.payload };
