@@ -1,4 +1,6 @@
-import React, { memo,useEffect } from 'react';
+import React, { memo,useEffect,useCallback } from 'react';
+import {useDispatch,useSelector} from 'react-redux'
+
 import './index.css';
 import { widget } from '../../charting_library/charting_library.min';
 
@@ -9,8 +11,11 @@ function getLanguageFromURL() {
 }
 
 const TVChartContainer = memo(() => {
+	const { symbolA, symbolB, lastPrice, high, low, vol, change } = useSelector(
+        state => state.general
+    );
 	let defaultProps = {
-		symbol: 'ETH-BTC',
+		symbol: `${symbolA}-${symbolB}`,
 		interval: '30',
 		containerId: 'tv_chart_container',
 		datafeedUrl: 'https://demo_feed.tradingview.com',
@@ -71,7 +76,7 @@ const TVChartContainer = memo(() => {
 				tvWidgetGeneral = null;
 			}
 		} 
-	}, []);
+	}, [symbolA,symbolB]);
 	
 	return (
 		<div
