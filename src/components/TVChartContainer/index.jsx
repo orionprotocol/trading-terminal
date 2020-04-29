@@ -11,9 +11,10 @@ function getLanguageFromURL() {
 }
 
 const TVChartContainer = memo(() => {
-	const { symbolA, symbolB, lastPrice, high, low, vol, change } = useSelector(
+	const { symbolA, symbolB, lastPrice, high, low, vol, change,mode } = useSelector(
         state => state.general
-    );
+	);
+
 	let defaultProps = {
 		symbol: `${symbolA}-${symbolB}`,
 		interval: '30',
@@ -22,8 +23,6 @@ const TVChartContainer = memo(() => {
 		libraryPath: '/charting_library/',
 		chartsStorageUrl: 'https://saveload.tradingview.com',
 		chartsStorageApiVersion: '1.1',
-	/* 	clientId: 'tradingview.com',
-		userId: 'public_user_id', */
 		fullscreen: false,
 		autosize: true,
 		studiesOverrides: {},
@@ -33,22 +32,18 @@ const TVChartContainer = memo(() => {
 		const widgetOptions = {
 			symbol: defaultProps.symbol,
 			// BEWARE: no trailing slash is expected in feed URL
-			//datafeed: new window.Datafeeds.UDFCompatibleDatafeed(defaultProps.datafeedUrl), 
 			/* eslint-disable */
 			datafeed:new CandlesService('all'),
 			interval: defaultProps.interval,
 			container_id: defaultProps.containerId,
 			library_path: defaultProps.libraryPath,
 			locale: getLanguageFromURL() || 'en',
-			disabled_features: ['use_localstorage_for_settings'],
-			enabled_features: ['study_templates'],
-		/* 	charts_storage_url: defaultProps.chartsStorageUrl,
-			charts_storage_api_version: defaultProps.chartsStorageApiVersion,
-			client_id: defaultProps.clientId,
-			user_id: defaultProps.userId, */
+	/* 		disabled_features: ['use_localstorage_for_settings'],
+			enabled_features: ['study_templates'], */
 			fullscreen: defaultProps.fullscreen,
 			autosize: defaultProps.autosize,
 			studies_overrides: defaultProps.studiesOverrides,
+			
 		};
 
 		const tvWidget = new widget(widgetOptions);
