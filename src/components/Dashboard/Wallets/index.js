@@ -8,11 +8,18 @@ import './index.css';
 
 let price = require('crypto-price');
 
+const formatNumber = number => {
+    return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2 }).format(
+        number
+    );
+};
+
 const settings = {
     infinite: false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
+    arrows: false,
     responsive: [
         {
             breakpoint: 1130,
@@ -22,6 +29,7 @@ const settings = {
                 infinite: true,
                 autoplay: true,
                 speed: 1000,
+                arrows: false,
             },
         },
     ],
@@ -38,6 +46,7 @@ const Wallets = _ => {
     const [show2, setShow2] = useState(false);
     const [total, setTotal] = useState({});
     const [inBTC, setInBTC] = useState({});
+    const [inUSD, setInUSD] = useState({});
 
     useEffect(
         _ => {
@@ -106,11 +115,14 @@ const Wallets = _ => {
 
     const setTotals = async _ => {
         let newTotal = {},
-            newInBTC = {};
+            newInBTC = {},
+            newInUSD = {};
         for (let asset in contract) {
             if (Number(contract[asset]) >= 0 && Number(wallet[asset]) >= 0) {
                 newTotal[asset] = (contract[asset] + wallet[asset]).toFixed(6);
                 newInBTC[asset] = newTotal[asset];
+                newInUSD[asset] = newTotal[asset];
+
                 let res = await price.getCryptoPrice('BTC', asset);
                 if (res) {
                     let amount;
@@ -124,10 +136,27 @@ const Wallets = _ => {
 
                     newInBTC[asset] = amount;
                 }
+
+                if (asset !== 'USDT') {
+                    let res2 = await price.getCryptoPrice('USD', asset);
+                    if (res2) {
+                        let amount;
+                        if (newTotal[asset] === 'NaN') {
+                            amount = 0;
+                        } else {
+                            amount = (
+                                Number(newTotal[asset]) * Number(res2.price)
+                            ).toFixed(2);
+                        }
+
+                        newInUSD[asset] = formatNumber(amount);
+                    }
+                }
             }
         }
         setInBTC(newInBTC);
         setTotal(newTotal);
+        setInUSD(newInUSD);
     };
 
     useEffect(
@@ -193,6 +222,12 @@ const Wallets = _ => {
                                     ? 0
                                     : inBTC[a.toUpperCase()]}{' '}
                                 btc
+                            </p>
+                            <p className="currency-2">
+                                $
+                                {typeof inUSD[a.toUpperCase()] === 'undefined'
+                                    ? 0
+                                    : inUSD[a.toUpperCase()]}
                             </p>
                         </div>
                     ))}
