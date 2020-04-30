@@ -125,7 +125,7 @@ const state = {
     },
 };
 
-let overrides, studies_overrides, custom_css_url, toolbar_bg, disabled_features;
+let overrides, studies_overrides, custom_css_url, toolbar_bg;
 
 const renderChart = mode => {
     let themeConf = {};
@@ -139,16 +139,8 @@ const renderChart = mode => {
 
     custom_css_url = themeConf.customCssUrl;
     toolbar_bg = themeConf.toolbarBg;
-    const DISABLED_FEATURES = [
-        // 'header_screenshot',
-        'header_symbol_search',
-        'symbol_search_hot_key',
-        'display_market_status',
-        'control_bar',
-        'timeframes_toolbar',
-        // 'volume_force_overlay',
-    ];
-    disabled_features = DISABLED_FEATURES;
+   
+
 
     const getOverrides = (candleUpColor, candleDownColor) => {
         return {
@@ -203,36 +195,35 @@ const renderChart = mode => {
         ...themeConf.STUDIES_OVERRIDES,
     };
 
-    const element = document.querySelector('#chart-container');
+  
 
-    if (!element) return;
-    const width = element.offsetWidth - 5;
-    const height = element.offsetHeight - 5;
-
-    // new TradingView.widget({
-    //     width: width,
-    //     height: height,
-    //     symbol,
-    //     interval: '30',
-    //     // "timezone": "Etc/UTC",
-    //     locale: 'en',
-    //     container_id: 'chart-container',
-    //     datafeed: new CandlesService(exchange),
-    //     overrides,
-    //     library_path: 'charting_library/',
-    //     custom_css_url,
-    //     toolbar_bg,
-    //     disabled_features: DISABLED_FEATURES,
-    //     studies_overrides,
-    //     favorites: {
-    //         chartTypes: ['Line'],
-    //     },
-    //     // style: '2',
-    //     theme: mode,
-    // });
+ 
 };
 
-// renderChart();
+const disabled_features = [
+    'header_symbol_search',
+    'header_compare',
+    'header_undo_redo',
+    'control_bar',
+    'display_market_status',
+    'show_hide_button_in_legend',
+    'edit_buttons_in_legend',
+    
+    'hide_left_toolbar_by_default',
+    /* 'left_toolbar', *///this feature turn off the left bar
+   /*  
+        'header_symbol_search',
+        'symbol_search_hot_key',
+        'header_screenshot',
+        'control_bar',
+        'timeframes_toolbar',
+        ' header_fullscreen_button', 
+    */
+    // 'volume_force_overlay',
+];
+const enabled_features = [
+    'hide_left_toolbar_by_default',
+];
 
 export {
     overrides,
@@ -240,5 +231,6 @@ export {
     custom_css_url,
     toolbar_bg,
     disabled_features,
+    enabled_features,
     renderChart,
 };

@@ -10,6 +10,7 @@ import {
     custom_css_url,
     toolbar_bg,
     disabled_features,
+    enabled_features,
     renderChart,
 } from './renderChart';
 
@@ -43,6 +44,7 @@ const TVChartContainer = memo(() => {
         chartsStorageApiVersion: '1.1',
         fullscreen: false,
         autosize: true,
+        hide_left_toolbar_by_default:true,
         studiesOverrides: {},
     };
 
@@ -71,6 +73,7 @@ const [tvChart,settvChart]=useState(null)
             custom_css_url,
             toolbar_bg,
             disabled_features,
+            enabled_features,
             theme: mode.toLowerCase(),
         };
 
