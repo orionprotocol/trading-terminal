@@ -103,12 +103,13 @@ const [tvChart,settvChart]=useState(null)
             });
         });
         
-       /*  return () => {
-            if (tvWidgetGeneral !== null) {
+       return () => {
+            if (tvWidgetGeneral !== null || tvChart!==null) {
                 tvWidgetGeneral.remove();
+                settvChart(null)
                 tvWidgetGeneral = null;
             }
-        }; */
+        }; 
     }, [ mode]);
 
 useEffect(() => {
@@ -119,9 +120,6 @@ useEffect(() => {
         });
     }
 }, [symbolA, symbolB]);
-
-
-console.log(tvChart)
 
     return (
         <>
