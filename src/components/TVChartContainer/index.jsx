@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useCallback } from 'react';
+import React, { memo, useEffect, useCallback ,useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import './index.css';
@@ -45,7 +45,9 @@ const TVChartContainer = memo(() => {
         autosize: true,
         studiesOverrides: {},
     };
+
     let tvWidgetGeneral = null;
+const [tvChart,settvChart]=useState(null)
     useEffect(() => {
         renderChart(mode);
 
@@ -73,6 +75,7 @@ const TVChartContainer = memo(() => {
         };
 
         const tvWidget = new widget(widgetOptions);
+        settvChart(tvWidget)
         tvWidgetGeneral = tvWidget;
 
         tvWidget.onChartReady(() => {
@@ -93,19 +96,38 @@ const TVChartContainer = memo(() => {
                         },
                     })
                 );
-
                 button.innerHTML = 'Check API';
             });
         });
-        return () => {
+        
+       /*  return () => {
             if (tvWidgetGeneral !== null) {
                 tvWidgetGeneral.remove();
                 tvWidgetGeneral = null;
             }
-        };
-    }, [symbolA, symbolB, mode]);
+        }; */
+    }, [ mode]);
 
-    return <div id={defaultProps.containerId} className={'TVChartContainer'} />;
+useEffect(() => {
+    if (tvChart !== null) {
+        console.log("entro aca?")
+        tvChart.onChartReady(() => {
+            tvChart.chart().setSymbol(`${symbolA}-${symbolB}`)
+        });
+    }
+}, [symbolA, symbolB]);
+
+
+console.log(tvChart)
+
+    return (
+        <>
+           <div id={defaultProps.containerId} className={'TVChartContainer'} />
+         
+        </>
+ 
+    
+    );
 });
 
 export default TVChartContainer;
