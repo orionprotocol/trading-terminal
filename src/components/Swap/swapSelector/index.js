@@ -1,46 +1,62 @@
 import React, { memo } from 'react';
 import { useSelector } from 'react-redux';
 import { Select } from 'antd';
-import './selector.scss' 
+import './selector.scss'
 import { reformatNameCoins } from '../../funtions/formatCoinName'
 let price = require('crypto-price');
 const { Option } = Select;
 
 const index = memo(({ swapCoins, setswapCoins, swapValue, setswapValue }) => {
-  
+
     const { mode } = useSelector(state => state.general);
     const { assets } = useSelector(state => state.wallet);
-    
-   /*    price.getCryptoPrice(reformatNameCoins(swapCoins.to), reformatNameCoins(swapCoins.from)).then(res2 => { // Base for ex - USD, Crypto for ex - ETH 
-           result.to=res2.price
-           setpriceOfCoins(result)
-           setloadingPrice(true)
-       
-       }).catch(err2 => {
-           setError(`You can't swap  between the same tokens!`)
-           console.log(err2, "dio Error")
-       }) */
 
+    /*   const optsClass =
+          mode === 'Light' ? 'option-select emp' : 'dark-mode option-select emp'; */
 
-    const optsClass =
-        mode === 'Light' ? 'option-select emp' : 'dark-mode option-select emp';
     let coins = []
     for (let key in assets) {
         coins.push(assets[key])
     }
-    let options = coins.map((res, key) => {
-        
+
+    const options = (name) => {
+        let options = coins.map((res, key) => {
+            return (
+                <div className='custom-select-option' key={key} onClick={_ => {
+                    swapCoins[name] !== res && setswapCoins({ ...swapCoins, [name]: res })
+                }}>
+
+                    <div className="image">
+                        <img style={{ height: '25px' }} src={`./img/${res.toLowerCase()}-wallet.png`} alt={res} />
+                    </div>
+                    <div className="text">
+                        {res}
+                    </div>
+                </div>
+            )
+        })
+        return options
+    }
+    const selectedOption = (name) => {
+        let aux = coins.filter(coin => coin === swapCoins[name])
         return (
-            <Option key={key} value={res} className={optsClass}>
-                <div className="image">
-                    <img style={{ height: '25px' }} src={`./img/${res.toLowerCase()}-wallet.png`} alt={res} />
+            <div className={`selectedOption`}>
+                <div className="pair-container">
+                    <div className="image">
+                        <img style={{ height: '25px' }} src={`./img/${aux[0].toLowerCase()}-wallet.png`} alt={aux} />
+                    </div>
+                    <div className="text">
+                        {aux}
+                    </div>
                 </div>
-                <div className="text">
-                    {res}
+
+                <div className="arrow-container">
+                    <i className="fas fa-angle-down"></i>
                 </div>
-            </Option>
+            </div>
         )
-    })
+    }
+
     const swapCointTypes = () => {
         let from = {
             coin: swapCoins.to,
@@ -52,6 +68,7 @@ const index = memo(({ swapCoins, setswapCoins, swapValue, setswapValue }) => {
         setswapCoins({ from: from.coin, to: to.coin })
         setswapValue({ from: from.value, to: to.value })
     }
+
 
     const handleChangeFrom = e => {
         let value = e.target.value
@@ -103,40 +120,52 @@ const index = memo(({ swapCoins, setswapCoins, swapValue, setswapValue }) => {
 
 
     return (
-        <div className="selectors-container ${mode === 'Light'} ">
+        <div className={`selectors-container ${mode}`}>
             <div className="swap-selectors">
                 <div className="title">
                     <h6>From:</h6>
                 </div>
                 <div className="selector">
-                    <Select
-                        className="price-card-selector emp "
-                        value={swapCoins.from}
-                        style={{ width: '100%', padding: 0, border: 'none' }}
-                        onChange={e => setswapCoins({ ...swapCoins, from: e })}
-                    >
-                        {options}
-                    </Select>
-                    <input className='input' type='number' value={swapValue.from} onChange={e => handleChangeFrom(e)} />
+
+                <div className="compound-input">
+                    <div className="left">
+                        <div className="custom-select-input">
+                            {selectedOption('from')}
+                            <div className="options">
+                                {options('from')}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="right">
+                        <input className='input-swap-selector' type="number" value={swapValue.from} onChange={e => handleChangeTo(e)} />
+                    </div>
+                </div>
+                
                 </div>
             </div>
+
+            {/* -------------------------------------------------------- */}
             <div className="swap-icon" onClick={swapCointTypes}>
                 <i className="fas fa-exchange-alt"></i>
             </div>
+            {/* -------------------------------------------------------- */}
+
             <div className="swap-selectors">
                 <div className="title">
                     <h6>To:</h6>
                 </div>
-                <div className="selector">
-                    <Select
-                        className="price-card-selector emp"
-                        value={swapCoins.to}
-                        style={{ width: '100%', padding: 0, border: 'none' }}
-                        onChange={e => setswapCoins({ ...swapCoins, to: e })}
-                    >
-                        {options}
-                    </Select>
-                    <input className='input' type="number" value={swapValue.to} onChange={e => handleChangeTo(e)} />
+                <div className="compound-input">
+                    <div className="left">
+                        <div className="custom-select-input">
+                            {selectedOption('to')}
+                            <div className="options">
+                                {options('to')}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="right">
+                        <input className='input-swap-selector' type="number" value={swapValue.to} onChange={e => handleChangeTo(e)} />
+                    </div>
                 </div>
             </div>
         </div>
