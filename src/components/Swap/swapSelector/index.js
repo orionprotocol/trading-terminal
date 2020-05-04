@@ -137,7 +137,7 @@ const index = memo(({ swapCoins, setswapCoins, swapValue, setswapValue }) => {
                         </div>
                     </div>
                     <div className="right">
-                        <input className='input-swap-selector' type="number" value={swapValue.from} onChange={e => handleChangeTo(e)} />
+                        <input className='input-swap-selector' type="number" value={swapValue.from} onChange={e => handleChangeFrom(e)} />
                     </div>
                 </div>
                 
