@@ -106,6 +106,7 @@ const CommonInfo = ({History}) => {
                         <span className="icon-arrow-d" />
                     </div>
                     <PairDrop History={History} handleWrapper={handleWrapper} />
+                    
                 </div>
             </div>
             <div className="price">

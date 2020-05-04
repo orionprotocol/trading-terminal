@@ -428,6 +428,7 @@ const Orders = _ => {
                             </Row>
                         </Col>
                     </Row>
+                    {/* AQUI */}
                     <Row style={{ paddingLeft: 15, paddingBottom: 10 }}>
                         {/* <OrdersTable /> */}
                         <div className="table-content">

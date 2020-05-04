@@ -5,7 +5,7 @@ import './index.css';
 
 const PairDrop = ({ handleWrapper, History }) => {
     const dispatch = useDispatch();
-
+    
     const { assets } = useSelector(state => state.general);
     const [assetsRender, setAssets] = useState([]);
     const [currentQuote, setCurrentQuote] = useState('');
@@ -126,17 +126,10 @@ const PairDrop = ({ handleWrapper, History }) => {
 
     return (
         <div className="pair-drop js-pair-drop">
-            <div className="titles">{assetsRender}</div>
-            <div className="search">
-                <div className="input">
-                    <input
-                        type="text"
-                        placeholder="Search pair"
-                        onChange={handleChange}
-                    />
-                    <i className="fa fa-search" aria-hidden="true" />
-                </div>
-                <div className="favourite" onClick={handleFavs}>
+             
+            <div className="titles">
+            <div className="search" style={{padding:'0',paddingTop:'15px'}}>
+               <div className="favourite" onClick={handleFavs}>
                     {favs ? (
                         <i
                             className="fa fa-star"
@@ -150,6 +143,18 @@ const PairDrop = ({ handleWrapper, History }) => {
                     )}
 
                     <span>Favourites</span>
+                </div> 
+            </div>
+                {assetsRender}
+                </div>
+            <div className="search">
+                <div className="input">
+                    <input
+                        type="text"
+                        placeholder="Search pair"
+                        onChange={handleChange}
+                    />
+                    <i className="fa fa-search" aria-hidden="true" />
                 </div>
             </div>
             <div className="pair-table">
@@ -176,6 +181,7 @@ const PairDrop = ({ handleWrapper, History }) => {
                         {currentQuote !== '' &&
                             lines.map((e, i) => (
                                 <Line
+                                    lines={lines}
                                     asset={e}
                                     key={i}
                                     handlePair={handlePair}
