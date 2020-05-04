@@ -10,9 +10,8 @@ const index = memo(({ swapCoins, setswapCoins, swapValue, setswapValue }) => {
 
     const { mode } = useSelector(state => state.general);
     const { assets } = useSelector(state => state.wallet);
-
-    /*   const optsClass =
-          mode === 'Light' ? 'option-select emp' : 'dark-mode option-select emp'; */
+    const balances = useSelector(state => state.balances);
+console.log(balances)
 
     let coins = []
     for (let key in assets) {
@@ -68,7 +67,6 @@ const index = memo(({ swapCoins, setswapCoins, swapValue, setswapValue }) => {
         setswapCoins({ from: from.coin, to: to.coin })
         setswapValue({ from: from.value, to: to.value })
     }
-
 
     const handleChangeFrom = e => {
         let value = e.target.value
@@ -140,7 +138,7 @@ const index = memo(({ swapCoins, setswapCoins, swapValue, setswapValue }) => {
                         <input className='input-swap-selector' type="number" value={swapValue.from} onChange={e => handleChangeFrom(e)} />
                     </div>
                 </div>
-                
+                {balances.contractBalances && `Total Available Amount of ${swapCoins.from}: ${balances.contractBalances[swapCoins.from]}`}
                 </div>
             </div>
 
@@ -167,6 +165,7 @@ const index = memo(({ swapCoins, setswapCoins, swapValue, setswapValue }) => {
                         <input className='input-swap-selector' type="number" value={swapValue.to} onChange={e => handleChangeTo(e)} />
                     </div>
                 </div>
+                {balances.contractBalances && `Total Available Amount of ${swapCoins.to}: ${balances.contractBalances[swapCoins.to]}`}
             </div>
         </div>
     );

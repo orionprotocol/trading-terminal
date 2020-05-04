@@ -328,7 +328,7 @@ export default function BuyAndSellForm({ type }) {
 
         // ----------------------------------- End - Wanchain --------------------------------------
     };
-
+ 
     return (
         <Fragment>
             <Formik

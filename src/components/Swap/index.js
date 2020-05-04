@@ -13,7 +13,7 @@ const index = memo(() => {
         state => state.wallet
     );
     const { tickers } = useSelector(state => state.general);
-    
+
     const [swapCoins, setswapCoins] = useState({
         from: 'ETH',
         to: 'WBTC',
@@ -46,49 +46,49 @@ const index = memo(() => {
     );
 
     useEffect(() => {
-       const checkAmountAvailable=()=>{
-            for (let x in balances.contractBalances){
-                if(swapCoins.from===x){
-                    if(swapValue.from>balances.contractBalances[x]){
+        const checkAmountAvailable = () => {
+            for (let x in balances.contractBalances) {
+                if (swapCoins.from === x) {
+                    if (swapValue.from > balances.contractBalances[x]) {
                         seterrorMessage({ error: true, msg: `Your don't have enough ${x} in your wallet, to perform this action` })
-                    }else{
+                    } else {
                         seterrorMessage({ error: false, msg: '' })
                     }
                 }
             }
-          
+
         }
         checkAmountAvailable()
     }, [swapValue.from]);
 
-useEffect(() => {
-    let regex = new RegExp(swapCoins.from.replace('W',''));
-    let regex2= new RegExp(swapCoins.to.replace('W',''))
-    if(Object.keys(tickers).length>0){
-        let exist= true
-            for (let x in tickers){
-                if(regex.test(x) && regex2.test(x)){
-                    
-                  exist=false
-                } 
-            }
-            exist ?seterrorMessage({ error: true, msg: `You can not swap this Pair for the moment` }) :seterrorMessage({ error: false, msg: '' }) 
-    }
-}, [swapCoins,tickers])
+    useEffect(() => {
+        let regex = new RegExp(swapCoins.from.replace('W', ''));
+        let regex2 = new RegExp(swapCoins.to.replace('W', ''))
+        if (Object.keys(tickers).length > 0) {
+            let exist = true
+            for (let x in tickers) {
+                if (regex.test(x) && regex2.test(x)) {
 
-  
-  
-  /*   if (regex.test(swapCoins.from) && regex.test(swapCoins.to)) {
-        console.log("El swap existe")
-    }else{
-        console.log("Dejalo asi mi loco")
-    }  */
+                    exist = false
+                }
+            }
+            exist ? seterrorMessage({ error: true, msg: `You can not swap this Pair for the moment` }) : seterrorMessage({ error: false, msg: '' })
+        }
+    }, [swapCoins, tickers])
+
+
+
+    /*   if (regex.test(swapCoins.from) && regex.test(swapCoins.to)) {
+          console.log("El swap existe")
+      }else{
+          console.log("Dejalo asi mi loco")
+      }  */
 
     const setTypeOfTrade = () => {
         let regex = new RegExp(symbolsB.join('|'));
         if (regex.test(swapCoins.from)) {
-           return 'buy'
-        } else{
+            return 'buy'
+        } else {
             return 'sell';
         }
     };
@@ -103,20 +103,20 @@ useEffect(() => {
             symbolA = swapCoins.from;
             symbolB = swapCoins.to;
         }
-          return [symbolA, symbolB]; 
+        return [symbolA, symbolB];
     };
- 
+
     const setPrice = () => {
         /* In here this logic only will work if the coins have names without the W in his name */
-            let from = swapCoins.from.replace('W',''),to = swapCoins.to.replace('W','');
-            for ( let x in tickers){
-                if( x.includes(from) && x.includes(to)) return tickers[x].lastPrice
-            }
+        let from = swapCoins.from.replace('W', ''), to = swapCoins.to.replace('W', '');
+        for (let x in tickers) {
+            if (x.includes(from) && x.includes(to)) return tickers[x].lastPrice
+        }
     }
 
-    
-/*    console.log(setTypeOfTrade(),setSymbols(),setPrice(),balances.contractBalances,`${swapValue.from} es mayor a ${balances.contractBalances} =  ${swapValue.from>balances.contractBalances}`) */
- 
+
+    /*    console.log(setTypeOfTrade(),setSymbols(),setPrice(),balances.contractBalances,`${swapValue.from} es mayor a ${balances.contractBalances} =  ${swapValue.from>balances.contractBalances}`) */
+
     const swap = async () => {
         try {
             /*    console.log(orderSymbols, type.trade, price, values.amount); */
@@ -127,20 +127,20 @@ useEffect(() => {
                 let ethereumOrder = new EthereumOrder('fortmatic');
                 ethereumOrderMessage = await ethereumOrder
                     .toEthereumOrder(
-                      setSymbols(),
-                     setTypeOfTrade(),
-                     setPrice(),
-                     swapValue.from 
-                     )
+                        setSymbols(),
+                        setTypeOfTrade(),
+                        setPrice(),
+                        swapValue.from
+                    )
                     ();
             } else if (metamaskConnected) {
                 let ethereumOrder = new EthereumOrder('metamask');
                 ethereumOrderMessage = await ethereumOrder
                     .toEthereumOrder(
-                   setSymbols(),
-                    setTypeOfTrade(),
-                    setPrice(),
-                    swapValue.from)
+                        setSymbols(),
+                        setTypeOfTrade(),
+                        setPrice(),
+                        swapValue.from)
                     ();
             }
 
@@ -157,7 +157,16 @@ useEffect(() => {
             }
         }
     };
-
+    if (!balances.contractBalances) return(
+    <div className={`swap-container ${mode === 'Light' ? '' : 'dark-mode'}`}>
+        <div class={`spinner ${mode === 'Light' ? '' : 'dark-mode'}`}>
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+        </div>
+    </div>)
     return (
         <div
             className={`swap-container ${mode === 'Light' ? '' : 'dark-mode'}`}
@@ -169,8 +178,8 @@ useEffect(() => {
                     swapValue={swapValue}
                     setswapValue={setswapValue}
                 />
-                <CoinPrice swapCoins={swapCoins} errorMessage={errorMessage} seterrorMessage={seterrorMessage}/>
-                   <span className="error"> {errorMessage.error ?errorMessage.msg:null}</span>
+                <CoinPrice swapCoins={swapCoins} errorMessage={errorMessage} seterrorMessage={seterrorMessage} />
+                <span className="error"> {errorMessage.error ? errorMessage.msg : null}</span>
                 <button disabled={errorMessage.error} className="swap-button" onClick={swap}>
                     <h6>SWAP</h6>
                 </button>
