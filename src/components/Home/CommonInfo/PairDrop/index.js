@@ -69,7 +69,7 @@ const PairDrop = ({ handleWrapper, History }) => {
         //eslint-disable-next-line react-hooks/exhaustive-deps
         [currentQuote]
     );
-
+console.log(assets)
     const handlePair = symbolA => {
         setSymbolA(symbolA);
         setSymbolB(currentQuote);
@@ -83,6 +83,11 @@ const PairDrop = ({ handleWrapper, History }) => {
         if (field === '') {
             setLines(assets.assets2[currentQuote]);
         } else {
+            console.log("q coño es esto?", assets.assets2[currentQuote].filter(e => {
+                let replace = '^' + field;
+                let regex = new RegExp(replace, 'i');
+                return regex.test(e);
+            }))
             setLines(
                 assets.assets2[currentQuote].filter(e => {
                     let replace = '^' + field;
@@ -107,7 +112,12 @@ const PairDrop = ({ handleWrapper, History }) => {
                     favs = JSON.parse(favs);
 
                     setLines([]);
+console.log('q coño es esto 2',assets.assets2[currentQuote].filter(e => {
+    let pair = e + currentQuote;
 
+    if (favs[pair] === true) return true;
+    return false;
+}))
                     setTimeout(() => {
                         setLines(
                             assets.assets2[currentQuote].filter(e => {
