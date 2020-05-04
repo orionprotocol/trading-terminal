@@ -43,16 +43,12 @@ function Home(props) {
 
     useEffect(() => {
         let aux = props.history.location.pathname.split('/');
-        console.log(props.history.location.pathname);
         if (aux.length === 3) {
             aux = aux[2].split('_');
             if (
                 props.history.location.pathname.includes('trade') &&
                 aux.length === 2
             ) {
-                console.log(aux);
-                /*   console.log(props.history)
-                console.log(props.history.location.pathname) */
                 setSymbolA(aux[0]);
                 setSymbolB(aux[1]);
                 setSymbol(`${aux[0]}-${aux[1]}`);

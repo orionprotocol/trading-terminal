@@ -5,12 +5,37 @@ import './index.css';
 
 const PairDrop = ({ handleWrapper, History }) => {
     const dispatch = useDispatch();
-    
+    const { tickers } = useSelector(state => state.general);
     const { assets } = useSelector(state => state.general);
     const [assetsRender, setAssets] = useState([]);
     const [currentQuote, setCurrentQuote] = useState('');
     const [lines, setLines] = useState([]);
+    const [newlines, setnewLines] = useState([]);
     const [favs, setFavs] = useState(false);
+
+useEffect(() => {
+    let pair='',auxpairs=[]
+    if(assets.assets2){
+        if(assets.assets2[currentQuote]!==undefined){
+            for (let x = 0; x < assets.assets2[currentQuote].length; x++) {
+                pair=`${assets.assets2[currentQuote][x]}${currentQuote}`
+                if(tickers[pair]){
+                    auxpairs.push({
+                        symbolA:assets.assets2[currentQuote][x],
+                        change24h: tickers[pair].change24h,
+                        lastPrice: parseFloat(tickers[pair].lastPrice),
+                        vol24h: parseFloat(tickers[pair].vol24h),
+                    })
+                }else{
+                    break
+                }
+            }
+        }
+    }
+   
+
+}, [Object.keys(tickers),currentQuote,assets]);
+
 
     const setSymbolA = useCallback(
         data => dispatch({ type: 'SetSymbolA', payload: data }),
@@ -69,7 +94,7 @@ const PairDrop = ({ handleWrapper, History }) => {
         //eslint-disable-next-line react-hooks/exhaustive-deps
         [currentQuote]
     );
-console.log(assets)
+
     const handlePair = symbolA => {
         setSymbolA(symbolA);
         setSymbolB(currentQuote);
@@ -83,11 +108,11 @@ console.log(assets)
         if (field === '') {
             setLines(assets.assets2[currentQuote]);
         } else {
-            console.log("q coño es esto?", assets.assets2[currentQuote].filter(e => {
+           /*  console.log("q coño es esto?", assets.assets2[currentQuote].filter(e => {
                 let replace = '^' + field;
                 let regex = new RegExp(replace, 'i');
                 return regex.test(e);
-            }))
+            })) */
             setLines(
                 assets.assets2[currentQuote].filter(e => {
                     let replace = '^' + field;
@@ -112,12 +137,12 @@ console.log(assets)
                     favs = JSON.parse(favs);
 
                     setLines([]);
-console.log('q coño es esto 2',assets.assets2[currentQuote].filter(e => {
+/* console.log('q coño es esto 2',assets.assets2[currentQuote].filter(e => {
     let pair = e + currentQuote;
 
     if (favs[pair] === true) return true;
     return false;
-}))
+})) */
                     setTimeout(() => {
                         setLines(
                             assets.assets2[currentQuote].filter(e => {

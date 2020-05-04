@@ -71,7 +71,7 @@ export default function Line({ asset, handlePair, assetB }) {
         //eslint-disable-next-line react-hooks/exhaustive-deps
         [tickers[pair]]
     );
-
+  
     const handleFav = _ => {
         let favs = localStorage.getItem('favs');
 
