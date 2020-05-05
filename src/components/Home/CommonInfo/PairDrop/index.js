@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Line from '../Line';
+import compareValues from '../functions/compareValues'
 import './index.css';
 
 const PairDrop = ({ handleWrapper, History }) => {
@@ -11,7 +12,15 @@ const PairDrop = ({ handleWrapper, History }) => {
     const [currentQuote, setCurrentQuote] = useState('');
     const [lines, setLines] = useState([]);
     const [linesSetted, setlinesSetted] = useState(false);
-    const [newlines, setnewLines] = useState([]);
+    const [classes, setClasses] = useState({
+        type: 'fa-angle-down',
+        pair: 'fa-angle-down',
+        time: 'fa-angle-down',
+        amount: 'fa-angle-down',
+        price: 'fa-angle-down',
+        status: 'fa-angle-down',
+        total: 'fa-angle-down',
+    });
     const [favs, setFavs] = useState(false);
 
     useEffect(
@@ -59,9 +68,9 @@ const PairDrop = ({ handleWrapper, History }) => {
         [dispatch]
     );
 
-    
+
     const updateRenderAssets = _ => {
-        const changeSymbolB =symbol=>{
+        const changeSymbolB = symbol => {
             setCurrentQuote(symbol);
             setlinesSetted(false)
         }
@@ -87,8 +96,8 @@ const PairDrop = ({ handleWrapper, History }) => {
                 }
             })
         );
-    }; 
-  
+    };
+
     const handleChange = e => {
         let field = e.target.value;
         if (field === '') {
@@ -110,7 +119,6 @@ const PairDrop = ({ handleWrapper, History }) => {
                 setLines([]);
                 setTimeout(() => {
                     setlinesSetted(false)
-                  /*   setLines(assets.assets2[currentQuote]); */
                 }, 0);
             } else {
                 let favs = localStorage.getItem('favs');
@@ -119,15 +127,9 @@ const PairDrop = ({ handleWrapper, History }) => {
                     favs = JSON.parse(favs);
 
                     setLines([]);
-                    /* console.log('q coño es esto 2',assets.assets2[currentQuote].filter(e => {
-                        let pair = e + currentQuote;
-                    
-                        if (favs[pair] === true) return true;
-                        return false;
-                    })) */
                     setTimeout(() => {
                         setLines(
-                                lines.filter(e => {
+                            lines.filter(e => {
                                 let pair = e.symbolA + currentQuote;
 
                                 if (favs[pair] === true) return true;
@@ -146,6 +148,33 @@ const PairDrop = ({ handleWrapper, History }) => {
         setSymbolB(currentQuote);
         History.history.push(`/trade/${symbolA}_${currentQuote}`)
         handleWrapper();
+    };
+
+    const handleSort = (name, sortType) => {
+        let linesSorted = [];
+        linesSorted = compareValues(name, sortType, lines)
+        setLines([...linesSorted]);
+        /*  let newClasses = {};
+         let sortType = 'asc';
+         for (let e in classes) {
+             if (e === type) {
+                 if (classes[e] === 'fa-angle-down') {
+                     newClasses[e] = 'fa-angle-up';
+                 } else {
+                     newClasses[e] = 'fa-angle-down';
+                     sortType = 'desc';
+                 }
+             } else {
+                 newClasses[e] = 'fa-angle-down';
+             }
+         }
+         setClasses(newClasses); */
+
+        /*  symbolA: assets.assets2[currentQuote][x],
+         change24h: tickers[pair].change24h,
+         lastPrice: parseFloat(tickers[pair].lastPrice),
+         vol24h: parseFloat(tickers[pair].vol24h), */
+
     };
 
     return (
@@ -183,19 +212,19 @@ const PairDrop = ({ handleWrapper, History }) => {
             </div>
             <div className="pair-table">
                 <div className="titles-p">
-                    <div className="title">
+                    <div className="title" onClick={_ => handleSort('symbolA', 'letter')}>
                         <span>Pair</span>
                         <img src="/img/arrow-down.svg" alt="home" />
                     </div>
-                    <div className="title short">
+                    <div className="title short" onClick={_ => handleSort('lastPrice', 'number')}>
                         <span>Last Pr.</span>
                         <img src="/img/arrow-down.svg" alt="home" />
                     </div>
-                    <div className="title short">
+                    <div className="title short" onClick={_ => handleSort('vol24h', 'number')}>
                         <span>24h Vol</span>
                         <img src="/img/arrow-down.svg" alt="home" />
                     </div>
-                    <div className="title chg">
+                    <div className="title chg" onClick={_ => handleSort('change24h', 'number')}>
                         <span>24h Change</span>
                         <img src="/img/arrow-down.svg" alt="home" />
                     </div>
