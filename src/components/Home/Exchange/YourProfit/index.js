@@ -22,7 +22,7 @@ const YourProfit = (pros) => {
 		axios
 			.get(url)
 			.then((res) => {
-				// console.log(res.data);
+				 console.log(res.data);
 				setBinance({
 					pct: res.data.binance.benefitPct,
 					btc: res.data.binance.benefitBtc

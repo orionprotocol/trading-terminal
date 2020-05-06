@@ -328,7 +328,7 @@ export default function BuyAndSellForm({ type }) {
 
         // ----------------------------------- End - Wanchain --------------------------------------
     };
- 
+
     return (
         <Fragment>
             <Formik
@@ -341,35 +341,55 @@ export default function BuyAndSellForm({ type }) {
                 {({ errors, touched, setFieldValue }) => (
                     <Form>
                         <div>
-                            <span>Amount</span>
+                            {type.trade === 'buy' ?
+                                <span style={{ color: 'rgb(0, 187, 255)',marginLeft: '10px' }}>Amount</span> :
+                                <span style={{ color: 'rgb(255, 99, 85)',marginLeft: '10px' }}>Amount</span>
+                            }
 
                             <Field
-                                className="form-fields-buyandsell after"
+                                className={`form-fields-buyandsell after ${type.trade === 'buy' ? 'buy' : 'sell'}`}
                                 name="amount"
                                 type="number"
                                 value={values.amount}
                                 onChange={handleChange}
                             />
-                            <label
-                                style={{
-                                    // position: 'absolute',
-                                    fontSize: '14px',
-                                    color: '#706E7D',
-                                    marginLeft: '-40px',
-                                    marginTop: '7px',
-                                }}
-                            >
-                                {symbolA}
-                            </label>
-                            {/* {errors.amount && touched.amount ? <div>{errors.amount}</div> : null} */}
+                            {type.trade === 'buy' ?
+                                <label
+                                    style={{
+                                        fontSize: '14px',
+                                        color: '#706E7D',
+                                        marginLeft: '-40px',
+                                        marginTop: '7px',
+                                        color: 'rgb(0, 187, 255)'
+                                    }}
+                                >
+                                    {symbolA}
+                                </label>
+                                :
+                                <label
+                                    style={{
+                                        fontSize: '14px',
+                                        color: '#706E7D',
+                                        marginLeft: '-40px',
+                                        marginTop: '7px',
+                                        color: 'rgb(255, 99, 85)'
+                                    }}
+                                >
+                                    {symbolA}
+                                </label>
+
+                            }
+
                         </div>
                         {type.selection === 'limit-order' && (
                             <div>
-                                <span style={{ marginLeft: '10px' }}>
-                                    Price
-                                </span>
+                                {type.trade === 'buy' ?
+                                    <span style={{ color: 'rgb(0, 187, 255)', marginLeft: '10px' }}>Price</span> :
+                                    <span style={{ color: 'rgb(255, 99, 85)', marginLeft: '10px' }}>Price</span>
+                                }
+
                                 <Field
-                                    className="form-fields-buyandsell after"
+                                    className={`form-fields-buyandsell after ${type.trade === 'buy' ? 'buy' : 'sell'}`}
                                     name="price"
                                     type="number"
                                     value={
@@ -379,7 +399,7 @@ export default function BuyAndSellForm({ type }) {
                                     }
                                     onChange={handleChange}
                                 />
-                                {/* {errors.price && touched.price ? <div>{errors.price}</div> : null} */}
+
                             </div>
                         )}
                         <div
@@ -389,72 +409,93 @@ export default function BuyAndSellForm({ type }) {
                                 paddingTop: '5px',
                             }}
                         >
-                            <span style={{ marginLeft: '10px' }}>
-                                Available
-                            </span>
+                            {type.trade === 'buy' ?
+                                <span style={{ color: 'rgb(0, 187, 255)', marginLeft: '10px' }}>Available</span> :
+                                <span style={{ color: 'rgb(255, 99, 85)', marginLeft: '10px' }}>Available</span>
+                            }
 
                             {type.trade === 'buy' ? (
-                                <span className="avl-amount">
+                                <span className="avl-amount" style={{ color: 'rgb(0, 187, 255)' }} >
                                     {available} {symbolB}
                                 </span>
                             ) : (
-                                <span className="avl-amount">
-                                    {available} {symbolA}
-                                </span>
-                            )}
+                                    <span className="avl-amount" style={{ color: 'rgb(255, 99, 85)' }}>
+                                        {available} {symbolA}
+                                    </span>
+                                )}
                         </div>
                         <div className="percent-buttons">
                             <button
                                 type="button"
                                 onClick={() => handlePercent(0.25)}
-                                className="percent-button left"
+                                className={`percent-button left ${type.trade === 'buy' ? 'buy' : 'sell'}`}
                             >
+                                
                                 25%
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handlePercent(0.5)}
-                                className="percent-button right"
+                                className={`percent-button right ${type.trade === 'buy' ? 'buy' : 'sell'}`}
                             >
                                 50%
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handlePercent(0.75)}
-                                className="percent-button left"
+                                className={`percent-button left ${type.trade === 'buy' ? 'buy' : 'sell'}`}
                             >
                                 75%
                             </button>
                             <button
                                 type="button"
                                 onClick={() => handlePercent(1)}
-                                className="percent-button right"
+                                className={`percent-button right ${type.trade === 'buy' ? 'buy' : 'sell'}`}
                             >
                                 100%
                             </button>
                         </div>
 
                         <div className="total-price">
-                            <span style={{ marginLeft: '10px' }}>Total</span>
+                        {type.trade === 'buy' ?
+                                <span style={{ color: 'rgb(0, 187, 255)', marginLeft: '10px' }}>Total</span> :
+                                <span style={{ color: 'rgb(255, 99, 85)', marginLeft: '10px' }}>Total</span>
+                            }
+                           
                             <Field
-                                className="form-fields-buyandsell after"
+                                className={`form-fields-buyandsell after ${type.trade === 'buy' ? 'buy' : 'sell'}`}
                                 name="total"
                                 value={total}
                                 onChange={handleChange}
                                 disabled={true}
                             />
-                            <label
-                                style={{
-                                    // position: 'absolute',
-                                    fontSize: '14px',
-                                    color: '#706E7D',
-                                    marginLeft: '-40px',
-                                    marginTop: '7px',
-                                }}
-                            >
-                                {symbolB}
-                            </label>
-                            {/* {errors.total && touched.total ? <div>{errors.total}</div> : null} */}
+                               {type.trade === 'buy' ?
+                                <label
+                                    style={{
+                                        fontSize: '14px',
+                                        color: '#706E7D',
+                                        marginLeft: '-40px',
+                                        marginTop: '7px',
+                                        color: 'rgb(0, 187, 255)'
+                                    }}
+                                >
+                                    {symbolB}
+                                </label>
+                                :
+                                <label
+                                    style={{
+                                        fontSize: '14px',
+                                        color: '#706E7D',
+                                        marginLeft: '-40px',
+                                        marginTop: '7px',
+                                        color: 'rgb(255, 99, 85)'
+                                    }}
+                                >
+                                    {symbolB}
+                                </label>
+
+                            }
+                           
                         </div>
                         <div style={{ margin: '30px 0px 20px 0' }}>
                             {(metamaskConnected || fortmaticConnected) &&

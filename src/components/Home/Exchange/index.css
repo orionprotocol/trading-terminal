@@ -138,7 +138,13 @@
     height: 32px;
     padding: 5px;
     font-size: 15px;
-    color: #514e61;
+    
+}
+.form-fields-buyandsell.buy{
+    color: rgb(0, 187, 255);
+}
+.form-fields-buyandsell.sell{
+    color: rgb(255, 99, 85);
 }
 .form-fields-buyandsell.after {
     padding-right: 40px;
@@ -161,6 +167,18 @@
     background-color: #fafafa;
     border: 1px solid #fafafa;
     outline: none;
+}
+.percent-button.left.buy{
+    color: rgb(0, 187, 255)
+}
+.percent-button.right.buy{
+    color: rgb(0, 187, 255)
+}
+.percent-button.left.sell{
+    color: rgb(255, 99, 85)
+}
+.percent-button.right.sell{
+    color: rgb(255, 99, 85)
 }
 .percent-button.right {
     margin: 2px 0px 2px 2px;
