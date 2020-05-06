@@ -25,11 +25,6 @@
 	background-color: #2a2a41;
 }
 
-.your-profit-data {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	padding: 5% 3%;
-}
 
 .your-profit-data > .exchange > .numbers {
 	/* background-color: blueviolet; */
@@ -67,4 +62,25 @@
 	.your-profit h2 {
 		font-size: 24px;
 	}
+}
+.profits-arrows{
+	border: none;
+	background: transparent;
+	color: rgb(139, 139, 139);
+	cursor: pointer;
+}
+.profits-arrows>i{
+	font-size: 18px;
+}
+.exchange{
+	height: 10vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	font-size: 12px;
+}
+.exchange>.numbers{
+	display: flex;
+	flex-direction: column;
 }
