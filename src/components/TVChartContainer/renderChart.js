@@ -26,7 +26,7 @@ const state = {
                 OVERRIDES: {
                     'scalesProperties.lineColor': '#edf0f4',
                     'scalesProperties.textColor': '#4e5c6e',
-                    'paneProperties.background': '#FFF',
+                    'paneProperties.background': '#FFF', 
                     'paneProperties.gridProperties.color': '#edf0f4',
                     'paneProperties.vertGridProperties.color': '#edf0f4',
                     'paneProperties.horzGridProperties.color': '#edf0f4',
@@ -81,7 +81,7 @@ const state = {
                 toolbarBg: '#2a2a41',
                 customCssUrl: '/tradingview-style/dark-style.css',
                 OVERRIDES: {
-                    // 'paneProperties.background': '#2d2d2d',
+                   'paneProperties.background': '#2d2d2d',
                     'paneProperties.background': '#2a2a41',
                     'scalesProperties.lineColor': '#424242',
                     'scalesProperties.textColor': '#8c8c8c',

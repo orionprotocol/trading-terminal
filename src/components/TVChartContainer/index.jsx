@@ -38,14 +38,11 @@ const TVChartContainer = memo(() => {
         symbol: `${symbolA}-${symbolB}`,
         interval: '30',
         containerId: 'chart-container',
-        datafeedUrl: 'https://demo_feed.tradingview.com',
         libraryPath: '/charting_library/',
         chartsStorageUrl: 'https://saveload.tradingview.com',
         chartsStorageApiVersion: '1.1',
         fullscreen: false,
         autosize: true,
-        hide_left_toolbar_by_default:true,
-        studiesOverrides: {},
     };
 
     let tvWidgetGeneral = null;
@@ -62,12 +59,9 @@ const [tvChart,settvChart]=useState(null)
             container_id: defaultProps.containerId,
             library_path: defaultProps.libraryPath,
             locale: getLanguageFromURL() || 'en',
-            /* 		disabled_features: ['use_localstorage_for_settings'],
-			enabled_features: ['study_templates'], */
             fullscreen: defaultProps.fullscreen,
             autosize: defaultProps.autosize,
-            // studies_overrides: defaultProps.studiesOverrides,
-            //------------------------------------------------------
+
             overrides,
             studies_overrides,
             custom_css_url,
