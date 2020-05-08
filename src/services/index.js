@@ -4,8 +4,10 @@ import WanmaskVerification from './WanmaskVerification';
 import OrionWanchain from './OrionWanchain';
 import Metamask from './Metamask';
 import Fortmatic from './Fortmatic';
+import Coinbase from './Coinbase';
 import Assests from './possibleAssests';
 import { useSelector } from 'react-redux';
+
 
 const Index = _ => {
     const { wanmaskConnected } = useSelector(state => state.wallet);
@@ -31,6 +33,7 @@ const Index = _ => {
             <Metamask />
             <OrionWanchain />
             <Fortmatic />
+            <Coinbase />
             <Assests/>
             {render}
         </Fragment>

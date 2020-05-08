@@ -4,6 +4,7 @@ const initialState = {
     wanmaskConnected: false,
     metamaskConnected: false,
     fortmaticConnected: false,
+    coinbaseConnected: false,
     addWallet: false,
     ethAddress: '',
     // assets: { WAN: 'WAN', ETH: 'ETH', BTC: 'WBTC', XRP: 'WXRP' }
@@ -23,6 +24,8 @@ export default (state = initialState, { type, ...action }) => {
             return { ...state, metamaskConnected: action.payload };
         case 'SetFortmaticConnect':
             return { ...state, fortmaticConnected: action.payload };
+        case 'SetCoinbaseConnect':
+            return { ...state, coinbaseConnected: action.payload };    
         case 'SetAddWallet':
             return { ...state, addWallet: action.payload };
         case 'SetEthAddress':

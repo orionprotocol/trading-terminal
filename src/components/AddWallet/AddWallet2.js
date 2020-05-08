@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { web3 } from '../../services/Fortmatic';
-
+import { ethereum } from '../../services/Coinbase';
 const AddWallet2 = props => {
     const dispatch = useDispatch();
 
@@ -22,6 +22,10 @@ const AddWallet2 = props => {
         payload => dispatch({ type: 'SetFortmaticConnect', payload }),
         [dispatch]
     );
+    const SetCoinbaseConnect = useCallback(
+        payload => dispatch({ type: 'SetCoinbaseConnect', payload }),
+        [dispatch]
+    );
     const setEthAddress = useCallback(
         payload => dispatch({ type: 'SetEthAddress', payload }),
         [dispatch]
@@ -39,7 +43,7 @@ const AddWallet2 = props => {
                     break;
                 case 'ethereum':
                     setOpt('MetaMask');
-                    setOpts(['MetaMask', 'Fortmatic']);
+                    setOpts(['MetaMask', 'Fortmatic', 'Coinbase']);
                     break;
                 default:
                     break;
@@ -115,6 +119,17 @@ const AddWallet2 = props => {
                         props.hide2();
                     }
                 });
+                break;
+            case 'Coinbase':
+                 ethereum.send('eth_requestAccounts').then((accounts) => {
+                    console.log(`User's address is ${accounts[0]}`)
+                    SetCoinbaseConnect(true)
+                    setEthAddress(accounts[0]);
+                    localStorage.setItem('coinbaseConnected', 'true');
+                    props.hide2();
+                    // Optionally, have the default account set for web3.js
+                    web3.eth.defaultAccount = accounts[0]
+                  }) 
                 break;
             default:
                 break;
