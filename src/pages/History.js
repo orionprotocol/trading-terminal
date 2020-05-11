@@ -19,6 +19,7 @@ function History() {
         metamaskConnected,
         ethAddress,
         fortmaticConnected,
+        coinbaseConnected,
     } = useSelector(state => state.wallet);
 
     const setDeposits = useCallback(
@@ -46,7 +47,7 @@ function History() {
             }
 
             if (
-                (metamaskConnected || fortmaticConnected) &&
+                (metamaskConnected || fortmaticConnected || coinbaseConnected) &&
                 ethAddress !== ''
             ) {
                 // const { ethereum, web3 } = window;
@@ -57,7 +58,7 @@ function History() {
                 );
             }
         },
-        [wanmaskConnected, metamaskConnected, fortmaticConnected, ethAddress]
+        [wanmaskConnected, metamaskConnected, fortmaticConnected,coinbaseConnected, ethAddress]
     );
 
     useEffect(

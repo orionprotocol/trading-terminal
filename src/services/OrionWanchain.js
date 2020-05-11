@@ -15,6 +15,7 @@ const OrionWanchain = _ => {
         metamaskConnected,
         ethAddress,
         fortmaticConnected,
+        coinbaseConnected,
     } = useSelector(state => state.wallet);
     const setBalances = useCallback(
         data => dispatch({ type: 'SetBalances', payload: data }),
@@ -55,7 +56,7 @@ const OrionWanchain = _ => {
 
     useEffect(
         () => {
-            if (metamaskConnected || wanmaskConnected || fortmaticConnected) {
+            if (metamaskConnected || wanmaskConnected || fortmaticConnected ||coinbaseConnected) {
                 let address = ethAddress;
 
                 if (!ethAddress || ethAddress === '') {
@@ -92,6 +93,7 @@ const OrionWanchain = _ => {
             wanmaskConnected,
             metamaskConnected,
             fortmaticConnected,
+            coinbaseConnected,
             ethAddress,
             wanActive,
         ]

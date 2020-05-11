@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const TopMenu = _ => {
     const [actives, setActives] = useState(['active', '', '', '']);
 
-    const { fortmaticConnected, metamaskConnected } = useSelector(
+    const { fortmaticConnected, metamaskConnected,coinbaseConnected } = useSelector(
         state => state.wallet
     );
     const dispatch = useDispatch();
@@ -40,11 +40,12 @@ const TopMenu = _ => {
         //eslint-disable-next-line react-hooks/exhaustive-deps
         [window.location.pathname]
     );
-
+    
     const clearLocalStorage = _ => {
         localStorage.removeItem('wanmaskConnected');
         localStorage.removeItem('metamaskConnected');
         localStorage.removeItem('fortmaticConnected');
+        localStorage.removeItem('coinbaseConnected');
         localStorage.removeItem('ethAddress');
         localStorage.removeItem('address');
     };
@@ -66,7 +67,7 @@ const TopMenu = _ => {
                     <span className="icon-link-1 icon" />
                 </Link>
 
-                {fortmaticConnected || metamaskConnected ? (
+                {fortmaticConnected || metamaskConnected || coinbaseConnected ? (
                     <Fragment>
                         <Link
                             className={`nav-link ${actives[1]}`}
@@ -90,7 +91,7 @@ const TopMenu = _ => {
                     </Fragment>
                 ) : null}
             </div>
-            {fortmaticConnected || metamaskConnected ? (
+            {fortmaticConnected || metamaskConnected || coinbaseConnected ? (
                 <div className="add" onClick={handleDisconnect}>
                     -
                 </div>

@@ -14,7 +14,7 @@ export default function BuyAndSellForm({ type }) {
     const { symbol, symbolA, symbolB, orderData, lastPrice } = useSelector(
         state => state.general
     );
-    const { metamaskConnected, fortmaticConnected } = useSelector(
+    const { metamaskConnected, fortmaticConnected, coinbaseConnected } = useSelector(
         state => state.wallet
     );
 
@@ -265,6 +265,14 @@ export default function BuyAndSellForm({ type }) {
                     price,
                     values.amount
                 );
+            } else if (coinbaseConnected) {
+                let ethereumOrder = new EthereumOrder('coinbase');
+                ethereumOrderMessage = await ethereumOrder.toEthereumOrder(
+                    orderSymbols,
+                    type.trade,
+                    price,
+                    values.amount
+                );
             }
 
             loadOrderHistory();
@@ -342,8 +350,8 @@ export default function BuyAndSellForm({ type }) {
                     <Form>
                         <div>
                             {type.trade === 'buy' ?
-                                <span style={{ color: 'rgb(0, 187, 255)',marginLeft: '10px' }}>Amount</span> :
-                                <span style={{ color: 'rgb(255, 99, 85)',marginLeft: '10px' }}>Amount</span>
+                                <span style={{ color: 'rgb(0, 187, 255)', marginLeft: '10px' }}>Amount</span> :
+                                <span style={{ color: 'rgb(255, 99, 85)', marginLeft: '10px' }}>Amount</span>
                             }
 
                             <Field
@@ -430,7 +438,7 @@ export default function BuyAndSellForm({ type }) {
                                 onClick={() => handlePercent(0.25)}
                                 className={`percent-button left ${type.trade === 'buy' ? 'buy' : 'sell'}`}
                             >
-                                
+
                                 25%
                             </button>
                             <button
@@ -457,11 +465,11 @@ export default function BuyAndSellForm({ type }) {
                         </div>
 
                         <div className="total-price">
-                        {type.trade === 'buy' ?
+                            {type.trade === 'buy' ?
                                 <span style={{ color: 'rgb(0, 187, 255)', marginLeft: '10px' }}>Total</span> :
                                 <span style={{ color: 'rgb(255, 99, 85)', marginLeft: '10px' }}>Total</span>
                             }
-                           
+
                             <Field
                                 className={`form-fields-buyandsell after ${type.trade === 'buy' ? 'buy' : 'sell'}`}
                                 name="total"
@@ -469,7 +477,7 @@ export default function BuyAndSellForm({ type }) {
                                 onChange={handleChange}
                                 disabled={true}
                             />
-                               {type.trade === 'buy' ?
+                            {type.trade === 'buy' ?
                                 <label
                                     style={{
                                         fontSize: '14px',
@@ -495,10 +503,10 @@ export default function BuyAndSellForm({ type }) {
                                 </label>
 
                             }
-                           
+
                         </div>
                         <div style={{ margin: '30px 0px 20px 0' }}>
-                            {(metamaskConnected || fortmaticConnected) &&
+                            {(metamaskConnected || fortmaticConnected || coinbaseConnected) &&
                                 type.trade === 'buy' && (
                                     <button
                                         className="submit-form buy"
@@ -509,7 +517,7 @@ export default function BuyAndSellForm({ type }) {
                                     </button>
                                 )}
 
-                            {(metamaskConnected || fortmaticConnected) &&
+                            {(metamaskConnected || fortmaticConnected || coinbaseConnected) &&
                                 type.trade === 'sell' && (
                                     <button
                                         className="submit-form sell"
@@ -520,7 +528,7 @@ export default function BuyAndSellForm({ type }) {
                                     </button>
                                 )}
 
-                            {!metamaskConnected && !fortmaticConnected && (
+                            {!metamaskConnected && !fortmaticConnected && !coinbaseConnected && (
                                 <button
                                     className="submit-form buy"
                                     type="submit"

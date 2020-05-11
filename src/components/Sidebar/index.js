@@ -5,6 +5,7 @@ import { Dark, Light } from '../funtions/handleMode';
 import FadeIn from 'react-fade-in';
 import AddWallet1 from '../AddWallet/AddWallet1';
 import AddWallet2 from '../AddWallet/AddWallet2';
+import { ethereum } from '../../services/Coinbase'
 import './index.css';
 
 const Sidebar = props => {
@@ -26,6 +27,10 @@ const Sidebar = props => {
         payload => dispatch({ type: 'SetFortmaticConnect', payload }),
         [dispatch]
     );
+    const SetCoinbaseConnect = useCallback(
+        payload => dispatch({ type: 'SetCoinbaseConnect', payload }),
+        [dispatch]
+    );
     // const setEthAddress = useCallback(
     //     payload => dispatch({ type: 'SetEthAddress', payload }),
     //     [dispatch]
@@ -44,7 +49,9 @@ const Sidebar = props => {
         wanmaskConnected,
         metamaskConnected,
         fortmaticConnected,
+        coinbaseConnected,
         addWallet,
+        ethAddress
     } = useSelector(state => state.wallet);
     const { symbolA, symbolB } = useSelector(state => state.general);
     const [walletActive, setWalletActive] = useState(false);
@@ -99,6 +106,10 @@ const Sidebar = props => {
                 localStorage.getItem('fortmaticConnected') === 'true'
                     ? true
                     : false;
+            const coinbase =
+                localStorage.getItem('coinbaseConnected') === 'true'
+                    ? true
+                    : false;
 
             if (wanmask || wanmaskConnected) {
                 setAddWalletOpt(true);
@@ -118,6 +129,12 @@ const Sidebar = props => {
                 setFortmaticConnect(true);
                 setWalletActive(true);
             }
+            if (coinbase || coinbaseConnected) {
+                // console.log('fm connected', ethAddress);
+                setAddWalletOpt(true);
+                SetCoinbaseConnect(true);
+                setWalletActive(true);
+            }
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
         [
@@ -126,6 +143,7 @@ const Sidebar = props => {
             wanmaskConnected,
             metamaskConnected,
             fortmaticConnected,
+            coinbaseConnected,
         ]
     );
 
@@ -191,17 +209,17 @@ const Sidebar = props => {
         localStorage.removeItem('wanmaskConnected');
         localStorage.removeItem('metamaskConnected');
         localStorage.removeItem('fortmaticConnected');
+        localStorage.removeItem('coinbaseConnected');
         localStorage.removeItem('ethAddress');
         localStorage.removeItem('address');
     };
 
     const handleDisconnect = _ => {
+        if (localStorage.getItem('coinbaseConnected')) {
+            ethereum.close()
+        }
         clearLocalStorage();
-        // setWanmaskConnect(false);
-        // setMetamaskConnect(false);
-        // setFortmaticConnect(false);
-        // setEthAddress('');
-        // setWalletActive(false);
+
         setTimeout(() => {
             window.location.replace('/');
         }, 1000);
@@ -321,7 +339,8 @@ const Sidebar = props => {
                                     <span className="text">Wanchain</span>
                                 </div>
                             ) : null}
-                            {metamaskConnected || fortmaticConnected ? (
+
+                            {metamaskConnected || fortmaticConnected || coinbaseConnected ? (
                                 <div className="coin">
                                     <img src="/img/eth-aside.svg" alt="home" />
                                     <span className="text">Ethereum</span>
@@ -346,16 +365,16 @@ const Sidebar = props => {
                                     - Disconnect
                                 </span>
                             ) : (
-                                <Fragment>
-                                    <img src="/img/close.png" alt="home" />
-                                    <span
-                                        className="add-wallet-btn"
-                                        onClick={handleAddWallet}
-                                    >
-                                        Add Wallet
+                                    <Fragment>
+                                        <img src="/img/close.png" alt="home" />
+                                        <span
+                                            className="add-wallet-btn"
+                                            onClick={handleAddWallet}
+                                        >
+                                            Add Wallet
                                     </span>
-                                </Fragment>
-                            )}
+                                    </Fragment>
+                                )}
                         </Link>
 
                         {/* </button> */}

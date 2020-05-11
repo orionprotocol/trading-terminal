@@ -4,8 +4,8 @@ import Web3 from 'web3'
 import { useSelector, useDispatch } from 'react-redux';
 
 // TypeScrip
-const APP_NAME = 'My Awesome App'
-const APP_LOGO_URL = 'https://example.com/logo.png'
+const APP_NAME = 'Orion'
+const APP_LOGO_URL = 'https://demo.orionprotocol.io/img/logo.png'
 const ETH_JSONRPC_URL = 'https://ropsten.infura.io/v3/e7e50056370b47e0b71bdbc746887727'
 const CHAIN_ID = 1
 
@@ -32,22 +32,22 @@ const Coinbase = memo(() => {
         [dispatch]
     );
 
-useEffect(() => {
-    if (coinbaseConnected) {
-        // la funcion getAccounts es llamada al momento de conectar esta wallet
-        // al exchange
-        ethereum.send('eth_requestAccounts').then((accounts) => {
-            console.log(`User's address is ${accounts[0]}`)
-            SetCoinbaseConnect(true)
-            setEthAddress(accounts[0]);
-            localStorage.setItem('ethAddress', accounts[0]);
+    useEffect(() => {
+        if (coinbaseConnected) {
+            // la funcion getAccounts es llamada al momento de conectar esta wallet
+            // al exchange
+            ethereum.send('eth_requestAccounts').then((accounts) => {
+                console.log(`User's address is ${accounts[0]}`)
+                SetCoinbaseConnect(true)
+                setEthAddress(accounts[0]);
+                localStorage.setItem('ethAddress', accounts[0]);
 
-            // Optionally, have the default account set for web3.js
-            web3.eth.defaultAccount = accounts[0]
-        })
-    }
-}, [coinbaseConnected]);
-   
+                // Optionally, have the default account set for web3.js
+                web3.eth.defaultAccount = accounts[0]
+            })
+        }
+    }, [coinbaseConnected]);
+
 
     return null;
 });

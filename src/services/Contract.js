@@ -1,6 +1,6 @@
 import Fortmatic from 'fortmatic';
 import { FORTMATIC_API_KEY } from './Fortmatic';
-
+import WalletLink from 'walletlink'
 // Web3 Docs - https://web3js.readthedocs.io/en/v1.2.4/
 const Web3 = require('web3');
 const Long = require('long');
@@ -40,6 +40,22 @@ export default class Contract {
             case 'fortmatic':
                 const fm = new Fortmatic(FORTMATIC_API_KEY, 'ropsten');
                 this.web3 = new Web3(fm.getProvider());
+                break;
+            case 'coinbase':
+                const APP_NAME = 'Orion'
+                const APP_LOGO_URL = 'https://demo.orionprotocol.io/img/logo.png'
+                const ETH_JSONRPC_URL = 'https://ropsten.infura.io/v3/e7e50056370b47e0b71bdbc746887727'
+                const CHAIN_ID = 1
+                const walletLink = new WalletLink({
+                    appName: APP_NAME,
+                    appLogoUrl: APP_LOGO_URL,
+                    darkMode: false
+                })
+                // Initialize a Web3 Provider object
+                const ethereum = walletLink.makeWeb3Provider(ETH_JSONRPC_URL, CHAIN_ID)
+                // Initialize a Web3 object
+                this.web3 = new Web3(ethereum)
+
                 break;
             default:
                 break;

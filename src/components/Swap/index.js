@@ -9,7 +9,7 @@ const index = memo(() => {
     const { mode, assets: allAssets } = useSelector(state => state.general);
     const balances = useSelector(state => state.balances);
     const { assets } = useSelector(state => state.wallet);
-    const { metamaskConnected, fortmaticConnected } = useSelector(
+    const { metamaskConnected, fortmaticConnected,coinbaseConnected } = useSelector(
         state => state.wallet
     );
     const { tickers } = useSelector(state => state.general);
@@ -135,6 +135,15 @@ const index = memo(() => {
                     ();
             } else if (metamaskConnected) {
                 let ethereumOrder = new EthereumOrder('metamask');
+                ethereumOrderMessage = await ethereumOrder
+                    .toEthereumOrder(
+                        setSymbols(),
+                        setTypeOfTrade(),
+                        setPrice(),
+                        swapValue.from)
+                    ();
+            }else if(coinbaseConnected){
+                let ethereumOrder = new EthereumOrder('coinbase');
                 ethereumOrderMessage = await ethereumOrder
                     .toEthereumOrder(
                         setSymbols(),

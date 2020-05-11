@@ -16,6 +16,7 @@ const Line = props => {
         wanmaskConnected,
         metamaskConnected,
         fortmaticConnected,
+        coinbaseConnected,
         assets,
         ethAddress,
     } = useSelector(state => state.wallet);
@@ -27,9 +28,11 @@ const Line = props => {
                 setContract(new Contract('metamask'));
             } else if (fortmaticConnected) {
                 setContract(new Contract('fortmatic'));
+            } else if(coinbaseConnected){
+                setContract(new Contract('coinbase'));
             }
         },
-        [metamaskConnected, fortmaticConnected]
+        [metamaskConnected, fortmaticConnected,coinbaseConnected]
     );
 
     const currentAccount = localStorage.getItem('currentAccount');
@@ -48,7 +51,7 @@ const Line = props => {
                 amount,
                 currentAccount
             );
-        } else if (metamaskConnected || fortmaticConnected) {
+        } else if (metamaskConnected || fortmaticConnected || coinbaseConnected) {
             // const address = window.ethereum.selectedAddress;
             let asset = assets[props.currency.toUpperCase()].toLowerCase();
             contract.deposit(asset, amount, ethAddress);
@@ -63,7 +66,7 @@ const Line = props => {
                 amount,
                 currentAccount
             );
-        } else if (metamaskConnected || fortmaticConnected) {
+        } else if (metamaskConnected || fortmaticConnected || coinbaseConnected) {
             // const address = window.ethereum.selectedAddress;
             let asset = assets[props.currency.toUpperCase()].toLowerCase();
             setTimeout(() => {

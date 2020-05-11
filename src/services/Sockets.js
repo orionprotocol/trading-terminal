@@ -21,6 +21,7 @@ const Sockets = props => {
         metamaskConnected,
         ethAddress,
         fortmaticConnected,
+        coinbaseConnected,
     } = useSelector(state => state.wallet);
 
     const [websocket, setWS] = useState(null);
@@ -92,13 +93,13 @@ const Sockets = props => {
             }
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
-        [wanmaskConnected, metamaskConnected, fortmaticConnected]
+        [wanmaskConnected, metamaskConnected, fortmaticConnected,coinbaseConnected]
     );
 
     // Normal connection for Socket.io - only Metamask and Fortmatic
     useEffect(
         _ => {
-            if (window.ethereum || (fortmaticConnected && ethAddress !== '')) {
+            if (window.ethereum || (fortmaticConnected && ethAddress !== '') || (coinbaseConnected && ethAddress !== '')) {
                 // console.log('window.ethereum');
 
                 let address;
@@ -142,7 +143,7 @@ const Sockets = props => {
 
             if (
                 isConn &&
-                (wanmaskConnected || metamaskConnected || fortmaticConnected) &&
+                (wanmaskConnected || metamaskConnected || fortmaticConnected ||coinbaseConnected) &&
                 typeof contractBalances !== 'undefined' &&
                 typeof walletBalances !== 'undefined'
             ) {
@@ -160,7 +161,7 @@ const Sockets = props => {
                         (wanmaskConnected &&
                             wan3.toChecksumAddress(data.user) ===
                                 wan3.toChecksumAddress(address)) ||
-                        ((metamaskConnected || fortmaticConnected) &&
+                        ((metamaskConnected || fortmaticConnected || coinbaseConnected) &&
                             web3.utils.toChecksumAddress(data.user) ===
                                 web3.utils.toChecksumAddress(ethAddress))
                     ) {
