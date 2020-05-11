@@ -6448,3 +6448,11 @@ body.dark ::-webkit-scrollbar-track {
         height: 260px;
     }
 }
+
+.title-class{
+    color: white !important;
+}
+.content-class {
+    color:white !important
+}
+

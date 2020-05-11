@@ -263,7 +263,7 @@ export default function BuyAndSellForm({ type }) {
                     orderSymbols,
                     type.trade,
                     price,
-                    values.amount
+                    values.amount,'metamask'
                 );
             } else if (coinbaseConnected) {
                 let ethereumOrder = new EthereumOrder('coinbase');

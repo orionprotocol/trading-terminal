@@ -2,42 +2,47 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import './index.css';
-import Carousel,{ consts } from 'react-elastic-carousel'
+import Carousel, { consts } from 'react-elastic-carousel'
 
 const urlBase = process.env.REACT_APP_BACKEND;
 
 const YourProfit = () => {
-	const { symbol, qtyForm, sideForm } = useSelector((state) => state.general);
+	const { symbol, qtyForm, sideForm, mode } = useSelector((state) => state.general);
 	const [profits, setProfits] = useState('');
-
+console.log(mode)
+let style
+if(mode==='Dark'){
+style={color:'white'}
+}else{
+style={color:' rgb(139, 139, 139)'}
+}
 	const createProfits = profits => {
 		return profits.map((res, key) => {
 			return (
 
-				<div key={key} className="exchange">
+				<div key={key} className={`exchange`}>
 					<div className="name">
 						<span
 							style={{
-								color: `rgb(240, ${Math.random()*(240-100)+100}, ${Math.random()*(240-100)+100})`,
+								color: `rgb(240, ${Math.random() * (240 - 100) + 100}, ${Math.random() * (240 - 100) + 100})`,
 								fontWeight: 'bold'
 							}}
 						>
 							{res.name.toUpperCase()}
 						</span>
 					</div>
-					<div className="numbers" style={{
-								color: 'white',
-								fontWeight: 'bold'
-							}}>
+					<div className={`numbers `}
+					style={style}
+					>
 						<span>+ {res.benefitPct} % </span>
 						<span>+ {res.benefitBtc} BTC</span>
 					</div>
 				</div>
-/* 
-				<div key={key} style={{ color: 'white' }}></div>
-
- */
+				/* 
+								<div key={key} style={{ color: 'white' }}></div>
 				
+				 */
+
 			)
 		})
 	}
@@ -68,7 +73,7 @@ const YourProfit = () => {
 					return 0;
 				});
 				console.log(aux)
-		
+
 				setProfits(createProfits(aux))
 			})
 			.catch((err) => {
@@ -97,15 +102,12 @@ const YourProfit = () => {
 				<h2>Your Profits</h2>
 			</div>
 
-			<div className="your-profit-data">
-			<Carousel renderArrow={myArrow} itemsToShow={1} renderPagination={() => {return <div></div>}
-			}>
-				{profits}
-
-			</Carousel>
-
-				
-			</div> 
+			<div className={`your-profit-data`}>
+				<Carousel renderArrow={myArrow} itemsToShow={1} renderPagination={() => { return <div></div> }
+				}>
+					{profits}
+				</Carousel>
+			</div>
 		</section>
 	);
 };

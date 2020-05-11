@@ -1,4 +1,5 @@
 import Contract, { tokensAddress } from './Contract';
+import Swal from 'sweetalert2'
 
 const Assets = {
     toLongValue: function (val, decimals = 8) {
@@ -18,7 +19,7 @@ class EthereumOrder {
 
     constructor(provider) {
         const contract = new Contract(provider);
-
+  
         this.signOrder = contract.signOrder;
         this.hashOrder = contract.hashOrder;
         this.validateSolidity = contract.validateSolidity;
@@ -31,8 +32,49 @@ class EthereumOrder {
      * amount // cantidad a comprar o vender
      *
      */
-    toEthereumOrder = async (symbols, side, price, amount) => {
+    toEthereumOrder = async (symbols, side, price, amount,provider) => {
+        console.log('le dio click a buy', symbols, side, price, amount,provider)
+
+        const customSwal = Swal.mixin({
+            customClass: {
+                title: 'title-class',
+                content: 'content-class',
+               
+            },
+          })
+
+        if(provider){
+            if(provider==='metamask'){
+                customSwal.fire({
+                    title: 'Please Sign',
+                    text: `Sign the transactions with metamask`,
+                    showConfirmButton:false,
+                    showCloseButton: true,
+                    background: '#232A3E',
+                    padding:'3rem',
+                    allowOutsideClick:false,
+                    allowEscapeKey:false
+                  })  
+            }
+        }
+
         return new Promise(async (resolve, reject) => {
+            
+            window.addEventListener("unhandledrejection", function(promiseRejectionEvent) { 
+
+                customSwal.fire({
+                    text: `${promiseRejectionEvent.reason.message}`,
+                    icon: 'error',
+                    showConfirmButton:false,
+                    showCloseButton: true,
+                    background: '#232A3E',
+                    padding:'3rem',
+                    allowOutsideClick:false,
+                    allowEscapeKey:false,
+                  }) 
+               
+                console.log("al parecer no acepto",promiseRejectionEvent.reason)  
+            });
             // if (!window.ethereum) {
             //     reject();
             // }
