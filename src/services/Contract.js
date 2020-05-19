@@ -45,7 +45,7 @@ export default class Contract {
                 const APP_NAME = 'Orion'
                 const APP_LOGO_URL = 'https://demo.orionprotocol.io/img/logo.png'
                 const ETH_JSONRPC_URL = 'https://ropsten.infura.io/v3/e7e50056370b47e0b71bdbc746887727'
-                const CHAIN_ID = 1
+                const CHAIN_ID = 3
                 const walletLink = new WalletLink({
                     appName: APP_NAME,
                     appLogoUrl: APP_LOGO_URL,

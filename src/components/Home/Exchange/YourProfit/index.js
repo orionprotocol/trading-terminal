@@ -9,7 +9,7 @@ const urlBase = process.env.REACT_APP_BACKEND;
 const YourProfit = () => {
 	const { symbol, qtyForm, sideForm, mode } = useSelector((state) => state.general);
 	const [profits, setProfits] = useState('');
-console.log(mode)
+
 let style
 if(mode==='Dark'){
 style={color:'white'}
