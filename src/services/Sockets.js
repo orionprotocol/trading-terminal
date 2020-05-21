@@ -202,8 +202,8 @@ const Sockets = props => {
 
             const ws = new window.WebsocketHeartbeatJs({
                 url: urlWS,
-                pingTimeout: 5000,
-                pongTimeout: 5000,
+                pingTimeout: 3000,
+                pongTimeout: 3000,
             });
 
             setWS(ws);
@@ -222,21 +222,21 @@ const Sockets = props => {
             }
 
             let sym = symbol.split('-')[0] + symbol.split('-')[1];
-
+            console.log("los simbolos",symbol,sym)
             const urlWS2 = `wss://candles.orionprotocol.io/api/v1/ticker/${sym}`;
             // console.log('url symbol ', urlWS2);
 
             websocket2 = new window.WebsocketHeartbeatJs({
                 url: urlWS2,
-                pingTimeout: 5000,
-                pongTimeout: 5000,
+                pingTimeout: 3000,
+                pongTimeout: 3000,
             });
 
             setWS2(websocket2);
 
             websocket2.onmessage = function (data) {
                 // setOrderBook(JSON.parse(data.data));
-                // console.log(JSON.parse(data.data)[1])
+                console.log('la data del socket de los simbolos',JSON.parse(data.data)[1])
                 data = JSON.parse(data.data)[1];
                 let lastPrice = data[1];
                 let openPrice = data[2];
@@ -265,8 +265,8 @@ const Sockets = props => {
         const urlWS = 'wss://candles.orionprotocol.io/api/v1/allTickers';
         const ws = new window.WebsocketHeartbeatJs({
             url: urlWS,
-            pingTimeout: 5000,
-            pongTimeout: 5000,
+            pingTimeout: 3000,
+            pongTimeout: 3000,
         });
         ws.onmessage = data => {
             let all = JSON.parse(data.data);

@@ -195,7 +195,7 @@ const PairDrop = ({ handleWrapper, History }) => {
                                 </>
                             )}
 
-                        <span>Favourites</span>
+                       {/*  <span>Favourites</span> */}
                     </div>
                 </div>
                 {assetsRender}

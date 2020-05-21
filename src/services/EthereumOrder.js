@@ -34,7 +34,7 @@ class EthereumOrder {
      */
     toEthereumOrder = async (symbols, side, price, amount,provider) => {
         console.log('le dio click a buy', symbols, side, price, amount,provider)
-
+        
         const customSwal = Swal.mixin({
             customClass: {
                 title: 'title-class',
@@ -136,6 +136,10 @@ class EthereumOrder {
 
             // Si la validacion es exitosa entonces se envia la orden al back
             if (validation) {
+                if(customSwal.isVisible()){
+                    customSwal.close()
+                }
+            
                 fetch(`${EthereumOrder.orionUrl}/api/order`, {
                     credentials: 'same-origin',
                     method: 'POST',
@@ -149,6 +153,7 @@ class EthereumOrder {
                         return results.json();
                     })
                     .then(data => {
+                        console.log("data del ultimo then",data)
                         if (data.code !== undefined) {
                             reject(data);
                         } else {

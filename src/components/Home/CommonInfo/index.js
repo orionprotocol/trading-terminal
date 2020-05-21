@@ -34,11 +34,12 @@ const CommonInfo = ({History}) => {
     useEffect(
         _ => {
             price.getCryptoPrice('USD', symbolB).then(object => {
+                
                 if (symbolB === 'USDT') {
                     object = {};
                     object.price = 1;
                 }
-
+                /* console.log("objeto cuando cambia las monedas",object) */
                 if (object === undefined) return;
 
                 let last = (object.price * lastPrice).toFixed(2);
@@ -73,7 +74,7 @@ const CommonInfo = ({History}) => {
                         setIsFav(favs[pair]);
                     }
                 }
-            }, 2000);
+            }, 1000);
         },
         [symbolA, symbolB]
     );
