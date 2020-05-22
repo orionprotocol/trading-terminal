@@ -73,7 +73,7 @@ class EthereumOrder {
                     allowEscapeKey:false,
                   }) 
                
-                console.log("al parecer no acepto",promiseRejectionEvent.reason)  
+                /* console.log("al parecer no acepto",promiseRejectionEvent.reason)  */ 
             });
             // if (!window.ethereum) {
             //     reject();

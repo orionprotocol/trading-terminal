@@ -222,7 +222,7 @@ const Sockets = props => {
             }
 
             let sym = symbol.split('-')[0] + symbol.split('-')[1];
-            console.log("los simbolos",symbol,sym)
+            /* console.log("los simbolos",symbol,sym) */
             const urlWS2 = `wss://candles.orionprotocol.io/api/v1/ticker/${sym}`;
             // console.log('url symbol ', urlWS2);
 
@@ -236,7 +236,7 @@ const Sockets = props => {
 
             websocket2.onmessage = function (data) {
                 // setOrderBook(JSON.parse(data.data));
-                console.log('la data del socket de los simbolos',JSON.parse(data.data)[1])
+              /*   console.log('la data del socket de los simbolos',JSON.parse(data.data)[1]) */
                 data = JSON.parse(data.data)[1];
                 let lastPrice = data[1];
                 let openPrice = data[2];

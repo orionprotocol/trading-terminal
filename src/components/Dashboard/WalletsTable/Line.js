@@ -54,7 +54,7 @@ const Line = props => {
         } else if (metamaskConnected || fortmaticConnected || coinbaseConnected) {
             // const address = window.ethereum.selectedAddress;
             let asset = assets[props.currency.toUpperCase()].toLowerCase();
-            contract.deposit(asset, amount, ethAddress);
+            contract.deposit(asset, amount, ethAddress,metamaskConnected);
         }
         handleDeposit();
     };
@@ -69,10 +69,11 @@ const Line = props => {
         } else if (metamaskConnected || fortmaticConnected || coinbaseConnected) {
             // const address = window.ethereum.selectedAddress;
             let asset = assets[props.currency.toUpperCase()].toLowerCase();
-            setTimeout(() => {
-                handleWithdraw();
-            }, 2000);
-            contract.withdraw(asset, amount, ethAddress);
+          /*   setTimeout(() => {
+                
+            }, 2000); */
+            contract.withdraw(asset, amount, ethAddress,metamaskConnected);
+            handleWithdraw();
         }
         // handleWithdraw();
     };

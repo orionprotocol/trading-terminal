@@ -1,6 +1,7 @@
 import Fortmatic from 'fortmatic';
 import { FORTMATIC_API_KEY } from './Fortmatic';
 import WalletLink from 'walletlink'
+import Swal from 'sweetalert2'
 // Web3 Docs - https://web3js.readthedocs.io/en/v1.2.4/
 const Web3 = require('web3');
 const Long = require('long');
@@ -22,6 +23,13 @@ const contractAddress = exchangeArtifact.networks['3'].address;
 // En esta clase se creara la instancia del contrato con web3, para poder invocar las funciones definidas
 // en el contrato inteligente, las funciones del contrato que se invocan aqui son:
 // withdraw, depositWan, depositAsset
+const customSwal = Swal.mixin({
+    customClass: {
+        title: 'title-class',
+        content: 'content-class',
+       
+    },
+  })
 
 export default class Contract {
     // el constructor recibe provider que puede ser 'metamask' o 'fortmatic',
@@ -175,7 +183,7 @@ export default class Contract {
     };
 
     // address es la direccion de la wallet del cliente
-    deposit = async (currency, amount, address) => {
+    deposit = async (currency, amount, address,metamaskConnected) => {
         /**
          * Como la plataforma esta corriendo sobre la blockchain de ethereum, para depositar eth
          * solo es necesario llamar a una funcion para transferir eth del cliente al contrato inteligente (exchange),
@@ -216,6 +224,18 @@ export default class Contract {
         } catch (e) {
             // Toastr.showError('Invalid amount, ' + newAmount);
             // console.log('decimals error: ', newAmount);
+            if(metamaskConnected){
+                customSwal.fire({
+                    text: `${e.message}`,
+                    icon: 'error',
+                    showConfirmButton:false,
+                    showCloseButton: true,
+                    background: '#232A3E',
+                    padding:'3rem',
+                    allowOutsideClick:false,
+                    allowEscapeKey:false,
+                  }) 
+            }
             console.log(e);
         }
     };
@@ -227,7 +247,19 @@ export default class Contract {
     // su address correspondiente
 
     // address es la direccion de la wallet del cliente
-    withdraw = async (currency, amount, address) => {
+    withdraw = async (currency, amount, address,metamaskConnected) => {
+        if(metamaskConnected){
+            customSwal.fire({
+                title: 'Please Sign',
+                text: `Sign the transactions with metamask`,
+                showConfirmButton:false,
+                showCloseButton: true,
+                background: '#232A3E',
+                padding:'3rem',
+                allowOutsideClick:false,
+                allowEscapeKey:false
+              }) 
+        }
         if (!window.ethereum.selectedAddress) {
             window.ethereum.enable();
         }
@@ -238,18 +270,86 @@ export default class Contract {
             if (currency === 'eth') {
                 const res = await this.exchange.methods
                     .withdraw(ZERO_ADDRESS, newAmount)
-                    .send({ from: address });
+                    .send({ from: address },_=>{
+                        if(metamaskConnected){
+                            customSwal.fire({
+                                title: 'Please wait',
+                                text: `Your transaction is taking place`,
+                                showConfirmButton:false,
+                                showCloseButton: true,
+                                background: '#232A3E',
+                                padding:'3rem',
+                                allowOutsideClick:false,
+                                allowEscapeKey:false,
+                                onOpen: () => {
+                                    customSwal.showLoading();
+                                  }
+                              }) 
+                        }
+                    }).then(_=>{
+                        customSwal.fire({
+                            title: 'Your withdrawal has been done',
+                            icon: 'success',
+                            showConfirmButton:false,
+                            showCloseButton: true,
+                            background: '#232A3E',
+                            padding:'3rem',
+                            allowOutsideClick:false,
+                            allowEscapeKey:false,
+                            timer: 2000,
+                          })
+                    })
                 console.log(res);
             } else {
                 const res2 = await this.exchange.methods
                     .withdraw(tokensAddress[currency.toUpperCase()], newAmount)
-                    .send({ from: address });
+                    .send({ from: address },_=>{
+                        if(metamaskConnected){
+                            customSwal.fire({
+                                title: 'Please wait',
+                                text: `Your transaction is taking place`,
+                                showConfirmButton:false,
+                                showCloseButton: true,
+                                background: '#232A3E',
+                                padding:'3rem',
+                                allowOutsideClick:false,
+                                allowEscapeKey:false,
+                                onOpen: () => {
+                                    customSwal.showLoading();
+                                  }
+                              }) 
+                        }
+                    }).then(_=>{
+                        customSwal.fire({
+                            title: 'Your withdrawal has been done',
+                            icon: 'success',
+                            showConfirmButton:false,
+                            showCloseButton: true,
+                            background: '#232A3E',
+                            padding:'3rem',
+                            allowOutsideClick:false,
+                            allowEscapeKey:false,
+                            timer: 2000,
+                          })
+                    })
 
-                console.log(res2);
+             
             }
         } catch (e) {
             // Toastr.showError('Invalid amount, ' + newAmount);
             // console.log('decimals error: ', newAmount);
+            if(metamaskConnected){
+                customSwal.fire({
+                    text: `${e.message}`,
+                    icon: 'error',
+                    showConfirmButton:false,
+                    showCloseButton: true,
+                    background: '#232A3E',
+                    padding:'3rem',
+                    allowOutsideClick:false,
+                    allowEscapeKey:false,
+                  }) 
+            }
             console.log(e);
         }
     };
