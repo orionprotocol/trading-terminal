@@ -195,16 +195,54 @@ export default class Contract {
          * recibe dos parametros
          *
          * */
-
+        if(metamaskConnected){
+            customSwal.fire({
+                title: 'Please Sign',
+                text: `Sign the transactions with metamask`,
+                showConfirmButton:false,
+                showCloseButton: true,
+                background: '#232A3E',
+                padding:'3rem',
+                allowOutsideClick:false,
+                allowEscapeKey:false
+              }) 
+        }
         address = this.web3.utils.toChecksumAddress(address);
-
         const newAmount = this.decimalToBaseUnit(currency, amount);
 
         try {
             if (currency === 'eth') {
                 const res = await this.exchange.methods
                     .depositWan()
-                    .send({ from: address, value: newAmount });
+                    .send({ from: address, value: newAmount },_=>{
+                        if(metamaskConnected){
+                            customSwal.fire({
+                                title: 'Please wait',
+                                text: `Your transaction is taking place`,
+                                showConfirmButton:false,
+                                showCloseButton: true,
+                                background: '#232A3E',
+                                padding:'3rem',
+                                allowOutsideClick:false,
+                                allowEscapeKey:false,
+                                onOpen: () => {
+                                    customSwal.showLoading();
+                                  }
+                              }) 
+                        }
+                    }).then(_=>{
+                        customSwal.fire({
+                            title: 'Your deposit has been done',
+                            icon: 'success',
+                            showConfirmButton:false,
+                            showCloseButton: true,
+                            background: '#232A3E',
+                            padding:'3rem',
+                            allowOutsideClick:false,
+                            allowEscapeKey:false,
+                            timer: 2000,
+                          })
+                    });
                 console.log(res);
             } else {
                 this.tokensContracts[currency].methods
@@ -216,10 +254,64 @@ export default class Contract {
                                 tokensAddress[currency.toUpperCase()],
                                 newAmount
                             )
-                            .send({ from: address })
-                            .on('error', console.error);
+                            .send({ from: address },_=>{
+                                if(metamaskConnected){
+                                    customSwal.fire({
+                                        title: 'Please wait',
+                                        text: `Your transaction is taking place`,
+                                        showConfirmButton:false,
+                                        showCloseButton: true,
+                                        background: '#232A3E',
+                                        padding:'3rem',
+                                        allowOutsideClick:false,
+                                        allowEscapeKey:false,
+                                        onOpen: () => {
+                                            customSwal.showLoading();
+                                          }
+                                      }) 
+                                }
+                            }).on('receipt', _=>{
+                                customSwal.fire({
+                                    title: 'Your deposit has been done',
+                                    icon: 'success',
+                                    showConfirmButton:false,
+                                    showCloseButton: true,
+                                    background: '#232A3E',
+                                    padding:'3rem',
+                                    allowOutsideClick:false,
+                                    allowEscapeKey:false,
+                                    timer: 2000,
+                                  })
+                            })
+                            .on('error', error=>{
+                                if(metamaskConnected){
+                                    customSwal.fire({
+                                        text: `${error.message}`,
+                                        icon: 'error',
+                                        showConfirmButton:false,
+                                        showCloseButton: true,
+                                        background: '#232A3E',
+                                        padding:'3rem',
+                                        allowOutsideClick:false,
+                                        allowEscapeKey:false,
+                                      }) 
+                                }
+                            });
                     })
-                    .on('error', console.error);
+                    .on('error',error=>{
+                        if(metamaskConnected){
+                            customSwal.fire({
+                                text: `${error.message}`,
+                                icon: 'error',
+                                showConfirmButton:false,
+                                showCloseButton: true,
+                                background: '#232A3E',
+                                padding:'3rem',
+                                allowOutsideClick:false,
+                                allowEscapeKey:false,
+                              }) 
+                        }
+                    });
             }
         } catch (e) {
             // Toastr.showError('Invalid amount, ' + newAmount);
@@ -236,7 +328,6 @@ export default class Contract {
                     allowEscapeKey:false,
                   }) 
             }
-            console.log(e);
         }
     };
 
