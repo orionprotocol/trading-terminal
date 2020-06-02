@@ -221,9 +221,8 @@ const Sockets = props => {
                 setWS2(null);
             }
 
-            let sym = symbol.split('-')[0] + symbol.split('-')[1];
             /*  console.log("los simbolos",sym)  */
-            const urlWS2 = `${process.env.REACT_APP_URL_WS2}/${sym}`;
+            const urlWS2 = `${process.env.REACT_APP_URL_WS2}/${symbol}`;
             // console.log('url symbol ', urlWS2);
 
             websocket2 = new window.WebsocketHeartbeatJs({

@@ -33,7 +33,7 @@ class SymbolInfoService {
     }
 
     _createSymbolInfo(assetOneId, assetTwoId, exchange) {
-        const ticker = `${assetOneId}${assetTwoId}`;
+        const ticker = `${assetOneId}-${assetTwoId}`;
         const symbolName = `${assetOneId}/${assetTwoId}`;
 
         return Promise.resolve({
