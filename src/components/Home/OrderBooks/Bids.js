@@ -5,10 +5,10 @@ import ExchangeImg from './ExchangeImg';
 function calculateTotalBids(array) {
     for (let i = 0; i < array.length; i++) {
         if (i - 1 < 0) {
-            array[i].total = array[i].price * array[i].size;
+            array[i].total = Number(array[i].price) * Number(array[i].size);
         } else {
             array[i].total =
-                array[i - 1].total + array[i].price * array[i].size;
+                array[i - 1].total + Number(array[i].price) * Number(array[i].size);
         }
     }
     return array;
@@ -72,7 +72,7 @@ const renderSize = data => {
 
     return (
         <span className={colorClass} id={id}>
-            {data.size.toFixed(3)}
+            {Number(data.size).toFixed(3)}
         </span>
     );
 };
@@ -113,8 +113,8 @@ const Bids = props => {
         let total = 0;
         let bids = dataBids;
         for (let i = 0; i < bids.length; i++) {
-            if (bids[i].price >= price) {
-                amount = amount + bids[i].size;
+            if (Number(bids[i].price) >= price) {
+                amount = amount + Number(bids[i].size);
                 total = total + bids[i].total;
             }
         }
@@ -141,8 +141,8 @@ const Bids = props => {
                     bids[i].total
                 ).toFixed(6);
                 const percent2 = calculatePercent(
-                    maxBidAmount.size,
-                    bids[i].size
+                    Number(maxBidAmount.size),
+                    Number(bids[i].size)
                 ).toFixed(6);
                 let percentStyle = percent + '%';
                 let percentStyle2 = percent2 + '%';
@@ -236,12 +236,12 @@ const Bids = props => {
                         />
                         {symbolB === 'BTC' && (
                             <span className="cell emp">
-                                {bids[i].price.toFixed(8)}
+                                {Number(bids[i].price).toFixed(8)}
                             </span>
                         )}
                         {symbolB === 'USDT' && (
                             <span className="cell emp">
-                                {bids[i].price.toFixed(2)}
+                                {Number(bids[i].price).toFixed(2)}
                             </span>
                         )}
 

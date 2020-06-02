@@ -15,10 +15,10 @@ function handleExchanges(e) {
 function calculateTotalAsks(array) {
     for (let i = array.length - 1; i >= 0; i--) {
         if (i + 1 >= array.length) {
-            array[i].total = array[i].price * array[i].size;
+            array[i].total = Number(array[i].price) * Number(array[i].size);
         } else {
             array[i].total =
-                array[i + 1].total + array[i].price * array[i].size;
+                array[i + 1].total + Number(array[i].price) * Number(array[i].size);
         }
     }
     return array;
@@ -56,7 +56,7 @@ const renderSize = data => {
 
     return (
         <span className={colorClass} id={id}>
-            {data.size.toFixed(3)}
+            {Number(data.size).toFixed(3)}
         </span>
     );
 };
@@ -89,8 +89,8 @@ const Asks = props => {
         let total = 0;
         let asks = dataAsks;
         for (let i = 0; i < asks.length; i++) {
-            if (asks[i].price <= price) {
-                amount = amount + asks[i].size;
+            if (Number(asks[i].price) <= price) {
+                amount = amount + Number(asks[i].size);
                 total = total + asks[i].total;
             }
         }
@@ -108,7 +108,7 @@ const Asks = props => {
                 return prev.total > current.total ? prev : current;
             });
             const maxAskAmount = asks.reduce(function (prev, current) {
-                return prev.size > current.size ? prev : current;
+                return Number(prev.size) > Number(current.size) ? prev : current;
             });
             for (let i = 0; i < asks.length; i++, key++) {
                 let exchanges = asks[i].exchanges || [];
@@ -117,8 +117,8 @@ const Asks = props => {
                     asks[i].total
                 ).toFixed(6);
                 const percent2 = calculatePercent(
-                    maxAskAmount.size,
-                    asks[i].size
+                    Number(maxAskAmount.size),
+                    Number(asks[i].size)
                 ).toFixed(6);
                 let percentStyle = percent + '%';
                 const percentStyle2 = percent2 + '%';
@@ -215,12 +215,12 @@ const Asks = props => {
                         />
                         {symbolB === 'BTC' && (
                             <span className="cell emp">
-                                {asks[i].price.toFixed(8)}
+                                {Number(asks[i].price).toFixed(8)}
                             </span>
                         )}
                         {symbolB === 'USDT' && (
                             <span className="cell emp">
-                                {asks[i].price.toFixed(2)}
+                                {Number(asks[i].price).toFixed(2)}
                             </span>
                         )}
                         {/* <span className="cell">{asks[i].size.toFixed(3)}</span> */}

@@ -221,9 +221,8 @@ const Sockets = props => {
                 setWS2(null);
             }
 
-            let sym = symbol.split('-')[0] + symbol.split('-')[1];
             /* console.log("los simbolos",symbol,sym) */
-            const urlWS2 = `wss://candles.orionprotocol.io/api/v1/ticker/${sym}`;
+            const urlWS2 = `ws://51.15.103.46/api/v1/ticker/${symbol}`;
             // console.log('url symbol ', urlWS2);
 
             websocket2 = new window.WebsocketHeartbeatJs({
@@ -238,14 +237,14 @@ const Sockets = props => {
                 // setOrderBook(JSON.parse(data.data));
               /*   console.log('la data del socket de los simbolos',JSON.parse(data.data)[1]) */
                 data = JSON.parse(data.data)[1];
-                let lastPrice = data[1];
-                let openPrice = data[2];
+                let lastPrice = Number(data[1]);
+                let openPrice = Number(data[2]);
                 let change = Number(
                     ((lastPrice / openPrice - 1) * 100).toFixed(2)
                 );
-                let high = data[3].toFixed(6);
-                let low = data[4].toFixed(6);
-                let vol = data[5].toFixed(2);
+                let high = Number(data[3]).toFixed(6);
+                let low = Number(data[4]).toFixed(6);
+                let vol = Number(data[5]).toFixed(2);
 
                 setChange(change); // 24h % change, porcentaje de cambio de las ultimas 24h
                 setLow(low);
@@ -262,7 +261,7 @@ const Sockets = props => {
     //------------------------------------ All tickers for CommonInfo, all pairs ----------------------------------------------
 
     useEffect(_ => {
-        const urlWS = 'wss://candles.orionprotocol.io/api/v1/allTickers';
+        const urlWS = 'ws://51.15.103.46/api/v1/allTickers';
         const ws = new window.WebsocketHeartbeatJs({
             url: urlWS,
             pingTimeout: 3000,
@@ -274,15 +273,15 @@ const Sockets = props => {
             // all.forEach((e, i) => {
             for (let i = 1; i < all.length; i++) {
                 let e = all[i];
-                let lastPrice = e[1];
-                let openPrice = e[2];
+                let lastPrice = Number(e[1])
+                let openPrice = Number(e[2]);
                 let change = Number(
                     ((lastPrice / openPrice - 1) * 100).toFixed(2)
                 );
 
                 let ticker = {
                     lastPrice: lastPrice.toFixed(6),
-                    vol24h: e[5].toFixed(2),
+                    vol24h: Number(e[5]).toFixed(2),
                     change24h: change,
                 };
                 tickers[e[0]] = ticker;
