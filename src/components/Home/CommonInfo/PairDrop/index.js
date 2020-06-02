@@ -23,6 +23,28 @@ const PairDrop = ({ handleWrapper, History }) => {
     });
     const [favs, setFavs] = useState(false);
 
+    const setChange = useCallback(
+        data => dispatch({ type: 'SetChange', payload: data }),
+        [dispatch]
+    );
+    const setHigh = useCallback(
+        data => dispatch({ type: 'SetHigh', payload: data }),
+        [dispatch]
+    );
+    const setLow = useCallback(
+        data => dispatch({ type: 'SetLow', payload: data }),
+        [dispatch]
+    );
+    const setVol = useCallback(
+        data => dispatch({ type: 'SetVol', payload: data }),
+        [dispatch]
+    );
+    const setLastPrice = useCallback(
+        data => dispatch({ type: 'SetLastPrice', payload: data }),
+        [dispatch]
+    );
+
+
     useEffect(
         _ => {
             if (assets.assets1) {
@@ -144,6 +166,11 @@ const PairDrop = ({ handleWrapper, History }) => {
     };
 
     const handlePair = symbolA => {
+        setChange(0);
+        setLow(0);
+        setHigh(0);
+        setVol(0);
+        setLastPrice(0);
         setSymbolA(symbolA);
         setSymbolB(currentQuote);
         History.history.push(`/trade/${symbolA}_${currentQuote}`)
@@ -195,7 +222,7 @@ const PairDrop = ({ handleWrapper, History }) => {
                                 </>
                             )}
 
-                       {/*  <span>Favourites</span> */}
+                        {/*  <span>Favourites</span> */}
                     </div>
                 </div>
                 {assetsRender}
