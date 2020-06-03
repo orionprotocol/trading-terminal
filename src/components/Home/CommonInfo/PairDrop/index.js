@@ -56,11 +56,11 @@ const PairDrop = ({ handleWrapper, History }) => {
 
     useEffect(() => {
         let pair = '', auxpairs = []
-        console.log(assets.assets2,currentQuote)
+ 
         if (assets.assets2) {
         
             if (assets.assets2[currentQuote] !== undefined) {
-                console.log(assets.assets2.length,assets.assets2[currentQuote].length ,tickers)
+              
                 for (let x = 0; x < assets.assets2[currentQuote].length; x++) {
                     pair = `${assets.assets2[currentQuote][x]}-${currentQuote}`
                     if (tickers[pair]) {
