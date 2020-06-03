@@ -61,7 +61,6 @@ style={color:' rgb(139, 139, 139)'}
 						benefitPct: parseFloat(result[key].benefitPct)
 					})
 				}
-				console.log(aux)
 				aux = aux.sort(function (a, b) {
 					if (b.benefitBtc > a.benefitBtc) {
 						return 1;
@@ -72,7 +71,6 @@ style={color:' rgb(139, 139, 139)'}
 					// a must be equal to b
 					return 0;
 				});
-				console.log(aux)
 
 				setProfits(createProfits(aux))
 			})

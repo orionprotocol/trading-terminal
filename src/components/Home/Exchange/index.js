@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import './index.css';
 import BuyAndSellForm from './form';
 import YourProfit from './YourProfit';
 
 export default function Exchange() {
+	const {  mode,orderBook } = useSelector((state) => state.general);
 	const [ activeTab, setActiveTab ] = useState({ buy: 'buy-tab active', sell: 'sell-tab', type: 'buy' });
 	const [ activeButton, setActiveButton ] = useState({
 		left: 'market-button active',
@@ -64,7 +66,16 @@ export default function Exchange() {
 					</div>
 				</div>
 				<div className="buy-and-sell-form">
-					<BuyAndSellForm type={{ trade: activeTab.type, selection: activeButton.type }} />
+					{orderBook ? <BuyAndSellForm type={{ trade: activeTab.type, selection: activeButton.type }} />:
+					
+					<div className={`spinner ${mode === 'Light' ? '' : 'dark-mode'}`}>
+						<div className="rect1"></div>
+						<div className="rect2"></div>
+						<div className="rect3"></div>
+						<div className="rect4"></div>
+						<div className="rect5"></div>
+					</div>
+				}
 				</div>
 			</div>
 			<YourProfit />

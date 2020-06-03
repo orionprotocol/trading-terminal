@@ -29,7 +29,11 @@ export default function BuyAndSellForm({ type }) {
         data => dispatch({ type: 'SetAddWallet', payload: data }),
         [dispatch]
     );
-
+    const { orderBook } = useSelector((state) => state.general);
+    /*  console.log(type.trade)
+     if(orderBook){
+         console.log( orderBook.aggregatedAsks,orderBook.aggregatedBids )
+     } */
     const [values, setValues] = useState({
         amount: '',
         available: '0',
@@ -55,6 +59,47 @@ export default function BuyAndSellForm({ type }) {
         }
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+  
+    /* This useEffect is made to change the de total if the amount change */
+    const iterating_price_for_total = (array, amount, type) => {
+        let price = 0
+        let totalPrice = 0
+        let remanent = 0
+        let percent = 0.03
+        if (type === 'sell') percent = -0.03
+        if (amount === '') return 0
+        remanent = parseFloat(amount)
+        for (let x = 0; x < array.length; x++) {
+            if (remanent - array[x].size <= 0) {
+                price += (remanent * array[x].price)
+                return totalPrice = (price + (array[x].price + array[x].price * percent)).toFixed(8)
+            } else if (remanent - array[x].size > 0) {
+                price += (remanent * array[x].price)
+                remanent = remanent - array[x].size
+            }
+        }
+    }
+    useEffect(() => {
+        if (type.selection !== 'limit-order') {
+            if (type.trade === 'buy') {
+               
+                setTotal(iterating_price_for_total(orderBook.aggregatedAsks, values.amount, 'buy'))
+                /* console.log(`orderBook.aggregatedAsks[0].price (${orderBook.aggregatedAsks[0].price}) is grater than orderBook.aggregatedAsks[1].price (${orderBook.aggregatedAsks[1].price})` ,orderBook.aggregatedAsks[0].price>orderBook.aggregatedAsks[1].price) */
+                /* totalPrice=iterating_price_for_total(orderBook.aggregatedAsks) */
+            } else if (type.trade === 'sell') {
+                
+                setTotal(iterating_price_for_total(orderBook.aggregatedBids, values.amount, 'sell'))
+            }
+        }
+    }, [orderBook.aggregatedAsks, orderBook.aggregatedBids, values.amount,type.selection]);
+/* This useEffect works to change the total price when u switch from market to limit order */
+    useEffect(() => {
+        if(type.selection==='limit-order'){
+            if (values.price !== '' && values.amount!=='') {
+                setTotal((values.amount * values.price).toFixed(8));
+            }
+        }
+    }, [type.selection]);
 
     useEffect(
         _ => {
@@ -76,7 +121,7 @@ export default function BuyAndSellForm({ type }) {
                 setValues({
                     ...values,
                     amount: orderData.amount.toFixed(8),
-                    price: orderData.price.toFixed(8),
+                    price: parseFloat(orderData.price).toFixed(8),
                 });
                 setTotal(orderData.total.toFixed(8));
             }
@@ -168,8 +213,14 @@ export default function BuyAndSellForm({ type }) {
             if (e.target.name === 'amount') {
                 setQtyForm(e.target.value);
             }
-
-            if (type.selection === 'market') {
+           if (type.selection === 'limit-order') {
+                if (values.price !== '') {
+                    setTotal((e.target.value * values.price).toFixed(8));
+                } else {
+                    setTotal((e.target.value * lastPrice).toFixed(8));
+                }
+            }
+            /* if (type.selection === 'market') {
                 setTotal((e.target.value * lastPrice).toFixed(8));
             } else if (type.selection === 'limit-order') {
                 if (values.price !== '') {
@@ -177,7 +228,7 @@ export default function BuyAndSellForm({ type }) {
                 } else {
                     setTotal((e.target.value * lastPrice).toFixed(8));
                 }
-            }
+            } */
         }
 
         setValues({
@@ -263,7 +314,7 @@ export default function BuyAndSellForm({ type }) {
                     orderSymbols,
                     type.trade,
                     price,
-                    values.amount,'metamask'
+                    values.amount, 'metamask'
                 );
             } else if (coinbaseConnected) {
                 let ethereumOrder = new EthereumOrder('coinbase');
