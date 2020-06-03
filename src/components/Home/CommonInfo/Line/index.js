@@ -16,7 +16,7 @@ export default function Line({ asset, handlePair, assetB }) {
     const [change24h, setChange24h] = useState(0);
     const [vol24h, setVol24h] = useState(0);
 
-    const pair = asset + assetB;
+    const pair = `${asset}-${assetB}`;
 
     useEffect(_ => {
         let favs = localStorage.getItem('favs');

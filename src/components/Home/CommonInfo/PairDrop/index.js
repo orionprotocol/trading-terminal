@@ -22,7 +22,7 @@ const PairDrop = ({ handleWrapper, History }) => {
         total: 'fa-angle-down',
     });
     const [favs, setFavs] = useState(false);
-
+/* (tickers,assets.assets2) */
     const setChange = useCallback(
         data => dispatch({ type: 'SetChange', payload: data }),
         [dispatch]
@@ -56,10 +56,13 @@ const PairDrop = ({ handleWrapper, History }) => {
 
     useEffect(() => {
         let pair = '', auxpairs = []
+        console.log(assets.assets2,currentQuote)
         if (assets.assets2) {
+        
             if (assets.assets2[currentQuote] !== undefined) {
+                console.log(assets.assets2.length,assets.assets2[currentQuote].length ,tickers)
                 for (let x = 0; x < assets.assets2[currentQuote].length; x++) {
-                    pair = `${assets.assets2[currentQuote][x]}${currentQuote}`
+                    pair = `${assets.assets2[currentQuote][x]}-${currentQuote}`
                     if (tickers[pair]) {
                         auxpairs.push({
                             symbolA: assets.assets2[currentQuote][x],
@@ -98,6 +101,7 @@ const PairDrop = ({ handleWrapper, History }) => {
         }
         setAssets(
             assets.assets1.map((e, i) => {
+              
                 if (e === currentQuote) {
                     return (
                         <span
