@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useCallback ,useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import './index.css';
 import { widget } from '../../charting_library/charting_library.min';
 
@@ -118,7 +117,6 @@ useEffect(() => {
     return (
         <>
            <div id={defaultProps.containerId} className={'TVChartContainer'} />
-         
         </>
  
     

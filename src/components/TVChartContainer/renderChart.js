@@ -208,8 +208,9 @@ const disabled_features = [
     'display_market_status',
     'show_hide_button_in_legend',
     'edit_buttons_in_legend',
-    
+    'volume_force_overlay',
     'hide_left_toolbar_by_default',
+    'legend_context_menu',
     /* 'left_toolbar', *///this feature turn off the left bar
    /*  
         'header_symbol_search',
