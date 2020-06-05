@@ -166,6 +166,8 @@ const index = memo(() => {
             }
         }
     };
+
+    console.log(balances)
     if (!balances.contractBalances) return(
     <div className={`swap-container ${mode === 'Light' ? '' : 'dark-mode'}`}>
         <div className={`spinner ${mode === 'Light' ? '' : 'dark-mode'}`}>

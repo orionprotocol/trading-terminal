@@ -62,7 +62,7 @@ export default function BuyAndSellForm({ type }) {
   
     /* This useEffect is made to change the de total if the amount change */
     const iterating_price_for_total = (array, amount, type) => {
-        let price = 0
+        let cost = 0
         let totalPrice = 0
         let remanent = 0
         let percent = 0.03
@@ -71,14 +71,16 @@ export default function BuyAndSellForm({ type }) {
         remanent = parseFloat(amount)
         for (let x = 0; x < array.length; x++) {
             if (remanent - array[x].size <= 0) {
-                price += (remanent * array[x].price)
-                return totalPrice = (price + (array[x].price + array[x].price * percent)).toFixed(8)
+                cost += (remanent * array[x].price)
+                return totalPrice = (cost + (array[x].price + array[x].price * percent)).toFixed(8)
             } else if (remanent - array[x].size > 0) {
-                price += (remanent * array[x].price)
+                cost += (remanent * array[x].price)
                 remanent = remanent - array[x].size
             }
         }
+        return 0
     }
+
     useEffect(() => {
         if (type.selection !== 'limit-order') {
             if (type.trade === 'buy') {
