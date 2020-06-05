@@ -68,7 +68,7 @@ const OrionWanchain = _ => {
                     // console.log('object');
                     axios
                         .get(
-                            `${process.env.REACT_APP_ORION_WAN}/api/eth/balance/${address}`
+                            `${process.env.REACT_APP_ORION_WAN}/api/balance/${address}`
                         )
                         .then(res => {
                             if (res.data.walletBalances) {

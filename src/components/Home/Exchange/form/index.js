@@ -47,49 +47,36 @@ export default function BuyAndSellForm({ type }) {
     const [available, setAvailable] = useState(0);
     const [total, setTotal] = useState(0);
     // const [ prevType, setPrevType ] = useState('');
-
-    useEffect(_ => {
-        // setPrevType(type.trade);
-
-        if (type.selection === 'market') {
-            setValues({
-                ...values,
-                price: lastPrice,
-            });
-        }
-        //eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
   
     /* This useEffect is made to change the de total if the amount change */
     const iterating_price_for_total = (array, amount, type) => {
         let price = 0
-        let totalPrice = 0
         let remanent = 0
         let percent = 0.03
         if (type === 'sell') percent = -0.03
-        if (amount === '') return 0
+        if (amount === '') return [0, 0]
         remanent = parseFloat(amount)
         for (let x = 0; x < array.length; x++) {
             if (remanent - array[x].size <= 0) {
                 price += (remanent * array[x].price)
-                return totalPrice = (price + (array[x].price + array[x].price * percent)).toFixed(8)
+                return [price, array[x].price*(1 + percent)]
             } else if (remanent - array[x].size > 0) {
-                price += (remanent * array[x].price)
-                remanent = remanent - array[x].size
+                price += (array[x].size * array[x].price)
+                remanent -= array[x].size
             }
         }
+        price += (remanent * array[array.length - 1].price)
+        return [price, array[array.length - 1].price*(1 + percent)]
     }
     useEffect(() => {
         if (type.selection !== 'limit-order') {
-            if (type.trade === 'buy') {
-               
-                setTotal(iterating_price_for_total(orderBook.aggregatedAsks, values.amount, 'buy'))
-                /* console.log(`orderBook.aggregatedAsks[0].price (${orderBook.aggregatedAsks[0].price}) is grater than orderBook.aggregatedAsks[1].price (${orderBook.aggregatedAsks[1].price})` ,orderBook.aggregatedAsks[0].price>orderBook.aggregatedAsks[1].price) */
-                /* totalPrice=iterating_price_for_total(orderBook.aggregatedAsks) */
-            } else if (type.trade === 'sell') {
-                
-                setTotal(iterating_price_for_total(orderBook.aggregatedBids, values.amount, 'sell'))
-            }
+            const [marketTotal, marketPrice] = iterating_price_for_total(orderBook.aggregatedAsks, values.amount, type.trade);
+            setValues({
+                ...values,
+                price: marketPrice,
+                total: marketTotal
+            });
+            setTotal(marketTotal.toFixed(8));
         }
     }, [orderBook.aggregatedAsks, orderBook.aggregatedBids, values.amount,type.selection]);
 /* This useEffect works to change the total price when u switch from market to limit order */
@@ -100,20 +87,6 @@ export default function BuyAndSellForm({ type }) {
             }
         }
     }, [type.selection]);
-
-    useEffect(
-        _ => {
-            if (type.selection === 'market') {
-                // console.log('lastPrice', lastPrice);
-                setValues({
-                    ...values,
-                    price: lastPrice,
-                });
-            }
-        },
-        //eslint-disable-next-line react-hooks/exhaustive-deps
-        [lastPrice]
-    );
 
     useEffect(
         _ => {
