@@ -6,3 +6,8 @@
     pointer-events: auto;
     margin-right: 10px !important;
 }
+@media only screen and (max-width: 900px) {
+    iframe{
+        width: 97% !important;
+    }
+  }

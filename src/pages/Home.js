@@ -118,7 +118,7 @@ function Home(props) {
 
                         {/* Small */}
                         {(active && chart) || (active && history) ? (
-                            <div className="center-panel js-panel">
+                            <div >
                                 {active && chart ? (
                                     <div className="image js-chart js-panel-item">
                                         {/* <div id="chart-container" /> */}
