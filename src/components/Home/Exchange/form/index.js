@@ -60,13 +60,14 @@ export default function BuyAndSellForm({ type }) {
         for (let x = 0; x < array.length; x++) {
             if (remanent - array[x].size <= 0) {
                 cost += (remanent * array[x].price)
-                return totalPrice = (cost + (array[x].price + array[x].price * percent)).toFixed(8)
+                return [cost, array[x].price*(1 + percent)]
             } else if (remanent - array[x].size > 0) {
-                cost += (remanent * array[x].price)
-                remanent = remanent - array[x].size
+                cost += (array[x].size * array[x].price)
+                remanent -= array[x].size
             }
         }
-        return 0
+        cost += (remanent * array[array.length - 1].price)
+        return [cost, array[array.length - 1].price*(1 + percent)]
     }
 
     useEffect(() => {

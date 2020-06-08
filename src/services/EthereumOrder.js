@@ -123,10 +123,10 @@ class EthereumOrder {
 
             order.signature = signedOrder;
 
-            console.log(order);
+           /*  console.log(order);
             console.log('----- Message: ', this.hashOrder(order));
             console.log('----- Signature: ', signedOrder);
-            console.log('----- Signed By: ', senderAddress);
+            console.log('----- Signed By: ', senderAddress); */
 
             // Luego de que es firmada la orden por el cliente se realiza la validacion
             let validation = await this.validateSolidity(order, signedOrder);
