@@ -159,7 +159,7 @@ const renderChart = mode => {
             'mainSeriesProperties.areaStyle.color1': candleUpColor,
             'mainSeriesProperties.areaStyle.color2': candleUpColor,
             'mainSeriesProperties.areaStyle.linecolor': candleUpColor,
-            // volumePaneSize: 'tiny'
+             volumePaneSize: 'tiny'
         };
     };
 
@@ -191,7 +191,7 @@ const renderChart = mode => {
     };
 
     studies_overrides = {
-        ...getStudiesOverrides({ volume0, volume1 }),
+       /*  ...getStudiesOverrides({ volume0, volume1 }), */
         ...themeConf.STUDIES_OVERRIDES,
     };
 

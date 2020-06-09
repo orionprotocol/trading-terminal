@@ -183,9 +183,24 @@ const Sidebar = props => {
         document.querySelector('.js-sidebar-wrapper').classList.add('open');
         const div = document.querySelector('#js-wrapper-pair');
         if (div) div.classList.add('active');
+        const arrow = document.querySelector('.link.js-pair-link');
+        const drop = document.querySelector('.pair-drop.js-pair-drop');
+        
+        console.log(arrow.classList,drop.classList)
+        if(arrow.classList.length===3 ||drop.classList.length===3){
+            arrow.classList.remove('active')
+            drop.classList.remove('active')
+        }
+        /* const arrow = document.querySelector('.link.js-pair-link');
+        arrow.classList.toggle('active');
+    
+        const drop = document.querySelector('.pair-drop.js-pair-drop');
+        drop.classList.toggle('active'); */
+
     };
 
     const onMouseLeave = _ => {
+    
         document.querySelector('.js-sidebar-wrapper').classList.remove('open');
         const div = document.querySelector('#js-wrapper-pair');
         if (div) div.classList.remove('active');
