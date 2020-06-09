@@ -248,7 +248,7 @@ const OrderBooks = (props) => {
 
 	return (
 		<div className="right-panel js-panel active">
-			<div className="js-panel-item js-orderbook">
+			<div className={`js-panel-item js-orderbook`}>
 				<Asks data={state.data} lastPrice={state.data.lastPrice} />
 				<Bids data={state.data} lastPrice={state.data.lastPrice} />
 			</div>

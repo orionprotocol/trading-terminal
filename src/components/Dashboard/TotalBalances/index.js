@@ -6,7 +6,7 @@ let price = require('crypto-price');
 const TotalBalances = _ => {
     const balances = useSelector(state => state.balances);
     const { assets } = useSelector(state => state.wallet);
-
+    const {tickers} = useSelector(state => state.general);
     const [contract, setContract] = useState(null);
     const [total, setTotal] = useState(0);
     const [inBTC, setInBTC] = useState({});
@@ -49,7 +49,7 @@ const TotalBalances = _ => {
             setBTCTotal();
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
-        [contract]
+        [contract,tickers]
     );
 
     useEffect(

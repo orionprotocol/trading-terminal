@@ -220,7 +220,7 @@ const Bids = props => {
                 let percentStyle27 = calculatePercent27(percentStyle2) + '%';
                 renderData.push(
                     <div
-                        className="order"
+                        className={`order ${localStorage.getItem('mode')==='Dark'? 'dark':''}`}
                         key={key + time + 'bids'}
                         onClick={_ => chooseOrderBookLine(bids[i])}
                     >

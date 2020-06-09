@@ -271,7 +271,7 @@ const Sockets = props => {
         });
         ws.onmessage = data => {
             let all = JSON.parse(data.data);
-            // console.log(all);
+            
             // all.forEach((e, i) => {
             for (let i = 1; i < all.length; i++) {
                 let e = all[i];
@@ -287,12 +287,14 @@ const Sockets = props => {
                     change24h: change,
                 };
                 tickers[e[0]] = ticker;
+             
                 setTickers(tickers);
             }
         };
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+  
     return <div />;
 };
 
