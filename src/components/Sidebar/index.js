@@ -185,11 +185,11 @@ const Sidebar = props => {
         if (div) div.classList.add('active');
         const arrow = document.querySelector('.link.js-pair-link');
         const drop = document.querySelector('.pair-drop.js-pair-drop');
-        
-        console.log(arrow.classList,drop.classList)
-        if(arrow.classList.length===3 ||drop.classList.length===3){
-            arrow.classList.remove('active')
-            drop.classList.remove('active')
+        if(arrow && drop ){
+            if(arrow.classList.length===3 ||drop.classList.length===3){
+                arrow.classList.remove('active')
+                drop.classList.remove('active')
+            }
         }
         /* const arrow = document.querySelector('.link.js-pair-link');
         arrow.classList.toggle('active');
