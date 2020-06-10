@@ -159,7 +159,7 @@ const renderChart = mode => {
             'mainSeriesProperties.areaStyle.color1': candleUpColor,
             'mainSeriesProperties.areaStyle.color2': candleUpColor,
             'mainSeriesProperties.areaStyle.linecolor': candleUpColor,
-             volumePaneSize: 'tiny'
+             /* volumePaneSize: 'tiny' */
         };
     };
 
