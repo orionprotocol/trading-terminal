@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-let price = require('crypto-price');
+/* let price = require('crypto-price'); */
 
 const TotalBalances = _ => {
     const balances = useSelector(state => state.balances);
@@ -118,10 +118,11 @@ const TotalBalances = _ => {
 
                 for (let asset in inBTC) {
                     let percent = (100 * inBTC[asset]) / total;
-
+                    
                     data.push({
-                        name: asset,
-                        val: percent,
+                        name:asset ,
+                        val: inBTC[asset],
+                        
                     });
                 }
 
@@ -166,9 +167,10 @@ const TotalBalances = _ => {
                 pieSeries.labels.template.disabled = true;
                 pieSeries.ticks.template.disabled = true;
                 pieSeries.colors.list = [
-                    window.am4core.color('#424054'),
-                    window.am4core.color('#f7931a'),
-                    window.am4core.color('#8800ff'),
+                    window.am4core.color('#8800ff'),//violet eth
+                    window.am4core.color('#f7931a'),//yellow btc
+                    window.am4core.color('#434343'),//black xrp
+                    window.am4core.color('#2AA37E'),//green usdt
                 ];
             });
         },
