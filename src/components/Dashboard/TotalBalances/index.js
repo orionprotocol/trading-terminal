@@ -6,11 +6,12 @@ let price = require('crypto-price');
 const TotalBalances = _ => {
     const balances = useSelector(state => state.balances);
     const { assets } = useSelector(state => state.wallet);
-    const {tickers} = useSelector(state => state.general);
+    const { changeInTickers, tickers } = useSelector(state => state.general);
     const [contract, setContract] = useState(null);
     const [total, setTotal] = useState(0);
     const [inBTC, setInBTC] = useState({});
 
+    /*  console.log(tickers,assets) */
     useEffect(
         _ => {
             let newContract = {};
@@ -26,22 +27,47 @@ const TotalBalances = _ => {
     const setBTCTotal = async _ => {
         let newTotal = 0;
         let newInBTC = {};
-
-        for (let asset in contract) {
-            let res = await price.getCryptoPrice('BTC', asset);
+        /*  console.log(tickers)  */
+        for (const symbolA in contract) {
             let amount = 0;
-            if (res) {
-                amount = Number(contract[asset]) * Number(res.price);
-                newInBTC[asset] = amount;
-                newTotal += Number(amount);
-            } else {
-                newTotal += Number(contract[asset]);
-                newInBTC[asset] = contract[asset];
+            for (const pairs in tickers) {
+                if (symbolA === 'BTC') {
+                    /* If pure btc */
+                    newInBTC[symbolA] = contract[symbolA];
+                   /*  console.log(contract[symbolA]) */
+                } else {
+                    if (`${symbolA}-BTC` === pairs) {
+                        /* price for a symbol */
+                        newInBTC[symbolA] = Number(contract[symbolA]) * Number(tickers[`${symbolA}-BTC`].lastPrice);
+                    } else if (`BTC-${symbolA}` === pairs) {
+                        /* price for dolar */
+                        newInBTC[symbolA] = Number(contract[symbolA]) / Number(tickers[`BTC-${symbolA}`].lastPrice);
+                    }
+                }
             }
         }
+        for (const key in newInBTC) {
+            newTotal +=newInBTC[key]
+        }
+        console.log(newTotal,newInBTC)
 
-        setTotal(newTotal);
-        setInBTC(newInBTC);
+        /*   
+        //OLD LOGIC
+        for (let asset in contract) {
+              let res = await price.getCryptoPrice('BTC', asset);
+              let amount = 0;
+              if (res) {
+                  amount = Number(contract[asset]) * Number(res.price);
+                  newInBTC[asset] = amount;
+                  newTotal += Number(amount);
+              } else {
+                  newTotal += Number(contract[asset]);
+                  newInBTC[asset] = contract[asset];
+              }
+          } */
+        
+                setTotal(newTotal);
+                setInBTC(newInBTC); 
     };
 
     useEffect(
@@ -49,7 +75,7 @@ const TotalBalances = _ => {
             setBTCTotal();
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
-        [contract,tickers]
+        [contract, changeInTickers]
     );
 
     useEffect(
@@ -146,7 +172,7 @@ const TotalBalances = _ => {
                 ];
             });
         },
-        [total, inBTC]
+        [total]
     );
 
     return (

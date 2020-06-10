@@ -16,6 +16,7 @@ const initialState = {
     sideForm: 'buy',
     assets: [],
     tickers: {},
+    changeInTickers:{}
 };
 
 export default (state = initialState, { type, ...action }) => {
@@ -68,6 +69,8 @@ export default (state = initialState, { type, ...action }) => {
             return { ...state, assets: action.payload };
         case 'SetTickers':
             return { ...state, tickers: action.payload };
+        case 'SetChangeInTickers':
+            return { ...state, changeInTickers: action.payload };
         default:
             return state;
     }

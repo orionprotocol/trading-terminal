@@ -209,7 +209,7 @@ const disabled_features = [
     'show_hide_button_in_legend',
     'edit_buttons_in_legend',
     'header_chart_type',
-    /* 'volume_force_overlay', */
+    'volume_force_overlay',
     'hide_left_toolbar_by_default',
     'legend_context_menu',
     /* 'left_toolbar', *///this feature turn off the left bar

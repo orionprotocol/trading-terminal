@@ -7,7 +7,7 @@ import './css/chart.css';
 function App() {
     return (
         <Fragment>
-            <Services />
+            <Services/>
             <Router />
         </Fragment>
     );

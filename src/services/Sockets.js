@@ -9,7 +9,7 @@ let socket;
 // websocketHeartbeatJs https://github.com/zimv/websocket-heartbeat-js
 // el codigo de esta libreria esta en public/js/websocketHeartbeat.js
 
-const Sockets = props => {
+const Sockets = () => {
     const dispatch = useDispatch();
 
     let { contractBalances, walletBalances } = useSelector(
@@ -57,6 +57,10 @@ const Sockets = props => {
     );
     const setTickers = useCallback(
         data => dispatch({ type: 'SetTickers', payload: data }),
+        [dispatch]
+    );
+    const setChangeInTickers = useCallback(
+        data => dispatch({ type: 'SetChangeInTickers', payload: data }),
         [dispatch]
     );
 
@@ -270,24 +274,26 @@ const Sockets = props => {
             pongTimeout: 3000,
         });
         ws.onmessage = data => {
-            let all = JSON.parse(data.data);
-            
-            // all.forEach((e, i) => {
-            for (let i = 1; i < all.length; i++) {
-                let e = all[i];
-                let lastPrice = Number(e[1])
-                let openPrice = Number(e[2]);
+            let response = JSON.parse(data.data);
+         
+            // data.forEach((e, i) => {
+            for (let i = 1; i < response.length; i++) {
+                let auxArray = response[i];
+                let lastPrice = Number(auxArray[1])
+                let openPrice = Number(auxArray[2]);
                 let change = Number(
                     ((lastPrice / openPrice - 1) * 100).toFixed(2)
                 );
 
                 let ticker = {
                     lastPrice: lastPrice.toFixed(6),
-                    vol24h: Number(e[5]).toFixed(2),
+                    vol24h: Number(auxArray[5]).toFixed(2),
                     change24h: change,
                 };
-                tickers[e[0]] = ticker;
-             
+                tickers[auxArray[0]] = ticker;
+                
+                if(window.location.href.includes('dashboard'))setChangeInTickers(Math.random())
+                
                 setTickers(tickers);
             }
         };
