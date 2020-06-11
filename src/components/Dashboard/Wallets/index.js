@@ -38,7 +38,7 @@ const settings = {
 const Wallets = _ => {
     const balances = useSelector(state => state.balances);
     const { assets } = useSelector(state => state.wallet);
-
+    const { tickers, changeInTickers } = useSelector(state => state.general);
     const [contract, setContract] = useState({});
     const [wallet, setWallet] = useState({});
 
@@ -117,39 +117,24 @@ const Wallets = _ => {
         let newTotal = {},
             newInBTC = {},
             newInUSD = {};
-        for (let asset in contract) {
-            if (Number(contract[asset]) >= 0 && Number(wallet[asset]) >= 0) {
-                newTotal[asset] = (contract[asset] + wallet[asset]).toFixed(6);
-                newInBTC[asset] = newTotal[asset];
-                newInUSD[asset] = newTotal[asset];
+        if (Object.keys(tickers).length !== 0) {
+            for (const symbolA in contract) {
+                if (Number(contract[symbolA]) >= 0 && Number(wallet[symbolA]) >= 0) {
+                    newTotal[symbolA] = (contract[symbolA] + wallet[symbolA]).toFixed(6);
+                    newInBTC[symbolA] = newTotal[symbolA];
+                    newInUSD[symbolA] = newTotal[symbolA];
 
-                let res = await price.getCryptoPrice('BTC', asset);
-                if (res) {
-                    let amount;
-                    if (newTotal[asset] === 'NaN') {
-                        amount = 0;
-                    } else {
-                        amount = (
-                            Number(newTotal[asset]) * Number(res.price)
-                        ).toFixed(6);
+                    if (symbolA === 'USDT' && tickers[`BTC-USDT`]!==undefined) {
+                        /* dolar price in BTC */
+                        newInBTC[symbolA] = formatNumber(Number(newTotal[symbolA]) / Number(tickers[`BTC-USDT`].lastPrice))
+                    };
+
+                    if (tickers[`${symbolA}-BTC`] !== undefined) {
+                        newInBTC[symbolA] = formatNumber(Number(newTotal[symbolA]) * Number(tickers[`${symbolA}-BTC`].lastPrice))
                     }
-
-                    newInBTC[asset] = amount;
-                }
-
-                if (asset !== 'USDT') {
-                    let res2 = await price.getCryptoPrice('USD', asset);
-                    if (res2) {
-                        let amount;
-                        if (newTotal[asset] === 'NaN') {
-                            amount = 0;
-                        } else {
-                            amount = (
-                                Number(newTotal[asset]) * Number(res2.price)
-                            ).toFixed(2);
-                        }
-
-                        newInUSD[asset] = formatNumber(amount);
+                    if (tickers[`${symbolA}-USDT`] !== undefined) {
+                        /* price for dolar */
+                        newInUSD[symbolA] = formatNumber(Number(newTotal[symbolA]) * Number(tickers[`${symbolA}-USDT`].lastPrice))
                     }
                 }
             }
@@ -164,7 +149,7 @@ const Wallets = _ => {
             setTotals();
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
-        [contract, wallet]
+        [contract, wallet, changeInTickers]
     );
 
     const handleAddWallet = _ => {
@@ -208,7 +193,7 @@ const Wallets = _ => {
                             <p className="money">
                                 <span className="num">
                                     {typeof total[a.toUpperCase()] ===
-                                    'undefined'
+                                        'undefined'
                                         ? 0
                                         : total[a.toUpperCase()]}
                                 </span>

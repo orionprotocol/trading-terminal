@@ -33,25 +33,19 @@ export default function Line({ asset, handlePair, assetB }) {
     useEffect(
         _ => {
             if (tickers[pair]) {
-                price.getCryptoPrice('USD', assetB).then(object => {
-                    if (assetB === 'USDT') {
-                        object = {};
-                        object.price = 1;
-                    }
+                if (assetB === 'USDT') return
 
-                    if (object === undefined) return;
-
-                    let vol = Number(tickers[pair].vol24h) * object.price;
-                    vol = (vol / 10 ** 6).toFixed(2);
-                    let last = (
-                        Number(tickers[pair].lastPrice) * object.price
-                    ).toFixed(2);
-                    setDollars({
-                        ...dollars,
-                        last: last,
-                        vol: vol,
-                    });
+                let vol = Number(tickers[pair].vol24h) * tickers[`${assetB}-USDT`].lastPrice;
+                vol = (vol / 10 ** 6).toFixed(2);
+                let last = (
+                    Number(tickers[pair].lastPrice) * tickers[`${assetB}-USDT`].lastPrice
+                ).toFixed(2);
+                setDollars({
+                    ...dollars,
+                    last: last,
+                    vol: vol,
                 });
+
 
                 if (tickers[pair].vol24h) {
                     if (Number(tickers[pair].vol24h) > 1000000) {
@@ -67,11 +61,13 @@ export default function Line({ asset, handlePair, assetB }) {
                     setChange24h(Number(tickers[pair].change24h));
                 }
             }
+
+
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
         [tickers[pair]]
     );
-  
+
     const handleFav = _ => {
         let favs = localStorage.getItem('favs');
 
@@ -126,13 +122,13 @@ export default function Line({ asset, handlePair, assetB }) {
                         style={{ width: '10px', height: '10px' }}
                     />
                 ) : (
-                    <img
-                        onClick={_ => handlePair(asset)}
-                        src="/img/red-arrow.png"
-                        style={{ width: '10px', height: '10px' }}
-                        alt="home"
-                    />
-                )}
+                        <img
+                            onClick={_ => handlePair(asset)}
+                            src="/img/red-arrow.png"
+                            style={{ width: '10px', height: '10px' }}
+                            alt="home"
+                        />
+                    )}
                 <p onClick={_ => handlePair(asset)}>
                     <span className="emp">{change24h}</span> <span>%</span>
                 </p>
@@ -142,10 +138,10 @@ export default function Line({ asset, handlePair, assetB }) {
                         <i className="fa fa-star" aria-hidden="true" />
                     </div>
                 ) : (
-                    <div className="star js-star" onClick={handleFav}>
-                        <i className="far fa-star"></i>
-                    </div>
-                )}
+                        <div className="star js-star" onClick={handleFav}>
+                            <i className="far fa-star"></i>
+                        </div>
+                    )}
             </div>
         </div>
     );

@@ -241,7 +241,7 @@ const Sockets = () => {
 
             websocket2.onmessage = function (data) {
                 // setOrderBook(JSON.parse(data.data));
-            /*     console.log('la data del socket de los simbolos',JSON.parse(data.data)[1])  */
+             console.log('la data del socket de los simbolos',JSON.parse(data.data)) 
                 data = JSON.parse(data.data)[1];
                 let lastPrice = Number(data[1]);
                 let openPrice = Number(data[2]);

@@ -24,7 +24,7 @@ const formatNumber = number => {
 let intervalId = 0;
 const CommonInfo = ({History}) => {
   
-    const { symbolA, symbolB, lastPrice, high, low, vol, change } = useSelector(
+    const { symbolA, symbolB, lastPrice, high, low, vol, change,tickers } = useSelector(
         state => state.general
     );
 
@@ -33,15 +33,32 @@ const CommonInfo = ({History}) => {
 
     useEffect(
         _ => {
-            price.getCryptoPrice('USD', symbolB).then(object => {
-                
+            if (symbolB === 'USDT') {
+                return 
+            }else{
+               /*  console.log(tickers[`${symbolB}-USDT`]) */
+                if(tickers[`${symbolB}-USDT`]!==undefined){
+                    let last = (tickers[`${symbolB}-USDT`].lastPrice * lastPrice).toFixed(2);
+                    let h = (tickers[`${symbolB}-USDT`].lastPrice * high).toFixed(2);
+                    let l = (tickers[`${symbolB}-USDT`].lastPrice * low).toFixed(2);
+                    let v = (tickers[`${symbolB}-USDT`].lastPrice * Number(vol)).toFixed(2);
+    
+                    last = formatNumber(last);
+                    h = formatNumber(h);
+                    l = formatNumber(l);
+                    v = (v / 10 ** 6).toFixed(2);
+                    v = formatNumber(v);
+                    setDollars({ ...dollars, last, low: l, high: h, vol: v }); 
+                }
+            }
+         /*    price.getCryptoPrice('USD', symbolB).then(object => {
                 if (symbolB === 'USDT') {
                     object = {};
                     object.price = 1;
+                    
                 }
-                /* console.log("objeto cuando cambia las monedas",object) */
                 if (object === undefined) return;
-
+                console.log(object.price)
                 let last = (object.price * lastPrice).toFixed(2);
                 let h = (object.price * high).toFixed(2);
                 let l = (object.price * low).toFixed(2);
@@ -53,9 +70,9 @@ const CommonInfo = ({History}) => {
                 v = (v / 10 ** 6).toFixed(2);
                 v = formatNumber(v);
 
-                setDollars({ ...dollars, last, low: l, high: h, vol: v });
-            });
-        },
+                setDollars({ ...dollars, last, low: l, high: h, vol: v }); 
+            });*/
+        }, 
         //eslint-disable-next-line react-hooks/exhaustive-deps
         [lastPrice, high, low, vol]
     );

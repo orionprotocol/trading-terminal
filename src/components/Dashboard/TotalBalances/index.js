@@ -49,8 +49,6 @@ const TotalBalances = _ => {
         for (const key in newInBTC) {
             newTotal +=newInBTC[key]
         }
-        console.log(newTotal,newInBTC)
-
         /*   
         //OLD LOGIC
         for (let asset in contract) {
