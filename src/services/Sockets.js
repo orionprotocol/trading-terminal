@@ -228,7 +228,7 @@ const Sockets = () => {
             }
 
             /*  console.log("los simbolos",sym)  */
-            const urlWS2 = `${process.env.REACT_APP_URL_WS2}/${symbol}`;
+            const urlWS2 = `${process.env.REACT_APP_URL_WS2}/ticker/${symbol}`;
             // console.log('url symbol ', urlWS2);
 
             websocket2 = new window.WebsocketHeartbeatJs({
@@ -269,7 +269,7 @@ const Sockets = () => {
     useEffect(_ => {
 
         const ws = new window.WebsocketHeartbeatJs({
-            url: process.env.REACT_APP_URL_WS3,
+            url: `${process.env.REACT_APP_URL_WS2}/allTickers`,
             pingTimeout: 3000,
             pongTimeout: 3000,
         });
