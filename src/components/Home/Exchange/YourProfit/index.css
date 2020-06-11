@@ -85,3 +85,45 @@
 	flex-direction: column;
 	font-weight: bold;
 }
+
+
+
+/* MARQUEE EFFECT */
+
+.marquee {
+	height: 75px;
+	width: 420px;
+	overflow: hidden;
+	position: relative;
+  }
+  
+  .marquee div {
+	  cursor: pointer;
+	display: flex;
+	width: 300%;
+	height: 100%;
+	position: absolute;
+	overflow: hidden;
+	animation: marquee 15s ease-in-out infinite;
+  }
+  
+  .marquee span {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 50%;
+	color:white;
+	border-right: 1px solid #f4f4f4 ;
+	
+  }
+  .marquee div:hover{
+	animation-play-state: paused;
+  }
+  
+  @keyframes marquee {
+	0% { left: 10px; }
+	100% { left: -200%; }
+  }
+
+  

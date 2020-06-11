@@ -66,7 +66,12 @@ export default function BuyAndSellForm({ type }) {
                 remanent -= array[x].size
             }
         }
-        cost += (remanent * array[array.length - 1].price)
+        if(array[array.length - 1].price){
+            cost += (remanent * array[array.length - 1].price)
+        }else{
+            cost += 0
+        }
+        
         return [cost, array[array.length - 1].price*(1 + percent)]
     }
 

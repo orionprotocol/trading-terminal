@@ -8,18 +8,17 @@ const urlBase = process.env.REACT_APP_BACKEND;
 
 const YourProfit = () => {
 	const { symbol, qtyForm, sideForm, mode } = useSelector((state) => state.general);
-	const [profits, setProfits] = useState('');
-
-let style
-if(mode==='Dark'){
-style={color:'white'}
-}else{
-style={color:' rgb(139, 139, 139)'}
-}
-	const createProfits = profits => {
+	/* const [profits, setProfits] = useState(''); */
+	const [profits2, setProfits2] = useState([]);
+	let style
+	if (mode === 'Dark') {
+		style = { color: 'white' }
+	} else {
+		style = { color: ' rgb(139, 139, 139)' }
+	}
+	/* const createProfits = profits => {
 		return profits.map((res, key) => {
 			return (
-
 				<div key={key} className={`exchange`}>
 					<div className="name">
 						<span
@@ -38,14 +37,9 @@ style={color:' rgb(139, 139, 139)'}
 						<span>+ {res.benefitBtc} BTC</span>
 					</div>
 				</div>
-				/* 
-								<div key={key} style={{ color: 'white' }}></div>
-				
-				 */
-
 			)
 		})
-	}
+	} */
 
 	const loadBenefits = () => {
 		let url = `${urlBase}/api/v1/order-benefits?symbol=${symbol}&ordQty=${qtyForm}&side=${sideForm}`
@@ -72,7 +66,8 @@ style={color:' rgb(139, 139, 139)'}
 					return 0;
 				});
 
-				setProfits(createProfits(aux))
+				/* setProfits(createProfits(aux)) */
+				setProfits2(aux)
 			})
 			.catch((err) => {
 				console.log('err: ', err);
@@ -87,25 +82,47 @@ style={color:' rgb(139, 139, 139)'}
 		[symbol, qtyForm, sideForm]
 	);
 
-	const myArrow = ({ type, onClick }) => {
-		const pointer = type === consts.PREV ? <i className="fas fa-chevron-left"></i> : <i className="fas fa-chevron-right"></i>
-		return <button className='profits-arrows' onClick={onClick}>{pointer}</button>
-	}
+	/* 	const myArrow = ({ type, onClick }) => {
+			const pointer = type === consts.PREV ? <i className="fas fa-chevron-left"></i> : <i className="fas fa-chevron-right"></i>
+			return <button className='profits-arrows' onClick={onClick}>{pointer}</button>
+		} */
 
-	if (profits === '') return null
+	let prof = profits2.map((res, key) => {
+		return (
+			<span key={key}>
+				 <label  style={{
+					color: `rgb(120,133,169)`,
+					fontWeight: '900',
+					fontSize:'18px'
+				}} >{res.name}</label>
+				<label style={{fontSize:'12px'}}>+ {res.benefitPct} %</label>
+				<label style={{fontSize:'12px'}}>+ {res.benefitBtc} BTC </label>
+			</span>
+		)
+	})
+
+	if (profits2 === []) return null
 
 	return (
 		<section className="your-profit">
 			<div>
 				<h2>Your Profits</h2>
 			</div>
-
+			{/* 
 			<div className={`your-profit-data`}>
-				<Carousel renderArrow={myArrow} itemsToShow={1} renderPagination={() => { return <div></div> }
+				<Carousel renderArrow={myArrow} enableAutoPlay autoPlaySpeed={3000} itemsToShow={1} renderPagination={() => { return <div></div> }
 				}>
-					{profits}
+						{profits}
 				</Carousel>
+			</div> */}
+
+			<div className="marquee">
+				<div>
+					{prof}
+				</div>
 			</div>
+
+
 		</section>
 	);
 };
