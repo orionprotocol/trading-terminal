@@ -116,7 +116,7 @@ const YourProfit = () => {
 				</Carousel>
 			</div> */}
 
-			<div className="marquee">
+			<div className={`marquee ${mode}`}>
 				<div>
 					{prof}
 				</div>

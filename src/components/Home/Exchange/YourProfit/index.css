@@ -104,7 +104,7 @@
 	height: 100%;
 	position: absolute;
 	overflow: hidden;
-	animation: marquee 15s ease-in-out infinite;
+	animation: marquee 30s linear infinite;
   }
   
   .marquee span {
@@ -115,15 +115,19 @@
 	width: 50%;
 	color:white;
 	border-right: 1px solid #f4f4f4 ;
+  }
+  .marquee.Light span {
 	
+	color:#434343;
+	border-right: 1px solid #cacaca ;
   }
   .marquee div:hover{
 	animation-play-state: paused;
   }
   
   @keyframes marquee {
-	0% { left: 10px; }
-	100% { left: -200%; }
+	0% { left: 100%; }
+	100% { left: -300%; }
   }
 
   
