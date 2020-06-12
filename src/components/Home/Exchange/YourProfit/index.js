@@ -25,6 +25,7 @@ const YourProfit = () => {
 		return profits.map((res, key) => {
 			/* 	if(res.benefitBtc===0)return <div></div> */
 			return (
+
 				<div key={key} className={`exchange`}>
 					<div className="name">
 						<span
@@ -43,6 +44,11 @@ const YourProfit = () => {
 						<span>+ {res.benefitBtc} BTC</span>
 					</div>
 				</div>
+				/*
+								<div key={key} style={{ color: 'white' }}></div>
+
+				 */
+
 			)
 		})
 	}
