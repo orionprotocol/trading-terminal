@@ -36,12 +36,15 @@ export default function FortmaticService() {
                 // la funcion getAccounts es llamada al momento de conectar esta wallet
                 // al exchange
                 web3.eth.getAccounts((error, accounts) => {
+
                     // console.log('fortmaticConnected 88', fortmaticConnected);
-                    // console.log('accounts', accounts);
-                    if (accounts.length > 0) {
-                        setFortmaticConnect(true);
-                        setEthAddress(accounts[0]);
-                        localStorage.setItem('ethAddress', accounts[0]);
+                    console.log('accounts', accounts);
+                    if(accounts){
+                        if (accounts.length > 0) {
+                            setFortmaticConnect(true);
+                            setEthAddress(accounts[0]);
+                            localStorage.setItem('ethAddress', accounts[0]);
+                        }
                     }
                 });
             }
