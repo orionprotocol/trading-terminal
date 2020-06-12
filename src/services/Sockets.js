@@ -245,11 +245,8 @@ const Sockets = () => {
                 /*    console.log('la data cabra', JSON.parse(data.data)) */
                 data = JSON.parse(data.data)[1];
                 let actualPair
-                if (localStorage.getItem('actualPair')) {
-                    actualPair = localStorage.getItem('actualPair')
-                } else {
-                    if (window.location.href.includes('trade')) actualPair = window.location.href.split('/')[4].replace('_', '-')
-                }
+                if (window.location.href.includes('trade')) actualPair = window.location.href.split('/')[4].replace('_', '-')
+                
               /*   console.log(`pair used=${actualPair}, pair obtained=${data[0]}, they are equal?:`,data[0] === actualPair, data) */
                 if (data[0] === actualPair) {
                     let lastPrice = Number(data[1]);
