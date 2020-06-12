@@ -41,7 +41,7 @@ const YourProfit = () => {
 						style={style}
 					>
 						<span>+ {res.benefitPct} % </span>
-						<span>+ {res.benefitBtc} BTC</span>
+						<span>+ {res.benefitBtc} {symbolB}</span>
 					</div>
 				</div>
 				/*
@@ -58,10 +58,12 @@ const YourProfit = () => {
 		if (qtyForm === '') quantity = 0
 		let url = `${urlBase}/api/v1/order-benefits?symbol=${symbol}&ordQty=${quantity}&side=${sideForm}`
 		let aux = [], result;
+		
 		axios
 			.get(url)
 			.then((res) => {
 				result = res.data
+				
 				for (let key in result) {
 					if (Number(result[key].benefitPct) !== 0) {
 						aux.push({
