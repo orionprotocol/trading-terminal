@@ -328,16 +328,6 @@ const Sidebar = props => {
                                         <span className="text">Dashboard</span>
                                     </Link>
                                     <Link
-                                        className={`nav-link ${actives[2]}`}
-                                        to="/swap"
-                                    >
-                                        <span>
-                                            <i className="fas fa-exchange-alt"></i>
-                                        </span>
-
-                                        <span className="text">Swap</span>
-                                    </Link>
-                                    <Link
                                         className={`nav-link ${actives[3]}`}
                                         to="/history"
                                     >
