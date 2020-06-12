@@ -244,7 +244,7 @@ const OrderBooks = (props) => {
 		[ orderBook ]
 	);
 
-	// console.log(state);
+	/*  console.log("STATE",state); */
 
 	return (
 		<div className="right-panel js-panel active">

@@ -132,7 +132,7 @@ const Bids = props => {
                 return prev.total > current.total ? prev : current;
             });
             const maxBidAmount = bids.reduce(function (prev, current) {
-                return prev.size > current.size ? prev : current;
+                return Number(prev.size) > Number(current.size) ? prev : current;
             });
             for (let i = 0; i < bids.length; i++, key++) {
                 let exchanges = bids[i].exchanges || [];
@@ -144,6 +144,7 @@ const Bids = props => {
                     Number(maxBidAmount.size),
                     Number(bids[i].size)
                 ).toFixed(6);
+
                 let percentStyle = percent + '%';
                 let percentStyle2 = percent2 + '%';
                 let imgExchanges = [];
@@ -151,6 +152,7 @@ const Bids = props => {
                 let exchangesExtras = null;
 
                 if (exchanges.length < 3) {
+                    imgExchanges = [];
                     for (let j = 0; j < exchanges.length; j++) {
                         let time = new Date().getTime();
                         let imagePath = '/img/exchanges/{exchange}.png'.replace(
@@ -168,7 +170,7 @@ const Bids = props => {
                         );
                     }
                 } else {
-                    let extras = [];
+                    imgExchanges = [];
                     for (let j = 0; j < 2; j++) {
                         let time = new Date().getTime();
                         let imagePath = '/img/exchanges/{exchange}.png'.replace(
@@ -185,7 +187,7 @@ const Bids = props => {
                             />
                         );
                     }
-
+                    let extras = [];
                     for (let j = 2; j < exchanges.length; j++) {
                         let time = new Date().getTime();
                         let imagePath = '/img/exchanges/{exchange}.png'.replace(
@@ -278,7 +280,7 @@ const Bids = props => {
 
     return (
         <div className="order-book">
-            <div className="orders">{bids}</div>
+            <div className="orders">{bids}</div> 
         </div>
     );
 };
