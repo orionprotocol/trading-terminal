@@ -89,11 +89,12 @@ export default function BuyAndSellForm({ type }) {
 /* This useEffect works to change the total price when u switch from market to limit order */
     useEffect(() => {
         if(type.selection==='limit-order'){
+            console.log('entro aca??',values.amount,values.price )
             if (values.price !== '' && values.amount!=='') {
                 setTotal((values.amount * values.price).toFixed(8));
             }
         }
-    }, [type.selection]);
+    }, [type.selection,values.amount,values.price]);
 
     useEffect(
         _ => {
