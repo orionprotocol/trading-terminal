@@ -107,7 +107,6 @@ const [tvChart,settvChart]=useState(null)
 
 useEffect(() => {
     if (tvChart !== null) {
-        console.log("entro aca?")
         tvChart.onChartReady(() => {
             tvChart.chart().setSymbol(`${symbolA}-${symbolB}`)
         });

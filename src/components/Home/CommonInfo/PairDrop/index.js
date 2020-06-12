@@ -178,6 +178,7 @@ const PairDrop = ({ handleWrapper, History }) => {
         setSymbolA(symbolA);
         setSymbolB(currentQuote);
         History.history.push(`/trade/${symbolA}_${currentQuote}`)
+        localStorage.setItem('actualPair',`${symbolA}-${currentQuote}`)
         handleWrapper();
     };
 

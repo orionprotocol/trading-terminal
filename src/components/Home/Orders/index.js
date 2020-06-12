@@ -22,6 +22,7 @@ var loadOrderHistory = () => {};
 
 const Orders = _ => {
     const { symbol, mode } = useSelector(state => state.general);
+    const  balances  = useSelector(state => state.balances);
     const { ethAddress } = useSelector(state => state.wallet);
     const [orders, setOrders] = useState([]);
     const [ordersOrigin, setOrdersOrigin] = useState([]);
@@ -38,7 +39,7 @@ const Orders = _ => {
         status: 'fa-angle-down',
         total: 'fa-angle-down',
     });
-
+/* console.log(balances) */
     loadOrderHistory = () => {
         let address;
 

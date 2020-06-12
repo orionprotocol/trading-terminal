@@ -97,7 +97,7 @@ const Sockets = () => {
             }
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
-        [wanmaskConnected, metamaskConnected, fortmaticConnected,coinbaseConnected]
+        [wanmaskConnected, metamaskConnected, fortmaticConnected, coinbaseConnected]
     );
 
     // Normal connection for Socket.io - only Metamask and Fortmatic
@@ -147,7 +147,7 @@ const Sockets = () => {
 
             if (
                 isConn &&
-                (wanmaskConnected || metamaskConnected || fortmaticConnected ||coinbaseConnected) &&
+                (wanmaskConnected || metamaskConnected || fortmaticConnected || coinbaseConnected) &&
                 typeof contractBalances !== 'undefined' &&
                 typeof walletBalances !== 'undefined'
             ) {
@@ -164,10 +164,10 @@ const Sockets = () => {
                     if (
                         (wanmaskConnected &&
                             wan3.toChecksumAddress(data.user) ===
-                                wan3.toChecksumAddress(address)) ||
+                            wan3.toChecksumAddress(address)) ||
                         ((metamaskConnected || fortmaticConnected || coinbaseConnected) &&
                             web3.utils.toChecksumAddress(data.user) ===
-                                web3.utils.toChecksumAddress(ethAddress))
+                            web3.utils.toChecksumAddress(ethAddress))
                     ) {
                         console.log('new balances', data);
                         const newBal = data.newBalance;
@@ -211,8 +211,8 @@ const Sockets = () => {
             });
 
             setWS(ws);
-           /*  console.log(`orderBook.aggregatedAsks[0].price (${orderBook.aggregatedAsks[0].price}) is grater than orderBook.aggregatedAsks[1].price (${orderBook.aggregatedAsks[1].price})` ,orderBook.aggregatedAsks[0].price>orderBook.aggregatedAsks[1].price) */
-          
+            /*  console.log(`orderBook.aggregatedAsks[0].price (${orderBook.aggregatedAsks[0].price}) is grater than orderBook.aggregatedAsks[1].price (${orderBook.aggregatedAsks[1].price})` ,orderBook.aggregatedAsks[0].price>orderBook.aggregatedAsks[1].price) */
+
             ws.onmessage = function (data) {
                 /* console.log(JSON.parse(data.data)) */
                 setOrderBook(JSON.parse(data.data));
@@ -224,6 +224,7 @@ const Sockets = () => {
 
             if (websocket2 !== null) {
                 websocket2.close();
+
                 setWS2(null);
             }
 
@@ -241,22 +242,31 @@ const Sockets = () => {
 
             websocket2.onmessage = function (data) {
                 // setOrderBook(JSON.parse(data.data));
-             
+                /*    console.log('la data cabra', JSON.parse(data.data)) */
                 data = JSON.parse(data.data)[1];
-                let lastPrice = Number(data[1]);
-                let openPrice = Number(data[2]);
-                let change = Number(
-                    ((lastPrice / openPrice - 1) * 100).toFixed(2)
-                );
-                let high = Number(data[3]).toFixed(6);
-                let low = Number(data[4]).toFixed(6);
-                let vol = Number(data[5]).toFixed(2);
+                let actualPair
+                if (localStorage.getItem('actualPair')) {
+                    actualPair = localStorage.getItem('actualPair')
+                } else {
+                    if (window.location.href.includes('trade')) actualPair = window.location.href.split('/')[4].replace('_', '-')
+                }
+              /*   console.log(`pair used=${actualPair}, pair obtained=${data[0]}, they are equal?:`,data[0] === actualPair, data) */
+                if (data[0] === actualPair) {
+                    let lastPrice = Number(data[1]);
+                    let openPrice = Number(data[2]);
+                    let change = Number(
+                        ((lastPrice / openPrice - 1) * 100).toFixed(2)
+                    );
+                    let high = Number(data[3]).toFixed(6);
+                    let low = Number(data[4]).toFixed(6);
+                    let vol = Number(data[5]).toFixed(2);
 
-                setChange(change); // 24h % change, porcentaje de cambio de las ultimas 24h
-                setLow(low);
-                setHigh(high);
-                setVol(vol);
-                setLastPrice(lastPrice);
+                    setChange(change); // 24h % change, porcentaje de cambio de las ultimas 24h
+                    setLow(low);
+                    setHigh(high);
+                    setVol(vol);
+                    setLastPrice(lastPrice);
+                }
                 // console.log('setedLastPrice', lastPrice);
             };
         },
@@ -275,7 +285,7 @@ const Sockets = () => {
         });
         ws.onmessage = data => {
             let response = JSON.parse(data.data);
-         
+
             // data.forEach((e, i) => {
             for (let i = 1; i < response.length; i++) {
                 let auxArray = response[i];
@@ -291,16 +301,16 @@ const Sockets = () => {
                     change24h: change,
                 };
                 tickers[auxArray[0]] = ticker;
-                
-                if(window.location.href.includes('dashboard'))setChangeInTickers(Math.random())
-                
+
+                if (window.location.href.includes('dashboard')) setChangeInTickers(Math.random())
+
                 setTickers(tickers);
             }
         };
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-  
+
     return <div />;
 };
 
