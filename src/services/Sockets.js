@@ -206,8 +206,8 @@ const Sockets = () => {
 
             const ws = new window.WebsocketHeartbeatJs({
                 url: urlWS,
-                pingTimeout: 3000,
-                pongTimeout: 3000,
+                pingTimeout: 25000,
+                pongTimeout: 25000,
             });
 
             setWS(ws);
@@ -234,8 +234,8 @@ const Sockets = () => {
 
             websocket2 = new window.WebsocketHeartbeatJs({
                 url: urlWS2,
-                pingTimeout: 3000,
-                pongTimeout: 3000,
+                pingTimeout: 25000,
+                pongTimeout: 25000,
             });
 
             setWS2(websocket2);
@@ -277,8 +277,8 @@ const Sockets = () => {
 
         const ws = new window.WebsocketHeartbeatJs({
             url: `${process.env.REACT_APP_URL_WS2}/allTickers`,
-            pingTimeout: 3000,
-            pongTimeout: 3000,
+            pingTimeout: 25000,
+            pongTimeout: 25000,
         });
         ws.onmessage = data => {
             let response = JSON.parse(data.data);
