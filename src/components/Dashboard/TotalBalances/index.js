@@ -7,7 +7,7 @@ const TotalBalances = _ => {
     const balances = useSelector(state => state.balances);
     const { assets } = useSelector(state => state.wallet);
     const { changeInTickers, tickers } = useSelector(state => state.general);
-    const [contract, setContract] = useState(null);
+    const [contract, setContract] = useState({});
 
     useEffect(
         _ => {
@@ -107,11 +107,9 @@ const TotalBalances = _ => {
             });
         }
     };
-
     const [firstTimeSetTotal, setfirstTimeSetTotal] = useState(true);
     useEffect(() => {
         const timeout = setTimeout(() => {
-            console.log('timount')
             setBTCTotal();
             setfirstTimeSetTotal(!firstTimeSetTotal)
         }, 10000);
@@ -119,6 +117,80 @@ const TotalBalances = _ => {
         return () => clearTimeout(timeout);
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [firstTimeSetTotal]);
+
+
+useEffect(() => {
+    let newTotal = 0;
+    let newInBTC = {};
+    /*  CALCULATING TOTALS IN BTC  */
+    for (const symbolA in contract) {
+        let amount = 0;
+        for (const pairs in tickers) {
+            if (symbolA === 'BTC') {
+                /* If pure btc */
+                newInBTC[symbolA] = contract[symbolA];
+                /*  console.log(contract[symbolA]) */
+            } else {
+                if (`${symbolA}-BTC` === pairs) {
+                    /* price for a symbol */
+                    newInBTC[symbolA] = Number(contract[symbolA]) * Number(tickers[`${symbolA}-BTC`].lastPrice);
+                } else if (`BTC-${symbolA}` === pairs) {
+                    /* price for dolar */
+                    newInBTC[symbolA] = Number(contract[symbolA]) / Number(tickers[`BTC-${symbolA}`].lastPrice);
+                }
+            }
+        }
+    }
+    for (const key in newInBTC) {
+        newTotal += newInBTC[key]
+    }
+    console.log(newTotal)
+    /* CHART CREATE */
+        window.am4core.ready(function () {
+            let data = [];
+            for (let asset in newInBTC) {
+                let percent = (100 * newInBTC[asset]) / newTotal;
+                data.push({
+                    name: asset,
+                    val: newInBTC[asset],
+                });
+            }
+            window.am4core.useTheme(window.am4themes_animated); // Themes end
+
+            var chart = window.am4core.create(
+                'pie',
+                window.am4charts.PieChart
+            );
+            chart.data = data;
+            chart.innerRadius = window.am4core.percent(50);
+            var label = chart.seriesContainer.createChild(
+                window.am4core.Label
+            );
+            label.text = Number(newTotal).toFixed(8) + ' BTC';
+            label.horizontalCenter = 'middle';
+            label.verticalCenter = 'middle';
+            label.fontSize = 20;
+            chart.innerRadius = window.am4core.percent(90); // Add and configure Series
+            var pieSeries = chart.series.push(
+                new window.am4charts.PieSeries()
+            );
+            pieSeries.dataFields.value = 'val';
+            pieSeries.dataFields.category = 'name';
+            pieSeries.labels.template.disabled = true;
+            pieSeries.ticks.template.disabled = true;
+            pieSeries.colors.list = [
+                window.am4core.color('#8800ff'),//violet eth
+                window.am4core.color('#f7931a'),//yellow btc
+                window.am4core.color('#434343'),//black xrp
+                window.am4core.color('#2AA37E'),//green usdt
+            ];
+        });
+ 
+
+}, [contract]);
+
+
+
 
     useEffect(
         _ => {
