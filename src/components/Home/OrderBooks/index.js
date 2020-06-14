@@ -109,7 +109,7 @@ function updateOrderBookData(data, exchange, stateData, callback) {
 			stateBids.push(bids[i]);
 		}
 	}
-	const maxBid = stateBids.reduce(function(prev, current) {
+	const maxBid = stateBids.reduce(function (prev, current) {
 		return prev.price > current.price ? prev : current;
 	});
 	stateBids = stateBids.sort(sortBids).slice(0, 20);
@@ -121,11 +121,11 @@ function updateOrderBookData(data, exchange, stateData, callback) {
 }
 
 const OrderBooks = (props) => {
-	const { symbol, orderBook } = useSelector((state) => state.general);
+	const { symbol, orderBook, mode } = useSelector((state) => state.general);
 	// const newData = useSelector(state => state.general);
 	// console.log('general', general);
 	// const dispatch = useDispatch();
-	const [ state, setState ] = useState({ data: { lastPrice: 0 } });
+	const [state, setState] = useState({ data: { lastPrice: 0 } });
 	// const setLastPrice = useCallback(data => dispatch({ type: 'SetLastPrice', payload: data }), [ dispatch ]);
 	// const currentSymbol = 'ETH-BTC';
 	// All exchanges
@@ -181,7 +181,7 @@ const OrderBooks = (props) => {
 							bid: data.bids[0].price
 						}
 					});
-
+					setcargando(true)
 					setTimeout(() => {
 						const div = document.querySelector('.orders.asks');
 						if (div) div.scrollTop = div.scrollHeight;
@@ -197,7 +197,7 @@ const OrderBooks = (props) => {
 							// bid: data.bids[0].price
 						}
 					});
-
+					setcargando(true)
 					setTimeout(() => {
 						const div = document.querySelector('.orders.asks');
 						if (div) div.scrollTop = div.scrollHeight;
@@ -210,10 +210,11 @@ const OrderBooks = (props) => {
 	useEffect(
 		(_) => {
 			// console.log('loadSnapshot', symbol);
+			setcargando(false)
 			loadSnapshot(symbol, 20);
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ symbol ]
+		[symbol]
 	);
 
 	useEffect(
@@ -241,16 +242,51 @@ const OrderBooks = (props) => {
 			}
 		},
 		//eslint-disable-next-line react-hooks/exhaustive-deps
-		[ orderBook ]
+		[orderBook]
 	);
 
 	/*  console.log("STATE",state); */
+	const [cargando, setcargando] = useState(false)
 
 	return (
 		<div className="right-panel js-panel active">
 			<div className={`js-panel-item js-orderbook`}>
-				<Asks data={state.data} lastPrice={state.data.lastPrice} />
-				<Bids data={state.data} lastPrice={state.data.lastPrice} />
+				<div className="order-book">
+					<p className="heading">Order Book</p>
+					<div className="titles">
+						<span className="title">Price</span>
+						<span className="title">Amount</span>
+						<span className="title">Total</span>
+						<span className="title exch">Exch</span>
+					</div>
+				</div>
+				{!cargando &&
+					<div className="spinner-container">
+						<div className={`spinner ${mode === 'Light' ? '' : 'dark-mode'}`}>
+							<div className="rect1"></div>
+							<div className="rect2"></div>
+							<div className="rect3"></div>
+							<div className="rect4"></div>
+							<div className="rect5"></div>
+						</div>
+					</div>
+				}
+
+				{cargando &&
+				
+					<Asks data={state.data} lastPrice={state.data.lastPrice} />
+				}
+				{cargando &&
+					<div className="order-book">
+						<div className="last-price">
+							<span className="cell">{state.data.lastPrice}</span>
+							<span className="last">Last Price</span>
+						</div>
+					</div>
+				}
+				{cargando &&
+					<Bids data={state.data} lastPrice={state.data.lastPrice} />
+				}
 			</div>
 		</div>
 	);

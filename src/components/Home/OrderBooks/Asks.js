@@ -256,18 +256,7 @@ const Asks = props => {
 
     return (
         <div className="order-book">
-            <p className="heading">Order Book</p>
-            <div className="titles">
-                <span className="title">Price</span>
-                <span className="title">Amount</span>
-                <span className="title">Total</span>
-                <span className="title exch">Exch</span>
-            </div>
             <div className="orders asks">{asks}</div>
-            <div className="last-price">
-                <span className="cell">{props.lastPrice}</span>
-                <span className="last">Last Price</span>
-            </div>
         </div>
     );
 };

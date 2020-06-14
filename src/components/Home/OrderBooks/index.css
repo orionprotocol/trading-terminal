@@ -21,3 +21,14 @@
 .title.exch {
 	padding-left: 8px;
 }
+
+.spinner-container{
+	height: calc(100vh - 110px);
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.spinner-container .spinner{
+	margin: 0 !important;
+}
