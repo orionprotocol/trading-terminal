@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import PairDrop from './PairDrop';
-
+import PairDrop2 from './PairDrop2';
 import './index.css';
 let price = require('crypto-price');
 
@@ -102,8 +102,9 @@ const CommonInfo = ({History}) => {
                         </span>
                         <span className="icon-arrow-d" />
                     </div>
-                    <PairDrop History={History} handleWrapper={handleWrapper} />
-                    
+
+                    {/* <PairDrop History={History} handleWrapper={handleWrapper} /> */}
+                    <PairDrop2 History={History} handleWrapper={handleWrapper} />
                 </div>
             </div>
             <div className="price">
