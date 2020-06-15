@@ -78,8 +78,8 @@ const { tickers } = useSelector(state => state.general);
                     alt="home"
                 />
                 <div className="text">
-                    <span className="emp">{data.symbolA}-</span>
-                    <span className="small">{data.symbolA}</span> 
+                    <span className="emp">{data.pair}</span>
+                    <span className="small">{coins.get(data.symbolA).name}</span> 
                 </div>
             </div>
             <div className="cell short" onClick={_ => handlePair(data.symbolA,data.symbolB)}>

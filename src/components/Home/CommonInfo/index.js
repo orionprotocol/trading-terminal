@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import { useSelector } from 'react-redux';
-import PairDrop from './PairDrop';
+/* import PairDrop from './PairDrop'; */
 import PairDrop2 from './PairDrop2';
 import './index.css';
 let price = require('crypto-price');
