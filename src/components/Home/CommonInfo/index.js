@@ -51,27 +51,6 @@ const CommonInfo = ({History}) => {
                     setDollars({ ...dollars, last, low: l, high: h, vol: v }); 
                 }
             }
-         /*    price.getCryptoPrice('USD', symbolB).then(object => {
-                if (symbolB === 'USDT') {
-                    object = {};
-                    object.price = 1;
-                    
-                }
-                if (object === undefined) return;
-                console.log(object.price)
-                let last = (object.price * lastPrice).toFixed(2);
-                let h = (object.price * high).toFixed(2);
-                let l = (object.price * low).toFixed(2);
-                let v = (object.price * Number(vol)).toFixed(2);
-
-                last = formatNumber(last);
-                h = formatNumber(h);
-                l = formatNumber(l);
-                v = (v / 10 ** 6).toFixed(2);
-                v = formatNumber(v);
-
-                setDollars({ ...dollars, last, low: l, high: h, vol: v }); 
-            });*/
         }, 
         //eslint-disable-next-line react-hooks/exhaustive-deps
         [lastPrice, high, low, vol]

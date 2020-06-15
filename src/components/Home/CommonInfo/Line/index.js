@@ -26,34 +26,33 @@ export default function Line({ asset, handlePair, assetB }) {
                 setIsFav(favs[pair]);
             }
         }
-
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(
         _ => {
-            if (tickers[pair]) {
-                if (assetB === 'USDT') return
 
-                let vol = Number(tickers[pair].vol24h) * tickers[`${assetB}-USDT`].lastPrice;
-                vol = (vol / 10 ** 6).toFixed(2);
+            if (tickers[pair]) {
+
+               /*  if (assetB === 'USDT') return */
+
+                let vol = (Number(tickers[pair].vol24h) * Number(tickers[`BTC-USDT`].lastPrice) / 10 ** 6).toFixed(2);
+           
                 let last = (
-                    Number(tickers[pair].lastPrice) * tickers[`${assetB}-USDT`].lastPrice
+                    Number(tickers[pair].lastPrice) * Number(tickers[`BTC-USDT`].lastPrice)
                 ).toFixed(2);
                 setDollars({
                     ...dollars,
                     last: last,
                     vol: vol,
                 });
-
-
                 if (tickers[pair].vol24h) {
                     if (Number(tickers[pair].vol24h) > 1000000) {
                         setVol24h(
-                            formatNumber(tickers[pair].vol24h / 1000000) + 'M'
+                            formatNumber(Number(tickers[pair].vol24h) / 1000000) + 'M'
                         );
                     } else {
-                        setVol24h(formatNumber(tickers[pair].vol24h));
+                        setVol24h(formatNumber(Number(tickers[pair].vol24h)));
                     }
                 }
 
@@ -82,6 +81,7 @@ export default function Line({ asset, handlePair, assetB }) {
         localStorage.setItem('favs', favs);
         setIsFav(!isFav);
     };
+    /* if(pair==='XRP-USDT' )console.log(pair,tickers[pair],dollars,isFav,change24h,vol24h) */
 
     return (
         <div className="line" >
