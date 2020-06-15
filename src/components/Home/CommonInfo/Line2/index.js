@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import coins from 'coinlist';
 import { useSelector } from 'react-redux';
+import './line.scss';
 let price = require('crypto-price');
 
 const formatNumber = number => {
@@ -9,10 +10,10 @@ const formatNumber = number => {
     );
 };
 
-export default function Line2({data,handlePair}) {
-/* REDUX */
-const { tickers } = useSelector(state => state.general);
-/* REDUX */
+export default function Line2({ data, handlePair }) {
+    /* REDUX */
+    const { tickers } = useSelector(state => state.general);
+    /* REDUX */
 
     const [dollars, setDollars] = useState({});
     const [change24h, setChange24h] = useState(0);
@@ -21,9 +22,8 @@ const { tickers } = useSelector(state => state.general);
     useEffect(
         _ => {
             if (data) {
-               /*  if (assetB === 'USDT') return */
                 let vol = (Number(data.vol24h) * Number(tickers[`BTC-USDT`].lastPrice) / 10 ** 6).toFixed(2);
-           
+
                 let last = (
                     Number(data.lastPrice) * Number(tickers[`BTC-USDT`].lastPrice)
                 ).toFixed(2);
@@ -67,11 +67,11 @@ const { tickers } = useSelector(state => state.general);
         favs = JSON.stringify(favs);
         localStorage.setItem('fav', favs);
     };
-   
+
 
     return (
         <div className="line" >
-            <div className="cell" onClick={_ => handlePair(data.symbolA,data.symbolB)}>
+            <div className="cell" onClick={_ => handlePair(data.symbolA, data.symbolB)}>
                 <img
                     className="img"
                     src={`/img/${data.symbolA.toLowerCase()}.png`}
@@ -79,10 +79,10 @@ const { tickers } = useSelector(state => state.general);
                 />
                 <div className="text">
                     <span className="emp">{data.pair}</span>
-                    <span className="small">{coins.get(data.symbolA).name}</span> 
+                    <span className="small">{coins.get(data.symbolA).name}</span>
                 </div>
             </div>
-            <div className="cell short" onClick={_ => handlePair(data.symbolA,data.symbolB)}>
+            <div className="cell short" onClick={_ => handlePair(data.symbolA, data.symbolB)}>
                 <span className="title-m">Last Pr.</span>
                 <div className="text">
                     <span className="emp">
@@ -91,7 +91,7 @@ const { tickers } = useSelector(state => state.general);
                     <span className="small">${dollars.last}</span>
                 </div>
             </div>
-            <div className="cell short" onClick={_ => handlePair(data.symbolA,data.symbolB)}>
+            <div className="cell short" onClick={_ => handlePair(data.symbolA, data.symbolB)}>
                 <span className="title-m">24h Vol</span>
                 <div className="text">
                     <span className="emp">{vol24h}</span>
@@ -100,24 +100,29 @@ const { tickers } = useSelector(state => state.general);
             </div>
 
             <div className="cell chg">
-                {change24h >= 0 ? (
-                    <img
-                        onClick={_ => handlePair(data.symbolA,data.symbolB)}
-                        src="/img/growth.png"
-                        alt="home"
-                        style={{ width: '10px', height: '10px' }}
-                    />
-                ) : (
+
+                <div className="change">
+                    {change24h >= 0 ? (
                         <img
-                            onClick={_ => handlePair(data.symbolA,data.symbolB)}
-                            src="/img/red-arrow.png"
-                            style={{ width: '10px', height: '10px' }}
+                            onClick={_ => handlePair(data.symbolA, data.symbolB)}
+                            src="/img/growth.png"
                             alt="home"
+                            style={{ width: '10px', height: '10px' }}
                         />
-                    )}
-                <p onClick={_ => handlePair(data.symbolA,data.symbolB)}>
-                    <span className="emp">{change24h}</span> <span>%</span>
-                </p>
+                    ) : (
+                            <img
+                                onClick={_ => handlePair(data.symbolA, data.symbolB)}
+                                src="/img/red-arrow.png"
+                                style={{ width: '10px', height: '10px' }}
+                                alt="home"
+                            />
+                        )}
+                </div>
+                <div className="change">
+                    <p onClick={_ => handlePair(data.symbolA, data.symbolB)}>
+                        <span className="emp">{change24h}</span> <span>%</span>
+                    </p>
+                </div>
 
                 {data.fav ? (
                     <div className="star js-star active" onClick={handleFav}>
@@ -128,6 +133,8 @@ const { tickers } = useSelector(state => state.general);
                             <i className="far fa-star"></i>
                         </div>
                     )}
+
+
             </div>
         </div>
     );

@@ -61,36 +61,6 @@ const PairDrop2 = ({ handleWrapper, History }) => {
         [assets]
     );
 
-    /*  useEffect(() => {
-         // En teoria este USe effect se encarga de cargar cada linea, pero solo lo hace con el asset que esta activo, se debe de configurar con doble for para mostrar todos los pares 
-         let pair = '', auxpairs = []
- 
-         if (assets.assets2) {
- 
-             if (assets.assets2[currentQuote] !== undefined) {
- 
-                 for (let x = 0; x < assets.assets2[currentQuote].length; x++) {
-                     pair = `${assets.assets2[currentQuote][x]}-${currentQuote}`
-                     if (tickers[pair]) {
-                         auxpairs.push({
-                             symbolA: assets.assets2[currentQuote][x],
-                             change24h: tickers[pair].change24h,
-                             lastPrice: parseFloat(tickers[pair].lastPrice),
-                             vol24h: parseFloat(tickers[pair].vol24h),
-                         })
-                     } else {
-                         auxpairs = []
-                         break
-                     }
-                 }
-                 if (auxpairs.length > 0 && !linesSetted) {
-                     setLines(auxpairs)
-                     setlinesSetted(true)
-                     updateRenderAssets()
-                 }
-             }
-         }
-     }, [Object.keys(tickers), currentQuote, assets]); */
 
     useEffect(() => {
         /* Este use Effect se encargara de construir el array que genere todos las filas  */
@@ -184,38 +154,7 @@ const PairDrop2 = ({ handleWrapper, History }) => {
             );
         }
     };
-    /* 
-        const handleFavs = _ => {
-            
-            if (assets.assets2[currentQuote]) {
-                if (!favs === false) {
-                    setLines([]);
-                    setTimeout(() => {
-                        setlinesSetted(false)
-                    }, 0);
-                } else {
-                    let favs = localStorage.getItem('favs');
     
-                    if (favs) {
-                        favs = JSON.parse(favs);
-    
-                        setLines([]);
-                        setTimeout(() => {
-                            setLines(
-                                lines.filter(e => {
-                                    let pair = `${e.symbolA}-${currentQuote}`;
-    
-                                    if (favs[pair] === true) return true;
-                                    return false;
-                                })
-                            );
-                        }, 0);
-                    }
-                }
-                setFavs(!favs);
-            }
-        }; */
-
     const handlePair = (symbolA,symbolB) => {
         /* Esta funcion cambia el par acutal, se debe de usar en cada linea */
         setChange(0);
@@ -276,20 +215,20 @@ const PairDrop2 = ({ handleWrapper, History }) => {
                 </div>
             </div>
             <div className="pair-table">
-                <div className="titles-p">
-                    <div className="title" onClick={_ => handleSort('symbolA', 'letter')}>
+                <div className="titles-p" style={{marginBottom:'0'}}>
+                    <div className="title" style={{display:'flex',justifyContent:'center'}} onClick={_ => handleSort('symbolA', 'letter')}>
                         <span>Pair</span>
                         <img src="/img/arrow-down.svg" alt="home" />
                     </div>
-                    <div className="title short" onClick={_ => handleSort('lastPrice', 'number')}>
+                    <div className="title short" style={{display:'flex',justifyContent:'center'}} onClick={_ => handleSort('lastPrice', 'number')}>
                         <span>Last Pr.</span>
                         <img src="/img/arrow-down.svg" alt="home" />
                     </div>
-                    <div className="title short" onClick={_ => handleSort('vol24h', 'number')}>
+                    <div className="title short" style={{display:'flex',justifyContent:'center'}} onClick={_ => handleSort('vol24h', 'number')}>
                         <span>24h Vol</span>
                         <img src="/img/arrow-down.svg" alt="home" />
                     </div>
-                    <div className="title chg" onClick={_ => handleSort('change24h', 'number')}>
+                    <div className="title chg" style={{display:'flex',justifyContent:'center'}} onClick={_ => handleSort('change24h', 'number')}>
                         <span>24h Change</span>
                         <img src="/img/arrow-down.svg" alt="home" />
                     </div>
@@ -308,26 +247,6 @@ const PairDrop2 = ({ handleWrapper, History }) => {
                             }
                             
                         })}
-                        {/*   {currentQuote !== '' &&
-                            lines.map((e, i) => (
-                                <Line
-                                    data={res}
-                                />
-                                <Line
-                                    asset={e.symbolA}
-                                    key={i}
-                                    handlePair={handlePair}
-                                    assetB={currentQuote}
-                                />
-                            ))}
-                             <Line
-                                    asset={e.symbolA}
-                                    key={i}
-                                    handlePair={handlePair}
-                                    assetB={currentQuote}
-                                />
-                            
-                            */}
                     </div>
                 </div>
             </div>
