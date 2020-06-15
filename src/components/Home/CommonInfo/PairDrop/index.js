@@ -156,7 +156,7 @@ const PairDrop = ({ handleWrapper, History }) => {
                     setTimeout(() => {
                         setLines(
                             lines.filter(e => {
-                                let pair = e.symbolA + currentQuote;
+                                let pair = `${e.symbolA}-${currentQuote}`;
 
                                 if (favs[pair] === true) return true;
                                 return false;

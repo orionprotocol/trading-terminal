@@ -81,7 +81,7 @@ const CommonInfo = ({History}) => {
         _ => {
             clearInterval(intervalId);
             intervalId = setInterval(() => {
-                const pair = symbolA + symbolB;
+                const pair = `${symbolA}-${symbolB}`;
                 let favs = localStorage.getItem('favs');
 
                 if (favs) {
