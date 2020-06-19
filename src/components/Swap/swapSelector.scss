@@ -1,30 +1,33 @@
-@import '../../css/resposiveSize';
+@import '../../css/scss/core/resposiveSize';
 @mixin center() {
     display: flex;
     justify-content: center;
     align-items: center;
-}          
+}
 
-.swap-container{
+.swap-container {
     height: 95vh;
     @include center;
-   
-    &.dark-mode{
+
+    &.dark-mode {
         color: rgba(224, 224, 255, 0.8) !important;
-        h6{
+
+        h6 {
             color: rgba(224, 224, 255, 0.8) !important;
         }
-        .swap-card{
+
+        .swap-card {
             background-color: #2a2a41 !important;
-        } 
-       
-        .swap-button{
+        }
+
+        .swap-button {
             background-image: linear-gradient(117deg, #00ffaa, #00bbff 53%, #4579f5);
-        }     
-      
+        }
+
     }
-    .swap-card{
-        padding: 20px 00;
+
+    .swap-card {
+        padding: 20px 0;
         display: flex;
         flex-direction: column;
         height: auto;
@@ -32,24 +35,24 @@
         background-color: white;
         border-radius: 5px;
         filter: drop-shadow(0 0 0.5rem rgba(0, 0, 0, 0.2));
-        @include media ('lg'){
+        @include media ('lg') {
             padding: 20px 10px;
         }
 
-       
-        @include media ('sm'){
+        @include media ('sm') {
             height: 60%;
             width: 95%;
         }
 
-        .price-container{
+        .price-container {
             display: flex;
-           justify-content: space-around;
+            justify-content: space-around;
             width: 100%;
             text-align: end;
-            
+
         }
-        .swap-button{
+
+        .swap-button {
             align-self: center;
             margin: 10px;
             width: 20vw;
@@ -58,20 +61,22 @@
             height: 50px;
             background-color: rgb(247,147,26);
             cursor: pointer;
-            h6{
+
+            h6 {
                 color: white;
-                margin:0;
+                margin: 0;
             }
-            &:disabled{
+
+            &:disabled {
                 background-color: rgb(240, 176, 97);
             }
-        @include media ('sm'){
-            width: 40vw;
+            @include media ('sm') {
+                width: 40vw;
+            }
         }
-        }
-    } 
+    }
 
-    span.error{
+    span.error {
         color: red;
         font-size: 13px;
         text-align: center;

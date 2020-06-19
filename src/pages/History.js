@@ -104,7 +104,6 @@ function History() {
 
     return (
         <div>
-            <TopMenu />
             <div className="history">
                 <Sidebar />
 

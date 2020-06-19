@@ -5,7 +5,6 @@ import Sidebar from '../components/Sidebar';
 function Wallet() {
     return (
         <div>
-            <TopMenu />
             <div class="wallet-page">
                 <Sidebar />
 

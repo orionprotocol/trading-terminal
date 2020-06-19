@@ -6,7 +6,7 @@ import FadeIn from 'react-fade-in';
 import AddWallet1 from '../AddWallet/AddWallet1';
 import AddWallet2 from '../AddWallet/AddWallet2';
 import { ethereum } from '../../services/Coinbase'
-import './index.css';
+import './sidebar.scss';
 
 const Sidebar = props => {
     const dispatch = useDispatch();
@@ -179,32 +179,36 @@ const Sidebar = props => {
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onMouseOver = _ => {
-        document.querySelector('.js-sidebar-wrapper').classList.add('open');
-        const div = document.querySelector('#js-wrapper-pair');
-        if (div) div.classList.add('active');
-        const arrow = document.querySelector('.link.js-pair-link');
-        const drop = document.querySelector('.pair-drop.js-pair-drop');
-        if(arrow && drop ){
-            if(arrow.classList.length===3 ||drop.classList.length===3){
-                arrow.classList.remove('active')
-                drop.classList.remove('active')
-            }
-        }
-        /* const arrow = document.querySelector('.link.js-pair-link');
-        arrow.classList.toggle('active');
-    
-        const drop = document.querySelector('.pair-drop.js-pair-drop');
-        drop.classList.toggle('active'); */
-
+    let onClick = _=> {
+        document.querySelector('.navbar').classList.toggle('open');
     };
 
-    const onMouseLeave = _ => {
-    
-        document.querySelector('.js-sidebar-wrapper').classList.remove('open');
-        const div = document.querySelector('#js-wrapper-pair');
-        if (div) div.classList.remove('active');
-    };
+    // const onMouseOver = _ => {
+    //     document.querySelector('.js-sidebar-wrapper').classList.add('open');
+    //     // const div = document.querySelector('#js-wrapper-pair');
+    //     // if (div) div.classList.add('active');
+    //     const arrow = document.querySelector('.link.js-pair-link');
+    //     const drop = document.querySelector('.pair-drop.js-pair-drop');
+    //     if(arrow && drop ){
+    //         if(arrow.classList.length===3 ||drop.classList.length===3){
+    //             arrow.classList.remove('active');
+    //             drop.classList.remove('active');
+    //         }
+    //     }
+    //     /* const arrow = document.querySelector('.link.js-pair-link');
+    //     arrow.classList.toggle('active');
+    //
+    //     const drop = document.querySelector('.pair-drop.js-pair-drop');
+    //     drop.classList.toggle('active'); */
+    //
+    // };
+
+    // const onMouseLeave = _ => {
+    //
+    //     document.querySelector('.js-sidebar-wrapper').classList.remove('open');
+    //     // const div = document.querySelector('#js-wrapper-pair');
+    //     // if (div) div.classList.remove('active');
+    // };
 
     const handleMode = _ => {
         if (mode === 'Light') {
@@ -231,7 +235,7 @@ const Sidebar = props => {
 
     const handleDisconnect = _ => {
         if (localStorage.getItem('coinbaseConnected')) {
-            ethereum.close()
+            ethereum.close();
         }
         clearLocalStorage();
 
@@ -261,11 +265,11 @@ const Sidebar = props => {
     );
 
     return (
-        <div>
-            <div className="sidebar-line js-sidebar-line">
-                <div className="line" />
-            </div>
-
+        <div
+            className="navbar js-navbar"
+            // onMouseLeave={onMouseLeave}
+            // onMouseOver={onMouseOver}
+        >
             {show1 ? (
                 <FadeIn transitionDuration={10}>
                     <AddWallet1
@@ -283,118 +287,127 @@ const Sidebar = props => {
                     />
                 </FadeIn>
             ) : null}
-
-            <div
-                className="sidebar-wrapper js-sidebar-wrapper"
-                onMouseLeave={onMouseLeave}
-                onMouseOver={onMouseOver}
-            >
-                <div className="sidebar-content">
-                    <a className="logo" href="/">
-                        <img src="/img/logo.png" alt="home" />
-                    </a>
-                    <div className="links">
-                        <div className="dark-mode" id="moon">
-                            <div className="night">
-                                <img src="/img/night.png" alt="home" />
-                            </div>
-                            <div className="text mode-toggler">
-                                <span>Dark Mode</span>
-                                <div
-                                    className="toggler js-toggler-dark-mode"
-                                    onClick={handleMode}
-                                >
-                                    <div className="toggler-way" />
-                                    <div className="toggler-circle" />
-                                </div>
+            <div className="navbar__top">
+                <a className="logo" href="/">
+                    <img src="/img/svg/orion_full.svg" alt="home" />
+                </a>
+                <div className="navbar__toggle" onClick={onClick}></div>
+            </div>
+            <div className="navbar__wrapper">
+                <div className="navbar__list">
+                    <div className="themeSwicher js-toggler-dark-mode"    onClick={handleMode}>
+                        <div className="themeSwicher__icon">
+                            <i className="icon_moon"></i>
+                        </div>
+                        <div className="themeSwicher__item">
+                            <div className="themeSwicher__text">Dark Mode</div>
+                            <div className="themeSwicher__trigger">
                             </div>
                         </div>
-                        <nav>
+                    </div>
+                    <ul className="nav">
+                        <li className="nav__item">
                             <Link
-                                className={`nav-link ${actives[0]}`}
+                                className={`nav__link ${actives[0]}`}
                                 to={`/trade/${symbolA}_${symbolB}`}
                             >
-                                <span className="icon-link-1 icon" />
-                                <span className="text">Trading Terminal</span>
+                                <span className="icon_chart" />
+                                <span className="nav__text">Trading Terminal</span>
                             </Link>
+                        </li>
 
-                            {walletActive && (
-                                <Fragment>
+                        {walletActive && (
+                            <Fragment>
+                                <li className="nav__item">
                                     <Link
-                                        className={`nav-link ${actives[1]}`}
-                                        to="/dashboard"
-                                    >
-                                        <span className="icon-link-2 icon" />
-                                        <span className="text">Dashboard</span>
-                                    </Link>
-                                    <Link
-                                        className={`nav-link ${actives[2]}`}
+                                        className={`nav__link ${actives[2]}`}
                                         to="/swap"
                                     >
-                                        <span>
-                                            <i className="fas fa-exchange-alt"></i>
-                                        </span>
-
-                                        <span className="text">Swap</span>
+                                        <span className="icon_swap"></span>
+                                        <span className="nav__text">Swap</span>
                                     </Link>
+                                </li>
+                                <li className="nav__item">
                                     <Link
-                                        className={`nav-link ${actives[3]}`}
+                                        className={`nav__link ${actives[1]}`}
+                                        to="/dashboard"
+                                    >
+                                        <span className="icon_grid" />
+                                        <span className="nav__text">Dashboard</span>
+                                    </Link>
+                                </li>
+                                <li className="nav__item">
+                                    <Link
+                                        className={`nav__link ${actives[3]}`}
                                         to="/history"
                                     >
-                                        <span className="icon-link-3 icon" />
-                                        <span className="text">History</span>
+                                        <span className="icon_clock" />
+                                        <span className="nav__text">History</span>
                                     </Link>
-                                </Fragment>
-                            )}
-                        </nav>
-                        <div className="aside-coins">
-                            {wanmaskConnected ? (
-                                <div className="coin">
-                                    <img src="/img/wanchain2.png" alt="home" />
-                                    <span className="text">Wanchain</span>
+                                </li>
+                            </Fragment>
+                        )}
+                    </ul>
+                    <ul className="addedWallet">
+                        {wanmaskConnected ? (
+                            <li className="addedWallet__item">
+                                <div className="addedWallet__link">
+                                    <span className="addedWallet__icon icon_wanchain" />
+                                    <span className="addedWallet__text">Wanchain</span>
                                 </div>
-                            ) : null}
+                            </li>
+                        ) : null}
 
-                            {metamaskConnected || fortmaticConnected || coinbaseConnected ? (
-                                <div className="coin">
-                                    <img src="/img/eth-aside.svg" alt="home" />
-                                    <span className="text">Ethereum</span>
+                        {metamaskConnected || fortmaticConnected || coinbaseConnected ? (
+                            <li className="addedWallet__item">
+                                <div className="addedWallet__link">
+                                    <span className="addedWallet__icon icon_ethereum" />
+                                    <span className="addedWallet__text">Ethereum</span>
                                 </div>
-                            ) : null}
-                            {/*
-							<div className="coin">
-								<img src="/img/bit-aside.svg" alt="home" />
-								<span className="text">Bitcoin</span>
-							</div>
-							
-							<div className="coin">
-								<img src="/img/dash-small.png" alt="home" />
-								<span className="text">Dash</span>
-							</div> */}
-                        </div>
-                        {/* <button className="add-wallet"> */}
-                        {/* <Link className="add-wallet" to="/wallet"> */}
-                        <Link className="add-wallet" to="#">
-                            {addWalletOpt ? (
-                                <span className="" onClick={handleDisconnect}>
-                                    - Disconnect
-                                </span>
-                            ) : (
-                                    <Fragment>
-                                        <img src="/img/close.png" alt="home" />
-                                        <span
-                                            className="add-wallet-btn"
-                                            onClick={handleAddWallet}
-                                        >
-                                            Add Wallet
-                                    </span>
-                                    </Fragment>
-                                )}
-                        </Link>
-
-                        {/* </button> */}
-                    </div>
+                            </li>
+                        ) : null}
+                        {
+                            // <li className="addedWallet__item">
+                            //     <div className="addedWallet__link">
+                            //         <span className="addedWallet__icon icon_bitcoin" />
+        					// 		<span className="addedWallet__text">Bitcoin</span>
+        					// 	</div>
+                            // </li>
+                        }{
+                            // <li className="addedWallet__item">
+                            //     <div className="addedWallet__link">
+                            //         <span className="addedWallet__icon icon_dash" />
+        					// 		<span className="addedWallet__text">Dash</span>
+        					// 	</div>
+                            // </li>
+                        }
+                    </ul>
                 </div>
+                <div className="addWallet">
+                    {addWalletOpt ? (
+                        <Fragment>
+                            <span className="addWallet__btn" onClick={handleDisconnect}>
+                                <i className="addWallet__icon">
+                                    <i className="icon_minus"></i>
+                                </i>
+                                <span className="addWallet__text">Disconnect</span>
+                            </span>
+                        </Fragment>
+                    ) : (
+                        <Fragment>
+                            <span
+                                className="addWallet__btn"
+                                onClick={handleAddWallet}
+                            >
+                                <i className="addWallet__icon">
+                                    <i className="icon_add"></i>
+                                </i>
+                                <span className="addWallet__text">Add Wallet</span>
+                            </span>
+                        </Fragment>
+                    )}
+                </div>
+
             </div>
         </div>
     );

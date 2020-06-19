@@ -14,7 +14,6 @@ function Dashboard(props) {
 	});
 	return (
 		<div>
-			<TopMenu />
 			<div className="dashboard">
 				<Sidebar history={props.history} />
 
