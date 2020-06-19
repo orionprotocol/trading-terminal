@@ -10,7 +10,7 @@ const Assets = {
 class EthereumOrder {
     static defaultMatcherFee = 300000;
     static defaultExpiration = 29 * 24 * 60 * 60 * 1000;
-    static matcherPublicKey = '0xfbCAd2c3A90FBD94C335FBdF8E22573456Da7F68';
+    static matcherPublicKey = process.env.ORION_MATCHER_ADDRESS;
     // static orionUrl = process.env.REACT_APP_ORION_WAN;
     static orionUrl = process.env.REACT_APP_ORION_WAN;
     // baseAsset, es el que el cliente tiene; quoteAsset, es el activo que quiere
