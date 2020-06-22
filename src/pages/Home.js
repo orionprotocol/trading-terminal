@@ -107,11 +107,11 @@ function Home(props) {
                         {/* Large */}
                         {!active ? (
                             <div className="center-panel js-panel">
-                                <div className="image js-chart js-panel-item">
+                                {/* <div className="image js-chart js-panel-item">
                                     <TVChart />
-                                    {/*   <div id="chart-container" />*/}
-                                </div>
-
+                                  
+                                </div> */}
+                                <TVChart />
                                 <Orders />
                             </div>
                         ) : null}

@@ -2,6 +2,12 @@
     height: 100%;
     width: 100%;
 }
+#chart-container{
+    margin-bottom: 10px !important;
+}
+.image.js-chart.js-panel-item{
+padding-right: 4px;
+}
 .pane-legend-line span {
     pointer-events: auto;
     margin-right: 10px !important;
