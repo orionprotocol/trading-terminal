@@ -44,8 +44,8 @@ const PairDrop2 = ({ handleWrapper, History }) => {
     const [assetsRender, setAssets] = useState([]);
     const [currentQuote, setCurrentQuote] = useState('');/* ES EL FILTRO QUE VOY A USAR PARA MOSTRAR LAS FILAS */
     const [lines, setLines] = useState([]);
-    const [linesSetted, setlinesSetted] = useState(false);
-    const [favs, setFavs] = useState(false);
+    const [/* linesSetted */, setlinesSetted] = useState(false);
+ /*    const [favs, setFavs] = useState(false); */
     const [searcher, setsearcher] = useState('')
     /* ESTADOS DEL MODULO */
 
@@ -101,7 +101,7 @@ const PairDrop2 = ({ handleWrapper, History }) => {
             }
 
             setlinesSetted(true)
-            console.log(lines)
+           
         }
     }, [tickers['BTC-USDT'], tickers['XRP-USDT'], tickers['ETH-BTC'], tickers['XRP-BTC'],searcher]);
 
@@ -131,7 +131,7 @@ const PairDrop2 = ({ handleWrapper, History }) => {
                         QUOTE = <i className="far fa-star"></i>
                     }
                 }
-                return (<span className={currentQuote === res ? 'active' : ''} key={key} onClick={_ => changeSymbolB(res)}>
+                return (<span key={key} className={currentQuote === res ? 'active' : ''} key={key} onClick={_ => changeSymbolB(res)}>
                     {QUOTE}
                 </span>)
             })
@@ -238,10 +238,10 @@ const PairDrop2 = ({ handleWrapper, History }) => {
                     <div className="part">
                         {lines.map((res, key) => {
                             if(currentQuote==='FAVS' && res.fav===true){
-                            return <Line handlePair={handlePair} data={res} />
+                            return <Line key={key} handlePair={handlePair} data={res} />
                             }
                             if(currentQuote===res.symbolB){
-                                return   <Line handlePair={handlePair} data={res} />
+                                return   <Line key={key} handlePair={handlePair} data={res} />
                             }else{
                                 return null
                             }

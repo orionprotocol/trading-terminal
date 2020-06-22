@@ -73,7 +73,7 @@ const OrionWanchain = _ => {
                         .then(res => {
                             if (res.data.walletBalances) {
                                 let all = res.data;
-                               /*   console.log('all balances', all); */
+                                 /* console.log('all balances', all); */
 
                                 setBalances(all);
                             }

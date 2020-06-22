@@ -39,7 +39,7 @@ const Orders = _ => {
         status: 'fa-angle-down',
         total: 'fa-angle-down',
     });
-/* console.log(balances) */
+/*  console.log(balances.contractBalances)  */
     loadOrderHistory = () => {
         let address;
 
@@ -86,9 +86,11 @@ const Orders = _ => {
     useEffect(
         _ => {
             loadOrderHistory();
+            console.log('esta cargando toda el historico')
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
-        [symbol, ethAddress]
+        /* Si se añade un nuevo simbolo se debera de añadir, a esta lista para q, se pueda visualizar cuando cambie el valor del mismo dentro del objecto, de otra forma no se sabra cuando cambio el balance */
+        [symbol, ethAddress, balances.contractBalances.ETH,balances.contractBalances.USDT,balances.contractBalances.WBTC,balances.contractBalances.WXRP ]
     );
 
     const handleType = type => {

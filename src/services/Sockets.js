@@ -179,6 +179,10 @@ const Sockets = () => {
                         walletBalances[data.asset] = String(
                             newWalletBal.toFixed(8)
                         );
+                        console.log({
+                            contractBalances,
+                            walletBalances,
+                        })
                         setBalances({
                             contractBalances,
                             walletBalances,
