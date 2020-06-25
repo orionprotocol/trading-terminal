@@ -10,7 +10,8 @@ const formatNumber = number => {
     );
 };
 
-export default function Line2({ data, handlePair }) {
+export default function Line2({ data, handlePair,favourite,setFavs }) {
+   
     /* REDUX */
     const { tickers } = useSelector(state => state.general);
     /* REDUX */
@@ -50,7 +51,7 @@ export default function Line2({ data, handlePair }) {
 
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
-        [data]
+        [data,localStorage.getItem('fav')]
     );
 
     const handleFav = _ => {
@@ -65,7 +66,10 @@ export default function Line2({ data, handlePair }) {
 
         favs[data.pair] = !data.fav;
         favs = JSON.stringify(favs);
-        localStorage.setItem('fav', favs);
+        localStorage.setItem('fav', favs)
+        setFavs(!favourite) 
+        
+         
     };
 
 

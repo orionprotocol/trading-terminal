@@ -12,7 +12,7 @@ import {
     enabled_features,
     renderChart,
 } from './renderChart';
-console.log(disabled_featureset)
+
 
 
 function getLanguageFromURL() {
@@ -60,7 +60,7 @@ const TVChartContainer = memo(() => {
                 disabled_features= disabled_features.filter( data => data!=='header_widget' )
             }
         }
-        console.log(active, disabled_features)
+       
         const widgetOptions = {
             symbol: defaultProps.symbol,
             // BEWARE: no trailing slash is expected in feed URL

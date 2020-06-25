@@ -45,7 +45,7 @@ const PairDrop2 = ({ handleWrapper, History }) => {
     const [currentQuote, setCurrentQuote] = useState('');/* ES EL FILTRO QUE VOY A USAR PARA MOSTRAR LAS FILAS */
     const [lines, setLines] = useState([]);
     const [/* linesSetted */, setlinesSetted] = useState(false);
- /*    const [favs, setFavs] = useState(false); */
+    const [favs, setFavs] = useState(false); 
     const [searcher, setsearcher] = useState('')
     /* ESTADOS DEL MODULO */
 
@@ -103,7 +103,7 @@ const PairDrop2 = ({ handleWrapper, History }) => {
             setlinesSetted(true)
            
         }
-    }, [tickers['BTC-USDT'], tickers['XRP-USDT'], tickers['ETH-BTC'], tickers['XRP-BTC'],searcher]);
+    }, [tickers['BTC-USDT'], tickers['XRP-USDT'], tickers['ETH-BTC'], tickers['XRP-BTC'],searcher,favs]);
 
     useEffect(() => {
         /* Este se encargara de volver a renderizar los assets, para saber quien esta activo o no */
@@ -238,10 +238,10 @@ const PairDrop2 = ({ handleWrapper, History }) => {
                     <div className="part">
                         {lines.map((res, key) => {
                             if(currentQuote==='FAVS' && res.fav===true){
-                            return <Line key={key} handlePair={handlePair} data={res} />
+                            return <Line key={key} handlePair={handlePair} favourite={favs} setFavs={setFavs} data={res} />
                             }
                             if(currentQuote===res.symbolB){
-                                return   <Line key={key} handlePair={handlePair} data={res} />
+                                return   <Line key={key} handlePair={handlePair} favourite={favs} setFavs={setFavs} data={res} />
                             }else{
                                 return null
                             }
