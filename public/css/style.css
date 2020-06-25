@@ -11,12 +11,12 @@
 }
 
 body {
-    font-family: 'Montserrat', sans-serif !important;
-    font-size: 10px !important;
+    font-family: 'Montserrat', sans-serif;
+    /* font-size: 10px !important; */
     line-height: 12px;
-    color: rgba(20, 16, 41, 0.6) !important;
+    color: rgba(20, 16, 41, 0.6);
     font-weight: 500;
-    background: rgba(20, 16, 41, 0.02) !important;
+    background: rgba(20, 16, 41, 0.02);
 }
 
 .main-body {
@@ -419,11 +419,7 @@ a:active {
     padding: 0;
 }
 
-.index
-    .common-info
-    .top
-    .drop-menu-currecy-select.ui-selectmenu-button-open
-    .custom-icon {
+.index .common-info .top .drop-menu-currecy-select.ui-selectmenu-button-open .custom-icon {
     -webkit-transform: rotate(270deg) !important;
     -ms-transform: rotate(270deg) !important;
     transform: rotate(270deg) !important;
@@ -596,26 +592,20 @@ a:active {
     box-shadow: 0 8px 8px -4px rgba(245, 92, 69, 0.12),
         0 16px 24px 0 rgba(245, 92, 69, 0.24),
         0 2px 4px -1px rgba(27, 10, 82, 0.12), 0 0 1px 0 rgba(245, 92, 69, 0.24) !important;
-    background-image: -webkit-gradient(
-        linear,
+    background-image: -webkit-gradient(linear,
         left top,
         right top,
         from(#ff8800),
         color-stop(51%, #f55c45),
-        to(#e12d81)
-    ) !important;
-    background-image: -o-linear-gradient(
-        left,
+        to(#e12d81)) !important;
+    background-image: -o-linear-gradient(left,
         #ff8800,
         #f55c45 51%,
-        #e12d81
-    ) !important;
-    background-image: linear-gradient(
-        to right,
+        #e12d81) !important;
+    background-image: linear-gradient(to right,
         #ff8800,
         #f55c45 51%,
-        #e12d81
-    ) !important;
+        #e12d81) !important;
 }
 
 .index .left-panel .buy-sell .top {
@@ -846,18 +836,14 @@ a:active {
         0 2px 4px -1px rgba(10, 70, 82, 0.12), 0 0 1px rgba(0, 187, 255, 0.24);
     box-shadow: 0 8px 12px rgba(0, 187, 255, 0.24),
         0 2px 4px -1px rgba(10, 70, 82, 0.12), 0 0 1px rgba(0, 187, 255, 0.24);
-    background-image: -o-linear-gradient(
-        315deg,
+    background-image: -o-linear-gradient(315deg,
         #00ffaa 0%,
         #00bbff 53%,
-        #4579f5 100%
-    );
-    background-image: linear-gradient(
-        135deg,
+        #4579f5 100%);
+    background-image: linear-gradient(135deg,
         #00ffaa 0%,
         #00bbff 53%,
-        #4579f5 100%
-    );
+        #4579f5 100%);
     border-radius: 2px;
     border: none;
     cursor: pointer;
@@ -872,11 +858,9 @@ a:active {
         0 24px 32px 0 rgba(0, 187, 255, 0.24),
         0 4px 4px -1px rgba(27, 10, 82, 0.12),
         0 1px 1px 0 rgba(0, 187, 255, 0.24);
-    background-image: linear-gradient(
-            to bottom,
-            rgba(255, 255, 255, 0.06),
-            rgba(255, 255, 255, 0.06)
-        ),
+    background-image: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.06),
+        rgba(255, 255, 255, 0.06)),
         linear-gradient(114deg, #00ffaa, #00bbff 53%, #4579f5 100%);
     cursor: pointer;
 }
@@ -886,12 +870,10 @@ a:active {
         0 8px 16px 0 rgba(0, 187, 255, 0.24),
         0 1px 4px -1px rgba(27, 10, 82, 0.12),
         0 1px 1px 0 rgba(0, 187, 255, 0.24);
-    background-image: linear-gradient(
-        114deg,
+    background-image: linear-gradient(114deg,
         #00ffaa,
         #00bbff 53%,
-        #4579f5 100%
-    );
+        #4579f5 100%);
 }
 
 .submit-form.buy:disabled {
@@ -899,24 +881,20 @@ a:active {
     box-shadow: 0 0 8px -4px rgba(0, 187, 255, 0.12),
         0 0 24px 0 rgba(0, 187, 255, 0.24), 0 0 4px -1px rgba(27, 10, 82, 0.12),
         0 0 1px 0 rgba(0, 187, 255, 0.24);
-    background-image: linear-gradient(
-        114deg,
+    background-image: linear-gradient(114deg,
         #00ffaa,
         #00bbff 53%,
-        #4579f5 100%
-    );
+        #4579f5 100%);
 }
 
 .submit-form.sell {
     box-shadow: 0 8px 8px -4px rgba(245, 92, 69, 0.12),
         0 16px 24px 0 rgba(245, 92, 69, 0.24),
         0 2px 4px -1px rgba(27, 10, 82, 0.12), 0 0 1px 0 rgba(245, 92, 69, 0.24) !important;
-    background-image: linear-gradient(
-        to right,
+    background-image: linear-gradient(to right,
         #ff8800,
         #f55c45 51%,
-        #e12d81
-    ) !important;
+        #e12d81) !important;
 }
 
 .submit-form.sell:hover {
@@ -924,11 +902,9 @@ a:active {
         0 24px 32px 0 rgba(245, 92, 69, 0.24),
         0 4px 4px -1px rgba(27, 10, 82, 0.12),
         0 1px 1px 0 rgba(245, 92, 69, 0.24) !important;
-    background-image: linear-gradient(
-            to bottom,
-            rgba(255, 255, 255, 0.06),
-            rgba(255, 255, 255, 0.06)
-        ),
+    background-image: linear-gradient(to bottom,
+        rgba(255, 255, 255, 0.06),
+        rgba(255, 255, 255, 0.06)),
         linear-gradient(to right, #ff8800, #f55c45 51%, #e12d81) !important;
     cursor: pointer;
 }
@@ -938,12 +914,10 @@ a:active {
         0 8px 16px 0 rgba(245, 92, 69, 0.24),
         0 1px 4px -1px rgba(27, 10, 82, 0.12),
         0 1px 1px 0 rgba(245, 92, 69, 0.24) !important;
-    background-image: linear-gradient(
-        to right,
+    background-image: linear-gradient(to right,
         #ff8800,
         #f55c45 51%,
-        #e12d81
-    ) !important;
+        #e12d81) !important;
 }
 
 .index .center-panel {
@@ -1002,11 +976,7 @@ a:active {
     top: 6px;
 }
 
-.index
-    .center-panel
-    .table
-    .drop-menu-currecy-select-1.ui-selectmenu-button-open
-    .custom-icon {
+.index .center-panel .table .drop-menu-currecy-select-1.ui-selectmenu-button-open .custom-icon {
     -webkit-transform: rotate(270deg) !important;
     -ms-transform: rotate(270deg) !important;
     transform: rotate(270deg) !important;
@@ -1027,7 +997,7 @@ a:active {
     position: relative;
 }
 
-.index .center-panel .table .top > div {
+.index .center-panel .table .top>div {
     margin-bottom: 16px;
     margin-right: 10px;
 }
@@ -1256,13 +1226,7 @@ a:active {
     padding: 6px 4px;
 }
 
-.index
-    .center-panel
-    .table-content
-    .lines
-    .line-big
-    .subtable
-    .subline:not(:last-child) {
+.index .center-panel .table-content .lines .line-big .subtable .subline:not(:last-child) {
     margin-bottom: 6px;
 }
 
@@ -1323,47 +1287,19 @@ a:active {
     width: 20%;
 }
 
-.index
-    .center-panel
-    .table-content
-    .lines
-    .line-big
-    .subtable
-    .subline-d
-    span.right {
+.index .center-panel .table-content .lines .line-big .subtable .subline-d span.right {
     text-align: right;
 }
 
-.index
-    .center-panel
-    .table-content
-    .lines
-    .line-big
-    .subtable
-    .subline-d
-    span.filled {
+.index .center-panel .table-content .lines .line-big .subtable .subline-d span.filled {
     color: #ffaa00;
 }
 
-.index
-    .center-panel
-    .table-content
-    .lines
-    .line-big
-    .subtable
-    .subline-d
-    span.open {
+.index .center-panel .table-content .lines .line-big .subtable .subline-d span.open {
     color: #16b862;
 }
 
-.index
-    .center-panel
-    .table-content
-    .lines
-    .line-big
-    .subtable
-    .subline-d
-    span.cancel {
+.index .center-panel .table-content .lines .line-big .subtable .subline-d span.cancel {
     color: #f54562;
 }
 
@@ -1586,14 +1522,7 @@ a:active {
     cursor: pointer;
 }
 
-.index
-    .right-panel
-    .order-book
-    .orders
-    .order
-    .cell.exch
-    .exch-content.active
-    .arrow {
+.index .right-panel .order-book .orders .order .cell.exch .exch-content.active .arrow {
     -webkit-transform: rotate(90deg);
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);
@@ -1631,14 +1560,7 @@ a:active {
     transition: all 0.2s;
 }
 
-.index
-    .right-panel
-    .order-book
-    .orders
-    .order
-    .cell.exch
-    .exch-drop
-    .drop:hover {
+.index .right-panel .order-book .orders .order .cell.exch .exch-drop .drop:hover {
     background: rgba(20, 16, 41, 0.02);
     cursor: pointer;
 }
@@ -1649,15 +1571,7 @@ a:active {
     margin-right: 6px;
 }
 
-.index
-    .right-panel
-    .order-book
-    .orders
-    .order
-    .cell.exch
-    .exch-drop
-    .drop
-    span {
+.index .right-panel .order-book .orders .order .cell.exch .exch-drop .drop span {
     font-size: 14px;
     line-height: 24px;
     color: rgba(20, 16, 41, 0.8);
@@ -1834,49 +1748,25 @@ a:active {
     width: 100%;
 }
 
-.index
-    .left-panel
-    .pair-select
-    .pair-drop
-    .search
-    .input
-    input::-webkit-input-placeholder {
+.index .left-panel .pair-select .pair-drop .search .input input::-webkit-input-placeholder {
     font-size: 16px;
     line-height: 24px;
     color: rgba(20, 16, 41, 0.6);
 }
 
-.index
-    .left-panel
-    .pair-select
-    .pair-drop
-    .search
-    .input
-    input::-moz-placeholder {
+.index .left-panel .pair-select .pair-drop .search .input input::-moz-placeholder {
     font-size: 16px;
     line-height: 24px;
     color: rgba(20, 16, 41, 0.6);
 }
 
-.index
-    .left-panel
-    .pair-select
-    .pair-drop
-    .search
-    .input
-    input:-ms-input-placeholder {
+.index .left-panel .pair-select .pair-drop .search .input input:-ms-input-placeholder {
     font-size: 16px;
     line-height: 24px;
     color: rgba(20, 16, 41, 0.6);
 }
 
-.index
-    .left-panel
-    .pair-select
-    .pair-drop
-    .search
-    .input
-    input::-ms-input-placeholder {
+.index .left-panel .pair-select .pair-drop .search .input input::-ms-input-placeholder {
     font-size: 16px;
     line-height: 24px;
     color: rgba(20, 16, 41, 0.6);
@@ -1985,29 +1875,14 @@ a:active {
     width: 25%;
 }
 
-.index
-    .left-panel
-    .pair-select
-    .pair-drop
-    .pair-table
-    .lines
-    .line
-    .cell
-    .title-m {
+.index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell .title-m {
     display: none;
     font-size: 16px;
     line-height: 20px;
     color: rgba(20, 16, 41, 0.6);
 }
 
-.index
-    .left-panel
-    .pair-select
-    .pair-drop
-    .pair-table
-    .lines
-    .line
-    .cell.short {
+.index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell.short {
     /* width: 20%; */
     width: 24%;
 }
@@ -2016,71 +1891,28 @@ a:active {
     width: 35%;
 }
 
-.index
-    .left-panel
-    .pair-select
-    .pair-drop
-    .pair-table
-    .lines
-    .line
-    .cell.chg
-    p {
+.index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell.chg p {
     margin: 0 8px 0 4px;
 }
 
-.index
-    .left-panel
-    .pair-select
-    .pair-drop
-    .pair-table
-    .lines
-    .line
-    .cell.chg
-    p
-    .emp {
+.index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell.chg p .emp {
     font-size: 24px;
     line-height: 20px;
     font-weight: 600;
     color: rgba(20, 16, 41, 0.8);
 }
 
-.index
-    .left-panel
-    .pair-select
-    .pair-drop
-    .pair-table
-    .lines
-    .line
-    .cell.chg
-    .star {
+.index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell.chg .star {
     cursor: pointer;
     width: 18px;
     height: 18px;
 }
 
-.index
-    .left-panel
-    .pair-select
-    .pair-drop
-    .pair-table
-    .lines
-    .line
-    .cell.chg
-    .star.active
-    i {
+.index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell.chg .star.active i {
     color: #00bbff;
 }
 
-.index
-    .left-panel
-    .pair-select
-    .pair-drop
-    .pair-table
-    .lines
-    .line
-    .cell.chg
-    .star
-    i {
+.index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell.chg .star i {
     width: 18px;
     height: 18px;
     font-size: 19px;
@@ -2092,15 +1924,7 @@ a:active {
     flex-shrink: 0;
 }
 
-.index
-    .left-panel
-    .pair-select
-    .pair-drop
-    .pair-table
-    .lines
-    .line
-    .cell
-    .text {
+.index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell .text {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -2116,30 +1940,12 @@ a:active {
     color: rgba(20, 16, 41, 0.8);
 }
 
-.index
-    .left-panel
-    .pair-select
-    .pair-drop
-    .pair-table
-    .lines
-    .line
-    .cell
-    .text
-    .small {
+.index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell .text .small {
     line-height: 16px;
     color: rgba(20, 16, 41, 0.6);
 }
 
-.index
-    .left-panel
-    .pair-select
-    .pair-drop
-    .pair-table
-    .lines
-    .line
-    .cell
-    .text
-    .emp {
+.index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell .text .emp {
     font-weight: 600;
 }
 
@@ -2390,33 +2196,19 @@ a:active {
     color: rgba(224, 224, 255, 0.4) !important;
 }
 
-.index.dark-mode
-    .center-panel
-    .table
-    .currency-all
-    .drop-menu-currecy-select-1 {
+.index.dark-mode .center-panel .table .currency-all .drop-menu-currecy-select-1 {
     color: #ffffff !important;
     background: rgba(224, 224, 255, 0.02) !important;
 }
 
-.index.dark-mode
-    .center-panel
-    .table
-    .currency-all
-    .drop-menu-currecy-select-1
-    .custom-icon {
+.index.dark-mode .center-panel .table .currency-all .drop-menu-currecy-select-1 .custom-icon {
     background-image: url('../img/arrow-down-l.svg') !important;
     -webkit-transform: rotate(0);
     -ms-transform: rotate(0);
     transform: rotate(0);
 }
 
-.index.dark-mode
-    .center-panel
-    .table
-    .currency-all
-    .drop-menu-currecy-select-1.ui-selectmenu-button-open
-    .custom-icon {
+.index.dark-mode .center-panel .table .currency-all .drop-menu-currecy-select-1.ui-selectmenu-button-open .custom-icon {
     -webkit-transform: rotate(180deg) !important;
     -ms-transform: rotate(180deg) !important;
     transform: rotate(180deg) !important;
@@ -2692,7 +2484,7 @@ a:active {
     flex-wrap: wrap;
 }
 
-.history .history-table .top > div:not(:last-child) {
+.history .history-table .top>div:not(:last-child) {
     margin-right: 16px;
 }
 
@@ -2729,11 +2521,7 @@ a:active {
     top: 6px;
 }
 
-.history
-    .history-table
-    .top
-    .drop-menu-currecy-select-1.ui-selectmenu-button-open
-    .custom-icon {
+.history .history-table .top .drop-menu-currecy-select-1.ui-selectmenu-button-open .custom-icon {
     -webkit-transform: rotate(270deg) !important;
     -ms-transform: rotate(270deg) !important;
     transform: rotate(270deg) !important;
@@ -3251,26 +3039,13 @@ a:active {
     margin-left: 10px;
 }
 
-.dashboard
-    .wrapper
-    .wallets-table
-    .lines
-    .line
-    .cell.actions
-    button.withdraw
-    img {
+.dashboard .wrapper .wallets-table .lines .line .cell.actions button.withdraw img {
     -webkit-transform: rotate(180deg);
     -ms-transform: rotate(180deg);
     transform: rotate(180deg);
 }
 
-.dashboard
-    .wrapper
-    .wallets-table
-    .lines
-    .line
-    .cell.actions
-    button:not(:last-child) {
+.dashboard .wrapper .wallets-table .lines .line .cell.actions button:not(:last-child) {
     margin-right: 6px;
 }
 
@@ -3547,18 +3322,14 @@ a:active {
 }
 
 .dashboard.dark-mode .add-wallet-2 .btns .connect {
-    background-image: -o-linear-gradient(
-        315deg,
+    background-image: -o-linear-gradient(315deg,
         #00ffaa 0%,
         #00bbff 53%,
-        #4579f5 100%
-    ) !important;
-    background-image: linear-gradient(
-        135deg,
+        #4579f5 100%) !important;
+    background-image: linear-gradient(135deg,
         #00ffaa 0%,
         #00bbff 53%,
-        #4579f5 100%
-    ) !important;
+        #4579f5 100%) !important;
     -webkit-box-shadow: 0 8px 12px rgba(0, 187, 255, 0.24),
         0 2px 4px -1px rgba(10, 70, 82, 0.12), 0 0 1px rgba(0, 187, 255, 0.24) !important;
     box-shadow: 0 8px 12px rgba(0, 187, 255, 0.24),
@@ -3647,12 +3418,7 @@ a:active {
     width: 100%;
 }
 
-.wallet-page
-    .wrapper
-    .wallets-table
-    .search
-    .input
-    input::-webkit-input-placeholder {
+.wallet-page .wrapper .wallets-table .search .input input::-webkit-input-placeholder {
     font-size: 14px;
     line-height: 16px;
     color: rgba(20, 16, 41, 0.6);
@@ -3664,23 +3430,13 @@ a:active {
     color: rgba(20, 16, 41, 0.6);
 }
 
-.wallet-page
-    .wrapper
-    .wallets-table
-    .search
-    .input
-    input:-ms-input-placeholder {
+.wallet-page .wrapper .wallets-table .search .input input:-ms-input-placeholder {
     font-size: 14px;
     line-height: 16px;
     color: rgba(20, 16, 41, 0.6);
 }
 
-.wallet-page
-    .wrapper
-    .wallets-table
-    .search
-    .input
-    input::-ms-input-placeholder {
+.wallet-page .wrapper .wallets-table .search .input input::-ms-input-placeholder {
     font-size: 14px;
     line-height: 16px;
     color: rgba(20, 16, 41, 0.6);
@@ -3796,26 +3552,13 @@ a:active {
     margin-left: 10px;
 }
 
-.wallet-page
-    .wrapper
-    .wallets-table
-    .lines
-    .line
-    .cell.actions
-    button.withdraw
-    img {
+.wallet-page .wrapper .wallets-table .lines .line .cell.actions button.withdraw img {
     -webkit-transform: rotate(180deg);
     -ms-transform: rotate(180deg);
     transform: rotate(180deg);
 }
 
-.wallet-page
-    .wrapper
-    .wallets-table
-    .lines
-    .line
-    .cell.actions
-    button:not(:last-child) {
+.wallet-page .wrapper .wallets-table .lines .line .cell.actions button:not(:last-child) {
     margin-right: 6px;
 }
 
@@ -4339,18 +4082,14 @@ a:active {
 }
 
 .add-wallet-2 .btns .connect {
-    background-image: -o-linear-gradient(
-        315deg,
+    background-image: -o-linear-gradient(315deg,
         #00ffaa 0%,
         #00bbff 53%,
-        #4579f5 100%
-    );
-    background-image: linear-gradient(
-        135deg,
+        #4579f5 100%);
+    background-image: linear-gradient(135deg,
         #00ffaa 0%,
         #00bbff 53%,
-        #4579f5 100%
-    );
+        #4579f5 100%);
     color: #ffffff;
     -webkit-box-shadow: 0 8px 12px rgba(0, 187, 255, 0.24),
         0 2px 4px -1px rgba(10, 70, 82, 0.12), 0 0 1px rgba(0, 187, 255, 0.24);
@@ -4359,18 +4098,14 @@ a:active {
 }
 
 .add-wallet-2 .btns .connect:hover {
-    background-image: -o-linear-gradient(
-        315deg,
+    background-image: -o-linear-gradient(315deg,
         #00ffaa 0%,
         #00bbff 53%,
-        #4579f5 100%
-    );
-    background-image: linear-gradient(
-        135deg,
+        #4579f5 100%);
+    background-image: linear-gradient(135deg,
         #00ffaa 0%,
         #00bbff 53%,
-        #4579f5 100%
-    );
+        #4579f5 100%);
 }
 
 .add-wallet-2 .btns .connect img {
@@ -4697,18 +4432,14 @@ a:active {
         0 2px 4px -1px rgba(10, 70, 82, 0.12), 0 0 1px 0 rgba(0, 187, 255, 0.24) !important;
     box-shadow: 0 8px 12px 0 rgba(0, 187, 255, 0.24),
         0 2px 4px -1px rgba(10, 70, 82, 0.12), 0 0 1px 0 rgba(0, 187, 255, 0.24) !important;
-    background-image: -o-linear-gradient(
-        315deg,
+    background-image: -o-linear-gradient(315deg,
         #00ffaa,
         #00bbff 53%,
-        #4579f5
-    ) !important;
-    background-image: linear-gradient(
-        135deg,
+        #4579f5) !important;
+    background-image: linear-gradient(135deg,
         #00ffaa,
         #00bbff 53%,
-        #4579f5
-    ) !important;
+        #4579f5) !important;
     border-radius: 50% !important;
 }
 
@@ -5089,6 +4820,7 @@ a:active {
     width: 4px;
     height: 0px;
 }
+
 /* ---------------------------------------------------------------- */
 
 .index .left-panel .buy-sell .top button:hover {
@@ -5379,14 +5111,7 @@ body.dark ::-webkit-scrollbar-track {
         line-height: 24px;
     }
 
-    .index
-        .center-panel
-        .table-content
-        .lines
-        .line-big
-        .subtable
-        .subline-d
-        span {
+    .index .center-panel .table-content .lines .line-big .subtable .subline-d span {
         font-size: 14px;
         line-height: 24px;
     }
@@ -5796,13 +5521,7 @@ body.dark ::-webkit-scrollbar-track {
         width: 100%;
     }
 
-    .dashboard
-        .wrapper
-        .wallets-table
-        .lines
-        .line
-        .cell.actions
-        button:not(:last-child) {
+    .dashboard .wrapper .wallets-table .lines .line .cell.actions button:not(:last-child) {
         margin: 0 0 8px 0;
     }
 
@@ -5941,13 +5660,7 @@ body.dark ::-webkit-scrollbar-track {
         width: 100%;
     }
 
-    .wallet-page
-        .wrapper
-        .wallets-table
-        .lines
-        .line
-        .cell.actions
-        button:not(:last-child) {
+    .wallet-page .wrapper .wallets-table .lines .line .cell.actions button:not(:last-child) {
         margin: 0 0 8px 0;
     }
 
@@ -6142,7 +5855,7 @@ body.dark ::-webkit-scrollbar-track {
         align-items: flex-start;
     }
 
-    .index .center-panel .table .top > div {
+    .index .center-panel .table .top>div {
         width: 100%;
     }
 
@@ -6322,26 +6035,11 @@ body.dark ::-webkit-scrollbar-track {
         margin-bottom: 32px;
     }
 
-    .index
-        .left-panel
-        .pair-select
-        .pair-drop
-        .pair-table
-        .lines
-        .line
-        .cell
-        .title-m {
+    .index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell .title-m {
         display: block;
     }
 
-    .index
-        .left-panel
-        .pair-select
-        .pair-drop
-        .pair-table
-        .lines
-        .line
-        .cell.short {
+    .index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell.short {
         width: 100%;
         margin: 5px 0;
         -webkit-box-pack: justify;
@@ -6349,39 +6047,16 @@ body.dark ::-webkit-scrollbar-track {
         justify-content: space-between;
     }
 
-    .index
-        .left-panel
-        .pair-select
-        .pair-drop
-        .pair-table
-        .lines
-        .line
-        .cell.chg {
+    .index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell.chg {
         width: 100%;
         margin-top: 15px;
     }
 
-    .index
-        .left-panel
-        .pair-select
-        .pair-drop
-        .pair-table
-        .lines
-        .line
-        .cell.chg
-        .star {
+    .index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell.chg .star {
         margin-left: auto;
     }
 
-    .index
-        .left-panel
-        .pair-select
-        .pair-drop
-        .pair-table
-        .lines
-        .line
-        .cell
-        .text {
+    .index .left-panel .pair-select .pair-drop .pair-table .lines .line .cell .text {
         -webkit-box-align: end;
         -ms-flex-align: end;
         align-items: flex-end;
@@ -6449,10 +6124,10 @@ body.dark ::-webkit-scrollbar-track {
     }
 }
 
-.title-class{
+.title-class {
     color: white !important;
 }
-.content-class {
-    color:white !important
-}
 
+.content-class {
+    color: white !important
+}

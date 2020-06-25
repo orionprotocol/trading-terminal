@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import Router from './Router';
 import Services from './services';
 
-import './css/chart.css';
+import './css/common.scss';
 
 function App() {
     return (

@@ -5,13 +5,9 @@ import SwapSelector from '../components/Swap';
 
 const Swap = memo(() => {
     return (
-        <div>
-            <div className="history">
-                <Sidebar />
-
-                <div className="my-container">
-                    <SwapSelector />
-                </div>
+        <div className="page">
+            <Sidebar />
+            <div className="page__content">
             </div>
         </div>
     );

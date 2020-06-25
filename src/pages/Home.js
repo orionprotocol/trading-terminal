@@ -84,7 +84,6 @@ function Home(props) {
 
     return (
         <div className="">
-            <TopMenu />
 
             <IndexNav />
 

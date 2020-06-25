@@ -1,0 +1,101 @@
+@font-face {
+  font-family: 'orion';
+  src:
+    url('fonts/orion.ttf?vd2ire') format('truetype'),
+    url('fonts/orion.woff?vd2ire') format('woff'),
+    url('fonts/orion.svg?vd2ire#orion') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon_"], [class*=" icon_"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'orion' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon_chart:before {
+  content: "\e903";
+}
+.icon_wallet:before {
+  content: "\e905";
+}
+.icon_wanchain:before {
+  content: "\e904";
+}
+.icon_ethereum:before {
+  content: "\e901";
+}
+.icon_bitmax:before {
+  content: "\e902";
+}
+.icon_binance:before {
+  content: "\e900";
+}
+.icon_copy:before {
+  content: "\e909";
+}
+.icon_spinn:before {
+  content: "\e90a";
+}
+.icon_close:before {
+  content: "\e90b";
+}
+.icon_alert:before {
+  content: "\e90c";
+}
+.icon_zoom:before {
+  content: "\e914";
+}
+.icon_prev:before {
+  content: "\e915";
+}
+.icon_next:before {
+  content: "\e916";
+}
+.icon_arrow:before {
+  content: "\e917";
+}
+.icon_date:before {
+  content: "\e918";
+}
+.icon_change:before {
+  content: "\e919";
+}
+.icon_carret:before {
+  content: "\e91a";
+}
+.icon_add:before {
+  content: "\e91b";
+}
+.icon_dash:before {
+  content: "\e91c";
+}
+.icon_bitcoin:before {
+  content: "\e91e";
+}
+.icon_clock:before {
+  content: "\e91f";
+}
+.icon_grid:before {
+  content: "\e920";
+}
+.icon_swap:before {
+  content: "\e921";
+}
+.icon_home:before {
+  content: "\e922";
+}
+.icon_moon:before {
+  content: "\e923";
+}
