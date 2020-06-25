@@ -8,10 +8,12 @@ import {
     studies_overrides,
     custom_css_url,
     toolbar_bg,
-    disabled_features,
+    disabled_featureset,
     enabled_features,
     renderChart,
 } from './renderChart';
+console.log(disabled_featureset)
+
 
 function getLanguageFromURL() {
     const regex = new RegExp('[\\?&]lang=([^&#]*)');
@@ -32,6 +34,7 @@ const TVChartContainer = memo(() => {
         change,
         mode,
     } = useSelector(state => state.general);
+    const {active} = useSelector(state => state.responsive.home);
 
     let defaultProps = {
         symbol: `${symbolA}-${symbolB}`,
@@ -45,10 +48,19 @@ const TVChartContainer = memo(() => {
     };
 
     let tvWidgetGeneral = null;
-const [tvChart,settvChart]=useState(null)
+    const [tvChart,settvChart]=useState(null)
     useEffect(() => {
         renderChart(mode);
+        let disabled_features=disabled_featureset
 
+        if(active){
+            disabled_features.push('header_widget')
+        }else{
+            if(disabled_features.indexOf('header_widget')!==-1){
+                disabled_features= disabled_features.filter( data => data!=='header_widget' )
+            }
+        }
+        console.log(active, disabled_features)
         const widgetOptions = {
             symbol: defaultProps.symbol,
             // BEWARE: no trailing slash is expected in feed URL
@@ -103,7 +115,7 @@ const [tvChart,settvChart]=useState(null)
                 tvWidgetGeneral = null;
             }
         }; 
-    }, [ mode]);
+    }, [mode,active]);
 
 useEffect(() => {
     if (tvChart !== null) {

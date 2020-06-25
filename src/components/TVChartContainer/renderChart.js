@@ -200,7 +200,8 @@ const renderChart = mode => {
  
 };
 
-const disabled_features = [
+const disabled_featureset = [
+    
  // 'header_widget',  esto es para borrar el header, hay que buscar la forma de quitarlo cuando sea responsive
     'header_symbol_search',
     'header_compare',
@@ -235,7 +236,7 @@ export {
     studies_overrides,
     custom_css_url,
     toolbar_bg,
-    disabled_features,
+    disabled_featureset,
     enabled_features,
     renderChart,
 };

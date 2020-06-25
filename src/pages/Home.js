@@ -120,10 +120,7 @@ function Home(props) {
                         {(active && chart) || (active && history) ? (
                             <div >
                                 {active && chart ? (
-                                    <div className="image js-chart js-panel-item">
-                                        {/* <div id="chart-container" /> */}
-                                        <TVChart />
-                                    </div>
+                                    <TVChart />
                                 ) : null}
 
                                 {active && history ? <Orders /> : null}
