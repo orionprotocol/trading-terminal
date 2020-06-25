@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Row, Col, Icon, Select, Layout } from 'antd';
+import { Row, Col, Select, Layout } from 'antd';
+import { CalendarOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import './index.css';
 import './table.css';
@@ -8,7 +9,7 @@ import axios from 'axios';
 import compareValues from '../../funtions/compareValues';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.min.css';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 const urlBase = process.env.REACT_APP_BACKEND;
 
@@ -241,8 +242,8 @@ const Orders = _ => {
 
     useEffect(
         _ => {
-            let newTime = moment(startDateA).unix();
-            let timeB = moment(startDateB).unix();
+            let newTime = dayjs(startDateA).unix();
+            let timeB = dayjs(startDateB).unix();
 
             let newOrders = ordersOrigin.filter(e => {
                 let time = String(e.time);
@@ -258,8 +259,8 @@ const Orders = _ => {
 
     useEffect(
         _ => {
-            let newTime = moment(startDateB).unix();
-            let timeA = moment(startDateA).unix();
+            let newTime = dayjs(startDateB).unix();
+            let timeA = dayjs(startDateA).unix();
 
             let newOrders = ordersOrigin.filter(e => {
                 let time = String(e.time);
@@ -323,7 +324,7 @@ const Orders = _ => {
                                             onChangeRaw={handleDateChangeRaw}
                                         />
                                         <span className="date-icon">
-                                            <Icon type="calendar" />
+                                            <CalendarOutlined />
                                         </span>
                                         <span className="price-card-date-line">
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -338,7 +339,7 @@ const Orders = _ => {
                                             onChangeRaw={handleDateChangeRaw}
                                         />
                                         <span className="date-icon">
-                                            <Icon type="calendar" />
+                                            <CalendarOutlined />
                                         </span>
                                     </div>
                                 </Col>
@@ -434,7 +435,7 @@ const Orders = _ => {
                     {/* AQUI */}
                     <Row style={{ paddingLeft: 15, paddingBottom: 10 }}>
                         {/* <OrdersTable /> */}
-                        <div className="table-content">
+                        <Col className="table-content" xs={24}>
                             <div className="titles">
                                 <div
                                     className="title short"
@@ -510,7 +511,7 @@ const Orders = _ => {
                                 </div>
                             </div>
                             <div className="lines">{state.renderOrders}</div>
-                        </div>
+                        </Col>
                     </Row>
                 </Content>
             </Layout>

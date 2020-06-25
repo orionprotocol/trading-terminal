@@ -1,4 +1,4 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export default function compareValues(key, order = 'asc') {
 	return function(a, b) {
@@ -13,8 +13,8 @@ export default function compareValues(key, order = 'asc') {
 		}
 
 		if (key === 'created_at') {
-			const dateA = moment(a[key]).unix();
-			const dateB = moment(b[key]).unix();
+			const dateA = dayjs(a[key]).unix();
+			const dateB = dayjs(b[key]).unix();
 
 			let comparison = 0;
 			if (dateA > dateB) {

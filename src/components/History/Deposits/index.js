@@ -1,10 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
-import { Icon, Select } from 'antd';
+import { Select } from 'antd';
+import { CalendarOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import getSymbol from '../../funtions/getSymbol';
 import getSymbolImg from '../../funtions/getSymbolImg';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import compareValues from '../../funtions/compareValues';
 import ReactPaginate from 'react-paginate';
 
@@ -84,9 +85,7 @@ export default function Deposits() {
             setPageCount(Math.ceil(deps.length / perPage));
             setDepositsRender(
                 deps.map((e, i) => {
-                    const date = moment(e.created_at)
-                        .utc(false)
-                        .format('DD.MM.YYYY HH:mm:ss');
+                    const date = dayjs(e.created_at).format('DD.MM.YYYY HH:mm:ss');
                     return (
                         <Fragment key={i + 'ss'}>
                             <div className="line">
@@ -131,11 +130,11 @@ export default function Deposits() {
 
     useEffect(
         _ => {
-            let newTime = moment(startDateA).unix();
-            let timeB = moment(startDateB).unix();
+            let newTime = dayjs(startDateA).unix();
+            let timeB = dayjs(startDateB).unix();
 
             let newDeps = deposits.filter(e => {
-                const time = moment(e.created_at).unix();
+                const time = dayjs(e.created_at).unix();
                 return time >= newTime && time <= timeB;
             });
 
@@ -147,11 +146,11 @@ export default function Deposits() {
 
     useEffect(
         _ => {
-            let newTime = moment(startDateB).unix();
-            let timeA = moment(startDateA).unix();
+            let newTime = dayjs(startDateB).unix();
+            let timeA = dayjs(startDateA).unix();
 
             let newDeps = deposits.filter(e => {
-                const time = moment(e.created_at).unix();
+                const time = dayjs(e.created_at).unix();
                 return time <= newTime && time >= timeA;
             });
 
@@ -216,7 +215,7 @@ export default function Deposits() {
                                 onChangeRaw={handleDateChangeRaw}
                             />
                             <span className="date-icon">
-                                <Icon type="calendar" />
+                                <CalendarOutlined />
                             </span>
                         </div>
                         <span className="hr" />
@@ -229,7 +228,7 @@ export default function Deposits() {
                                 onChangeRaw={handleDateChangeRaw}
                             />
                             <span className="date-icon">
-                                <Icon type="calendar" />
+                                <CalendarOutlined />
                             </span>
                         </div>
                     </div>

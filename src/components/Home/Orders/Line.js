@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Fragment } from 'react';
 import SlideToggle from 'react-slide-toggle';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import Subtable from './Subtable';
 
 const Line = props => {
@@ -10,8 +10,8 @@ const Line = props => {
 		let timestamp = Number(String(props.data.time).substring(0, 10));
 		// let date = moment.unix(timestamp).format('MM-DD HH:mm:ss');
 		// 09.09.2019 12:42:4
-		let date = moment.unix(timestamp).format('DD.MM.YYYY');
-		let time = moment.unix(timestamp).format('HH:mm:ss');
+		let date = dayjs.unix(timestamp).format('DD.MM.YYYY');
+		let time = dayjs.unix(timestamp).format('HH:mm:ss');
 
 		setState({
 			id: props.data.id,
