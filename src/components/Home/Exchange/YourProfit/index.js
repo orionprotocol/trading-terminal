@@ -7,9 +7,10 @@ import Carousel, { consts } from 'react-elastic-carousel'
 const urlBase = process.env.REACT_APP_BACKEND;
 
 const YourProfit = () => {
-	const { symbol, qtyForm, sideForm, mode,symbolB } = useSelector((state) => state.general);
+	const { symbol, qtyForm, sideForm, mode, symbolB } = useSelector((state) => state.general);
 	const [profits, setProfits] = useState('');
-	/* const [profits2, setProfits2] = useState([]); */
+	const [profits2, setProfits2] = useState([]);
+	
 	let style
 	if (mode === 'Dark') {
 		style = { color: 'white' }
@@ -23,7 +24,7 @@ const YourProfit = () => {
 	}
 	const createProfits = profits => {
 		return profits.map((res, key) => {
-			/* 	if(res.benefitBtc===0)return <div></div> */
+			if (res.benefitBtc === 0) return <div></div>
 			return (
 
 				<div key={key} className={`exchange`}>
@@ -58,12 +59,12 @@ const YourProfit = () => {
 		if (qtyForm === '') quantity = 0
 		let url = `${urlBase}/api/v1/order-benefits?symbol=${symbol}&ordQty=${quantity}&side=${sideForm}`
 		let aux = [], result;
-		
+
 		axios
 			.get(url)
 			.then((res) => {
 				result = res.data
-				
+
 				for (let key in result) {
 					if (Number(result[key].benefitPct) !== 0) {
 						aux.push({
@@ -84,13 +85,15 @@ const YourProfit = () => {
 					return 0;
 				});
 				if (aux.length > 0) {
-					setProfits(createProfits(aux))
+					/* setProfits(createProfits(aux)) */
+					setProfits2(aux)
 				} else {
-					setProfits('')
+					/* setProfits('') */
+					setProfits2([])
 				}
 
 
-				/* setProfits2(aux) */
+
 			})
 			.catch((err) => {
 				console.log('err: ', err);
@@ -107,45 +110,53 @@ const YourProfit = () => {
 
 
 
-	/* let prof = profits2.map((res, key) => {
+	let prof = profits2.map((res, key) => {
 		return (
 			<span key={key}>
-				 <label  style={{
+				<label style={{
 					color: `rgb(120,133,169)`,
 					fontWeight: '900',
-					fontSize:'18px'
+					fontSize: '18px'
 				}} >{res.name}</label>
-				<label style={{fontSize:'12px'}}>+ {res.benefitPct} %</label>
-				<label style={{fontSize:'12px'}}>+ {res.benefitBtc} BTC </label>
+				<label style={{ fontSize: '12px' }}>+ {res.benefitPct} %</label>
+				<label style={{ fontSize: '12px' }}>+ {res.benefitBtc} BTC </label>
 			</span>
 		)
-	}) */
+	})
 
-	/* if (profits2 === []) return null */
-	if (profits === '') 
-	return (<section className="your-profit">
+	if (profits2.length===0) {
+		return (<section className="your-profit">
+			
+			<div>
+				<h2 style={{ textAlign: 'center' }}>Enter an amount to get your profits</h2>
+			</div>
+		</section>)
+	}
+
+	/* if (profits === '')  */
+	/* return (<section className="your-profit">
 		<div>
 			<h2 style={{textAlign:'center'}}>Enter an amount to get your profits</h2>
 		</div>
-	</section>)
+	</section>) */
 	return (
 		<section className="your-profit">
 			<div>
 				<h2>Your Profits</h2>
 			</div>
 
-			<div className={`your-profit-data`}>
+			{/* 	<div className={`your-profit-data`}>
 				<Carousel renderArrow={myArrow} enableAutoPlay autoPlaySpeed={5000} itemsToShow={1} renderPagination={() => { return <div></div> }
 				}>
 					{profits}
 				</Carousel>
-			</div>
+			</div> */}
 
-			{/* <div className={`marquee ${mode}`}>
+			<div className={`marquee ${mode}`}>
 				<div>
 					{prof}
 				</div>
-			</div> */}
+			</div>
 
 
 		</section>

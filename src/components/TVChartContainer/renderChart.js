@@ -201,6 +201,7 @@ const renderChart = mode => {
 };
 
 const disabled_features = [
+ // 'header_widget',  esto es para borrar el header, hay que buscar la forma de quitarlo cuando sea responsive
     'header_symbol_search',
     'header_compare',
     'header_undo_redo',
@@ -212,6 +213,7 @@ const disabled_features = [
     'volume_force_overlay',
     'hide_left_toolbar_by_default',
     'legend_context_menu',
+    
     /* 'left_toolbar', *///this feature turn off the left bar
    /*  
         'header_symbol_search',
@@ -225,6 +227,7 @@ const disabled_features = [
 ];
 const enabled_features = [
     'hide_left_toolbar_by_default',
+    'hide_last_na_study_output'
 ];
 
 export {
