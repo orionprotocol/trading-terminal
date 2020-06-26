@@ -86,7 +86,6 @@ const Orders = _ => {
     useEffect(
         _ => {
             loadOrderHistory();
-            console.log('esta cargando toda el historico')
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
         /* Si se añade un nuevo simbolo se debera de añadir, a esta lista para q, se pueda visualizar cuando cambie el valor del mismo dentro del objecto, de otra forma no se sabra cuando cambio el balance */
