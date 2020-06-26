@@ -57,6 +57,10 @@
   text-align: center;
 }
 
+.your-profit h2 {
+  margin-bottom: 0;
+}
+
 @media (min-width: 1500px) {
   .your-profit h2 {
     font-size: 24px;

@@ -4,6 +4,8 @@ import Slider from 'react-slick';
 import AddWallet1 from '../../AddWallet/AddWallet1';
 import AddWallet2 from '../../AddWallet/AddWallet2';
 import FadeIn from 'react-fade-in';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import './index.css';
 
 let price = require('crypto-price');

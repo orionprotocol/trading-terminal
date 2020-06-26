@@ -108,9 +108,7 @@ const YourProfit = () => {
 	</section>) */
   return (
     <section className="your-profit">
-      <div>
-        <h2>Your Profits</h2>
-      </div>
+      <h2>Your Profits</h2>
 
       {/* 	<div className={`your-profit-data`}>
 				<Carousel renderArrow={myArrow} enableAutoPlay autoPlaySpeed={5000} itemsToShow={1} renderPagination={() => { return <div></div> }

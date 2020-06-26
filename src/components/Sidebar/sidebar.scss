@@ -249,6 +249,7 @@
 
 .nav {
     margin-bottom: 72px;
+    padding: 0;
 
     &__item {
         margin-bottom: 8px;
@@ -317,6 +318,8 @@
 }
 
 .addedWallet {
+    padding: 0;
+    
     &__item {
         margin-bottom: 9px;
     }

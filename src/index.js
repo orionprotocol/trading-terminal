@@ -5,6 +5,9 @@ import * as serviceWorker from "./serviceWorker";
 import WebfontLoader from "@dr-kobros/react-webfont-loader";
 import { BrowserRouter as Router } from "react-router-dom";
 import { createStore, combineReducers } from "redux";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faSearch, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as farStar } from "@fortawesome/free-regular-svg-icons";
 import { Provider } from "react-redux";
 import balances from "./reducers/balances.js";
 import general from "./reducers/general.js";
@@ -24,11 +27,13 @@ const reducer = combineReducers({
 
 const store = createStore(reducer);
 
+library.add(faSearch, faStar, farStar);
+
 const config = {
-	google: {
-	  families: ['Montserrat:500,600,700'],
-	}
-  };
+  google: {
+    families: ["Montserrat:500,600,700"],
+  },
+};
 
 ReactDOM.render(
   <Provider store={store}>

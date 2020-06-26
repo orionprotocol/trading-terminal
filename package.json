@@ -5,6 +5,10 @@
   "dependencies": {
     "@amcharts/amcharts4": "^4.9.27",
     "@dr-kobros/react-webfont-loader": "^8.0.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.29",
+    "@fortawesome/free-regular-svg-icons": "^5.13.1",
+    "@fortawesome/free-solid-svg-icons": "^5.13.1",
+    "@fortawesome/react-fontawesome": "^0.1.11",
     "antd": "^4.3.5",
     "axios": "^0.19.0",
     "coinlist": "^3.1.2",
@@ -26,6 +30,7 @@
     "react-slide-toggle": "^0.3.3",
     "react-spinners": "^0.9.0",
     "redux": "^4.0.4",
+    "slick-carousel": "^1.8.1",
     "socket.io-client": "^2.3.0",
     "styled-components": "^5.1.0",
     "sweetalert2": "^9.10.13",
