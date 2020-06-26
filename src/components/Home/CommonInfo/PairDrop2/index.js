@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Line from '../Line2';
-import compareValues from '../functions/compareValues'
+import { compareValuesLTH, compareValuesHTL } from '../functions/compareValues'
 import './index.scss';
 
 const PairDrop2 = ({ handleWrapper, History }) => {
@@ -45,7 +45,7 @@ const PairDrop2 = ({ handleWrapper, History }) => {
     const [currentQuote, setCurrentQuote] = useState('');/* ES EL FILTRO QUE VOY A USAR PARA MOSTRAR LAS FILAS */
     const [lines, setLines] = useState([]);
     const [/* linesSetted */, setlinesSetted] = useState(false);
-    const [favs, setFavs] = useState(false); 
+    const [favs, setFavs] = useState(false);
     const [searcher, setsearcher] = useState('')
     /* ESTADOS DEL MODULO */
 
@@ -82,9 +82,30 @@ const PairDrop2 = ({ handleWrapper, History }) => {
                     fav,
                 })
             }
+
+            function auxChoose(compareFunction, auxpairs) {
+
+                linesSorted = compareFunction(JSON.parse(localStorage.getItem('sortLines')).name, JSON.parse(localStorage.getItem('sortLines')).sortType, auxpairs)
+
+                /*  linesSorted = compareFunction(name, sortType, lines)
+ setLines([...linesSorted]);
+ localStorage.setItem('sortLines', JSON.stringify({ name, sortType, order })) */
+            }
+
             if (localStorage.getItem('sortLines')) {
-                linesSorted = compareValues(JSON.parse(localStorage.getItem('sortLines')).name, JSON.parse(localStorage.getItem('sortLines')).sortType, auxpairs)
-                if(searcher!==''){
+
+                if (JSON.parse(localStorage.getItem('sortLines')).order === 'asc') {
+                    /* se mantiene ascente */
+                    auxChoose(compareValuesLTH, auxpairs)
+                } else {
+                     /* se mantiene descendente */
+                    auxChoose(compareValuesHTL, auxpairs)
+                }
+
+
+                /*  linesSorted = compareValuesLTH(JSON.parse(localStorage.getItem('sortLines')).name, JSON.parse(localStorage.getItem('sortLines')).sortType, auxpairs) */
+
+                if (searcher !== '') {
                     setLines(
                         linesSorted.filter(e => {
                             let replace = '^' + searcher;
@@ -92,18 +113,19 @@ const PairDrop2 = ({ handleWrapper, History }) => {
                             return regex.test(e.symbolA);
                         })
                     );
-                }else{
+                } else {
                     setLines([...linesSorted]);
                 }
-                
+
+
             } else {
-                if(searcher==='')setLines([...auxpairs])
+                if (searcher === '') setLines([...auxpairs])
             }
 
             setlinesSetted(true)
-           
+
         }
-    }, [tickers['BTC-USDT'], tickers['XRP-USDT'], tickers['ETH-BTC'], tickers['XRP-BTC'],searcher,favs]);
+    }, [tickers['BTC-USDT'], tickers['XRP-USDT'], tickers['ETH-BTC'], tickers['XRP-BTC'], searcher, favs]);
 
     useEffect(() => {
         /* Este se encargara de volver a renderizar los assets, para saber quien esta activo o no */
@@ -154,9 +176,9 @@ const PairDrop2 = ({ handleWrapper, History }) => {
             );
         }
     };
-    
-    const handlePair = (symbolA,symbolB) => {
-        /* Esta funcion cambia el par acutal, se debe de usar en cada linea */
+
+    /* Esta funcion cambia el par acutal, se debe de usar en cada linea */
+    const handlePair = (symbolA, symbolB) => {
         setChange(0);
         setLow(0);
         setHigh(0);
@@ -169,12 +191,35 @@ const PairDrop2 = ({ handleWrapper, History }) => {
         handleWrapper();
     };
 
+    /* Esta funcion se encarga de ordenar las filas segun el boton que se toque */
     const handleSort = (name, sortType) => {
-        /* Esta funcion se encarga de ordenar las filas segun el boton que se toque */
         let linesSorted = [];
-        localStorage.setItem('sortLines', JSON.stringify({ name, sortType }))
-        linesSorted = compareValues(name, sortType, lines)
-        setLines([...linesSorted]);
+        function auxChoose(compareFunction, order) {
+            linesSorted = compareFunction(name, sortType, lines)
+            setLines([...linesSorted]);
+            localStorage.setItem('sortLines', JSON.stringify({ name, sortType, order }))
+        }
+        /* Se tomara del local estorage el tipo de sort que halla, y dependiendo de un asc o des se ordenara de esa manera */
+        if (JSON.parse(localStorage.getItem('sortLines'))) {
+            if (JSON.parse(localStorage.getItem('sortLines')).sortType === sortType) {
+                if (JSON.parse(localStorage.getItem('sortLines')).order === 'asc') {
+                    /* Si es igual y esta ascendente se guarda descendente */
+                    auxChoose(compareValuesHTL, 'des')
+                } else {
+                    /* Si es igual y esta descentende se guarda ascendente */
+                    auxChoose(compareValuesLTH, 'asc')
+                }
+            } else {
+                auxChoose(compareValuesLTH, 'asc')
+                /* Si no es igual y esta ascendente se guarda ascendete */
+                console.log('no son iguales se guarde ascendente', JSON.parse(localStorage.getItem('sortLines')))
+            }
+        } else {
+            /* Si no existe se crea */
+            auxChoose(compareValuesLTH, 'asc')
+        }
+
+        /*   auxChoose() */
         /*  let newClasses = {};
          let sortType = 'asc';
          for (let e in classes) {
@@ -195,7 +240,6 @@ const PairDrop2 = ({ handleWrapper, History }) => {
          change24h: tickers[pair].change24h,
          lastPrice: parseFloat(tickers[pair].lastPrice),
          vol24h: parseFloat(tickers[pair].vol24h), */
-
     };
 
     return (
@@ -215,20 +259,20 @@ const PairDrop2 = ({ handleWrapper, History }) => {
                 </div>
             </div>
             <div className="pair-table">
-                <div className="titles-p" style={{marginBottom:'0'}}>
-                    <div className="title" style={{display:'flex',justifyContent:'center'}} onClick={_ => handleSort('symbolA', 'letter')}>
+                <div className="titles-p" style={{ marginBottom: '0' }}>
+                    <div className="title" style={{ display: 'flex', justifyContent: 'center' }} onClick={_ => handleSort('symbolA', 'letter')}>
                         <span>Pair</span>
                         <img src="/img/arrow-down.svg" alt="home" />
                     </div>
-                    <div className="title short" style={{display:'flex',justifyContent:'center'}} onClick={_ => handleSort('lastPrice', 'number')}>
+                    <div className="title short" style={{ display: 'flex', justifyContent: 'center' }} onClick={_ => handleSort('lastPrice', 'number')}>
                         <span>Last Pr.</span>
                         <img src="/img/arrow-down.svg" alt="home" />
                     </div>
-                    <div className="title short" style={{display:'flex',justifyContent:'center'}} onClick={_ => handleSort('vol24h', 'number')}>
+                    <div className="title short" style={{ display: 'flex', justifyContent: 'center' }} onClick={_ => handleSort('vol24h', 'number')}>
                         <span>24h Vol</span>
                         <img src="/img/arrow-down.svg" alt="home" />
                     </div>
-                    <div className="title chg" style={{display:'flex',justifyContent:'center'}} onClick={_ => handleSort('change24h', 'number')}>
+                    <div className="title chg" style={{ display: 'flex', justifyContent: 'center' }} onClick={_ => handleSort('change24h', 'number')}>
                         <span>24h Change</span>
                         <img src="/img/arrow-down.svg" alt="home" />
                     </div>
@@ -237,15 +281,15 @@ const PairDrop2 = ({ handleWrapper, History }) => {
                 <div className="lines">
                     <div className="part">
                         {lines.map((res, key) => {
-                            if(currentQuote==='FAVS' && res.fav===true){
-                            return <Line key={key} handlePair={handlePair} favourite={favs} setFavs={setFavs} data={res} />
+                            if (currentQuote === 'FAVS' && res.fav === true) {
+                                return <Line key={key} handlePair={handlePair} favourite={favs} setFavs={setFavs} data={res} />
                             }
-                            if(currentQuote===res.symbolB){
-                                return   <Line key={key} handlePair={handlePair} favourite={favs} setFavs={setFavs} data={res} />
-                            }else{
+                            if (currentQuote === res.symbolB) {
+                                return <Line key={key} handlePair={handlePair} favourite={favs} setFavs={setFavs} data={res} />
+                            } else {
                                 return null
                             }
-                            
+
                         })}
                     </div>
                 </div>
