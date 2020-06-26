@@ -82,8 +82,29 @@ const PairDrop2 = ({ handleWrapper, History }) => {
                     fav,
                 })
             }
+
+            function auxChoose(compareFunction, auxpairs) {
+
+                linesSorted = compareFunction(JSON.parse(localStorage.getItem('sortLines')).name, JSON.parse(localStorage.getItem('sortLines')).sortType, auxpairs)
+
+                /*  linesSorted = compareFunction(name, sortType, lines)
+ setLines([...linesSorted]);
+ localStorage.setItem('sortLines', JSON.stringify({ name, sortType, order })) */
+            }
+
             if (localStorage.getItem('sortLines')) {
-                linesSorted = compareValuesLTH(JSON.parse(localStorage.getItem('sortLines')).name, JSON.parse(localStorage.getItem('sortLines')).sortType, auxpairs)
+
+                if (JSON.parse(localStorage.getItem('sortLines')).order === 'asc') {
+                    /* se mantiene ascente */
+                    auxChoose(compareValuesLTH, auxpairs)
+                } else {
+                     /* se mantiene descendente */
+                    auxChoose(compareValuesHTL, auxpairs)
+                }
+
+
+                /*  linesSorted = compareValuesLTH(JSON.parse(localStorage.getItem('sortLines')).name, JSON.parse(localStorage.getItem('sortLines')).sortType, auxpairs) */
+
                 if (searcher !== '') {
                     setLines(
                         linesSorted.filter(e => {
@@ -95,6 +116,7 @@ const PairDrop2 = ({ handleWrapper, History }) => {
                 } else {
                     setLines([...linesSorted]);
                 }
+
 
             } else {
                 if (searcher === '') setLines([...auxpairs])
