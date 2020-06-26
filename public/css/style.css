@@ -2037,6 +2037,49 @@ a:active {
     color: rgba(224, 224, 255, 0.4);
 }
 
+.index.dark-mode .exchange {
+    background-color: #2a2a41 !important;
+    color: #fff;
+}
+
+.index.dark-mode .exchange .container-buttons-options {
+    background-color: #2a2a41;
+}
+/* rgba(224, 224, 255, 0.02) */
+.index.dark-mode .exchange .form-fields-buyandsell {
+    background-color: rgba(224, 224, 255, 0.02);
+    border: 0px;
+}
+
+.index.dark-mode .exchange .percent-button {
+    background-color: rgba(224, 224, 255, 0.02);
+    border: 0px;
+}
+
+.index.dark-mode .exchange .market-button.active,
+.index.dark-mode .exchange .limit-order-button.active {
+    background-color: rgba(224, 224, 255, 0.02);
+    border: 0px;
+    box-shadow: 1px 1px 1px #161616;
+}
+
+.index.dark-mode .exchange .buy-tab,
+.index.dark-mode .exchange .sell-tab {
+    border-bottom: 1px solid #2a2a41;
+}
+
+.index.dark-mode .exchange .buy-tab.active {
+    border-bottom: 1px solid rgb(0, 187, 255);
+}
+
+.index.dark-mode .exchange .sell-tab.active {
+    border-bottom: 1px solid rgb(255, 99, 85);
+}
+
+.index.dark-mode .exchange .buy-and-sell-form {
+    color: rgb(112, 110, 125) !important;
+}
+
 .index.dark-mode .buy-sell {
     background: #2a2a41;
     -webkit-box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06),

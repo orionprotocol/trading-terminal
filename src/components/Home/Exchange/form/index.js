@@ -390,6 +390,7 @@ export default function BuyAndSellForm({ type }) {
                                 className={`form-fields-buyandsell after ${type.trade === 'buy' ? 'buy' : 'sell'}`}
                                 name="amount"
                                 type="number"
+                                min="0"
                                 value={values.amount}
                                 onChange={handleChange}
                             />
@@ -432,6 +433,7 @@ export default function BuyAndSellForm({ type }) {
                                     className={`form-fields-buyandsell after ${type.trade === 'buy' ? 'buy' : 'sell'}`}
                                     name="price"
                                     type="number"
+                                    min="0"
                                     value={
                                         values.price !== ''
                                             ? values.price
@@ -506,6 +508,7 @@ export default function BuyAndSellForm({ type }) {
                                 className={`form-fields-buyandsell after ${type.trade === 'buy' ? 'buy' : 'sell'}`}
                                 name="total"
                                 value={total}
+                                min="0"
                                 onChange={handleChange}
                                 disabled={true}
                             />

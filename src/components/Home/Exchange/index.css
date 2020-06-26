@@ -1,4 +1,4 @@
-#exchange {
+.exchange {
     background-color: #fff !important;
     padding-bottom: 1px;
     /* padding-top: 10%; */
@@ -12,13 +12,7 @@
 	overflow-x: visible; */
 }
 
-/* --------------------- Dark Mode ----------------------- */
-
-#exchange.dark-mode {
-    background-color: #2a2a41 !important;
-    color: #fff;
-}
-#exchange .container-buttons-options {
+.exchange .container-buttons-options {
     background-color: #fafafa;
     width: 90%;
     display: flex;
@@ -27,45 +21,18 @@
     border-radius: 3px;
 }
 
-#exchange.dark-mode .container-buttons-options {
-    background-color: #2a2a41;
-}
-/* rgba(224, 224, 255, 0.02) */
-#exchange.dark-mode .form-fields-buyandsell {
-    background-color: rgba(224, 224, 255, 0.02);
-    border: 0px;
+/* Chrome, Safari, Edge, Opera */
+.exchange input::-webkit-outer-spin-button,
+.exchange input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
-#exchange.dark-mode .percent-button {
-    background-color: rgba(224, 224, 255, 0.02);
-    border: 0px;
+/* Firefox */
+.exchange input[type=number] {
+  -moz-appearance: textfield;
 }
 
-#exchange.dark-mode .market-button.active,
-#exchange.dark-mode .limit-order-button.active {
-    background-color: rgba(224, 224, 255, 0.02);
-    border: 0px;
-    box-shadow: 1px 1px 1px #161616;
-}
-
-#exchange.dark-mode .buy-tab,
-#exchange.dark-mode .sell-tab {
-    border-bottom: 1px solid #2a2a41;
-}
-
-#exchange.dark-mode .buy-tab.active {
-    border-bottom: 1px solid rgb(0, 187, 255);
-}
-
-#exchange.dark-mode .sell-tab.active {
-    border-bottom: 1px solid rgb(255, 99, 85);
-}
-
-#exchange.dark-mode .buy-and-sell-form {
-    color: rgb(112, 110, 125) !important;
-}
-
-/* ------------------------------------ */
 .buy-tab,
 .sell-tab {
     text-align: center;
@@ -265,7 +232,7 @@
         font-size: 14px;
     }
 
-    #exchange span {
+    .exchange span {
         font-size: 13px;
     }
 }
