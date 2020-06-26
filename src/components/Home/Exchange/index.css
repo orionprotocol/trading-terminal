@@ -92,12 +92,17 @@
     width: 100%;
     max-height: 360px;
     padding: 0 10px;
-    font-family: 'Montserrat', sans-serif !important;
+    font-family: sans-serif !important;
     color: rgba(20, 16, 41, 0.4) !important;
     display: flex;
     justify-content: center;
     align-items: center;
+}  
+
+.wf-active .buy-and-sell-form {
+    font-family: 'Montserrat', sans-serif !important;
 }
+
 .buy-and-sell-form form{
     width: 100%;
 }

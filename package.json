@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@amcharts/amcharts4": "^4.9.27",
+    "@dr-kobros/react-webfont-loader": "^8.0.0",
     "antd": "^4.3.5",
     "axios": "^0.19.0",
     "coinlist": "^3.1.2",
@@ -29,7 +31,7 @@
     "sweetalert2": "^9.10.13",
     "walletlink": "^2.0.2",
     "web3": "^1.2.8",
-    "websocket-heartbeat-js": "^1.0.8",
+    "websocket-heartbeat-js": "^1.0.11",
     "yup": "^0.27.0"
   },
   "scripts": {
@@ -62,6 +64,7 @@
   },
   "devDependencies": {
     "eslint-plugin-react-hooks": "^2.3.0",
-    "source-map-explorer": "^2.4.2"
+    "source-map-explorer": "^2.4.2",
+    "style-loader": "^1.2.1"
   }
 }

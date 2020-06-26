@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <!-- <link rel="icon" href="%PUBLIC_URL%/favicon.ico" /> -->
-        <link rel="icon" href="/icon.png" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#000000" />
-        <meta
-            name="description"
-            content="Web site created using create-react-app"
-        />
-        <!--
+  <head>
+    <meta charset="utf-8" />
+    <!-- <link rel="icon" href="%PUBLIC_URL%/favicon.ico" /> -->
+    <link rel="icon" href="/icon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-        <link rel="manifest" href="/manifest.json" />
-        <!--
+    <link rel="manifest" href="/manifest.json" />
+    <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -24,59 +24,33 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-        <link
-            href="https://fonts.googleapis.com/css?family=Montserrat:500,600,700&amp;display=swap"
-            rel="stylesheet"
-        />
-        <link href="/libs/css/vendor.min.css" rel="stylesheet" />
-        <link href="/css/style.css" rel="stylesheet" />
+    <title>Orion</title>
+  </head>
+  <body class="main-body">
+  <!-- This CDN  come from  Font awesome -->
+  <link
+    rel="stylesheet"
+    href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+    crossorigin="anonymous"
+  />
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script
+      type="text/javascript"
+      src="/charting_library/charting_library.min.js"
+    ></script>
 
-        <link
-            rel="stylesheet"
-            type="text/css"
-            charset="UTF-8"
-            href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-        />
-        <link
-            rel="stylesheet"
-            type="text/css"
-            href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-        />
-        <!-- This CDN  come from  Font awesome -->
-        <link
-            rel="stylesheet"
-            href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-            integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
-            crossorigin="anonymous"
-        />
-        <title>Orion</title>
-    </head>
-    <body class="main-body">
-        <noscript>You need to enable JavaScript to run this app.</noscript>
-        <script
-            type="text/javascript"
-            src="/charting_library/charting_library.min.js"
-        ></script>
-
-        <script
-            type="text/javascript"
-            src="/datafeeds/udf/dist/polyfills.js"
-        ></script>
-        <script
-            type="text/javascript"
-            src="/datafeeds/udf/dist/bundle.js"
-        ></script>
-        <script
-            type="text/javascript"
-            src="/datafeeds/udf/lib/dex-history.js"
-        ></script>
-        <div id="root"></div>
-
-        <script src="/js/websocketHeartbeat.js"></script>
-
-        <script src="/libs/js/vendor.min.js"></script>
-
-        <!--
+    <script
+      type="text/javascript"
+      src="/datafeeds/udf/dist/polyfills.js"
+    ></script>
+    <script type="text/javascript" src="/datafeeds/udf/dist/bundle.js"></script>
+    <script
+      type="text/javascript"
+      src="/datafeeds/udf/lib/dex-history.js"
+    ></script>
+    <div id="root"></div>
+    <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -85,5 +59,6 @@
 
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
-    --></body>
+    -->
+  </body>
 </html>
