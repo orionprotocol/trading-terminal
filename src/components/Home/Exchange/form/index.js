@@ -557,6 +557,7 @@ export default function BuyAndSellForm({ type }) {
                                         className="submit-form sell"
                                         type="submit"
                                         onClick={submitOrder}
+                                        disabled={( parseFloat(values.price)<=0 || parseFloat(values.amount)<=0 || isNaN(parseFloat(values.amount)) )  ? true:false}
                                     >
                                         Sell {symbolA}
                                     </button>
