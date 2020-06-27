@@ -1,0 +1,123 @@
+.subtable.active {
+  display: block !important;
+}
+
+.orders-dates {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+
+.react-datepicker__header {
+  background-color: #fff !important;
+}
+
+.dark-mode .react-datepicker__header {
+  background-color: #202036 !important;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name,
+.react-datepicker__day {
+  color: rgba(0, 0, 0, 0.65) !important;
+}
+
+.dark-mode .react-datepicker__current-month,
+.dark-mode .react-datepicker__day-name,
+.dark-mode .react-datepicker__day {
+  color: #e9e9e9 !important;
+}
+
+.react-datepicker__day--selected {
+  background-color: #46abee !important;
+  color: #fff !important;
+}
+
+.react-datepicker__day--selected.react-datepicker__day--today {
+  color: rgb(236, 241, 243) !important;
+}
+
+.react-datepicker__day--today {
+  color: #46abee !important;
+}
+
+.react-datepicker-wrapper {
+  width: 40% !important;
+}
+
+.react-datepicker__input-container {
+  width: 100% !important;
+}
+
+.dark-mode .react-datepicker__triangle {
+  border-top-color: #202036 !important;
+}
+
+.dark-mode .react-datepicker {
+  border: 1.5px solid #383838e3;
+}
+
+.orders-dates .date.dark-mode {
+  background-color: transparent;
+}
+
+.price-card-date-line {
+  border-top: 1px solid rgb(117, 117, 117);
+  width: 10px;
+  margin: 0px 0.5rem;
+}
+
+.dark-mode .react-datepicker__input-container > input {
+  background-color: #2e2e45;
+}
+
+.dark-mode .react-datepicker__month-container {
+  background-color: #202036 !important;
+}
+
+.dark-mode .react-datepicker__day:hover {
+  background-color: #9e95956b;
+}
+
+/* .ant-select-dropdown-menu-item.dark-mode.option-select.ant-select-dropdown-menu-item-selected {
+  background-color: rgba(51, 61, 75, 0.828);
+}
+
+.ant-select-dropdown-menu-item.dark-mode.option-select.ant-select-dropdown-menu-item-active {
+  background-color: rgba(51, 61, 75, 0.828);
+}
+ */
+.titles {
+  margin-top: 10px;
+}
+
+@media (max-width: 1130px) {
+  .father.orders.ant-layout {
+    position: absolute;
+    top: 30vh;
+    left: 5%;
+    width: 90%;
+  }
+}
+
+@media (min-width: 1500px) {
+  .father.orders,
+  .father.orders button {
+    font-size: 14px;
+  }
+}
+
+.orders-selects {
+  display: flex;
+  align-items: center;
+}
+
+.dark-mode.option-select.emp {
+  background-color: #2e2e45;
+  color: #e9e9e9a8;
+
+  &.ant-select-item-option-selected,
+  &:hover {
+    background-color: rgba(51, 61, 75, 0.828);
+  }
+}

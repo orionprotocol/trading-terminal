@@ -132,11 +132,15 @@ export default function Line2({ data, handlePair, favourite, setFavs }) {
 
         {data.fav ? (
           <div className="star js-star active" onClick={handleFav}>
-            <FontAwesomeIcon icon="star" />
+            <FontAwesomeIcon
+              icon="star"
+              style={{ color: "#00bbff" }}
+              size="lg"
+            />
           </div>
         ) : (
           <div className="star js-star" onClick={handleFav}>
-            <FontAwesomeIcon icon="star" mask={["far"]} />
+            <FontAwesomeIcon icon={["far", "star"]} size="lg" />
           </div>
         )}
       </div>

@@ -1,0 +1,61 @@
+.date-1 {
+  > .react-datepicker-wrapper {
+    width: 100% !important;
+  }
+}
+
+.pagination {
+  list-style: none;
+  margin-top: 5px !important;
+
+  svg {
+    color: rgba(224, 224, 255, 0.6);
+  }
+}
+
+.titles {
+  svg {
+    margin-left: 10px;
+    color: rgba(224, 224, 255, 0.6);
+  }
+}
+.history-table {
+  .price-card-selector {
+    background-color: #fafafa;
+    border-radius: 5px;
+    padding: 8px 7px;
+    margin: 0px 0px;
+  }
+  .price-card-selector .ant-select-selector {
+    background-color: transparent !important;
+    border: none !important;
+    font-size: 10px;
+    font-weight: 600;
+  }
+}
+
+.dark-mode {
+  .react-datepicker__input-container {
+    color: #fff;
+  }
+
+  .history-table {
+    .price-card-selector {
+      background-color: #2e2e45;
+      color: rgba(224, 224, 255, 0.6);
+      svg {
+        color: rgba(210, 210, 238, 0.459);
+      }
+    }
+  }
+
+  .option-select.emp {
+    background-color: #2e2e45;
+    color: #e9e9e9a8;
+
+    &.ant-select-item-option-selected,
+    &:hover {
+      background-color: rgba(51, 61, 75, 0.828);
+    }
+  }
+}

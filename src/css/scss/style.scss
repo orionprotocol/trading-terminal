@@ -489,7 +489,7 @@ body.dark {
         align-items: center;
         font-weight: 600;
         .icon-arrow-d {
-          font-size: 12px;
+          font-size: 14px;
           margin-left: 3px;
           opacity: 0.4;
           -webkit-transition: all 0.3s;
@@ -801,7 +801,7 @@ body.dark {
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 1px;
-        i {
+        svg {
           margin-right: 6px;
         }
       }

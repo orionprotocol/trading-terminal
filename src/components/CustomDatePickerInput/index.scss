@@ -1,0 +1,23 @@
+.customDatePickerInputWrapper {
+  display: flex;
+  align-items: center;
+
+  input {
+    border: 0px;
+    width: 100%;
+    background-color: #fafafa;
+    padding: 8px 7px;
+    margin: 0px 0px;
+    border-radius: 5px;
+  }
+
+  svg {
+    position: absolute;
+    top: 11px;
+    right: 5px;
+  }
+}
+
+.dark-mode .customDatePickerInputWrapper input {
+  background-color: #2e2e45;
+}

@@ -1,4 +1,5 @@
 import React, { lazy } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Sidebar = lazy(() =>
   import(/* webpackChunkName: 'Sidebar' */ "../components/Sidebar")
@@ -45,19 +46,19 @@ function Wallet() {
                 <div class="titles">
                   <div class="title">
                     <span>Token</span>
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    <FontAwesomeIcon icon="angle-down" size="sm" />
                   </div>
                   <div class="title">
                     <span>Wallet</span>
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    <FontAwesomeIcon icon="angle-down" size="sm" />
                   </div>
                   <div class="title">
                     <span>Contract</span>
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    <FontAwesomeIcon icon="angle-down" size="sm" />
                   </div>
                   <div class="title">
                     <span>In open order</span>
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    <FontAwesomeIcon icon="angle-down" size="sm" />
                   </div>
                   <div class="title actions">
                     <span>Actions</span>

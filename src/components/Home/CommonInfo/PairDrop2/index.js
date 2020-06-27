@@ -160,9 +160,11 @@ const PairDrop2 = ({ handleWrapper, History }) => {
         let QUOTE = res;
         if (res === "FAVS") {
           if (currentQuote === "FAVS") {
-            QUOTE = <FontAwesomeIcon icon="check-square" />;
+            QUOTE = (
+              <FontAwesomeIcon icon="star" style={{ color: "#00bbff" }} />
+            );
           } else {
-            QUOTE = <FontAwesomeIcon icon="check-square" mask={["far"]} />;
+            QUOTE = <FontAwesomeIcon icon={["far", "star"]} />;
           }
         }
         return (
