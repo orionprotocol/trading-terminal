@@ -368,7 +368,7 @@ export default function BuyAndSellForm({ type }) {
 
         // ----------------------------------- End - Wanchain --------------------------------------
     };
-
+    
     return (
         <Fragment>
             <Formik
@@ -471,6 +471,7 @@ export default function BuyAndSellForm({ type }) {
                                 type="button"
                                 onClick={() => handlePercent(0.25)}
                                 className={`percent-button left ${type.trade === 'buy' ? 'buy' : 'sell'}`}
+                                
                             >
 
                                 25%
@@ -547,6 +548,7 @@ export default function BuyAndSellForm({ type }) {
                                         className="submit-form buy"
                                         type="submit"
                                         onClick={submitOrder}
+                                        disabled={( parseFloat(values.price)<=0 || parseFloat(values.amount)<=0 || isNaN(parseFloat(values.amount)) )  ? true:false}
                                     >
                                         Buy {symbolA}
                                     </button>
@@ -558,6 +560,7 @@ export default function BuyAndSellForm({ type }) {
                                         className="submit-form sell"
                                         type="submit"
                                         onClick={submitOrder}
+                                        disabled={( parseFloat(values.price)<=0 || parseFloat(values.amount)<=0 || isNaN(parseFloat(values.amount)) )  ? true:false}
                                     >
                                         Sell {symbolA}
                                     </button>
