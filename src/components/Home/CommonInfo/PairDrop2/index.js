@@ -245,28 +245,6 @@ const PairDrop2 = ({ handleWrapper, History }) => {
       /* Si no existe se crea */
       auxChoose(compareValuesLTH, "asc");
     }
-
-    /*   auxChoose() */
-    /*  let newClasses = {};
-         let sortType = 'asc';
-         for (let e in classes) {
-             if (e === type) {
-                 if (classes[e] === 'fa-angle-down') {
-                     newClasses[e] = 'fa-angle-up';
-                 } else {
-                     newClasses[e] = 'fa-angle-down';
-                     sortType = 'desc';
-                 }
-             } else {
-                 newClasses[e] = 'fa-angle-down';
-             }
-         }
-         setClasses(newClasses); */
-
-    /*  symbolA: assets.assets2[currentQuote][x],
-         change24h: tickers[pair].change24h,
-         lastPrice: parseFloat(tickers[pair].lastPrice),
-         vol24h: parseFloat(tickers[pair].vol24h), */
   };
 
   return (

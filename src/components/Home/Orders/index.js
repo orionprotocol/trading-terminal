@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Row, Col, Select, Layout } from "antd";
 import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./index.scss";
 import "./table.css";
 import Line from "./Line";
@@ -32,13 +33,13 @@ const Orders = (_) => {
   const [startDateA, setStartDateA] = useState(new Date());
   const [startDateB, setStartDateB] = useState(new Date());
   const [classes, setClasses] = useState({
-    type: "fa-angle-down",
-    pair: "fa-angle-down",
-    time: "fa-angle-down",
-    amount: "fa-angle-down",
-    price: "fa-angle-down",
-    status: "fa-angle-down",
-    total: "fa-angle-down",
+    type: "angle-down",
+    pair: "angle-down",
+    time: "angle-down",
+    amount: "angle-down",
+    price: "angle-down",
+    status: "angle-down",
+    total: "angle-down",
   });
   /*  console.log(balances.contractBalances)  */
   loadOrderHistory = () => {
@@ -124,14 +125,14 @@ const Orders = (_) => {
     let sortType = "asc";
     for (let e in classes) {
       if (e === type) {
-        if (classes[e] === "fa-angle-down") {
-          newClasses[e] = "fa-angle-up";
+        if (classes[e] === "angle-down") {
+          newClasses[e] = "angle-up";
         } else {
-          newClasses[e] = "fa-angle-down";
+          newClasses[e] = "angle-down";
           sortType = "desc";
         }
       } else {
-        newClasses[e] = "fa-angle-down";
+        newClasses[e] = "angle-down";
       }
     }
     setClasses(newClasses);
@@ -415,36 +416,34 @@ const Orders = (_) => {
                   onClick={(_) => handleSort("type")}
                 >
                   <span>Type</span>
-                  <i className={`fa ${classes.type}`} aria-hidden="true" />
+                  <FontAwesomeIcon icon={classes.type} />
                 </div>
                 <div className="title" onClick={(_) => handleSort("pair")}>
                   <span>Pair</span>
-                  <i className={`fa ${classes.pair}`} aria-hidden="true">
-                    {" "}
-                  </i>
+                  <FontAwesomeIcon icon={classes.pair} />
                 </div>
                 <div className="title time" onClick={(_) => handleSort("time")}>
                   <span>Time</span>
-                  <i className={`fa ${classes.time}`} aria-hidden="true" />
+                  <FontAwesomeIcon icon={classes.time} />
                 </div>
                 <div className="title" onClick={(_) => handleSort("amount")}>
                   <span>Amount</span>
-                  <i className={`fa ${classes.amount}`} aria-hidden="true" />
+                  <FontAwesomeIcon icon={classes.amount} />
                 </div>
                 <div className="title" onClick={(_) => handleSort("price")}>
                   <span>Price</span>
-                  <i className={`fa ${classes.price}`} aria-hidden="true" />
+                  <FontAwesomeIcon icon={classes.price} />
                 </div>
                 <div
                   className="title status"
                   onClick={(_) => handleSort("status")}
                 >
                   <span>Status</span>
-                  <i className={`fa ${classes.status}`} aria-hidden="true" />
+                  <FontAwesomeIcon icon={classes.status} />
                 </div>
                 <div className="title" onClick={(_) => handleSort("total")}>
                   <span>Total</span>
-                  <i className={`fa ${classes.total}`} aria-hidden="true" />
+                  <FontAwesomeIcon icon={classes.total} />
                 </div>
               </div>
               <div className="lines">{state.renderOrders}</div>

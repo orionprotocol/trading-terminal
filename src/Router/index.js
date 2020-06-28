@@ -11,7 +11,7 @@ const History = lazy(() =>
 const Dashboard = lazy(() =>
   import(/* webpackChunkName: 'Dashboard' */ "../pages/Dashboard")
 );
-const Swap = lazy(() => import(/* webpackChunkName: 'Swap' */ "../pages/Swap"));
+//const Swap = lazy(() => import(/* webpackChunkName: 'Swap' */ "../pages/Swap"));
 
 //const SwapNew = lazy(() =>
 //import(/* webpackChunkName: 'SwapNew' */ "../pages/SwapNew")
@@ -26,8 +26,8 @@ const Router = () => {
         <Route path="/home" component={Home} />
         <Route path="/history" component={History} />
         <Route path="/dashboard" component={Dashboard} />
-        <Route path="/swap" component={Swap} />
-        {/* <Route path="/swap-new" component={SwapNew} />
+        {/* <Route path="/swap" component={Swap} />
+        <Route path="/swap-new" component={SwapNew} />
         <Route path="/wallet" component={Wallet} /> */}
         <Redirect from="/" to="/trade/ETH_BTC" />
       </Switch>

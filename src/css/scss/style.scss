@@ -14,9 +14,6 @@
   body {
     font-family: "Montserrat", sans-serif;
   }
-  .common-info .top .drop-menu-currecy-select {
-    font-family: "Montserrat", sans-serif;
-  }
   .center-panel .table .drop-menu-currecy-select-1 {
     font-family: "Montserrat", sans-serif;
     .top .date .pick {
@@ -45,8 +42,9 @@ body {
   line-height: 12px;
   color: rgba(20, 16, 41, 0.6);
   font-weight: 500;
-  background: rgba(20, 16, 41, 0.02);
+  background: rgba(20, 16, 41, 0.02) !important;
 }
+
 .main-body {
   font-feature-settings: normal;
   -webkit-font-feature-settings: normal;
@@ -112,16 +110,7 @@ body.dark {
     background-color: #2a2a41;
   }
 }
-.wrapper-pair {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(20, 16, 41, 0.06);
-  display: none;
-  z-index: 777;
-}
+
 .datepicker {
   border-radius: 4px;
   background: #ffffff;
@@ -523,7 +512,6 @@ body.dark {
         -ms-transform: translateY(99.5%);
         transform: translateY(99.5%);
         width: 472px;
-        display: none;
         z-index: 50;
         .titles {
           display: -webkit-box;
@@ -768,198 +756,7 @@ body.dark {
       }
     }
   }
-  .common-info {
-    -webkit-box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06),
-      0 0 1px rgba(20, 16, 41, 0.12);
-    box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06),
-      0 0 1px rgba(20, 16, 41, 0.12);
-    border-radius: 4px;
-    padding: 8px;
-    margin-bottom: 8px;
-    background: #ffffff;
-    .top {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-      justify-content: space-between;
-      margin-bottom: 20px;
-      position: relative;
-      z-index: 888;
-      background: #ffffff;
-      padding: 8px;
-      margin: -8px;
-      border-radius: 4px;
-      .star {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        svg {
-          margin-right: 6px;
-        }
-      }
-      .drop-menu-currecy-select {
-        border-radius: 4px;
-        border: none !important;
-        background: #ffffff !important;
-        text-transform: uppercase;
-        font-size: 16px;
-        line-height: 24px;
-        color: rgba(20, 16, 41, 0.8) !important;
-        width: initial !important;
-        font-family: sans-serif;
-        position: relative;
-        font-weight: 600;
-        margin: 0;
-        padding: 0;
-      }
-      .drop-menu-currecy-select.ui-selectmenu-button-open {
-        .custom-icon {
-          -webkit-transform: rotate(270deg) !important;
-          -ms-transform: rotate(270deg) !important;
-          transform: rotate(270deg) !important;
-        }
-      }
-    }
-    .price {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-align: start;
-      -ms-flex-align: start;
-      align-items: flex-start;
-      -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-      justify-content: space-between;
-      margin: 10px 0 5px 0;
-      .last-price {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        .title {
-          color: rgba(20, 16, 41, 0.4);
-          margin-bottom: 5px;
-        }
-        .value {
-          display: -webkit-box;
-          display: -ms-flexbox;
-          display: flex;
-          -webkit-box-align: end;
-          -ms-flex-align: end;
-          align-items: flex-end;
-          .emp {
-            color: rgba(20, 16, 41, 0.8);
-            font-size: 16px;
-            line-height: 24px;
-            font-weight: 700;
-            margin-right: 4px;
-          }
-          .dollars {
-            line-height: 21px;
-            font-weight: 600;
-          }
-        }
-      }
-      .change {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        .title {
-          color: rgba(20, 16, 41, 0.4);
-          margin-bottom: 5px;
-        }
-        .value {
-          display: -webkit-box;
-          display: -ms-flexbox;
-          display: flex;
-          -webkit-box-align: center;
-          -ms-flex-align: center;
-          align-items: center;
-          img {
-            margin-bottom: 21px;
-          }
-          .emp {
-            color: rgba(20, 16, 41, 0.8);
-            font-size: 16px;
-            line-height: 24px;
-            font-weight: 700;
-            margin-left: 5px;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: baseline;
-            -ms-flex-align: baseline;
-            align-items: baseline;
-            span {
-              font-size: 10px;
-              color: rgba(20, 16, 41, 0.6);
-            }
-          }
-          .dollars {
-            line-height: 17px;
-            font-weight: 600;
-          }
-        }
-      }
-    }
-    .table {
-      .line {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-        justify-content: space-between;
-        width: 100%;
-        .title {
-          color: rgba(20, 16, 41, 0.4);
-          line-height: 24px;
-          margin-top: -16px;
-        }
-        .value {
-          font-size: 14px;
-          line-height: 24px;
-          color: rgba(20, 16, 41, 0.8);
-          .small {
-            font-size: 10px;
-            color: rgba(20, 16, 41, 0.6);
-          }
-        }
-      }
-      .container-line {
-        .line {
-          display: -webkit-box;
-          display: -ms-flexbox;
-          display: flex;
-          -webkit-box-align: center;
-          -ms-flex-align: center;
-          align-items: center;
-          -webkit-box-pack: justify;
-          -ms-flex-pack: justify;
-          justify-content: space-between;
-          width: 100%;
-        }
-      }
-    }
-  }
+
   .center-panel {
     max-width: 57.6666%;
     width: 100%;
@@ -1150,7 +947,7 @@ body.dark {
           -ms-flex-align: center;
           align-items: center;
           cursor: pointer;
-          i {
+          svg {
             opacity: 0.4;
             width: 13px;
             height: 13px;
@@ -1234,9 +1031,10 @@ body.dark {
               &:hover {
                 cursor: pointer;
               }
-              i {
-                color: rgba(20, 16, 41, 0.4);
-                font-size: 15px;
+              svg {
+                opacity: 0.4;
+                width: 13px;
+                height: 13px;
                 margin-left: 3px;
               }
             }
@@ -1561,16 +1359,6 @@ body.dark {
         }
       }
     }
-  }
-  .wrapper-pair {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(20, 16, 41, 0.06);
-    display: none;
-    z-index: 777;
   }
 }
 .history {
@@ -2740,61 +2528,6 @@ div {
 }
 .index.dark-mode {
   background: #202036;
-  .common-info {
-    background: #2a2a41;
-    -webkit-box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06),
-      0 0 1px 0 rgba(32, 32, 54, 0.12);
-    box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06),
-      0 0 1px 0 rgba(32, 32, 54, 0.12);
-    .top {
-      background: #2a2a41;
-    }
-    .table {
-      .title {
-        color: rgba(224, 224, 255, 0.4);
-      }
-      .value {
-        color: #ffffff;
-        .small {
-          color: rgba(224, 224, 255, 0.4);
-        }
-      }
-    }
-    .last-price {
-      .title {
-        color: rgba(224, 224, 255, 0.4);
-      }
-      .value {
-        color: rgba(224, 224, 255, 0.4);
-        .emp {
-          color: #ffffff;
-        }
-      }
-    }
-    .change {
-      .title {
-        color: rgba(224, 224, 255, 0.4);
-      }
-      .value {
-        color: rgba(224, 224, 255, 0.4);
-        .emp {
-          color: #ffffff;
-          span {
-            color: rgba(224, 224, 255, 0.6) !important;
-          }
-        }
-      }
-    }
-    .link {
-      color: #ffffff;
-      .icon-arrow-d {
-        color: rgba(224, 224, 255, 0.4);
-      }
-    }
-    .star {
-      color: rgba(224, 224, 255, 0.4);
-    }
-  }
   .exchange {
     background-color: #2a2a41 !important;
     color: #fff;
@@ -4531,9 +4264,6 @@ div {
       }
     }
   }
-  .wrapper-pair {
-    background: rgba(20, 16, 41, 0.8) !important;
-  }
   .popup-wrapper {
     background: rgba(20, 16, 41, 0.8) !important;
   }
@@ -5814,4 +5544,16 @@ div {
       }
     }
   }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }

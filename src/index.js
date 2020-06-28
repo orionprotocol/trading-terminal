@@ -11,6 +11,7 @@ import {
   faAngleLeft,
   faAngleRight,
   faAngleUp,
+  faExchangeAlt,
   faSearch,
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
@@ -39,6 +40,7 @@ library.add(
   faAngleLeft,
   faAngleRight,
   faAngleUp,
+  faExchangeAlt,
   faSearch,
   faStar,
   farStar

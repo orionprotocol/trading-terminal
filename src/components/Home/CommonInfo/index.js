@@ -1,21 +1,11 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { lazy, useEffect, useState, Fragment, Suspense } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-/* import PairDrop from './PairDrop'; */
-import PairDrop2 from "./PairDrop2";
-import "./index.css";
-let price = require("crypto-price");
+import "./index.scss";
 
-function handleWrapper() {
-  const div = document.querySelector("#js-wrapper-pair");
-  div.classList.toggle("active");
-
-  const arrow = document.querySelector(".link.js-pair-link");
-  arrow.classList.toggle("active");
-
-  const drop = document.querySelector(".pair-drop.js-pair-drop");
-  drop.classList.toggle("active");
-}
+const PairDrop2 = lazy(() =>
+  import(/* webpackChunkName: 'PairDropDown' */ "./PairDrop2")
+);
 
 const formatNumber = (number) => {
   return new Intl.NumberFormat("en-US", { minimumFractionDigits: 2 }).format(
@@ -37,6 +27,8 @@ const CommonInfo = ({ History }) => {
 
   const [dollars, setDollars] = useState({});
   const [isFav, setIsFav] = useState(false);
+  const [showPairsDropdown, setShowPairsDropdown] = useState(false);
+  const togglePairsDropdown = () => setShowPairsDropdown(!showPairsDropdown);
 
   useEffect(
     (_) => {
@@ -88,11 +80,13 @@ const CommonInfo = ({ History }) => {
 
   return (
     <div className="common-info js-panel-item js-pair">
-      <div
-        className="wrapper-pair js-wrapper-pair"
-        id="js-wrapper-pair"
-        onClick={handleWrapper}
-      />
+      {showPairsDropdown ? (
+        <div
+          className="wrapper-pair js-wrapper-pair"
+          id="js-wrapper-pair"
+          onClick={togglePairsDropdown}
+        />
+      ) : null}
       <div className="top">
         <div className="star">
           {isFav ? (
@@ -103,15 +97,21 @@ const CommonInfo = ({ History }) => {
           <span>Pair</span>
         </div>
         <div className="pair-select">
-          <div className="link js-pair-link" onClick={handleWrapper}>
+          <div className="link js-pair-link" onClick={togglePairsDropdown}>
             <span>
               {symbolA} / {symbolB}
             </span>
             <FontAwesomeIcon className="icon-arrow-d" icon="angle-down" />
           </div>
 
-          {/* <PairDrop History={History} handleWrapper={handleWrapper} /> */}
-          <PairDrop2 History={History} handleWrapper={handleWrapper} />
+          <Suspense fallback="">
+            {showPairsDropdown ? (
+              <PairDrop2
+                History={History}
+                handleWrapper={togglePairsDropdown}
+              />
+            ) : null}
+          </Suspense>
         </div>
       </div>
       <div className="price">

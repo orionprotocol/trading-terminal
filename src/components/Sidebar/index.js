@@ -1,12 +1,20 @@
-import React, { useCallback, useEffect, useState, Fragment } from "react";
+import React, {
+  lazy,
+  useCallback,
+  useEffect,
+  useState,
+  Fragment,
+  Suspense,
+} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Dark, Light } from "../funtions/handleMode";
 import FadeIn from "react-fade-in";
-import AddWallet1 from "../AddWallet/AddWallet1";
-import AddWallet2 from "../AddWallet/AddWallet2";
 import { ethereum } from "../../services/Coinbase";
 import "./sidebar.scss";
+
+const AddWallet1 = lazy(() => import("../AddWallet/AddWallet1"));
+const AddWallet2 = lazy(() => import("../AddWallet/AddWallet2"));
 
 const Sidebar = (props) => {
   const dispatch = useDispatch();
@@ -262,17 +270,19 @@ const Sidebar = (props) => {
       // onMouseLeave={onMouseLeave}
       // onMouseOver={onMouseOver}
     >
-      {show1 ? (
-        <FadeIn transitionDuration={10}>
-          <AddWallet1 show2={handleShow2} hide1={(_) => setShow1(false)} />
-        </FadeIn>
-      ) : null}
+      <Suspense fallback="">
+        {show1 ? (
+          <FadeIn transitionDuration={10}>
+            <AddWallet1 show2={handleShow2} hide1={(_) => setShow1(false)} />
+          </FadeIn>
+        ) : null}
 
-      {show2 ? (
-        <FadeIn transitionDuration={10}>
-          <AddWallet2 show1={handleShow1} hide2={(_) => setShow2(false)} />
-        </FadeIn>
-      ) : null}
+        {show2 ? (
+          <FadeIn transitionDuration={10}>
+            <AddWallet2 show1={handleShow1} hide2={(_) => setShow2(false)} />
+          </FadeIn>
+        ) : null}
+      </Suspense>
       <div className="navbar__top">
         <a className="logo" href="/">
           <img src="/img/svg/orion_full.svg" alt="home" />
@@ -306,12 +316,12 @@ const Sidebar = (props) => {
 
             {walletActive && (
               <Fragment>
-                <li className="nav__item">
+                {/* <li className="nav__item">
                   <Link className={`nav__link ${actives[2]}`} to="/swap">
                     <span className="icon_swap"></span>
                     <span className="nav__text">Swap</span>
                   </Link>
-                </li>
+                </li> */}
                 <li className="nav__item">
                   <Link className={`nav__link ${actives[1]}`} to="/dashboard">
                     <span className="icon_grid" />

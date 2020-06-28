@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import coins from "coinlist";
 import { useSelector } from "react-redux";
 import "./line.scss";
-let price = require("crypto-price");
 
 const formatNumber = (number) => {
   return new Intl.NumberFormat("en-US", { minimumFractionDigits: 1 }).format(
