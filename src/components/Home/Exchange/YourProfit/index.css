@@ -18,6 +18,7 @@
 .your-profit-data {
   background-color: #fff;
   width: 100%;
+  height: 100%;
 }
 
 .dark-mode .your-profit-data {
@@ -105,47 +106,15 @@
   font-weight: bold;
 }
 
-/* MARQUEE EFFECT */
-
-.marquee {
-  height: 75px;
-  width: 420px;
-  overflow: hidden;
-  position: relative;
-}
-
-.marquee div {
-  cursor: pointer;
-  display: flex;
-  width: 300%;
-  height: 100%;
-  position: absolute;
-  overflow: hidden;
-  animation: marquee 30s linear infinite;
-}
-
-.marquee span {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  color: white;
-  border-right: 1px solid #f4f4f4;
-}
-.marquee.Light span {
+.your-profit-data .slide {
+  text-align: center;
   color: #434343;
-  border-right: 1px solid #cacaca;
-}
-.marquee div:hover {
-  animation-play-state: paused;
 }
 
-@keyframes marquee {
-  0% {
-    left: 100%;
-  }
-  100% {
-    left: -300%;
-  }
+.your-profit-data .slide p {
+  margin: 0;
+}
+
+.dark-mode .your-profit-data .slide {
+  color: #fff;
 }

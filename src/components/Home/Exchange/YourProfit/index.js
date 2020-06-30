@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import Carousel, { consts } from "react-elastic-carousel";
+import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
+import "pure-react-carousel/dist/react-carousel.es.css";
 import "./index.css";
 const urlBase = process.env.REACT_APP_BACKEND;
 
@@ -18,20 +19,6 @@ const YourProfit = () => {
   } else {
     style = { color: " rgb(139, 139, 139)" };
   }
-
-  const myArrow = ({ type, onClick }) => {
-    const pointer =
-      type === consts.PREV ? (
-        <i className="fas fa-chevron-left"></i>
-      ) : (
-        <i className="fas fa-chevron-right"></i>
-      );
-    return (
-      <button className="profits-arrows" onClick={onClick}>
-        {pointer}
-      </button>
-    );
-  };
 
   const loadBenefits = () => {
     let quantity = qtyForm;
@@ -87,8 +74,8 @@ const YourProfit = () => {
 
   let prof = profits2.map((res, key) => {
     return (
-      <span key={key}>
-        <label
+      <Slide key={key} index={key} className="slide">
+        <p
           style={{
             color: `rgb(120,133,169)`,
             fontWeight: "900",
@@ -96,10 +83,10 @@ const YourProfit = () => {
           }}
         >
           {res.name}
-        </label>
-        <label style={{ fontSize: "12px" }}>+ {res.benefitPct} %</label>
-        <label style={{ fontSize: "12px" }}>+ {res.benefitBtc} BTC </label>
-      </span>
+        </p>
+        <p style={{ fontSize: "12px" }}>+ {res.benefitPct} %</p>
+        <p style={{ fontSize: "12px" }}>+ {res.benefitBtc} BTC </p>
+      </Slide>
     );
   });
 
@@ -120,17 +107,16 @@ const YourProfit = () => {
       <h2>Your Profits</h2>
 
       <div className={`your-profit-data`}>
-        <Carousel
-          renderArrow={myArrow}
-          enableAutoPlay
-          autoPlaySpeed={5000}
-          itemsToShow={1}
-          renderPagination={() => {
-            return <div></div>;
-          }}
+        <CarouselProvider
+          naturalSlideWidth={100}
+          naturalSlideHeight={25}
+          totalSlides={3}
+          interval={5000}
+          isPlaying
+          infinite
         >
-          {prof}
-        </Carousel>
+          <Slider>{prof}</Slider>
+        </CarouselProvider>
       </div>
     </section>
   );
