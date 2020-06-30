@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Carousel, { consts } from "react-elastic-carousel";
 import "./index.css";
 const urlBase = process.env.REACT_APP_BACKEND;
@@ -20,8 +19,18 @@ const YourProfit = () => {
     style = { color: " rgb(139, 139, 139)" };
   }
 
-  const myArrow = () => {
-    return <></>;
+  const myArrow = ({ type, onClick }) => {
+    const pointer =
+      type === consts.PREV ? (
+        <i className="fas fa-chevron-left"></i>
+      ) : (
+        <i className="fas fa-chevron-right"></i>
+      );
+    return (
+      <button className="profits-arrows" onClick={onClick}>
+        {pointer}
+      </button>
+    );
   };
 
   const loadBenefits = () => {
@@ -106,17 +115,6 @@ const YourProfit = () => {
     );
   }
 
-  if (prof === "") {
-    return (
-      <section className="your-profit">
-        <div>
-          <h2 style={{ textAlign: "center" }}>
-            Enter an amount to get your profits
-          </h2>
-        </div>
-      </section>
-    );
-  }
   return (
     <section className="your-profit">
       <h2>Your Profits</h2>
