@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Carousel, { consts } from "react-elastic-carousel";
 import "./index.css";
 const urlBase = process.env.REACT_APP_BACKEND;
 
@@ -17,6 +19,10 @@ const YourProfit = () => {
   } else {
     style = { color: " rgb(139, 139, 139)" };
   }
+
+  const myArrow = () => {
+    return <></>;
+  };
 
   const loadBenefits = () => {
     let quantity = qtyForm;
@@ -100,17 +106,33 @@ const YourProfit = () => {
     );
   }
 
-  /* if (profits === '')  */
-  /* return (<section className="your-profit">
-		<div>
-			<h2 style={{textAlign:'center'}}>Enter an amount to get your profits</h2>
-		</div>
-	</section>) */
+  if (prof === "") {
+    return (
+      <section className="your-profit">
+        <div>
+          <h2 style={{ textAlign: "center" }}>
+            Enter an amount to get your profits
+          </h2>
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="your-profit">
       <h2>Your Profits</h2>
-      <div className={`marquee ${mode}`}>
-        <div>{prof}</div>
+
+      <div className={`your-profit-data`}>
+        <Carousel
+          renderArrow={myArrow}
+          enableAutoPlay
+          autoPlaySpeed={5000}
+          itemsToShow={1}
+          renderPagination={() => {
+            return <div></div>;
+          }}
+        >
+          {prof}
+        </Carousel>
       </div>
     </section>
   );
