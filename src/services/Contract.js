@@ -20,6 +20,35 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 const exchangeArtifact = require('../contracts/Exchange.json');
 const contractAddress = exchangeArtifact.networks['3'].address;
 
+const DOMAIN_TYPE = [
+    { name: "name", type: "string" },
+    { name: "version", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "salt", type: "bytes32" },
+];
+
+const ORDER_TYPE = [
+    { name: "senderAddress", type: "address" },
+    { name: "matcherAddress", type: "address" },
+    { name: "baseAsset", type: "address" },
+    { name: "quoteAsset", type: "address" },
+    { name: "matcherFeeAsset", type: "address" },
+    { name: "amount", type: "uint64" },
+    { name: "price", type: "uint64" },
+    { name: "matcherFee", type: "uint64" },
+    { name: "nonce", type: "uint64" },
+    { name: "expiration", type: "uint64" },
+    { name: "side", type: "string" },
+];
+
+const DOMAIN_DATA = {
+    name: "Orion Exchange",
+    version: "1",
+    chainId: 3,
+    salt:
+        "0xf2d857f4a3edcb9b78b4d503bfe733db1e3f6cdc2b7971ee739626c97e86a557",
+};
+
 // En esta clase se creara la instancia del contrato con web3, para poder invocar las funciones definidas
 // en el contrato inteligente, las funciones del contrato que se invocan aqui son:
 // withdraw, depositWan, depositAsset
@@ -96,40 +125,6 @@ export default class Contract {
         return this.web3.utils.bytesToHex(Long.fromNumber(long).toBytesBE());
     };
 
-    // === GET ORDER HASH=== //
-    hashOrder = orderInfo => {
-        // console.log([
-        //     '0x03',
-        //     orderInfo.senderAddress,
-        //     orderInfo.matcherAddress,
-        //     orderInfo.baseAsset,
-        //     orderInfo.quoteAsset,
-        //     orderInfo.matcherFeeAsset,
-        //     this.longToBytes(orderInfo.amount),
-        //     this.longToBytes(orderInfo.price),
-        //     this.longToBytes(orderInfo.matcherFee),
-        //     this.longToBytes(orderInfo.nonce),
-        //     this.longToBytes(orderInfo.expiration),
-        //     orderInfo.side === 'buy' ? '0x00' : '0x01'
-        // ]);
-        let message = this.web3.utils.soliditySha3(
-            '0x03',
-            orderInfo.senderAddress,
-            orderInfo.matcherAddress,
-            orderInfo.baseAsset,
-            orderInfo.quoteAsset,
-            orderInfo.matcherFeeAsset,
-            this.longToBytes(orderInfo.amount),
-            this.longToBytes(orderInfo.price),
-            this.longToBytes(orderInfo.matcherFee),
-            this.longToBytes(orderInfo.nonce),
-            this.longToBytes(orderInfo.expiration),
-            orderInfo.side === 'buy' ? '0x00' : '0x01'
-        );
-
-        return message;
-    };
-
     /*
     La funcion signOrder se utliza para firmar la orden (de compra o venta) recibe un objeto orderInfo,
     con los siguientes parametros:
@@ -155,16 +150,31 @@ export default class Contract {
 
     signOrder = orderInfo =>
         new Promise((resolve, reject) => {
-            let message = this.hashOrder(orderInfo);
-
-            this.web3.eth.personal.sign(
-                message,
-                orderInfo.senderAddress,
-                (err, res) => {
-                    if (err) reject(err);
-                    resolve(res);
+            const data = JSON.stringify({
+                types: {
+                  EIP712Domain: DOMAIN_TYPE,
+                  Order: ORDER_TYPE,
+                },
+                domain: DOMAIN_DATA,
+                primaryType: "Order",
+                message: orderInfo,
+              });
+          
+              const signer = this.web3.utils.toChecksumAddress(orderInfo.senderAddress);
+          
+              this.web3.currentProvider.sendAsync(
+                {
+                  method: "eth_signTypedData_v3",
+                  params: [signer, data],
+                  from: signer,
+                },
+                function (err, result) {
+                  if (err || result.error) {
+                    reject(result);
+                  }
+                  resolve(result.result); // signature
                 }
-            );
+              );
         });
 
     decimalToBaseUnit = (currency, amount) => {
@@ -213,7 +223,7 @@ export default class Contract {
         try {
             if (currency === 'eth') {
                 const res = await this.exchange.methods
-                    .depositWan()
+                    .deposit()
                     .send({ from: address, value: newAmount },_=>{
                         if(metamaskConnected){
                             customSwal.fire({
@@ -446,38 +456,13 @@ export default class Contract {
     };
 
     // === GET SIGATURE OBJECT === //
-    getSignatureObj = signature => {
-        const netId = 3;
-        signature = signature.substr(2); //remove 0x
-        const r = '0x' + signature.slice(0, 64);
-        const s = '0x' + signature.slice(64, 128);
-        let v = this.web3.utils.hexToNumber('0x' + signature.slice(128, 130)); //gwan
-        if (netId !== 3) v += 27; //ganache
-        return { v, r, s };
-    };
 
-    validateSolidity = (orderInfo, signature) =>
+    validateSolidity = (orderInfo) =>
         new Promise(async (resolve, reject) => {
             //Validate in smart contract
 
-            // const this.exchange2 = this.web3.eth.contract(exchangeArtifact.abi, contractAddress);
-            // console.log('exchange2', this.exchange2);
+            const isValid = await this.exchange.methods.validateOrder(orderInfo).call();
 
-            // this.exchange.isValidSignature.call(orderInfo, getSignatureObj(signature), (err, res) => {
-            // 	if (err) reject(err);
-            // 	resolve(res);
-            // });
-
-            //------------- Felipe
-
-            // const web3 = new Web3(web3.currentProvider);
-            // const this.exchange2 = this.web3.eth.contract(exchangeArtifact.abi).at(contractAddress);
-            // console.log(exchange2);
-
-            let response = await this.exchange.methods
-                .isValidSignature(orderInfo, this.getSignatureObj(signature))
-                .call();
-
-            resolve(response);
+            resolve(isValid);
         });
 }
