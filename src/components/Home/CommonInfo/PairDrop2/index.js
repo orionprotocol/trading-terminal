@@ -269,7 +269,7 @@ const PairDrop2 = ({ handleWrapper, History }) => {
             onClick={(_) => handleSort("symbolA", "letter")}
           >
             <span>Pair</span>
-            <img src="/img/arrow-down.svg" alt="home" />
+            <FontAwesomeIcon icon="angle-down" size="lg" />
           </div>
           <div
             className="title short"
@@ -277,7 +277,7 @@ const PairDrop2 = ({ handleWrapper, History }) => {
             onClick={(_) => handleSort("lastPrice", "number")}
           >
             <span>Last Pr.</span>
-            <img src="/img/arrow-down.svg" alt="home" />
+            <FontAwesomeIcon icon="angle-down" size="lg" />
           </div>
           <div
             className="title short"
@@ -285,7 +285,7 @@ const PairDrop2 = ({ handleWrapper, History }) => {
             onClick={(_) => handleSort("vol24h", "number")}
           >
             <span>24h Vol</span>
-            <img src="/img/arrow-down.svg" alt="home" />
+            <FontAwesomeIcon icon="angle-down" size="lg" />
           </div>
           <div
             className="title chg"
@@ -293,7 +293,7 @@ const PairDrop2 = ({ handleWrapper, History }) => {
             onClick={(_) => handleSort("change24h", "number")}
           >
             <span>24h Change</span>
-            <img src="/img/arrow-down.svg" alt="home" />
+            <FontAwesomeIcon icon="angle-down" size="lg" />
           </div>
         </div>
 

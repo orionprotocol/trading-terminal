@@ -11,6 +11,8 @@ import {
   faAngleLeft,
   faAngleRight,
   faAngleUp,
+  faArrowUp,
+  faArrowDown,
   faExchangeAlt,
   faSearch,
   faStar,
@@ -23,7 +25,7 @@ import responsive from "./reducers/responsive.js";
 import wallet from "./reducers/wallet.js";
 import history from "./reducers/history.js";
 import "antd/dist/antd.css";
-import "./css/loader.css";
+/* import "./css/loader.css"; */
 
 const reducer = combineReducers({
   balances,
@@ -40,6 +42,8 @@ library.add(
   faAngleLeft,
   faAngleRight,
   faAngleUp,
+  faArrowUp,
+  faArrowDown,
   faExchangeAlt,
   faSearch,
   faStar,

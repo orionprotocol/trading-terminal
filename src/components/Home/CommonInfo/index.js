@@ -1,11 +1,8 @@
-import React, { lazy, useEffect, useState, Fragment, Suspense } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PairDrop2 from "./PairDrop2";
 import "./index.scss";
-
-const PairDrop2 = lazy(() =>
-  import(/* webpackChunkName: 'PairDropDown' */ "./PairDrop2")
-);
 
 const formatNumber = (number) => {
   return new Intl.NumberFormat("en-US", { minimumFractionDigits: 2 }).format(
@@ -103,15 +100,9 @@ const CommonInfo = ({ History }) => {
             </span>
             <FontAwesomeIcon className="icon-arrow-d" icon="angle-down" />
           </div>
-
-          <Suspense fallback="">
-            {showPairsDropdown ? (
-              <PairDrop2
-                History={History}
-                handleWrapper={togglePairsDropdown}
-              />
-            ) : null}
-          </Suspense>
+          {showPairsDropdown ? (
+            <PairDrop2 History={History} handleWrapper={togglePairsDropdown} />
+          ) : null}
         </div>
       </div>
       <div className="price">

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { lazy, useState, Suspense } from "react";
 import { useSelector } from "react-redux";
-
+import Loader from "../../Loader";
 import "./index.css";
-import BuyAndSellForm from "./form";
-import YourProfit from "./YourProfit";
+
+const BuyAndSellForm = lazy(() => import("./BuyAndSellForm"));
+const YourProfit = lazy(() => import("./YourProfit"));
 
 export default function Exchange() {
   const { mode, orderBook } = useSelector((state) => state.general);
@@ -80,22 +81,18 @@ export default function Exchange() {
           </div>
         </div>
         <div className="buy-and-sell-form">
-          {orderBook ? (
-            <BuyAndSellForm
-              type={{ trade: activeTab.type, selection: activeButton.type }}
-            />
-          ) : (
-            <div className={`spinner ${mode === "Light" ? "" : "dark-mode"}`}>
-              <div className="rect1"></div>
-              <div className="rect2"></div>
-              <div className="rect3"></div>
-              <div className="rect4"></div>
-              <div className="rect5"></div>
-            </div>
-          )}
+          <Suspense fallback={<Loader />}>
+            {orderBook ? (
+              <BuyAndSellForm
+                type={{ trade: activeTab.type, selection: activeButton.type }}
+              />
+            ) : null}
+          </Suspense>
         </div>
       </div>
-      <YourProfit />
+      <Suspense fallback={<Loader />}>
+        {orderBook ? <YourProfit /> : null}
+      </Suspense>
     </section>
   );
 }

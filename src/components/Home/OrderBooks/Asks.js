@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ExchangeImg from "./ExchangeImg";
 
 function handleExchanges(e) {
@@ -179,10 +180,9 @@ const Asks = (props) => {
             );
           }
           arrow = (
-            <img
+            <FontAwesomeIcon
               className={`arrow ask-${key}`}
-              src="/img/arrow-down.svg"
-              alt="home"
+              icon="angle-right"
             />
           );
           exchangesExtras = (

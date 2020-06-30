@@ -6,3 +6,10 @@
 .index .left-panel .pair-select .pair-drop .pair-table .lines .line:hover {
   cursor: pointer;
 }
+
+.titles-p {
+  svg {
+    opacity: 0.4;
+    margin-left: 5px;
+  }
+}

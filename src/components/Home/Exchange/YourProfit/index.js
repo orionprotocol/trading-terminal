@@ -109,14 +109,6 @@ const YourProfit = () => {
   return (
     <section className="your-profit">
       <h2>Your Profits</h2>
-
-      {/* 	<div className={`your-profit-data`}>
-				<Carousel renderArrow={myArrow} enableAutoPlay autoPlaySpeed={5000} itemsToShow={1} renderPagination={() => { return <div></div> }
-				}>
-					{profits}
-				</Carousel>
-			</div> */}
-
       <div className={`marquee ${mode}`}>
         <div>{prof}</div>
       </div>

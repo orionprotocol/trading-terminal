@@ -14,18 +14,9 @@
   body {
     font-family: "Montserrat", sans-serif;
   }
-  .center-panel .table .drop-menu-currecy-select-1 {
-    font-family: "Montserrat", sans-serif;
-    .top .date .pick {
-      font-family: "Montserrat", sans-serif;
-    }
-  }
 
   .history-table {
     .top {
-      .drop-menu-currecy-select-1 {
-        font-family: "Montserrat", sans-serif;
-      }
       .date .pick {
         font-family: "Montserrat", sans-serif;
       }
@@ -39,6 +30,7 @@
 
 body {
   font-family: sans-serif;
+  font-size: 10px !important;
   line-height: 12px;
   color: rgba(20, 16, 41, 0.6);
   font-weight: 500;
@@ -154,21 +146,6 @@ body.dark {
   &:hover {
     background: rgba(20, 16, 41, 0.02);
   }
-}
-.custom-icon {
-  width: 24px;
-  height: 24px;
-  background-image: url("/img/arrow-down.svg") !important;
-  opacity: 0.4;
-  -webkit-transition: all 0.3s;
-  -o-transition: all 0.3s;
-  transition: all 0.3s;
-  -webkit-transform: rotate(90deg);
-  -ms-transform: rotate(90deg);
-  transform: rotate(90deg);
-  position: absolute;
-  right: -5px;
-  top: 0;
 }
 .averta {
   font-family: "Averta";
@@ -478,7 +455,7 @@ body.dark {
         align-items: center;
         font-weight: 600;
         .icon-arrow-d {
-          font-size: 14px;
+          font-size: 16px;
           margin-left: 3px;
           opacity: 0.4;
           -webkit-transition: all 0.3s;
@@ -786,32 +763,6 @@ body.dark {
         0 0 1px rgba(20, 16, 41, 0.12);
       box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06),
         0 0 1px rgba(20, 16, 41, 0.12);
-      .drop-menu-currecy-select-1 {
-        border-radius: 4px;
-        border: none !important;
-        background-color: rgba(20, 16, 41, 0.02) !important;
-        text-transform: uppercase;
-        font-size: 10px;
-        line-height: 24px;
-        color: rgba(20, 16, 41, 0.8) !important;
-        width: initial !important;
-        font-family: sans-serif;
-        position: relative;
-        font-weight: 600;
-        margin: 0;
-        padding: 6px 28px 6px 8px;
-        .custom-icon {
-          right: 3px;
-          top: 6px;
-        }
-      }
-      .drop-menu-currecy-select-1.ui-selectmenu-button-open {
-        .custom-icon {
-          -webkit-transform: rotate(270deg) !important;
-          -ms-transform: rotate(270deg) !important;
-          transform: rotate(270deg) !important;
-        }
-      }
       .top {
         padding: 8px 8px 0 8px;
         margin-bottom: 6px;
@@ -855,15 +806,6 @@ body.dark {
           }
         }
         .all {
-          margin-left: 10px;
-        }
-        .currency-all {
-          display: -webkit-box;
-          display: -ms-flexbox;
-          display: flex;
-          -webkit-box-align: center;
-          -ms-flex-align: center;
-          align-items: center;
           margin-left: 10px;
         }
         .date {
@@ -1269,13 +1211,6 @@ body.dark {
               justify-content: flex-start;
               cursor: pointer;
             }
-            .exch-content.active {
-              .arrow {
-                -webkit-transform: rotate(90deg);
-                -ms-transform: rotate(90deg);
-                transform: rotate(90deg);
-              }
-            }
             .exch-drop {
               border-radius: 4px;
               position: absolute;
@@ -1456,46 +1391,6 @@ body.dark {
       > div {
         &:not(:last-child) {
           margin-right: 16px;
-        }
-      }
-      .all {
-        .drop-menu-currecy-select-1 {
-          width: 100% !important;
-        }
-      }
-      .status {
-        .drop-menu-currecy-select-1 {
-          text-transform: initial;
-          color: rgba(20, 16, 41, 0.6) !important;
-        }
-      }
-      .drop-menu-currecy-select-1 {
-        border-radius: 4px;
-        border: none !important;
-        background-color: rgba(20, 16, 41, 0.02) !important;
-        text-transform: uppercase;
-        font-size: 14px;
-        line-height: 16px;
-        color: rgba(20, 16, 41, 0.8) !important;
-        width: initial !important;
-        font-family: sans-serif;
-        position: relative;
-        font-weight: 500;
-        margin: 0;
-        padding: 7px 13px 6px 8px;
-        .custom-icon {
-          right: 3px;
-          width: 16px;
-          height: 16px;
-          background-size: contain;
-          top: 6px;
-        }
-      }
-      .drop-menu-currecy-select-1.ui-selectmenu-button-open {
-        .custom-icon {
-          -webkit-transform: rotate(270deg) !important;
-          -ms-transform: rotate(270deg) !important;
-          transform: rotate(270deg) !important;
         }
       }
       .date {
@@ -2365,9 +2260,6 @@ div {
     outline: none !important;
   }
 }
-.drop-menu-currecy-select-1.ui-selectmenu-button-open {
-  background: #ffffff !important;
-}
 .ui-selectmenu-menu {
   background: #ffffff;
   border-radius: 4px;
@@ -2715,28 +2607,6 @@ div {
           color: #ff00aa !important;
         }
       }
-      .currency-all {
-        .sep {
-          color: rgba(224, 224, 255, 0.4) !important;
-        }
-        .drop-menu-currecy-select-1 {
-          color: #ffffff !important;
-          background: rgba(224, 224, 255, 0.02) !important;
-          .custom-icon {
-            background-image: url("/img/arrow-down-l.svg") !important;
-            -webkit-transform: rotate(0);
-            -ms-transform: rotate(0);
-            transform: rotate(0);
-          }
-        }
-        .drop-menu-currecy-select-1.ui-selectmenu-button-open {
-          .custom-icon {
-            -webkit-transform: rotate(180deg) !important;
-            -ms-transform: rotate(180deg) !important;
-            transform: rotate(180deg) !important;
-          }
-        }
-      }
       .big-toggler {
         background: rgba(224, 224, 255, 0.02);
         span {
@@ -2958,15 +2828,6 @@ div {
         }
       }
     }
-    .drop-menu-currecy-select-1 {
-      color: #ffffff !important;
-      background: rgba(224, 224, 255, 0.02) !important;
-    }
-    .status {
-      .drop-menu-currecy-select-1 {
-        color: rgba(224, 224, 255, 0.6) !important;
-      }
-    }
   }
 }
 .dashboard.dark-mode {
@@ -3051,7 +2912,7 @@ div {
       span {
         color: #ffffff;
       }
-      img {
+      svg {
         -webkit-filter: invert(100%);
         filter: invert(100%);
       }
@@ -3136,7 +2997,7 @@ div {
         span {
           color: #ffffff !important;
         }
-        img {
+        svg {
           -webkit-filter: invert(100%);
           filter: invert(100%);
         }
@@ -3162,7 +3023,7 @@ div {
         span {
           color: #ffffff !important;
         }
-        img {
+        svg {
           -webkit-filter: invert(100%);
           filter: invert(100%);
           -webkit-filter: invert(0);
@@ -3559,11 +3420,8 @@ div {
       &:hover {
         background: rgba(20, 16, 41, 0.06);
       }
-      img {
+      svg {
         margin-right: 20px;
-        -webkit-transform: rotate(180deg);
-        -ms-transform: rotate(180deg);
-        transform: rotate(180deg);
       }
     }
     .connect {
@@ -3622,13 +3480,7 @@ div {
       }
       img {
         margin-right: 20px;
-        -webkit-transform: rotate(180deg);
-        -ms-transform: rotate(180deg);
-        transform: rotate(180deg);
         margin-right: 20px;
-        -webkit-transform: rotate(0);
-        -ms-transform: rotate(0);
-        transform: rotate(0);
       }
     }
   }
@@ -4441,10 +4293,6 @@ div {
         .top {
           font-size: 14px !important;
           line-height: 24px !important;
-          .drop-menu-currecy-select-1 {
-            font-size: 14px;
-            line-height: 24px;
-          }
           .date {
             .pick {
               font-size: 14px;
@@ -4529,20 +4377,6 @@ div {
           padding: 0 24px 12px 24px;
           .buy {
             margin: 15px 0 0 0;
-          }
-        }
-      }
-    }
-  }
-}
-@media screen and (max-width: 1500px) {
-  .index {
-    .center-panel {
-      .table {
-        .drop-menu-currecy-select-1 {
-          padding: 3px 28px 3px 8px;
-          .custom-icon {
-            top: 4px;
           }
         }
       }
@@ -5274,12 +5108,6 @@ div {
           .all {
             margin-right: 0;
             width: 100%;
-            .drop-menu-currecy-select-1 {
-              width: 100% !important;
-            }
-          }
-          .currency-all {
-            margin-left: 0;
           }
           .date {
             width: 100%;

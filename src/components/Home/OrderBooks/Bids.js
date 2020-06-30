@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ExchangeImg from "./ExchangeImg";
 
 function calculateTotalBids(array) {
@@ -202,10 +203,9 @@ const Bids = (props) => {
           }
 
           arrow = (
-            <img
-              className={`arrow bid-${key}`}
-              src="/img/arrow-down.svg"
-              alt="home"
+            <FontAwesomeIcon
+              className={`arrow ask-${key}`}
+              icon="angle-right"
             />
           );
           exchangesExtras = (

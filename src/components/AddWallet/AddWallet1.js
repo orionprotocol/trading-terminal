@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./index.css";
 
 const AddWallet1 = (props) => {
@@ -42,37 +43,8 @@ const AddWallet1 = (props) => {
                 <p className="name">Ethereum</p>
                 <p className="desc">Ethereum is the solution</p>
               </div>
-              <img className="next" src="/img/arrow-down.svg" alt="dash" />
+              <FontAwesomeIcon className="next" icon="angle-right" size="2x" />
             </div>
-            {/* <div
-                            className="item js-next-step"
-                            onClick={_ => handleClick('wanchain')}
-                        >
-                            <img
-                                className="icon"
-                                src="/img/wanchain.png"
-                                alt="dash"
-                            />
-                            <div className="text">
-                                <p className="name">Wanchain</p>
-                                <p className="desc">
-                                    Wanchain team has attended
-                                </p>
-                            </div>
-                            <img
-                                className="next"
-                                src="/img/arrow-down.svg"
-                                alt="dash"
-                            />
-                        </div> */}
-            {/* <div className="item js-next-step" onClick={_ => handleClick('waves')}>
-							<img className="icon" src="/img/waves.png" alt="dash" />
-							<div className="text">
-								<p className="name">Waves</p>
-								<p className="desc">Revolutionizing the world</p>
-							</div>
-							<img className="next" src="/img/arrow-down.svg" alt="dash" />
-						</div> */}
           </div>
         </div>
       </div>

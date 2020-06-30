@@ -8,12 +8,6 @@ const Sidebar = lazy(() =>
 );
 
 function Dashboard(props) {
-  useEffect((_) => {
-    // setInterval(async () => {
-    // 	const accounts = await window.ethereum.enable();
-    // 	console.log('accounts', accounts);
-    // }, 1000);
-  });
   return (
     <div>
       <div className="dashboard">

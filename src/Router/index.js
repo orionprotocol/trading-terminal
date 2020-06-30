@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
+import Loader from "../components/Loader";
 
 const Home = lazy(() => import(/* webpackChunkName: 'Home' */ "../pages/Home"));
 //const Wallet = lazy(() =>
@@ -19,7 +20,7 @@ const Dashboard = lazy(() =>
 
 const Router = () => {
   return (
-    <Suspense fallback="">
+    <Suspense fallback={<Loader />}>
       <Switch>
         <Route path="/trade/:id" component={Home} />
         <Route path="/trade" component={Home} />

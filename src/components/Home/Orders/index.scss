@@ -57,10 +57,6 @@
   border: 1.5px solid #383838e3;
 }
 
-.orders-dates .date.dark-mode {
-  background-color: transparent;
-}
-
 .price-card-date-line {
   border-top: 1px solid rgb(117, 117, 117);
   width: 10px;
@@ -119,5 +115,25 @@
   &.ant-select-item-option-selected,
   &:hover {
     background-color: rgba(51, 61, 75, 0.828);
+  }
+}
+
+.father.orders {
+  background-color: #fff !important;
+}
+.dark-mode {
+  .father.orders {
+    background-color: #2a2a41 !important;
+    color: rgba(224, 224, 255, 0.6);
+
+    .price-card-button {
+      background-color: #2e2e45;
+      border: 0 solid #efeff0;
+      box-shadow: 0 0 0 #f4f4f4;
+
+      &.active {
+        background-color: #4c5266;
+      }
+    }
   }
 }

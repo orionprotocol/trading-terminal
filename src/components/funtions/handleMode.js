@@ -13,9 +13,6 @@ export function Dark() {
   const toggle2 = document.querySelector(".toggler.js-toggler-dark-mode");
   if (toggle2) toggle2.classList.add("active");
 
-  const orders = document.querySelector(".father.orders");
-  if (orders) orders.classList.add("dark-mode");
-
   const dashboard = document.querySelector(".dashboard");
   if (dashboard) dashboard.classList.add("dark-mode");
 
@@ -23,14 +20,6 @@ export function Dark() {
   if (btns && btns.length > 0) {
     for (let i = 0; i < btns.length; i++) {
       btns[i].classList.add("dark-mode");
-    }
-  }
-
-  const dates = document.querySelectorAll(".orders-dates .date");
-
-  if (dates && dates.length > 0) {
-    for (let i = 0; i < dates.length; i++) {
-      dates[i].classList.add("dark-mode");
     }
   }
 
@@ -57,10 +46,6 @@ export function Light() {
 
   const toggle2 = document.querySelector(".toggler.js-toggler-dark-mode");
   if (toggle2) toggle2.classList.remove("active");
-
-  const orders = document.querySelector(".father.orders");
-  if (orders) orders.classList.remove("dark-mode");
-
   const dashboard = document.querySelector(".dashboard");
   if (dashboard) dashboard.classList.remove("dark-mode");
 
@@ -68,13 +53,6 @@ export function Light() {
   if (btns && btns.length > 0) {
     for (let i = 0; i < btns.length; i++) {
       btns[i].classList.remove("dark-mode");
-    }
-  }
-
-  const dates = document.querySelectorAll(".orders-dates .date");
-  if (dates && dates.length > 0) {
-    for (let i = 0; i < dates.length; i++) {
-      dates[i].classList.remove("dark-mode");
     }
   }
 

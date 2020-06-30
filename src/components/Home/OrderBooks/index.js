@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { lazy, useState, useEffect, Suspense } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import Bids from "./Bids";
-import Asks from "./Asks";
+import Loader from "../../Loader";
 import "./index.css";
+
+const Asks = lazy(() => import("./Asks"));
+const Bids = lazy(() => import("./Bids"));
 
 const urlBase = process.env.REACT_APP_BACKEND;
 
@@ -266,28 +268,22 @@ const OrderBooks = (props) => {
           <span className="title exch">Exch</span>
         </div>
       </div>
-      {!cargando && (
-        <div className="spinner-container">
-          <div className={`spinner ${mode === "Light" ? "" : "dark-mode"}`}>
-            <div className="rect1"></div>
-            <div className="rect2"></div>
-            <div className="rect3"></div>
-            <div className="rect4"></div>
-            <div className="rect5"></div>
+      <Suspense fallback={<Loader />}>
+        {cargando && (
+          <Asks data={state.data} lastPrice={state.data.lastPrice} />
+        )}
+        {cargando && (
+          <div className="order-book">
+            <div className="last-price">
+              <span className="cell">{state.data.lastPrice}</span>
+              <span className="last">Last Price</span>
+            </div>
           </div>
-        </div>
-      )}
-
-      {cargando && <Asks data={state.data} lastPrice={state.data.lastPrice} />}
-      {cargando && (
-        <div className="order-book">
-          <div className="last-price">
-            <span className="cell">{state.data.lastPrice}</span>
-            <span className="last">Last Price</span>
-          </div>
-        </div>
-      )}
-      {cargando && <Bids data={state.data} lastPrice={state.data.lastPrice} />}
+        )}
+        {cargando && (
+          <Bids data={state.data} lastPrice={state.data.lastPrice} />
+        )}
+      </Suspense>
     </div>
   );
 };

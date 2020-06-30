@@ -1,8 +1,8 @@
-import React, { lazy, useEffect, useCallback } from "react";
+import React, { lazy, useEffect, useCallback, Suspense } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import Loader from "../components/Loader";
 import IndexNav from "../components/Home/IndexNav";
-import Orders from "../components/Home/Orders";
 
 const CommonInfo = lazy(() =>
   import(/* webpackChunkName: 'CommonInfo' */ "../components/Home/CommonInfo")
@@ -12,6 +12,9 @@ const Exchange = lazy(() =>
 );
 const OrderBooks = lazy(() =>
   import(/* webpackChunkName: 'OrderBooks' */ "../components/Home/OrderBooks")
+);
+const Orders = lazy(() =>
+  import(/* webpackChunkName: 'OrderHistory' */ "../components/Home/Orders")
 );
 const Sidebar = lazy(() =>
   import(/* webpackChunkName: 'Sidebar' */ "../components/Sidebar")
@@ -80,20 +83,8 @@ function Home(props) {
     else addClass();
   }, []);
 
-  // useEffect(
-  //     _ => {
-  //         const { pathname } = window.location;
-
-  //         if (pathname.includes('trade')) {
-  //             window.renderChart('all', symbol, mode);
-  //         }
-  //     },
-  //     //eslint-disable-next-line react-hooks/exhaustive-deps
-  //     [window.location.pathname, mode, symbol]
-  // );
-
   return (
-    <div className="">
+    <Suspense fallback={<Loader />}>
       <IndexNav />
 
       <div className="index">
@@ -113,10 +104,6 @@ function Home(props) {
             {/* Large */}
             {!active ? (
               <div className="center-panel js-panel">
-                {/* <div className="image js-chart js-panel-item">
-                                    <TVChart />
-                                  
-                                </div> */}
                 <TVChart />
                 <Orders />
               </div>
@@ -136,7 +123,7 @@ function Home(props) {
           </div>
         </div>
       </div>
-    </div>
+    </Suspense>
   );
 }
 

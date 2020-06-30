@@ -111,16 +111,6 @@
   background-color: rgba(251, 177, 189, 0.623);
 }
 
-.father.orders {
-  background-color: #fff !important;
-  /* color: rgba(224, 224, 255, 0.6); */
-}
-
-.father.orders.dark-mode {
-  background-color: #2a2a41 !important;
-  color: rgba(224, 224, 255, 0.6);
-}
-
 /* ============================================================================== */
 
 .ant-table-thead > tr > th,
@@ -182,10 +172,6 @@
 .price-card-button.active {
   background-color: transparent;
   border: 1px solid #efeff0;
-}
-
-.price-card-button.active.dark-mode {
-  background-color: #4c5266;
 }
 
 .price-card-button.dark-mode {
