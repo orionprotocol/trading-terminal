@@ -2,6 +2,7 @@ import React, { lazy, useState, useEffect, Suspense } from "react";
 import { useSelector } from "react-redux";
 import Slider from "react-slick";
 import FadeIn from "react-fade-in";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./index.css";
@@ -179,7 +180,7 @@ const Wallets = (_) => {
       <div className="top">
         <h2>Wallets</h2>
         <button className="add js-add-wallet" onClick={handleAddWallet}>
-          <img src="/img/add.png" alt="dash" />
+          <FontAwesomeIcon icon="plus" />
           <span>Add Wallet</span>
         </button>
       </div>

@@ -14,6 +14,7 @@ import {
   faArrowUp,
   faArrowDown,
   faExchangeAlt,
+  faPlus,
   faSearch,
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
@@ -45,6 +46,7 @@ library.add(
   faArrowUp,
   faArrowDown,
   faExchangeAlt,
+  faPlus,
   faSearch,
   faStar,
   farStar
