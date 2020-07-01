@@ -45,7 +45,7 @@ const Orders = _ => {
     const [statusFilterSelection, setstatusFilterSelection] = useState('All')
     const [filterPairA, setfilterPairA] = useState(symbolA)
     const [filterPairB, setfilterPairB] = useState(symbolB)
-  console.log(allOrders)  
+  /* console.log(allOrders)   */
     const [classes, setClasses] = useState({
         type: 'fa-angle-down',
         pair: 'fa-angle-down',
@@ -69,7 +69,7 @@ const Orders = _ => {
 console.log(symbolA,symbolB,filterPairA,filterPairB,symbol)
         if (address) {
             axios
-                .get(`${urlBase}/api/v1/orderHistory?symbol=${symbol}&address=${address}`)
+                .get(`${urlBase}/api/v1/orderHistory?symbol=${filterPairA}-${filterPairB}&address=${address}`)
                 .then(res => {
                     if (Array.isArray(res.data)) {
                         setAllOrders(res.data);
@@ -105,7 +105,7 @@ console.log(symbolA,symbolB,filterPairA,filterPairB,symbol)
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
         /* Si se añade un nuevo simbolo se debera de añadir, a esta lista para q, se pueda visualizar cuando cambie el valor del mismo dentro del objecto, de otra forma no se sabra cuando cambio el balance */
-        [symbol, ethAddress, balances.contractBalances.ETH, balances.contractBalances.USDT , balances.contractBalances.WBTC, balances.contractBalances.WXRP ]
+        [symbolA,symbolB,filterPairA,filterPairB, ethAddress, balances.contractBalances.ETH, balances.contractBalances.USDT , balances.contractBalances.WBTC, balances.contractBalances.WXRP ]
     );
     /* console.log(ordersOrigin) */
     const handleType = type => {
@@ -218,25 +218,17 @@ console.log(symbolA,symbolB,filterPairA,filterPairB,symbol)
     );
 
     function handleChangeA(value) {
-    console.log(allOrders)
-        /* console.log(allOrders[1])
-        console.log(value,allOrders[1].symbol.split('-')[0],allOrders[1].symbol.split('-')[0]===value) */
-
         let newOrders = allOrders.filter(e => e.symbol.split('-')[0] === value);
-
         setOrders(newOrders);
+        setfilterPairA(value)
     }
     function handleChangeB(value) {
-        let newOrders = allOrders.filter(e => {
-            let symbolB = e.symbol.split('-')[1];
-
-            return symbolB === value;
-        });
-
+        let newOrders = allOrders.filter(e => e.symbol.split('-')[1] === value);
         setOrders(newOrders);
+        setfilterPairB(value)
     }
-    function handleChangeC(value) {
 
+    function handleChangeC(value) {
         if (value === 'All') {
             setOrders(allOrders);
         } else {
@@ -324,7 +316,7 @@ console.log(symbolA,symbolB,filterPairA,filterPairB,symbol)
                                 <DateFilter startDateA={startDateA} startDateB={startDateB} setStartDateA={setStartDateA} setStartDateB={setStartDateB} handleDateChangeRaw={handleDateChangeRaw} />
                                 <Col xs={24} md={10}>
                                     <div className="orders-selects">
-                                        <PairFilter optsClass={optsClass} handleChangeA={handleChangeA} handleChangeB={handleChangeB} />
+                                        <PairFilter  allOrders={allOrders} optsClass={optsClass} handleChangeA={handleChangeA} handleChangeB={handleChangeB} />
                                         {/* /////////////////////////////////// */}
                                         <StatusFilter setstatusFilterSelection={setstatusFilterSelection} optsClass={optsClass} handleChangeC={handleChangeC} />
                                     </div>

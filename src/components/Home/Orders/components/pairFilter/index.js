@@ -5,12 +5,13 @@ import { Select  } from 'antd';
 const { Option } = Select;
 const A =['XRP','ETH']
 const B=['BTC','USDT']
-const index = memo(({optsClass, handleChangeA, handleChangeB}) => {
-    const { symbolA, symbolB,tickers } = useSelector(
+const index = memo(({allOrders,optsClass, handleChangeA, handleChangeB}) => {
+    const { symbolA, symbolB,symbol,tickers } = useSelector(
         state => state.general
     );
     const [SelectorA, setSelectorA] = useState(<></>)
     const [SelectorB, setSelectorB] = useState(<></>)
+    console.log(tickers)
 useEffect(() => {
     setSelectorA( 
     <Select
@@ -36,7 +37,7 @@ useEffect(() => {
         })}
     </Select>
     )
-}, [symbolA]);
+}, [symbolA,allOrders,symbol]);
 
 useEffect(() => {
     setSelectorB( 
@@ -48,7 +49,7 @@ useEffect(() => {
                 padding: 0,
                 border: 'none',
             }}
-            onChange={handleChangeA}
+            onChange={handleChangeB}
         >
             {B.map((res,key)=>{
                 return(
@@ -63,7 +64,7 @@ useEffect(() => {
             })}
         </Select>
         )
-}, [symbolB]);
+}, [symbolB,symbol,allOrders]);
 
     return (
         <>
