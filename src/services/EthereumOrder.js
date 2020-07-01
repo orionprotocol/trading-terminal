@@ -106,31 +106,31 @@ class EthereumOrder {
             // matcher es el que ejecuta la orden, en este caso el exchange
 
             const order = {
-                senderAddress,
+                senderAddress: senderAddress,
                 matcherAddress: EthereumOrder.matcherPublicKey,
-                baseAsset,
-                quoteAsset,
+                baseAsset: baseAsset,
+                quoteAsset: quoteAsset,
                 matcherFeeAsset: side === 'buy' ? quoteAsset : baseAsset,
                 amount: Assets.toLongValue(amount),
                 price: Assets.toLongValue(price),
                 matcherFee: 300000, // Este monto es fijado por el exchange
                 nonce: nowTimestamp,
                 expiration: nowTimestamp + 29 * 24 * 60 * 60 * 1000,
-                side // buy or sell
+                side: side, //true = buy, false = sell
             };
 
             let signedOrder = await this.signOrder(order);
 
             order.signature = signedOrder;
 
-        //    /*  console.log(order);
-        //     console.log('----- Message: ', this.hashOrder(order));
-        //     console.log('----- Signature: ', signedOrder);
-        //     console.log('----- Signed By: ', senderAddress); */
+           /*  console.log(order);
+            console.log('----- Message: ', this.hashOrder(order));
+            console.log('----- Signature: ', signedOrder);
+            console.log('----- Signed By: ', senderAddress); */
 
             // Luego de que es firmada la orden por el cliente se realiza la validacion
-            let validation = await this.validateSolidity(order);
-            console.log('Valid Signature?', validation);
+            let validation = await this.validateSolidity(order, signedOrder);
+            // console.log('validation', validation);
             // resolve('');
             // return;
 
