@@ -1,28 +1,37 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Row, Col, Icon, Select, Layout } from 'antd';
+/* REDUX */
 import { useSelector } from 'react-redux';
+/* STYLES */
 import './index.css';
 import './table.css';
-import Line from './Line';
-import axios from 'axios';
+/* Exported functions */
 import compareValues from '../../funtions/compareValues';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.min.css';
+/*Dependencies */
+import axios from 'axios';
 import moment from 'moment';
+import { Row, Col, Select, Layout } from 'antd';
+import 'react-datepicker/dist/react-datepicker.min.css';
+/* Components */
+import Line from './Line';
+import Table from './components/table'
+import TypeOfFilter from './components/typeOfFilter'
+import DateFilter from './components/dateFilter'
+import PairFilter from './components/pairFilter'
+import StatusFilter from './components/statusFilter'
+
 
 const urlBase = process.env.REACT_APP_BACKEND;
 
-const { Option } = Select;
 const { Content } = Layout;
 
 // Open orders
 //  	orders[i].status == "NEW" ||
 // 		orders[i].status == "PARTIALLY_FILLED"
-var loadOrderHistory = () => {};
+var loadOrderHistory = () => { };
 
 const Orders = _ => {
     const { symbol, mode } = useSelector(state => state.general);
-    const  balances  = useSelector(state => state.balances);
+    const balances = useSelector(state => state.balances);
     const { ethAddress } = useSelector(state => state.wallet);
     const [orders, setOrders] = useState([]);
     const [ordersOrigin, setOrdersOrigin] = useState([]);
@@ -39,7 +48,7 @@ const Orders = _ => {
         status: 'fa-angle-down',
         total: 'fa-angle-down',
     });
-/*  console.log(balances.contractBalances)  */
+    /*  console.log(balances.contractBalances)  */
     loadOrderHistory = () => {
         let address;
 
@@ -52,14 +61,8 @@ const Orders = _ => {
         }
 
         if (address) {
-            let url =
-                urlBase +
-                '/api/v1/orderHistory?symbol=' +
-                symbol +
-                '&address=' +
-                address;
             axios
-                .get(url)
+                .get(`${urlBase}/api/v1/orderHistory?symbol=${symbol}&address=${address}`)
                 .then(res => {
                     if (Array.isArray(res.data)) {
                         setAllOrders(res.data);
@@ -89,7 +92,7 @@ const Orders = _ => {
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
         /* Si se añade un nuevo simbolo se debera de añadir, a esta lista para q, se pueda visualizar cuando cambie el valor del mismo dentro del objecto, de otra forma no se sabra cuando cambio el balance */
-        [symbol, ethAddress, balances.contractBalances.ETH,balances.contractBalances.USDT,balances.contractBalances.WBTC,balances.contractBalances.WXRP ]
+        [symbol, ethAddress, balances.contractBalances.ETH, balances.contractBalances.USDT, balances.contractBalances.WBTC, balances.contractBalances.WXRP]
     );
 
     const handleType = type => {
@@ -289,227 +292,23 @@ const Orders = _ => {
                                     paddingLeft: '15px',
                                 }}
                             >
-                                <Col xs={24} md={6}>
-                                    <button
-                                        className="price-card-button emp"
-                                        id="open-price-card-button"
-                                        onClick={_ => handleType('open')}
-                                    >
-                                        Orders
-                                    </button>
-                                    <button
-                                        className="price-card-button active emp"
-                                        id="history-price-card-button"
-                                        style={{ border: 'none !important' }}
-                                        onClick={_ => handleType('history')}
-                                    >
-                                        History
-                                    </button>
-                                </Col>
-                                <Col
-                                    xs={24}
-                                    md={8}
-                                    style={{ marginTop: '3px' }}
-                                >
-                                    <div className="orders-dates">
-                                        <DatePicker
-                                            selected={startDateA}
-                                            onChange={date =>
-                                                setStartDateA(date)
-                                            }
-                                            calendarClassName="date"
-                                            dateFormat="dd.MM.Y"
-                                            onChangeRaw={handleDateChangeRaw}
-                                        />
-                                        <span className="date-icon">
-                                            <Icon type="calendar" />
-                                        </span>
-                                        <span className="price-card-date-line">
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        </span>
-                                        <DatePicker
-                                            selected={startDateB}
-                                            onChange={date =>
-                                                setStartDateB(date)
-                                            }
-                                            calendarClassName="date"
-                                            dateFormat="dd.MM.Y"
-                                            onChangeRaw={handleDateChangeRaw}
-                                        />
-                                        <span className="date-icon">
-                                            <Icon type="calendar" />
-                                        </span>
-                                    </div>
-                                </Col>
+
+                                <TypeOfFilter handleType={handleType} />
+                                <DateFilter startDateA={startDateA} startDateB={startDateB} setStartDateA={setStartDateA} setStartDateB={setStartDateB} handleDateChangeRaw={handleDateChangeRaw} />
+
                                 <Col xs={24} md={10}>
                                     <div className="orders-selects">
-                                        <Select
-                                            className="price-card-selector emp"
-                                            defaultValue="ETH"
-                                            style={{
-                                                width: 80,
-                                                padding: 0,
-                                                border: 'none',
-                                            }}
-                                            onChange={handleChangeA}
-                                        >
-                                            <Option
-                                                value="ETH"
-                                                className={optsClass}
-                                            >
-                                                ETH
-                                            </Option>
-                                            <Option
-                                                value="XRP"
-                                                className={optsClass}
-                                            >
-                                                XRP
-                                            </Option>
-                                        </Select>
-                                        /
-                                        <Select
-                                            className="price-card-selector emp"
-                                            defaultValue="BTC"
-                                            style={{
-                                                width: 80,
-                                                padding: 0,
-                                                border: 'none',
-                                            }}
-                                            onChange={handleChangeB}
-                                        >
-                                            <Option
-                                                value="BTC"
-                                                className={optsClass}
-                                            >
-                                                BTC
-                                            </Option>
-                                        </Select>
-                                        <Select
-                                            className="price-card-selector emp"
-                                            defaultValue="All"
-                                            style={{
-                                                width: 100,
-                                                padding: 0,
-                                                border: 'none',
-                                            }}
-                                            onChange={handleChangeC}
-                                        >
-                                            <Option
-                                                value="All"
-                                                className={optsClass}
-                                            >
-                                                All
-                                            </Option>
-                                            <Option
-                                                value="Open"
-                                                className={optsClass}
-                                            >
-                                                Open
-                                            </Option>
-                                            <Option
-                                                value="Filled"
-                                                className={optsClass}
-                                            >
-                                                Filled
-                                            </Option>
-                                            <Option
-                                                value="Partial"
-                                                className={optsClass}
-                                            >
-                                                Partial
-                                            </Option>
-                                            <Option
-                                                value="Cancelled"
-                                                className={optsClass}
-                                            >
-                                                Cancelled
-                                            </Option>
-                                        </Select>
+                                        <PairFilter optsClass={optsClass} handleChangeA={handleChangeA} handleChangeB={handleChangeB} />
+                                        {/* /////////////////////////////////// */}
+                                        <StatusFilter optsClass={optsClass} handleChangeC={handleChangeC} />
                                     </div>
                                 </Col>
                             </Row>
                         </Col>
                     </Row>
-                    {/* AQUI */}
                     <Row style={{ paddingLeft: 15, paddingBottom: 10 }}>
-                        {/* <OrdersTable /> */}
-                        <div className="table-content">
-                            <div className="titles">
-                                <div
-                                    className="title short"
-                                    onClick={_ => handleSort('type')}
-                                >
-                                    <span>Type</span>
-                                    <i
-                                        className={`fa ${classes.type}`}
-                                        aria-hidden="true"
-                                    />
-                                </div>
-                                <div
-                                    className="title"
-                                    onClick={_ => handleSort('pair')}
-                                >
-                                    <span>Pair</span>
-                                    <i
-                                        className={`fa ${classes.pair}`}
-                                        aria-hidden="true"
-                                    >
-                                        {' '}
-                                    </i>
-                                </div>
-                                <div
-                                    className="title time"
-                                    onClick={_ => handleSort('time')}
-                                >
-                                    <span>Time</span>
-                                    <i
-                                        className={`fa ${classes.time}`}
-                                        aria-hidden="true"
-                                    />
-                                </div>
-                                <div
-                                    className="title"
-                                    onClick={_ => handleSort('amount')}
-                                >
-                                    <span>Amount</span>
-                                    <i
-                                        className={`fa ${classes.amount}`}
-                                        aria-hidden="true"
-                                    />
-                                </div>
-                                <div
-                                    className="title"
-                                    onClick={_ => handleSort('price')}
-                                >
-                                    <span>Price</span>
-                                    <i
-                                        className={`fa ${classes.price}`}
-                                        aria-hidden="true"
-                                    />
-                                </div>
-                                <div
-                                    className="title status"
-                                    onClick={_ => handleSort('status')}
-                                >
-                                    <span>Status</span>
-                                    <i
-                                        className={`fa ${classes.status}`}
-                                        aria-hidden="true"
-                                    />
-                                </div>
-                                <div
-                                    className="title"
-                                    onClick={_ => handleSort('total')}
-                                >
-                                    <span>Total</span>
-                                    <i
-                                        className={`fa ${classes.total}`}
-                                        aria-hidden="true"
-                                    />
-                                </div>
-                            </div>
-                            <div className="lines">{state.renderOrders}</div>
-                        </div>
+                        {/* <OrdersTable />  AQUI*/}
+                        <Table handleSort={handleSort} classes={classes} state={state}/>
                     </Row>
                 </Content>
             </Layout>
