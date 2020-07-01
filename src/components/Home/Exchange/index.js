@@ -78,7 +78,7 @@ export default function Exchange() {
 				}
 				</div>
 			</div>
-			<YourProfit />
+			{/* <YourProfit /> */}
 		</section>
 	);
 }

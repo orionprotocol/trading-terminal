@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { Select } from 'antd';
 const { Option } = Select;
-const status = ["All", "Open", "Filled", "Partial", "Cancelled"]
-const index = memo(({ optsClass, handleChangeC }) => {
+const status = ["All", "NEW", "PARTIALLY_FILLED", "FILLED", "PARTIALLY_CANCELLED","CANCELLED","REJECTED"]
+const index = memo(({ optsClass, handleChangeC,setstatusFilterSelection }) => {
 
     return (
         <Select
@@ -16,13 +16,16 @@ const index = memo(({ optsClass, handleChangeC }) => {
             onChange={handleChangeC}
         >
             {status.map((res, key) => {
+            let name = res.toLowerCase().replace('_',' ')
+            let nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1)
                 return (
                     <Option
                         key={key}
                         value={`${res}`}
                         className={optsClass}
+                        onClick={()=>setstatusFilterSelection(res)}
                     >
-                        {res}
+                        {nameCapitalized}
                     </Option>
                 )
             })}

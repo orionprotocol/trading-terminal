@@ -50,6 +50,7 @@ export default function BuyAndSellForm({ type }) {
   
     /* This useEffect is made to change the de total if the amount change */
     const iterating_price_for_total = (array, amount, type) => {
+        
         let cost = 0
         let totalPrice = 0
         let remanent = 0

@@ -30,7 +30,10 @@ const { Content } = Layout;
 var loadOrderHistory = () => { };
 
 const Orders = _ => {
-    const { symbol, mode } = useSelector(state => state.general);
+    const { symbolA, symbolB,symbol, mode, lastPrice, high, low, vol, change,tickers } = useSelector(
+        state => state.general
+    );
+/*     const { symbol, mode } = useSelector(state => state.general); */
     const balances = useSelector(state => state.balances);
     const { ethAddress } = useSelector(state => state.wallet);
     const [orders, setOrders] = useState([]);
@@ -39,6 +42,10 @@ const Orders = _ => {
     const [state, setState] = useState({ type: 'history', renderOrders: null });
     const [startDateA, setStartDateA] = useState(new Date());
     const [startDateB, setStartDateB] = useState(new Date());
+    const [statusFilterSelection, setstatusFilterSelection] = useState('All')
+    const [filterPairA, setfilterPairA] = useState(symbolA)
+    const [filterPairB, setfilterPairB] = useState(symbolB)
+  console.log(allOrders)  
     const [classes, setClasses] = useState({
         type: 'fa-angle-down',
         pair: 'fa-angle-down',
@@ -48,7 +55,7 @@ const Orders = _ => {
         status: 'fa-angle-down',
         total: 'fa-angle-down',
     });
-    /*  console.log(balances.contractBalances)  */
+
     loadOrderHistory = () => {
         let address;
 
@@ -59,26 +66,32 @@ const Orders = _ => {
         } else {
             address = localStorage.getItem('currentAccount') || '';
         }
-
+console.log(symbolA,symbolB,filterPairA,filterPairB,symbol)
         if (address) {
             axios
                 .get(`${urlBase}/api/v1/orderHistory?symbol=${symbol}&address=${address}`)
                 .then(res => {
                     if (Array.isArray(res.data)) {
                         setAllOrders(res.data);
-
+                        let newOrders
                         if (state.type === 'open') {
-                            let newOrders = res.data.filter(
+                            newOrders = res.data.filter(
                                 d =>
                                     d.status === 'NEW' ||
                                     d.status === 'PARTIALLY_FILLED'
                             );
-                            setOrders(newOrders);
-                            setOrdersOrigin(newOrders);
                         } else {
-                            setOrders(res.data);
-                            setOrdersOrigin(res.data);
+                            if (statusFilterSelection === 'All') {
+                                newOrders = res.data
+                            } else {
+                                newOrders = res.data.filter(
+                                    d =>
+                                        d.status === statusFilterSelection
+                                );
+                            }
                         }
+                        setOrders(newOrders);
+                        setOrdersOrigin(newOrders);
                     }
                 })
                 .catch(err => {
@@ -92,9 +105,9 @@ const Orders = _ => {
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
         /* Si se añade un nuevo simbolo se debera de añadir, a esta lista para q, se pueda visualizar cuando cambie el valor del mismo dentro del objecto, de otra forma no se sabra cuando cambio el balance */
-        [symbol, ethAddress, balances.contractBalances.ETH, balances.contractBalances.USDT, balances.contractBalances.WBTC, balances.contractBalances.WXRP]
+        [symbol, ethAddress, balances.contractBalances.ETH, balances.contractBalances.USDT , balances.contractBalances.WBTC, balances.contractBalances.WXRP ]
     );
-
+    /* console.log(ordersOrigin) */
     const handleType = type => {
         document
             .querySelector('#open-price-card-button')
@@ -108,6 +121,15 @@ const Orders = _ => {
             newOrders = allOrders.filter(
                 d => d.status === 'NEW' || d.status === 'PARTIALLY_FILLED'
             );
+        } else {
+            if (statusFilterSelection === 'All') {
+                newOrders = allOrders
+            } else {
+                newOrders = allOrders.filter(
+                    d => d.status === statusFilterSelection
+                );
+            }
+            
         }
 
         setOrders(newOrders);
@@ -196,16 +218,16 @@ const Orders = _ => {
     );
 
     function handleChangeA(value) {
-        let newOrders = ordersOrigin.filter(e => {
-            let symbolA = e.symbol.split('-')[0];
+    console.log(allOrders)
+        /* console.log(allOrders[1])
+        console.log(value,allOrders[1].symbol.split('-')[0],allOrders[1].symbol.split('-')[0]===value) */
 
-            return symbolA === value;
-        });
+        let newOrders = allOrders.filter(e => e.symbol.split('-')[0] === value);
 
         setOrders(newOrders);
     }
     function handleChangeB(value) {
-        let newOrders = ordersOrigin.filter(e => {
+        let newOrders = allOrders.filter(e => {
             let symbolB = e.symbol.split('-')[1];
 
             return symbolB === value;
@@ -214,7 +236,13 @@ const Orders = _ => {
         setOrders(newOrders);
     }
     function handleChangeC(value) {
-        switch (value) {
+
+        if (value === 'All') {
+            setOrders(allOrders);
+        } else {
+            setOrders(allOrders.filter(e => e.status === value));
+        }
+        /* switch (value) {
             case 'All':
                 setOrders(ordersOrigin);
                 break;
@@ -234,7 +262,7 @@ const Orders = _ => {
                 break;
             default:
                 break;
-        }
+        } */
     }
 
     const handleDateChangeRaw = e => {
@@ -292,15 +320,13 @@ const Orders = _ => {
                                     paddingLeft: '15px',
                                 }}
                             >
-
                                 <TypeOfFilter handleType={handleType} />
                                 <DateFilter startDateA={startDateA} startDateB={startDateB} setStartDateA={setStartDateA} setStartDateB={setStartDateB} handleDateChangeRaw={handleDateChangeRaw} />
-
                                 <Col xs={24} md={10}>
                                     <div className="orders-selects">
                                         <PairFilter optsClass={optsClass} handleChangeA={handleChangeA} handleChangeB={handleChangeB} />
                                         {/* /////////////////////////////////// */}
-                                        <StatusFilter optsClass={optsClass} handleChangeC={handleChangeC} />
+                                        <StatusFilter setstatusFilterSelection={setstatusFilterSelection} optsClass={optsClass} handleChangeC={handleChangeC} />
                                     </div>
                                 </Col>
                             </Row>
@@ -308,7 +334,7 @@ const Orders = _ => {
                     </Row>
                     <Row style={{ paddingLeft: 15, paddingBottom: 10 }}>
                         {/* <OrdersTable />  AQUI*/}
-                        <Table handleSort={handleSort} classes={classes} state={state}/>
+                        <Table handleSort={handleSort} classes={classes} state={state} />
                     </Row>
                 </Content>
             </Layout>

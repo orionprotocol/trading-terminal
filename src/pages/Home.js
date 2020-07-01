@@ -111,7 +111,7 @@ function Home(props) {
                                     <TVChart />
                                   
                                 </div> */}
-                                <TVChart />
+                             {/*    <TVChart /> */} {/* Esto es lo q tienes q poner */}
                                 <Orders />
                             </div>
                         ) : null}
@@ -128,7 +128,8 @@ function Home(props) {
                         ) : null}
 
                         {!active || (active && orderbook) ? (
-                            <OrderBooks />
+                           <div></div>
+                            {/* <OrderBooks /> */}/* esto es lo que tienes q poner */
                         ) : null}
                     </div>
                 </div>
