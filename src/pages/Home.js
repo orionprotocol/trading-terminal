@@ -85,9 +85,7 @@ function Home(props) {
     return (
         <div className="">
             <TopMenu />
-
             <IndexNav />
-
             <div className="index">
                 <Sidebar history={props.history} />
 
@@ -101,17 +99,12 @@ function Home(props) {
                             {!active || (active && exchange) ? (
                                 <Exchange />
                             ) : null}
-                            {/* <Exchange /> */}
                         </div>
 
                         {/* Large */}
                         {!active ? (
                             <div className="center-panel js-panel">
-                                {/* <div className="image js-chart js-panel-item">
-                                    <TVChart />
-                                  
-                                </div> */}
-                                    <TVChart /> 
+                                <TVChart />
                                 <Orders />
                             </div>
                         ) : null}
@@ -127,7 +120,7 @@ function Home(props) {
                             </div>
                         ) : null}
 
-                        {!active || (active && orderbook) ?  (<OrderBooks />) : null}
+                        {!active || (active && orderbook) ? (<OrderBooks />) : null}
                     </div>
                 </div>
             </div>

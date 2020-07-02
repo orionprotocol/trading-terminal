@@ -119,7 +119,7 @@ console.log(symbolA,symbolB,filterPairA,filterPairB,symbol)
         let newOrders = allOrders;
         if (type === 'open') {
             newOrders = allOrders.filter(
-                d => d.status === 'NEW' || d.status === 'PARTIALLY_FILLED'
+                d => d.status === 'NEW' || d.status === 'PARTIALLY_FILLED' || d.status === 'PARTIALLY_CANCELLED'
             );
         } else {
             if (statusFilterSelection === 'All') {
