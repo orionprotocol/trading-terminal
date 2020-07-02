@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import DatePicker from 'react-datepicker';
 import { Col, Icon } from 'antd';
+import './date.scss'
 const index = memo(({startDateA,setStartDateA, startDateB,setStartDateB, handleDateChangeRaw}) => {
     return (
         <Col
@@ -14,10 +15,14 @@ const index = memo(({startDateA,setStartDateA, startDateB,setStartDateB, handleD
                     onChange={date =>
                         setStartDateA(date)
                     }
+                    maxDate={new Date()}
                     calendarClassName="date"
                     dateFormat="dd.MM.Y"
                     onChangeRaw={handleDateChangeRaw}
+                    placeholderText="Start Date"
+                    showDisabledMonthNavigation
                 />
+                
                 <span className="date-icon">
                     <Icon type="calendar" />
                 </span>
@@ -25,13 +30,16 @@ const index = memo(({startDateA,setStartDateA, startDateB,setStartDateB, handleD
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                         </span>
                 <DatePicker
-                    selected={startDateB}
+                    selected={startDateB} 
                     onChange={date =>
                         setStartDateB(date)
                     }
+                    minDate={new Date()}
                     calendarClassName="date"
                     dateFormat="dd.MM.Y"
                     onChangeRaw={handleDateChangeRaw}
+                    placeholderText="End Date"
+                    showDisabledMonthNavigation
                 />
                 <span className="date-icon">
                     <Icon type="calendar" />

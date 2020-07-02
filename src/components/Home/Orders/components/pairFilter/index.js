@@ -3,26 +3,28 @@ import React, { memo,useEffect,useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Select  } from 'antd';
 const { Option } = Select;
-const A =['XRP','ETH']
+const A =['XRP','ETH','USDT']
 const B=['BTC','USDT']
-const index = memo(({allOrders,optsClass, handleChangeA, handleChangeB}) => {
+const index = memo(({allOrders,optsClass, handleChangeA, handleChangeB,filterPairA, filterPairB }) => {
     const { symbolA, symbolB,symbol,tickers } = useSelector(
         state => state.general
     );
     const [SelectorA, setSelectorA] = useState(<></>)
     const [SelectorB, setSelectorB] = useState(<></>)
-    console.log(tickers)
+   /*  console.log(filterPairA) */
 useEffect(() => {
+    console.log('Se hizo un cambio en el symbol',filterPairA)
+    setSelectorA(null)
     setSelectorA( 
     <Select
         className="price-card-selector emp"
-        defaultValue={`${symbolA}`}
+        value={filterPairA}
         style={{
             width: 80,
             padding: 0,
             border: 'none',
         }}
-        onChange={handleChangeA}
+        onChange={e=>handleChangeA(e)}
     >
         {A.map((res,key)=>{
             return(
@@ -37,19 +39,20 @@ useEffect(() => {
         })}
     </Select>
     )
-}, [symbolA,allOrders,symbol]);
+}, [filterPairA]);
 
 useEffect(() => {
+    setSelectorB(null)
     setSelectorB( 
         <Select
             className="price-card-selector emp"
-            defaultValue={`${symbolB}`}
+            value={filterPairB}
             style={{
                 width: 80,
                 padding: 0,
                 border: 'none',
             }}
-            onChange={handleChangeB}
+            onChange={e=>handleChangeB(e)}
         >
             {B.map((res,key)=>{
                 return(
@@ -64,7 +67,7 @@ useEffect(() => {
             })}
         </Select>
         )
-}, [symbolB,symbol,allOrders]);
+}, [filterPairB]);
 
     return (
         <>
