@@ -127,7 +127,7 @@ function Home(props) {
                             </div>
                         ) : null}
 
-                        {!active || (active && orderbook) ? {/* <div></div> */} (<OrderBooks />) : null}
+                        {!active || (active && orderbook) ?  (<OrderBooks />) : null}
                     </div>
                 </div>
             </div>
