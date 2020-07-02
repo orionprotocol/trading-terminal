@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import * as Sentry from "@sentry/react";
 import * as serviceWorker from "./serviceWorker";
 import WebfontLoader from "@dr-kobros/react-webfont-loader";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -27,6 +28,18 @@ import wallet from "./reducers/wallet.js";
 import history from "./reducers/history.js";
 import "antd/dist/antd.css";
 /* import "./css/loader.css"; */
+
+if (
+  process.env.NODE_ENV === "production" &&
+  !process.env.REACT_APP_SENTRY_DNS
+) {
+  throw Error("SENTRY_DNS ENV not set");
+}
+
+Sentry.init({
+  dsn: process.env.REACT_APP_SENTRY_DNS,
+  environment: process.env.NODE_ENV,
+});
 
 const reducer = combineReducers({
   balances,

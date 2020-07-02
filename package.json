@@ -9,6 +9,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.13.1",
     "@fortawesome/free-solid-svg-icons": "^5.13.1",
     "@fortawesome/react-fontawesome": "^0.1.11",
+    "@sentry/react": "^5.19.0",
     "antd": "^4.3.5",
     "axios": "^0.19.0",
     "coinlist": "^3.1.2",
