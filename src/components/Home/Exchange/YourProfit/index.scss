@@ -1,0 +1,155 @@
+.your-profit {
+    /* background-color: aqua; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 4%;
+
+    h2 {
+        font-size: 16px;
+
+        @media (max-width: 1500px) {
+            font-size: 24px;
+        }
+
+        .dark & {
+            color: #fff;
+        }
+    }
+
+    &-data {
+        background-color: #fff;
+        width: 100%;
+        /* min-height: 100px; */
+        .dark & {
+            background-color: #2a2a41;
+        }
+
+        > .exchange {
+            > .numbers {
+                border-top: 2px solid rgb(237, 240, 244);
+                padding-top: 3px;
+
+                .dark & {
+                    border-top: 1px solid rgba(224, 224, 255, 0.6);
+                }
+
+                > span {
+                    display: block;
+                    color: rgb(65, 195, 0);
+                    font-size: 9px;
+                }
+            }
+
+            > .numbers,
+            > .name {
+                &.center {
+                    border-right: 2px solid rgb(237, 240, 244);
+                    border-left: 2px solid rgb(237, 240, 244);
+
+                    .dark & {
+                        border-right: 1px solid rgba(224, 224, 255, 0.6);
+                        border-left: 1px solid rgba(224, 224, 255, 0.6);
+                    }
+                }
+            }
+
+            > div {
+                text-align: center;
+            }
+        }
+    }
+
+}
+
+.profits-arrows {
+    border: none;
+    background: transparent;
+    color: rgb(139, 139, 139);
+    cursor: pointer;
+
+    > i {
+        font-size: 18px;
+    }
+}
+
+.exchange {
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 12px;
+
+    > .numbers {
+        display: flex;
+        flex-direction: column;
+        font-weight: bold;
+    }
+}
+
+/* MARQUEE EFFECT */
+
+.marquee {
+    width: 100%;
+    height: 62px;
+    overflow: hidden;
+    position: relative;
+
+    > * {
+        will-change: transform;
+    }
+
+    &__item {
+        display: flex;
+    }
+
+    &__props {
+        display: flex;
+        flex-wrap: wrap;
+        white-space: nowrap;
+        padding: 0 25px;
+        color: #434343;
+        border-right: 1px solid #cacaca;
+
+        .dark & {
+            display: flex;
+            flex-direction: column;
+            color: white;
+            border-right: 1px solid #f4f4f4;
+        }
+    }
+
+    &__prop {
+        font-size: 12px;
+    }
+
+    &__name {
+        color: rgb(120, 133, 169);
+        font-weight: 900;
+        font-size: 18px;
+    }
+
+    &__wrap {
+        cursor: pointer;
+        display: flex;
+        position: absolute;
+        transform: translate3d(0, 0, 0);
+        animation: marquee 17s linear infinite;
+
+        &:hover {
+            animation-play-state: paused;
+        }
+    }
+}
+
+@keyframes marquee {
+    from {
+        transform: translate3d(0%, 0, 0);
+    }
+
+    to {
+        transform: translate3d(-50%, 0, 0);
+    }
+}

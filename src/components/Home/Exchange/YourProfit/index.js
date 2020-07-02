@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import './index.css';
+import './index.scss';
 import Carousel, { consts } from 'react-elastic-carousel'
 
 const urlBase = process.env.REACT_APP_BACKEND;
@@ -10,12 +10,12 @@ const YourProfit = () => {
 	const { symbol, qtyForm, sideForm, mode } = useSelector((state) => state.general);
 	/* const [profits, setProfits] = useState(''); */
 	const [profits2, setProfits2] = useState([]);
-	let style
-	if (mode === 'Dark') {
-		style = { color: 'white' }
-	} else {
-		style = { color: ' rgb(139, 139, 139)' }
-	}
+	// let style
+	// if (mode === 'Dark') {
+	// 	style = { color: 'white' }
+	// } else {
+	// 	style = { color: ' rgb(139, 139, 139)' }
+	// }
 	/* const createProfits = profits => {
 		return profits.map((res, key) => {
 			return (
@@ -89,15 +89,11 @@ const YourProfit = () => {
 
 	let prof = profits2.map((res, key) => {
 		return (
-			<span key={key}>
-				 <label  style={{
-					color: `rgb(120,133,169)`,
-					fontWeight: '900',
-					fontSize:'18px'
-				}} >{res.name}</label>
-				<label style={{fontSize:'12px'}}>+ {res.benefitPct} %</label>
-				<label style={{fontSize:'12px'}}>+ {res.benefitBtc} BTC </label>
-			</span>
+			<div className="marquee__props" key={key}>
+				 <div className="marquee__name">{res.name}</div>
+				<div className="marquee__prop">+ {res.benefitPct} %</div>
+				<div className="marquee__prop">+ {res.benefitBtc} BTC </div>
+			</div>
 		)
 	})
 
@@ -116,7 +112,7 @@ const YourProfit = () => {
 				</Carousel>
 			</div> */}
 
-			<div className={`marquee ${mode}`}>
+			<div className='marquee'>
 				<div className='marquee__wrap'>
 					<div className="marquee__item">
 						{prof}

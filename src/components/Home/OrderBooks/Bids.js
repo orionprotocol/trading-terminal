@@ -62,13 +62,13 @@ const renderSize = data => {
     }
     data.dynamic = 0;
 
-    setTimeout(() => {
-        let element = document.querySelector('#' + id);
-        if (element) {
-            element.classList.remove('green');
-            element.classList.remove('red');
-        }
-    }, 300);
+    // setTimeout(() => {
+    //     let element = document.querySelector('#' + id);
+    //     if (element) {
+    //         element.classList.remove('green');
+    //         element.classList.remove('red');
+    //     }
+    // }, 300);
 
     return (
         <span className={colorClass} id={id}>
@@ -280,7 +280,7 @@ const Bids = props => {
 
     return (
         <div className="order-book">
-            <div className="orders">{bids}</div> 
+            <div className="orders">{bids}</div>
         </div>
     );
 };
