@@ -74,11 +74,14 @@ const Orders = _ => {
                     if (Array.isArray(res.data)) {
                         setAllOrders(res.data);
                         let newOrders
+                        let newTime = moment(startDateA).unix();
+                        let timeB = moment(startDateB).unix();
                         if (state.type === 'open') {
                             newOrders = res.data.filter(
                                 d =>
                                     d.status === 'NEW' ||
-                                    d.status === 'PARTIALLY_FILLED'
+                                    d.status === 'PARTIALLY_FILLED'||
+                                    d.status === 'PARTIALLY_CANCELLED'
                             );
                         } else {
                             if (statusFilterSelection === 'All') {
@@ -89,6 +92,13 @@ const Orders = _ => {
                                         d.status === statusFilterSelection
                                 );
                             }
+                        }
+                        if (startDateA !== '' && startDateB !== '') {
+                            newOrders = newOrders.filter(e => {
+                                let time = String(e.time);
+                                time = time.substring(0, 10);
+                                return time >= newTime && time <= timeB;
+                            });
                         }
                         setOrders(newOrders);
                         setOrdersOrigin(newOrders);
@@ -244,47 +254,11 @@ const Orders = _ => {
     function handleChangeA(value) {
         setOrders([]);
         setfilterPairA(value)
-        let newOrders = allOrders.filter(e => e.symbol.split('-')[0] === value);
-        if (statusFilterSelection !== 'All') {
-            newOrders = newOrders.filter(
-                d => d.status === statusFilterSelection
-            );
-        }
-        let newTime = moment(startDateA).unix();
-        let timeB = moment(startDateB).unix();
-        console.log(newOrders)
-        if (startDateA !== '' && startDateB !== '') {
-            newOrders = newOrders.filter(e => {
-                let time = String(e.time);
-                time = time.substring(0, 10);
-                return (time >= newTime && time <= timeB);
-            });
-        }
-        console.log(newOrders)
-        setOrders(newOrders);
-
     }
+    
     function handleChangeB(value) {
         setOrders([]);
         setfilterPairB(value)
-        let newOrders = allOrders.filter(e => e.symbol.split('-')[1] === value);
-        if (statusFilterSelection !== 'All') {
-            newOrders = newOrders.filter(
-                d => d.status === statusFilterSelection
-            );
-        }
-        let newTime = moment(startDateA).unix();
-        let timeB = moment(startDateB).unix();
-        if (startDateA !== '' && startDateB !== '') {
-            newOrders = newOrders.filter(e => {
-                let time = String(e.time);
-                time = time.substring(0, 10);
-                return (time >= newTime && time <= timeB);
-            });
-        }
-        
-        setOrders(newOrders);
-
     }
 
     function handleChangeC(value) {
