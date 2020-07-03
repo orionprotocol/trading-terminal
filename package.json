@@ -12,7 +12,6 @@
     "@sentry/react": "^5.19.0",
     "antd": "^4.3.5",
     "axios": "^0.19.0",
-    "coinlist": "^3.1.2",
     "crypto-price": "^0.0.6",
     "dayjs": "^1.8.28",
     "formik": "^2.0.6",

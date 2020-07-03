@@ -95,10 +95,6 @@ const PairDrop2 = ({ handleWrapper, History }) => {
           JSON.parse(localStorage.getItem("sortLines")).sortType,
           auxpairs
         );
-
-        /*  linesSorted = compareFunction(name, sortType, lines)
- setLines([...linesSorted]);
- localStorage.setItem('sortLines', JSON.stringify({ name, sortType, order })) */
       }
 
       if (localStorage.getItem("sortLines")) {
@@ -132,6 +128,7 @@ const PairDrop2 = ({ handleWrapper, History }) => {
   }, [
     tickers["BTC-USDT"],
     tickers["XRP-USDT"],
+    tickers["ERD-USDT"],
     tickers["ETH-BTC"],
     tickers["XRP-BTC"],
     searcher,

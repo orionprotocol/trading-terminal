@@ -1,6 +1,5 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import coins from "coinlist";
 import { useSelector } from "react-redux";
 import "./line.scss";
 
@@ -81,7 +80,7 @@ export default function Line2({ data, handlePair, favourite, setFavs }) {
         />
         <div className="text">
           <span className="emp">{data.pair}</span>
-          <span className="small">{coins.get(data.symbolA).name}</span>
+          <span className="small">{data.symbolA}</span>
         </div>
       </div>
       <div
