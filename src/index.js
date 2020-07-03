@@ -31,14 +31,15 @@ import "antd/dist/antd.css";
 
 if (
   process.env.NODE_ENV === "production" &&
-  !process.env.REACT_APP_SENTRY_DNS
+  !process.env.REACT_APP_SENTRY_DNS &&
+  !process.env.REACT_APP_SENTRY_ENVIRONMENT
 ) {
-  throw Error("SENTRY_DNS ENV not set");
+  throw Error("REACT_APP_SENTRY_DNS or REACT_APP_SENTRY_ENVIRONMENT not set");
 }
 
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DNS,
-  environment: process.env.NODE_ENV,
+  environment: process.env.REACT_APP_SENTRY_ENVIRONMENT,
 });
 
 const reducer = combineReducers({
