@@ -13,7 +13,7 @@ export default function Exchange() {
 		rigth: 'limit-order-button',
 		type: 'market'
 	});
-
+	
 	return (
 		<section>
 			<div id="exchange" className="">
@@ -78,7 +78,7 @@ export default function Exchange() {
 				}
 				</div>
 			</div>
-			{/* <YourProfit /> */}
+			 <YourProfit /> 
 		</section>
 	);
 }

@@ -27,7 +27,13 @@ function removeClass() {
 }
 
 function Home(props) {
+    /* REDUX */
     const dispatch = useDispatch();
+    const { orderbook, active, pair, exchange, chart, history } = useSelector(
+        state => state.responsive.home
+    );
+    const { mode, symbol, supportTradingPairs } = useSelector(state => state.general);
+
     const setSymbol = useCallback(
         payload => dispatch({ type: 'SetSymbol', payload }),
         [dispatch]
@@ -40,7 +46,7 @@ function Home(props) {
         data => dispatch({ type: 'SetSymbolB', payload: data }),
         [dispatch]
     );
-
+    /* REDUX */
     useEffect(() => {
         let aux = props.history.location.pathname.split('/');
         if (aux.length === 3) {
@@ -55,10 +61,6 @@ function Home(props) {
             }
         }
     }, [props.history.location.pathname]);
-    const { orderbook, active, pair, exchange, chart, history } = useSelector(
-        state => state.responsive.home
-    );
-    const { mode, symbol } = useSelector(state => state.general);
 
     useEffect(() => {
         window.addEventListener('resize', _ => {
@@ -88,6 +90,7 @@ function Home(props) {
             <IndexNav />
             <div className="index">
                 <Sidebar history={props.history} />
+
 
                 <div className="my-container">
                     <div className="my-row">
@@ -120,7 +123,7 @@ function Home(props) {
                             </div>
                         ) : null}
 
-                       {!active || (active && orderbook) ? (<OrderBooks />) : null}
+                        {!active || (active && orderbook) ? (<OrderBooks />) : null}
                     </div>
                 </div>
             </div>

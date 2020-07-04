@@ -1,6 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
 import { web3 } from './Fortmatic';
 
 const io = require('socket.io-client');
@@ -311,6 +310,8 @@ const Sockets = () => {
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+
+ 
 
     return <div />;
 };

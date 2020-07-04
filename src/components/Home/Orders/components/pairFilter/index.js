@@ -11,9 +11,8 @@ const index = memo(({allOrders,optsClass, handleChangeA, handleChangeB,filterPai
     );
     const [SelectorA, setSelectorA] = useState(<></>)
     const [SelectorB, setSelectorB] = useState(<></>)
-   /*  console.log(filterPairA) */
+
 useEffect(() => {
-    console.log('Se hizo un cambio en el symbol',filterPairA)
     setSelectorA(null)
     setSelectorA( 
     <Select
