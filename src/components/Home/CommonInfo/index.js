@@ -73,7 +73,7 @@ const CommonInfo = ({ History }) => {
                 });
             }
         }
-    }, [supportTradingPairs]);
+    }, [supportTradingPairs,lastPrice, high, low]);
     /* END OF FORMATING NUMBERS SECTION*/
 
     /*  console.log("la precision segun el par", formatingPair) */
@@ -111,6 +111,7 @@ const CommonInfo = ({ History }) => {
         //eslint-disable-next-line react-hooks/exhaustive-deps
         [lastPrice, high, low, vol]
     );
+
     /* FORMAT VOL NUMBER  FUNCTION*/
     //Esta funcion se encarga de tomar el valor que proviene de la base de datos, y transformarlo en una 
     //anotacion reducida
@@ -128,6 +129,7 @@ const CommonInfo = ({ History }) => {
         }
     }, [vol]);
     /* END OF FORMAT VOL NUMBER FUNCTION*/
+
     /* console.log(formatVol) */
     useEffect(
         _ => {
@@ -245,7 +247,7 @@ const CommonInfo = ({ History }) => {
                     <span className="title">24h Vol</span>
                     <p className="value averta">
                         {symbolB === 'USDT' ?
-                            (`${formatVol}`)
+                            (`${formatVol} $`)
                             :
                             (
                                 <Fragment>
