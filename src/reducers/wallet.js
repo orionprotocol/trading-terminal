@@ -8,7 +8,7 @@ const initialState = {
     addWallet: false,
     ethAddress: '',
     // assets: { WAN: 'WAN', ETH: 'ETH', BTC: 'WBTC', XRP: 'WXRP' }
-    assets: { ETH: 'ETH', BTC: 'WBTC', XRP: 'WXRP', USDT: 'USDT' },
+    assets: { ETH: 'ETH', BTC: 'WBTC', XRP: 'WXRP', USDT: 'USDT', ERD: 'ERD' },
     // assets: []
 };
 
