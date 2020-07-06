@@ -3,7 +3,7 @@ import React, { memo,useEffect,useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Select  } from 'antd';
 const { Option } = Select;
-const A =['XRP','ETH','USDT']
+const A =['XRP','ETH','USDT','BTC']
 const B=['BTC','USDT']
 const index = memo(({allOrders,optsClass, handleChangeA, handleChangeB,filterPairA, filterPairB }) => {
     const { symbolA, symbolB,symbol,tickers } = useSelector(

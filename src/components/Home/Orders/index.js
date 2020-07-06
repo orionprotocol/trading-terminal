@@ -30,12 +30,18 @@ const { Content } = Layout;
 var loadOrderHistory = () => { };
 
 const Orders = _ => {
-    const { symbolA, symbolB, symbol, mode, lastPrice, high, low, vol, change, tickers } = useSelector(
-        state => state.general
-    );
-    /*     const { symbol, mode } = useSelector(state => state.general); */
+
+    /* REDUX */
+
+    const symbolA = useSelector(state => state.general.symbolA);
+    const symbolB = useSelector(state => state.general.symbolB);
+    const mode = useSelector(state => state.general.mode);
+    const supportTradingPairs = useSelector(state => state.general.supportTradingPairs);
     const balances = useSelector(state => state.balances);
-    const { ethAddress } = useSelector(state => state.wallet);
+    const ethAddress = useSelector(state => state.wallet.ethAddress);
+
+    /* REDUX */
+
     const [orders, setOrders] = useState([]);
     const [ordersOrigin, setOrdersOrigin] = useState([]);
     const [allOrders, setAllOrders] = useState([]);
@@ -80,7 +86,7 @@ const Orders = _ => {
                             newOrders = res.data.filter(
                                 d =>
                                     d.status === 'NEW' ||
-                                    d.status === 'PARTIALLY_FILLED'||
+                                    d.status === 'PARTIALLY_FILLED' ||
                                     d.status === 'PARTIALLY_CANCELLED'
                             );
                         } else {
@@ -123,7 +129,49 @@ const Orders = _ => {
         setfilterPairA(symbolA)
         setfilterPairB(symbolB)
     }, [symbolA, symbolB]);
-    /*    console.log(allOrders)  */
+
+   /* FORMATING NUMBERS STATE*/
+    //Aca inicia las funciones que se encargan de darle un formato a cada valor que se muestra en pantalla 
+    //a traves de la data que viene del back end
+    const initialState = {
+        minQty: 0,
+        maxQty: 0,
+        minPrice: 0,
+        maxPrice: 0,
+        pricePrecision: 0,
+        qtyPrecision: 0,
+        baseAssetPrecision: 0,
+        quoteAssetPrecision: 0
+    }
+    const [formatingPair, setformatingPair] = useState(initialState)
+
+    useEffect(() => {
+        setformatingPair(initialState)
+    }, [filterPairA, filterPairB]);
+
+    useEffect(() => {
+        console.log('en que momento se hace?')
+        if (supportTradingPairs.length > 0) {
+            if (formatingPair.pricePrecision === 0 && formatingPair.maxPrice === 0) {
+                supportTradingPairs.forEach(pair => {
+                    if (pair.symbolA === filterPairA && pair.symbolB === filterPairB) {
+                        setformatingPair({
+                            ...formatingPair,
+                            minQty: pair.minQty,
+                            maxQty: pair.maxQty,
+                            minPrice: pair.minPrice,
+                            maxPrice: pair.maxPrice,
+                            pricePrecision: pair.pricePrecision,
+                            qtyPrecision: pair.qtyPrecision,
+                            baseAssetPrecision: pair.baseAssetPrecision,
+                            quoteAssetPrecision: pair.quoteAssetPrecision
+                        })
+                    }
+                });
+            }
+        }
+    }, [supportTradingPairs,formatingPair]);
+    /* END OF FORMATING NUMBERS STATE SECTION*/
 
     const handleType = type => {
         document
@@ -137,7 +185,7 @@ const Orders = _ => {
 
         let newTime = moment(startDateA).unix();
         let timeB = moment(startDateB).unix();
-        
+
         if (type === 'open') {
             newOrders = allOrders.filter(
                 d => d.status === 'NEW' || d.status === 'PARTIALLY_FILLED' || d.status === 'PARTIALLY_CANCELLED'
@@ -236,7 +284,7 @@ const Orders = _ => {
 
         setTimeout(_ => {
             let newRenderOrders = orders.map((data, i) => (
-                <Line type={state.type} key={i} data={data} />
+                <Line formatingPair={formatingPair} type={state.type} key={i} data={data} />
             ));
 
             setState({ ...state, renderOrders: newRenderOrders });
@@ -255,7 +303,7 @@ const Orders = _ => {
         setOrders([]);
         setfilterPairA(value)
     }
-    
+
     function handleChangeB(value) {
         setOrders([]);
         setfilterPairB(value)
