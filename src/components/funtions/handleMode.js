@@ -23,12 +23,13 @@ export function Dark() {
     }
   }
 
-  const selects = document.querySelectorAll(".price-card-selector");
+  /*   const selects = document.querySelectorAll(".price-card-selector");
   if (selects && selects.length > 0) {
     for (let i = 0; i < selects.length; i++) {
       selects[i].classList.add("dark-mode");
     }
-  }
+  } */
+
   const history = document.querySelector(".history");
   if (history) {
     history.classList.add("dark-mode");
@@ -56,12 +57,12 @@ export function Light() {
     }
   }
 
-  const selects = document.querySelectorAll(".price-card-selector");
+  /*   const selects = document.querySelectorAll(".price-card-selector");
   if (selects && selects.length > 0) {
     for (let i = 0; i < selects.length; i++) {
       selects[i].classList.remove("dark-mode");
     }
-  }
+  } */
 
   const history = document.querySelector(".history");
   if (history) {

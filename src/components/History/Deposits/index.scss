@@ -19,34 +19,9 @@
     color: rgba(224, 224, 255, 0.6);
   }
 }
-.history-table {
-  .price-card-selector {
-    background-color: #fafafa;
-    border-radius: 5px;
-    padding: 8px 7px;
-    margin: 0px 0px;
-  }
-  .price-card-selector .ant-select-selector {
-    background-color: transparent !important;
-    border: none !important;
-    font-size: 10px;
-    font-weight: 600;
-  }
-}
-
 .dark-mode {
   .react-datepicker__input-container {
     color: #fff;
-  }
-
-  .history-table {
-    .price-card-selector {
-      background-color: #2e2e45;
-      color: rgba(224, 224, 255, 0.6);
-      svg {
-        color: rgba(210, 210, 238, 0.459);
-      }
-    }
   }
 
   .option-select.emp {

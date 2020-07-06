@@ -1,20 +1,26 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Row, Col, Select, Layout } from "antd";
+/* REDUX */
 import { useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+/* STYLES */
 import "./index.scss";
 import "./table.css";
-import Line from "./Line";
-import axios from "axios";
+/* Exported functions */
 import compareValues from "../../funtions/compareValues";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.min.css";
+/*Dependencies */
+import axios from "axios";
 import dayjs from "dayjs";
-import CustomDatePickerInput from "../../CustomDatePickerInput";
+import { Row, Col, Layout } from "antd";
+import "react-datepicker/dist/react-datepicker.min.css";
+/* Components */
+import Line from "./Line";
+import Table from "./components/table";
+import TypeOfFilter from "./components/typeOfFilter";
+import DateFilter from "./components/dateFilter";
+import PairFilter from "./components/pairFilter";
+import StatusFilter from "./components/statusFilter";
 
 const urlBase = process.env.REACT_APP_BACKEND;
 
-const { Option } = Select;
 const { Content } = Layout;
 
 // Open orders
@@ -23,15 +29,30 @@ const { Content } = Layout;
 var loadOrderHistory = () => {};
 
 const Orders = (_) => {
-  const { symbol, mode } = useSelector((state) => state.general);
+  const {
+    symbolA,
+    symbolB,
+    symbol,
+    mode,
+    lastPrice,
+    high,
+    low,
+    vol,
+    change,
+    tickers,
+  } = useSelector((state) => state.general);
+  /*     const { symbol, mode } = useSelector(state => state.general); */
   const balances = useSelector((state) => state.balances);
   const { ethAddress } = useSelector((state) => state.wallet);
   const [orders, setOrders] = useState([]);
   const [ordersOrigin, setOrdersOrigin] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
   const [state, setState] = useState({ type: "history", renderOrders: null });
-  const [startDateA, setStartDateA] = useState(new Date());
-  const [startDateB, setStartDateB] = useState(new Date());
+  const [startDateA, setStartDateA] = useState("");
+  const [startDateB, setStartDateB] = useState("");
+  const [statusFilterSelection, setstatusFilterSelection] = useState("All");
+  const [filterPairA, setfilterPairA] = useState(symbolA);
+  const [filterPairB, setfilterPairB] = useState(symbolB);
   const [classes, setClasses] = useState({
     type: "angle-down",
     pair: "angle-down",
@@ -54,28 +75,42 @@ const Orders = (_) => {
     }
 
     if (address) {
-      let url =
-        urlBase +
-        "/api/v1/orderHistory?symbol=" +
-        symbol +
-        "&address=" +
-        address;
       axios
-        .get(url)
+        .get(
+          `${urlBase}/api/v1/orderHistory?symbol=${filterPairA}-${filterPairB}&address=${address}`
+        )
         .then((res) => {
           if (Array.isArray(res.data)) {
             setAllOrders(res.data);
+            let newOrders;
+            let newTime = dayjs(startDateA).unix();
+            let timeB = dayjs(startDateB).unix();
 
             if (state.type === "open") {
-              let newOrders = res.data.filter(
-                (d) => d.status === "NEW" || d.status === "PARTIALLY_FILLED"
+              newOrders = res.data.filter(
+                (d) =>
+                  d.status === "NEW" ||
+                  d.status === "PARTIALLY_FILLED" ||
+                  d.status === "PARTIALLY_CANCELLED"
               );
-              setOrders(newOrders);
-              setOrdersOrigin(newOrders);
             } else {
-              setOrders(res.data);
-              setOrdersOrigin(res.data);
+              if (statusFilterSelection === "All") {
+                newOrders = res.data;
+              } else {
+                newOrders = res.data.filter(
+                  (d) => d.status === statusFilterSelection
+                );
+              }
             }
+            if (startDateA !== "" && startDateB !== "") {
+              newOrders = newOrders.filter((e) => {
+                let time = String(e.time);
+                time = time.substring(0, 10);
+                return time >= newTime && time <= timeB;
+              });
+            }
+            setOrders(newOrders);
+            setOrdersOrigin(newOrders);
           }
         })
         .catch((err) => {
@@ -90,7 +125,8 @@ const Orders = (_) => {
     //eslint-disable-next-line react-hooks/exhaustive-deps
     /* Si se añade un nuevo simbolo se debera de añadir, a esta lista para q, se pueda visualizar cuando cambie el valor del mismo dentro del objecto, de otra forma no se sabra cuando cambio el balance */
     [
-      symbol,
+      filterPairA,
+      filterPairB,
       ethAddress,
       balances.contractBalances.ETH,
       balances.contractBalances.USDT,
@@ -98,6 +134,11 @@ const Orders = (_) => {
       balances.contractBalances.WXRP,
     ]
   );
+
+  useEffect(() => {
+    setfilterPairA(symbolA);
+    setfilterPairB(symbolB);
+  }, [symbolA, symbolB]);
 
   const handleType = (type) => {
     document
@@ -108,12 +149,36 @@ const Orders = (_) => {
       .classList.toggle("active");
 
     let newOrders = allOrders;
+    let newTime = dayjs(startDateA).unix();
+    let timeB = dayjs(startDateB).unix();
     if (type === "open") {
       newOrders = allOrders.filter(
-        (d) => d.status === "NEW" || d.status === "PARTIALLY_FILLED"
+        (d) =>
+          d.status === "NEW" ||
+          d.status === "PARTIALLY_FILLED" ||
+          d.status === "PARTIALLY_CANCELLED"
       );
+      if (startDateA !== "" && startDateB !== "") {
+        newOrders = newOrders.filter((e) => {
+          let time = String(e.time);
+          time = time.substring(0, 10);
+          return time >= newTime && time <= timeB;
+        });
+      }
+    } else {
+      if (statusFilterSelection === "All") {
+        newOrders = allOrders;
+      } else {
+        newOrders = allOrders.filter((d) => d.status === statusFilterSelection);
+      }
+      if (startDateA !== "" && startDateB !== "") {
+        newOrders = newOrders.filter((e) => {
+          let time = String(e.time);
+          time = time.substring(0, 10);
+          return time >= newTime && time <= timeB;
+        });
+      }
     }
-
     setOrders(newOrders);
     setOrdersOrigin(newOrders);
     setState({ ...state, type });
@@ -200,42 +265,18 @@ const Orders = (_) => {
   );
 
   function handleChangeA(value) {
-    let newOrders = ordersOrigin.filter((e) => {
-      let symbolA = e.symbol.split("-")[0];
-
-      return symbolA === value;
-    });
-
-    setOrders(newOrders);
+    setOrders([]);
+    setfilterPairA(value);
   }
   function handleChangeB(value) {
-    let newOrders = ordersOrigin.filter((e) => {
-      let symbolB = e.symbol.split("-")[1];
-
-      return symbolB === value;
-    });
-
-    setOrders(newOrders);
+    setOrders([]);
+    setfilterPairB(value);
   }
   function handleChangeC(value) {
-    switch (value) {
-      case "All":
-        setOrders(ordersOrigin);
-        break;
-      case "Open":
-        setOrders(ordersOrigin.filter((e) => e.status === "NEW"));
-        break;
-      case "Filled":
-        setOrders(ordersOrigin.filter((e) => e.status === "FILLED"));
-        break;
-      case "Partial":
-        setOrders(ordersOrigin.filter((e) => e.status === "PARTIALLY_FILLED"));
-        break;
-      case "Cancelled":
-        setOrders(ordersOrigin.filter((e) => e.status === "CANCELLED"));
-        break;
-      default:
-        break;
+    if (value === "All") {
+      setOrders(allOrders);
+    } else {
+      setOrders(allOrders.filter((e) => e.status === value));
     }
   }
 
@@ -248,7 +289,7 @@ const Orders = (_) => {
       let newTime = dayjs(startDateA).unix();
       let timeB = dayjs(startDateB).unix();
 
-      let newOrders = ordersOrigin.filter((e) => {
+      let newOrders = allOrders.filter((e) => {
         let time = String(e.time);
         time = time.substring(0, 10);
         return time >= newTime && time <= timeB;
@@ -257,7 +298,7 @@ const Orders = (_) => {
       setOrders(newOrders);
     },
     //eslint-disable-next-line react-hooks/exhaustive-deps
-    [startDateA]
+    [startDateA, startDateB]
   );
 
   useEffect(
@@ -299,107 +340,31 @@ const Orders = (_) => {
                   paddingLeft: "15px",
                 }}
               >
-                <Col xs={24} md={6}>
-                  <button
-                    className="price-card-button emp"
-                    id="open-price-card-button"
-                    onClick={(_) => handleType("open")}
-                  >
-                    Orders
-                  </button>
-                  <button
-                    className="price-card-button active emp"
-                    id="history-price-card-button"
-                    style={{ border: "none !important" }}
-                    onClick={(_) => handleType("history")}
-                  >
-                    History
-                  </button>
-                </Col>
-                <Col xs={24} md={8}>
-                  <div className="orders-dates">
-                    <DatePicker
-                      selected={startDateA}
-                      onChange={(date) => setStartDateA(date)}
-                      calendarClassName="date"
-                      dateFormat="dd.MM.Y"
-                      onChangeRaw={handleDateChangeRaw}
-                      customInput={<CustomDatePickerInput />}
-                      popperPlacement="bottom-center"
-                    />
-                    <span className="price-card-date-line"></span>
-                    <DatePicker
-                      selected={startDateB}
-                      onChange={(date) => setStartDateB(date)}
-                      calendarClassName="date"
-                      dateFormat="dd.MM.Y"
-                      onChangeRaw={handleDateChangeRaw}
-                      customInput={<CustomDatePickerInput />}
-                      popperPlacement="bottom-center"
-                    />
-                  </div>
-                </Col>
+                <TypeOfFilter handleType={handleType} />
+                <DateFilter
+                  startDateA={startDateA}
+                  startDateB={startDateB}
+                  setStartDateA={setStartDateA}
+                  setStartDateB={setStartDateB}
+                  handleDateChangeRaw={handleDateChangeRaw}
+                />
                 <Col xs={24} md={10}>
                   <div className="orders-selects">
-                    {/* <Select
-                      className="price-card-selector emp"
-                      defaultValue="ETH"
-                      style={{
-                        width: 80,
-                        padding: 0,
-                        border: "none",
-                      }}
-                      onChange={handleChangeA}
-                    >
-                      <Option value="ETH" className={optsClass}>
-                        ETH
-                      </Option>
-                      <Option value="XRP" className={optsClass}>
-                        XRP
-                      </Option>
-                    </Select>
-                    /
-                    <Select
-                      className="price-card-selector emp"
-                      defaultValue="BTC"
-                      style={{
-                        width: 80,
-                        padding: 0,
-                        border: "none",
-                      }}
-                      onChange={handleChangeB}
-                    >
-                      <Option value="BTC" className={optsClass}>
-                        BTC
-                      </Option>
-                    </Select> */}
-                    <Select
-                      className="price-card-selector emp"
-                      defaultValue="All"
-                      style={{
-                        width: "100px",
-                        padding: "2px",
-                        border: "none",
-                      }}
-                      onChange={handleChangeC}
+                    <PairFilter
+                      filterPairA={filterPairA}
+                      filterPairB={filterPairB}
+                      allOrders={allOrders}
+                      optsClass={optsClass}
+                      handleChangeA={handleChangeA}
+                      handleChangeB={handleChangeB}
                       dropdownStyle={dropdownStyle}
-                    >
-                      <Option value="All" className={optsClass}>
-                        All
-                      </Option>
-                      <Option value="Open" className={optsClass}>
-                        Open
-                      </Option>
-                      <Option value="Filled" className={optsClass}>
-                        Filled
-                      </Option>
-                      <Option value="Partial" className={optsClass}>
-                        Partial
-                      </Option>
-                      <Option value="Cancelled" className={optsClass}>
-                        Cancelled
-                      </Option>
-                    </Select>
+                    />
+                    <StatusFilter
+                      setstatusFilterSelection={setstatusFilterSelection}
+                      optsClass={optsClass}
+                      handleChangeC={handleChangeC}
+                      dropdownStyle={dropdownStyle}
+                    />
                   </div>
                 </Col>
               </Row>
@@ -407,46 +372,7 @@ const Orders = (_) => {
           </Row>
           {/* AQUI */}
           <Row style={{ paddingLeft: 15, paddingBottom: 10 }}>
-            {/* <OrdersTable /> */}
-            <Col className="table-content" xs={24}>
-              <div className="titles">
-                <div
-                  className="title short"
-                  onClick={(_) => handleSort("type")}
-                >
-                  <span>Type</span>
-                  <FontAwesomeIcon icon={classes.type} />
-                </div>
-                <div className="title" onClick={(_) => handleSort("pair")}>
-                  <span>Pair</span>
-                  <FontAwesomeIcon icon={classes.pair} />
-                </div>
-                <div className="title time" onClick={(_) => handleSort("time")}>
-                  <span>Time</span>
-                  <FontAwesomeIcon icon={classes.time} />
-                </div>
-                <div className="title" onClick={(_) => handleSort("amount")}>
-                  <span>Amount</span>
-                  <FontAwesomeIcon icon={classes.amount} />
-                </div>
-                <div className="title" onClick={(_) => handleSort("price")}>
-                  <span>Price</span>
-                  <FontAwesomeIcon icon={classes.price} />
-                </div>
-                <div
-                  className="title status"
-                  onClick={(_) => handleSort("status")}
-                >
-                  <span>Status</span>
-                  <FontAwesomeIcon icon={classes.status} />
-                </div>
-                <div className="title" onClick={(_) => handleSort("total")}>
-                  <span>Total</span>
-                  <FontAwesomeIcon icon={classes.total} />
-                </div>
-              </div>
-              <div className="lines">{state.renderOrders}</div>
-            </Col>
+            <Table handleSort={handleSort} classes={classes} state={state} />
           </Row>
         </Content>
       </Layout>

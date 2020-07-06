@@ -46,7 +46,7 @@ function History() {
 
       if (
         (metamaskConnected || fortmaticConnected || coinbaseConnected) &&
-        ethAddress !== ""
+        ethAddress
       ) {
         // const { ethereum, web3 } = window;
         // if (!ethereum) ethereum.enable();

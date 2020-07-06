@@ -1,19 +1,21 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { CalendarOutlined } from "@ant-design/icons";
 import "./index.scss";
 
-class CustomDatePickerInput extends Component {
+class CustomDatePickerInput extends PureComponent {
   render() {
+    const { placeholder, onChange, onClick, value } = this.props;
     return (
       <div className="customDatePickerInputWrapper">
         <input
-          onClick={this.props.onClick}
-          onChange={this.props.onChange}
+          onClick={onClick}
+          onChange={onChange}
+          placeholder={placeholder}
           className="dateInput"
-          value={this.props.value}
+          value={value}
           type="text"
         />
-        <CalendarOutlined onClick={this.props.onClick} />
+        <CalendarOutlined onClick={onClick} />
       </div>
     );
   }

@@ -98,7 +98,6 @@ function Home(props) {
               ) : null}
 
               {!active || (active && exchange) ? <Exchange /> : null}
-              {/* <Exchange /> */}
             </div>
 
             {/* Large */}
