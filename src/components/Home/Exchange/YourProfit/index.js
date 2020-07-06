@@ -7,10 +7,17 @@ import Carousel, { consts } from 'react-elastic-carousel'
 const urlBase = process.env.REACT_APP_BACKEND;
 
 const YourProfit = () => {
-	const { symbol, qtyForm, sideForm, mode, symbolB } = useSelector((state) => state.general);
+	const symbol = useSelector((state) => state.general.symbol);
+	const qtyForm = useSelector((state) => state.general.qtyForm);
+	const sideForm = useSelector((state) => state.general.sideForm);
+	const mode = useSelector((state) => state.general.mode);
+	const symbolB = useSelector((state) => state.general.symbolB);
+	const symbolA = useSelector((state) => state.general.symbolA);
+	const supportTradingPairs = useSelector((state) => state.general.supportTradingPairs);
+	
 	const [profits, setProfits] = useState('');
 	const [profits2, setProfits2] = useState([]);
-	
+
 	let style
 	if (mode === 'Dark') {
 		style = { color: 'white' }
@@ -54,6 +61,50 @@ const YourProfit = () => {
 		})
 	}
 
+	/* FORMATING NUMBERS STATE*/
+	//Aca inicia las funciones que se encargan de darle un formato a cada valor que se muestra en pantalla 
+	//a traves de la data que viene del back end
+	const initialState = {
+		minQty: 0,
+		maxQty: 0,
+		minPrice: 0,
+		maxPrice: 0,
+		pricePrecision: 0,
+		qtyPrecision: 0,
+		baseAssetPrecision: 0,
+		quoteAssetPrecision: 0
+	}
+	const [formatingPair, setformatingPair] = useState(initialState)
+
+	useEffect(() => {
+		setformatingPair(initialState)
+	}, [symbolA, symbolB]);
+
+	useEffect(() => {
+		if (supportTradingPairs.length > 0) {
+			if (formatingPair.pricePrecision === 0 && formatingPair.maxPrice === 0) {
+				supportTradingPairs.forEach(pair => {
+					if (pair.symbolA === symbolA && pair.symbolB === symbolB) {
+						setformatingPair({
+							...formatingPair,
+							minQty: pair.minQty,
+							maxQty: pair.maxQty,
+							minPrice: pair.minPrice,
+							maxPrice: pair.maxPrice,
+							pricePrecision: pair.pricePrecision,
+							qtyPrecision: pair.qtyPrecision,
+							baseAssetPrecision: pair.baseAssetPrecision,
+							quoteAssetPrecision: pair.quoteAssetPrecision
+						})
+					}
+				});
+			}
+		}
+	}, [supportTradingPairs,formatingPair]);
+	/* END OF FORMATING NUMBERS STATE SECTION*/
+console.log(formatingPair)
+
+
 	const loadBenefits = () => {
 		let quantity = qtyForm
 		if (qtyForm === '') quantity = 0
@@ -69,8 +120,8 @@ const YourProfit = () => {
 					if (Number(result[key].benefitPct) !== 0) {
 						aux.push({
 							name: key,
-							benefitBtc: parseFloat(result[key].benefitBtc).toFixed(8),
-							benefitPct: parseFloat(result[key].benefitPct).toFixed(8)
+							benefitBtc: parseFloat(result[key].benefitBtc).toFixed(formatingPair.quoteAssetPrecision),
+							benefitPct: parseFloat(result[key].benefitPct).toFixed(formatingPair.quoteAssetPrecision)
 						})
 					}
 				}
@@ -124,9 +175,9 @@ const YourProfit = () => {
 		)
 	})
 
-	if (profits2.length===0) {
+	if (profits2.length === 0) {
 		return (<section className="your-profit">
-			
+
 			<div>
 				<h2 style={{ textAlign: 'center' }}>Enter an amount to get your profits</h2>
 			</div>

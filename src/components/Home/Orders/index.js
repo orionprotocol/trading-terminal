@@ -150,7 +150,7 @@ const Orders = _ => {
     }, [filterPairA, filterPairB]);
 
     useEffect(() => {
-        console.log('en que momento se hace?')
+        
         if (supportTradingPairs.length > 0) {
             if (formatingPair.pricePrecision === 0 && formatingPair.maxPrice === 0) {
                 supportTradingPairs.forEach(pair => {
