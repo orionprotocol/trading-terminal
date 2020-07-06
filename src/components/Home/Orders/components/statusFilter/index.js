@@ -11,37 +11,45 @@ const status = [
   "REJECTED",
 ];
 
-const index = memo(
-  ({ dropdownStyle, optsClass, handleChangeC, setstatusFilterSelection }) => {
-    return (
-      <Select
-        className="price-card-selector emp"
-        defaultValue="All"
-        style={{
-          width: 100,
-          padding: "2px",
-          border: "none",
-        }}
-        onChange={handleChangeC}
-        dropdownStyle={dropdownStyle}
-      >
-        {status.map((res, key) => {
-          let name = res.toLowerCase().replace("_", " ");
-          let nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
-          return (
-            <Option
-              key={key}
-              value={`${res}`}
-              className={optsClass}
-              onClick={() => setstatusFilterSelection(res)}
-            >
-              {nameCapitalized}
-            </Option>
-          );
-        })}
-      </Select>
-    );
-  }
-);
+/* function propsAreEqual(prevProp, nextProp) {
+  console.log(prevProp === nextProp);
+  return prevProp === nextProp;
+} */
 
-export default index;
+const StatusFilter = ({
+  dropdownStyle,
+  optsClass,
+  handleChangeC,
+  setstatusFilterSelection,
+}) => {
+  return (
+    <Select
+      className="price-card-selector emp"
+      defaultValue="All"
+      style={{
+        width: 100,
+        padding: "2px",
+        border: "none",
+      }}
+      onChange={handleChangeC}
+      dropdownStyle={dropdownStyle}
+    >
+      {status.map((res, key) => {
+        let name = res.toLowerCase().replace("_", " ");
+        let nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
+        return (
+          <Option
+            key={key}
+            value={`${res}`}
+            className={optsClass}
+            onClick={() => setstatusFilterSelection(res)}
+          >
+            {nameCapitalized}
+          </Option>
+        );
+      })}
+    </Select>
+  );
+};
+
+export default memo(StatusFilter);

@@ -13,14 +13,20 @@ import Contract from "../../../services/Contract";
 const Line = (props) => {
   const [depositModal, toggleDepositModal] = useState(false);
   const [withdrawModal, toggleWithdrawModal] = useState(false);
-  const {
-    wanmaskConnected,
-    metamaskConnected,
-    fortmaticConnected,
-    coinbaseConnected,
-    assets,
-    ethAddress,
-  } = useSelector((state) => state.wallet);
+  const wanmaskConnected = useSelector(
+    (state) => state.wallet.wanmaskConnected
+  );
+  const metamaskConnected = useSelector(
+    (state) => state.wallet.metamaskConnected
+  );
+  const fortmaticConnected = useSelector(
+    (state) => state.wallet.fortmaticConnected
+  );
+  const coinbaseConnected = useSelector(
+    (state) => state.wallet.coinbaseConnected
+  );
+  const assets = useSelector((state) => state.wallet.assets);
+  const ethAddress = useSelector((state) => state.wallet.ethAddress);
   const [contract, setContract] = useState();
 
   useEffect(

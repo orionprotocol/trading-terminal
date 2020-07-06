@@ -123,7 +123,8 @@ function updateOrderBookData(data, exchange, stateData, callback) {
 }
 
 const OrderBooks = (props) => {
-  const { symbol, orderBook } = useSelector((state) => state.general);
+  const symbol = useSelector((state) => state.general.symbol);
+  const orderBook = useSelector((state) => state.general.orderBook);
   // const newData = useSelector(state => state.general);
   // console.log('general', general);
   // const dispatch = useDispatch();

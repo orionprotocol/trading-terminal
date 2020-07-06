@@ -65,7 +65,6 @@ const index = memo(
         </Select>
       );
     }, [filterPairB]);
-    console.log("rrreeeeeender");
     return (
       <>
         {SelectorA}/{SelectorB}

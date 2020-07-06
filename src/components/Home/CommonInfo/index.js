@@ -11,16 +11,14 @@ const formatNumber = (number) => {
 };
 let intervalId = 0;
 const CommonInfo = ({ History }) => {
-  const {
-    symbolA,
-    symbolB,
-    lastPrice,
-    high,
-    low,
-    vol,
-    change,
-    tickers,
-  } = useSelector((state) => state.general);
+  const symbolA = useSelector((state) => state.general.symbolA);
+  const symbolB = useSelector((state) => state.general.symbolB);
+  const lastPrice = useSelector((state) => state.general.lastPrice);
+  const high = useSelector((state) => state.general.high);
+  const low = useSelector((state) => state.general.low);
+  const vol = useSelector((state) => state.general.vol);
+  const change = useSelector((state) => state.general.change);
+  const tickers = useSelector((state) => state.general.tickers);
 
   const [dollars, setDollars] = useState({});
   const [isFav, setIsFav] = useState(false);

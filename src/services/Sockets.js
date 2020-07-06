@@ -10,17 +10,25 @@ let socket;
 const Sockets = () => {
   const dispatch = useDispatch();
 
-  let { contractBalances, walletBalances } = useSelector(
-    (state) => state.balances
+  const contractBalances = useSelector(
+    (state) => state.balances.contractBalances
   );
-  const { symbol, tickers } = useSelector((state) => state.general);
-  const {
-    wanmaskConnected,
-    metamaskConnected,
-    ethAddress,
-    fortmaticConnected,
-    coinbaseConnected,
-  } = useSelector((state) => state.wallet);
+  const walletBalances = useSelector((state) => state.balances.walletBalances);
+  const symbol = useSelector((state) => state.general.symbol);
+  const tickers = useSelector((state) => state.general.tickers);
+  const wanmaskConnected = useSelector(
+    (state) => state.wallet.wanmaskConnected
+  );
+  const metamaskConnected = useSelector(
+    (state) => state.wallet.metamaskConnected
+  );
+  const ethAddress = useSelector((state) => state.wallet.ethAddress);
+  const fortmaticConnected = useSelector(
+    (state) => state.wallet.fortmaticConnected
+  );
+  const coinbaseConnected = useSelector(
+    (state) => state.wallet.coinbaseConnected
+  );
 
   const [websocket, setWS] = useState(null);
   let [websocket2, setWS2] = useState(null);

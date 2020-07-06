@@ -68,10 +68,13 @@ function Home(props) {
       }
     }
   }, [props.history.location.pathname]);
-  const { orderbook, active, pair, exchange, chart, history } = useSelector(
-    (state) => state.responsive.home
-  );
-  const { mode, symbol } = useSelector((state) => state.general);
+
+  const active = useSelector((state) => state.responsive.home.active);
+  const pair = useSelector((state) => state.responsive.home.pair);
+  const exchange = useSelector((state) => state.responsive.home.exchange);
+  const chart = useSelector((state) => state.responsive.home.chart);
+  const history = useSelector((state) => state.responsive.home.history);
+  const orderbook = useSelector((state) => state.responsive.home.orderbook);
 
   useEffect(() => {
     window.addEventListener("resize", (_) => {
@@ -82,7 +85,7 @@ function Home(props) {
     if (window.innerWidth > 1130) removeClass();
     else addClass();
   }, []);
-
+  console.log("home");
   return (
     <Suspense fallback={<Loader />}>
       <IndexNav />

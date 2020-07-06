@@ -6,7 +6,7 @@ import { ethereum } from "../../services/Coinbase";
 const AddWallet2 = (props) => {
   const dispatch = useDispatch();
 
-  const { walletOpt } = useSelector((state) => state.wallet);
+  const walletOpt = useSelector((state) => state.wallet.walletOpt);
 
   const setWanmaskConnect = useCallback(
     (payload) => dispatch({ type: "SetWanmaskConnect", payload }),

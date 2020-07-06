@@ -49,19 +49,25 @@ const Sidebar = (props) => {
     [dispatch]
   );
 
-  const { mode } = useSelector((state) => state.general);
   const [actives, setActives] = useState(["active", "", "", ""]);
-  const {
-    wanActive,
-    walletOpt,
-    wanmaskConnected,
-    metamaskConnected,
-    fortmaticConnected,
-    coinbaseConnected,
-    addWallet,
-    ethAddress,
-  } = useSelector((state) => state.wallet);
-  const { symbolA, symbolB } = useSelector((state) => state.general);
+  const wanActive = useSelector((state) => state.wallet.wanActive);
+  const walletOpt = useSelector((state) => state.wallet.walletOpt);
+  const wanmaskConnected = useSelector(
+    (state) => state.wallet.wanmaskConnected
+  );
+  const metamaskConnected = useSelector(
+    (state) => state.wallet.metamaskConnected
+  );
+  const fortmaticConnected = useSelector(
+    (state) => state.wallet.fortmaticConnected
+  );
+  const coinbaseConnected = useSelector(
+    (state) => state.wallet.coinbaseConnected
+  );
+  const addWallet = useSelector((state) => state.wallet.addWallet);
+  const mode = useSelector((state) => state.general.mode);
+  const symbolA = useSelector((state) => state.general.symbolA);
+  const symbolB = useSelector((state) => state.general.symbolB);
   const [walletActive, setWalletActive] = useState(false);
   const [addWalletOpt, setAddWalletOpt] = useState(false);
 

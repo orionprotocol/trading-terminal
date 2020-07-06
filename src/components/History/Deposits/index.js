@@ -16,9 +16,9 @@ import "./index.scss";
 const { Option } = Select;
 
 export default function Deposits() {
-  const { mode } = useSelector((state) => state.general);
+  const mode = useSelector((state) => state.general.mode);
 
-  const { deposits } = useSelector((state) => state.history);
+  const deposits = useSelector((state) => state.history.deposits);
   const [depositsRender, setDepositsRender] = useState([]);
   const [deps, setDeps] = useState([]);
   const [startDateA, setStartDateA] = useState(new Date());

@@ -16,13 +16,19 @@ function History() {
   const dispatch = useDispatch();
 
   const [url, setUrl] = useState("");
-  const {
-    wanmaskConnected,
-    metamaskConnected,
-    ethAddress,
-    fortmaticConnected,
-    coinbaseConnected,
-  } = useSelector((state) => state.wallet);
+  const wanmaskConnected = useSelector(
+    (state) => state.wallet.wanmaskConnected
+  );
+  const metamaskConnected = useSelector(
+    (state) => state.wallet.metamaskConnected
+  );
+  const ethAddress = useSelector((state) => state.wallet.ethAddress);
+  const fortmaticConnected = useSelector(
+    (state) => state.wallet.fortmaticConnected
+  );
+  const coinbaseConnected = useSelector(
+    (state) => state.wallet.coinbaseConnected
+  );
 
   const setDeposits = useCallback(
     (data) => dispatch({ type: "SetDeposits", payload: data }),

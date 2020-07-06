@@ -8,8 +8,8 @@ import "./index.scss";
 const PairDrop2 = ({ handleWrapper, History }) => {
   /* REDUX */
   const dispatch = useDispatch();
-  const { tickers } = useSelector((state) => state.general);
-  const { assets } = useSelector((state) => state.general);
+  const tickers = useSelector((state) => state.general.tickers);
+  const assets = useSelector((state) => state.general.assets);
 
   const setChange = useCallback(
     (data) => dispatch({ type: "SetChange", payload: data }),

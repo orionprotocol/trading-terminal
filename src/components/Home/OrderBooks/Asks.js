@@ -65,7 +65,7 @@ const renderSize = (data) => {
 const Asks = (props) => {
   const dispatch = useDispatch();
   const [asks, setAsks] = useState();
-  const { symbolB } = useSelector((state) => state.general);
+  const symbolB = useSelector((state) => state.general.symbolB);
   const setOrderData = useCallback(
     (data) => dispatch({ type: "SetOrderData", payload: data }),
     [dispatch]

@@ -7,7 +7,7 @@ const BuyAndSellForm = lazy(() => import("./BuyAndSellForm"));
 const YourProfit = lazy(() => import("./YourProfit"));
 
 export default function Exchange() {
-  const { orderBook } = useSelector((state) => state.general);
+  const orderBook = useSelector((state) => state.general.orderBook);
   const [activeTab, setActiveTab] = useState({
     buy: "buy-tab active",
     sell: "sell-tab",

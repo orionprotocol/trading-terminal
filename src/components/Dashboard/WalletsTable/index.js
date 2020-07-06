@@ -6,7 +6,7 @@ import compareValues from "../../funtions/compareValues";
 import "./index.css";
 
 const WalletsTable = (props) => {
-  const { assets } = useSelector((state) => state.wallet);
+  const assets = useSelector((state) => state.wallet.assets);
   const balances = useSelector((state) => state.balances);
   const [contract, setContract] = useState({});
   const [wallet, setWallet] = useState({});

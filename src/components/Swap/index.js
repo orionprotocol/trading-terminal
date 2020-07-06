@@ -7,15 +7,19 @@ import Loader from "../Loader";
 import { EthereumOrder } from "../../services/EthereumOrder";
 import openNotification from "../../components/Notification";
 const index = memo(() => {
-  const { mode, assets: allAssets } = useSelector((state) => state.general);
   const balances = useSelector((state) => state.balances);
-  const { assets } = useSelector((state) => state.wallet);
-  const {
-    metamaskConnected,
-    fortmaticConnected,
-    coinbaseConnected,
-  } = useSelector((state) => state.wallet);
-  const { tickers } = useSelector((state) => state.general);
+  const metamaskConnected = useSelector(
+    (state) => state.wallet.metamaskConnected
+  );
+  const fortmaticConnected = useSelector(
+    (state) => state.wallet.fortmaticConnected
+  );
+  const coinbaseConnected = useSelector(
+    (state) => state.wallet.coinbaseConnected
+  );
+  const mode = useSelector((state) => state.general.mode);
+  const assets = useSelector((state) => state.general.assets);
+  const tickers = useSelector((state) => state.general.tickers);
 
   const [swapCoins, setswapCoins] = useState({
     from: "ETH",
@@ -25,14 +29,14 @@ const index = memo(() => {
     from: 0,
     to: 0,
   });
-  // console.log(assets, tickers, 'tickers');
   const [errorMessage, seterrorMessage] = useState({ error: false, msg: "" });
   const [symbolsB, setSymbolsB] = useState([]);
 
   useEffect(
     (_) => {
-      if (allAssets.assets1 && allAssets.assets1.length > 0) {
-        const { assets1 } = allAssets;
+      console.log(assets.assets1);
+      if (assets.assets1 && assets.assets1.length > 0) {
+        const { assets1 } = assets;
 
         const symbsb = assets1.map((e) => {
           if (assets[e.toUpperCase()]) {
@@ -45,7 +49,7 @@ const index = memo(() => {
         setSymbolsB(symbsb);
       }
     },
-    [allAssets, assets]
+    [assets]
   );
 
   useEffect(() => {
@@ -85,12 +89,6 @@ const index = memo(() => {
     }
   }, [swapCoins, tickers]);
 
-  /*   if (regex.test(swapCoins.from) && regex.test(swapCoins.to)) {
-          console.log("El swap existe")
-      }else{
-          console.log("Dejalo asi mi loco")
-      }  */
-
   const setTypeOfTrade = () => {
     let regex = new RegExp(symbolsB.join("|"));
     if (regex.test(swapCoins.from)) {
@@ -122,12 +120,8 @@ const index = memo(() => {
     }
   };
 
-  /*    console.log(setTypeOfTrade(),setSymbols(),setPrice(),balances.contractBalances,`${swapValue.from} es mayor a ${balances.contractBalances} =  ${swapValue.from>balances.contractBalances}`) */
-
   const swap = async () => {
     try {
-      /*    console.log(orderSymbols, type.trade, price, values.amount); */
-
       let ethereumOrderMessage = "";
 
       if (fortmaticConnected) {
@@ -170,7 +164,6 @@ const index = memo(() => {
     }
   };
 
-  /*  console.log(balances) */
   if (!balances.contractBalances) return <Loader />;
   return (
     <div className={`swap-container ${mode === "Light" ? "" : "dark-mode"}`}>

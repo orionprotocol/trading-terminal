@@ -39,8 +39,9 @@ const settings = {
 
 const Wallets = (_) => {
   const balances = useSelector((state) => state.balances);
-  const { assets } = useSelector((state) => state.wallet);
-  const { tickers, changeInTickers } = useSelector((state) => state.general);
+  const assets = useSelector((state) => state.wallet.assets);
+  const tickers = useSelector((state) => state.general.tickers);
+  const changeInTickers = useSelector((state) => state.general.changeInTickers);
   const [contract, setContract] = useState({});
   const [wallet, setWallet] = useState({});
 

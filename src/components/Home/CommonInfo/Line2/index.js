@@ -11,7 +11,7 @@ const formatNumber = (number) => {
 
 export default function Line2({ data, handlePair, favourite, setFavs }) {
   /* REDUX */
-  const { tickers } = useSelector((state) => state.general);
+  const tickers = useSelector((state) => state.general.tickers);
   /* REDUX */
 
   const [dollars, setDollars] = useState({});

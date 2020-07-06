@@ -9,7 +9,9 @@ import Assests from "./possibleAssests";
 import { useSelector } from "react-redux";
 
 const Index = (_) => {
-  const { wanmaskConnected } = useSelector((state) => state.wallet);
+  const wanmaskConnected = useSelector(
+    (state) => state.wallet.wanmaskConnected
+  );
 
   const [render, setRender] = useState(null);
 

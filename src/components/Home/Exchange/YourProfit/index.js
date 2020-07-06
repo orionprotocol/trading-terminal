@@ -7,9 +7,10 @@ import "./index.css";
 const urlBase = process.env.REACT_APP_BACKEND;
 
 const YourProfit = () => {
-  const { symbol, qtyForm, sideForm, mode, symbolB } = useSelector(
-    (state) => state.general
-  );
+  const symbol = useSelector((state) => state.general.symbol);
+  const qtyForm = useSelector((state) => state.general.qtyForm);
+  const sideForm = useSelector((state) => state.general.sideForm);
+  const mode = useSelector((state) => state.general.mode);
   const [profits, setProfits] = useState("");
   const [profits2, setProfits2] = useState([]);
 

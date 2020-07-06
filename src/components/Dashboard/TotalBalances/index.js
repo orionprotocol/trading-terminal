@@ -8,8 +8,8 @@ am4core.useTheme(am4themes_animated);
 
 const TotalBalances = (_) => {
   const balances = useSelector((state) => state.balances);
-  const { assets } = useSelector((state) => state.wallet);
-  const { changeInTickers, tickers } = useSelector((state) => state.general);
+  const assets = useSelector((state) => state.wallet.assets);
+  const tickers = useSelector((state) => state.general.tickers);
   const [contract, setContract] = useState({});
 
   useEffect(

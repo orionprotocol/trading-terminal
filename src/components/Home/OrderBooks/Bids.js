@@ -91,7 +91,7 @@ const Bids = (props) => {
   const dispatch = useDispatch();
   const [bids, setBids] = useState();
   const [dataBids, setDataBids] = useState([]);
-  const { symbolB } = useSelector((state) => state.general);
+  const symbolB = useSelector((state) => state.general.symbolB);
   const setOrderData = useCallback(
     (data) => dispatch({ type: "SetOrderData", payload: data }),
     [dispatch]

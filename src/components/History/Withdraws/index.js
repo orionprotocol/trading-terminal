@@ -13,8 +13,8 @@ import CustomDatePickerInput from "../../CustomDatePickerInput";
 const { Option } = Select;
 
 export default function Withdraws() {
-  const { mode } = useSelector((state) => state.general);
-  const { withdrawls } = useSelector((state) => state.history);
+  const mode = useSelector((state) => state.general.mode);
+  const withdraws = useSelector((state) => state.history.withdraws);
   const [withdrawsRender, setWithdrawsRender] = useState([]);
   const [withs, setWiths] = useState([]);
   const [startDateA, setStartDateA] = useState(new Date());
@@ -73,10 +73,10 @@ export default function Withdraws() {
   useEffect(
     (_) => {
       // console.log(deposits);
-      setWiths(withdrawls);
+      setWiths(withdraws);
     },
     //eslint-disable-next-line react-hooks/exhaustive-deps
-    [withdrawls]
+    [withdraws]
   );
 
   useEffect(
@@ -128,7 +128,7 @@ export default function Withdraws() {
       let newTime = dayjs(startDateA).unix();
       let timeB = dayjs(startDateB).unix();
 
-      let newWiths = withdrawls.filter((e) => {
+      let newWiths = withdraws.filter((e) => {
         const time = dayjs(e.created_at).unix();
         return time >= newTime && time <= timeB;
       });
@@ -144,7 +144,7 @@ export default function Withdraws() {
       let newTime = dayjs(startDateB).unix();
       let timeA = dayjs(startDateA).unix();
 
-      let newWiths = withdrawls.filter((e) => {
+      let newWiths = withdraws.filter((e) => {
         const time = dayjs(e.created_at).unix();
         return time <= newTime && time >= timeA;
       });
@@ -161,9 +161,9 @@ export default function Withdraws() {
 
   const handleAsset = (asset) => {
     if (asset === "ALL") {
-      setWiths(withdrawls);
+      setWiths(withdraws);
     } else {
-      let newWiths = withdrawls.filter((e) => {
+      let newWiths = withdraws.filter((e) => {
         const symbol = getSymbol(e.asset);
         return symbol === asset;
       });

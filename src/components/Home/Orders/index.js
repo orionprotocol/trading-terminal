@@ -29,21 +29,11 @@ const { Content } = Layout;
 var loadOrderHistory = () => {};
 
 const Orders = (_) => {
-  const {
-    symbolA,
-    symbolB,
-    symbol,
-    mode,
-    lastPrice,
-    high,
-    low,
-    vol,
-    change,
-    tickers,
-  } = useSelector((state) => state.general);
-  /*     const { symbol, mode } = useSelector(state => state.general); */
+  const symbolA = useSelector((state) => state.general.symbolA);
+  const symbolB = useSelector((state) => state.general.symbolB);
+  const mode = useSelector((state) => state.general.mode);
   const balances = useSelector((state) => state.balances);
-  const { ethAddress } = useSelector((state) => state.wallet);
+  const ethAddress = useSelector((state) => state.wallet.ethAddress);
   const [orders, setOrders] = useState([]);
   const [ordersOrigin, setOrdersOrigin] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
@@ -329,6 +319,7 @@ const Orders = (_) => {
           color: "#e9e9e9a8",
         };
 
+  console.log("test1234");
   return (
     <Fragment>
       <Layout className="father orders">

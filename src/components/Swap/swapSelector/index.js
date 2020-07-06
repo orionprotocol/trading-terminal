@@ -8,10 +8,9 @@ let price = require("crypto-price");
 const { Option } = Select;
 
 const index = memo(({ swapCoins, setswapCoins, swapValue, setswapValue }) => {
-  const { mode } = useSelector((state) => state.general);
-  const { assets } = useSelector((state) => state.wallet);
+  const mode = useSelector((state) => state.general.mode);
+  const assets = useSelector((state) => state.wallet.assets);
   const balances = useSelector((state) => state.balances);
-  console.log(balances);
 
   let coins = [];
   for (let key in assets) {
