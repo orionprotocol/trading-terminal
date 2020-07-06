@@ -7,8 +7,8 @@ import './index.scss';
 const PairDrop2 = ({ handleWrapper, History }) => {
     /* REDUX */
     const dispatch = useDispatch();
-    const { tickers } = useSelector(state => state.general);
-    const { assets } = useSelector(state => state.general);
+    const  tickers  = useSelector(state => state.general.tickers);
+    const  assets  = useSelector(state => state.general.assets);
 
     const setChange = useCallback(
         data => dispatch({ type: 'SetChange', payload: data }),
@@ -282,10 +282,10 @@ const PairDrop2 = ({ handleWrapper, History }) => {
                     <div className="part">
                         {lines.map((res, key) => {
                             if (currentQuote === 'FAVS' && res.fav === true) {
-                                return <Line key={key} handlePair={handlePair} favourite={favs} setFavs={setFavs} data={res} />
+                                return <Line currentQuote={currentQuote} key={key} handlePair={handlePair} favourite={favs} setFavs={setFavs} data={res} />
                             }
                             if (currentQuote === res.symbolB) {
-                                return <Line key={key} handlePair={handlePair} favourite={favs} setFavs={setFavs} data={res} />
+                                return <Line currentQuote={currentQuote} key={key} handlePair={handlePair} favourite={favs} setFavs={setFavs} data={res} />
                             } else {
                                 return null
                             }

@@ -10,45 +10,95 @@ const formatNumber = number => {
     );
 };
 
-export default function Line2({ data, handlePair,favourite,setFavs }) {
+export default function Line2({ currentQuote,data, handlePair,favourite,setFavs }) {
    
     /* REDUX */
-    const { tickers } = useSelector(state => state.general);
+    const tickers = useSelector(state => state.general.tickers);
+    const supportTradingPairs  = useSelector(state => state.general.supportTradingPairs);
     /* REDUX */
 
     const [dollars, setDollars] = useState({});
     const [change24h, setChange24h] = useState(0);
     const [vol24h, setVol24h] = useState(0);
 
+    /* console.log(data,supportTradingPairs) */
+
+/* FORMATING NUMBERS */
+    //Aca inicia las funciones que se encargan de darle un formato a cada valor que se muestra en pantalla 
+    //a traves de la data que viene del back end
+    const initialState = {
+        minQty: 0,
+        maxQty: 0,
+        minPrice: 0,
+        maxPrice: 0,
+        pricePrecision: 0,
+        qtyPrecision: 0,
+        baseAssetPrecision: 0,
+        quoteAssetPrecision: 0
+    }
+    const [formatingPair, setformatingPair] = useState(initialState)
+
+    useEffect(() => {
+        setformatingPair(initialState)
+    }, [currentQuote]);
+
+    useEffect(() => {
+        if (supportTradingPairs.length > 0) {
+            if (formatingPair.pricePrecision === 0 && formatingPair.maxPrice === 0) {
+                supportTradingPairs.forEach(pair => {
+                    if (pair.symbolA === data.symbolA && pair.symbolB === data.symbolB) {
+                        setformatingPair({
+                            ...formatingPair,
+                            minQty: pair.minQty,
+                            maxQty: pair.maxQty,
+                            minPrice: pair.minPrice,
+                            maxPrice: pair.maxPrice,
+                            pricePrecision: pair.pricePrecision,
+                            qtyPrecision: pair.qtyPrecision,
+                            baseAssetPrecision: pair.baseAssetPrecision,
+                            quoteAssetPrecision: pair.quoteAssetPrecision
+                        })
+                    }
+                });
+            }
+        }
+    }, [supportTradingPairs]);
+    /* END OF FORMATING NUMBERS SECTION*/
+
+const formatFunction = (vol) =>{
+    let volumen
+    let sizeOfNumber = vol.toString().replace('.', '').length - 3
+    if (vol <= 999) {
+        volumen = `${vol}`
+    } else if (vol > 999 && vol <= 999999) {
+        volumen = `${(vol / Math.pow(10, sizeOfNumber)).toFixed(2)} K`
+    } else if (vol > 999999 && vol <= 999999999) {
+        volumen = `${(vol / Math.pow(10, sizeOfNumber)).toFixed(2)} M`
+    } else if (vol > 999999999) {
+        volumen = `${(vol / Math.pow(10, sizeOfNumber)).toFixed(2)} B`
+    }
+    return volumen
+}
+
+
     useEffect(
         _ => {
             if (data) {
-                let vol = (Number(data.vol24h) * Number(tickers[`BTC-USDT`].lastPrice) / 10 ** 6).toFixed(2);
-
-                let last = (
-                    Number(data.lastPrice) * Number(tickers[`BTC-USDT`].lastPrice)
-                ).toFixed(2);
+                let vol = (Number(data.vol24h) * Number(tickers[`BTC-USDT`].lastPrice)).toFixed(2)
+                let last = (Number(data.lastPrice) * Number(tickers[`BTC-USDT`].lastPrice)).toFixed(2);
                 setDollars({
                     ...dollars,
-                    last: last,
-                    vol: vol,
+                    last: formatFunction(last),
+                    vol: formatFunction(vol),
                 });
                 if (data.vol24h) {
-                    if (Number(data.vol24h) > 1000000) {
-                        setVol24h(
-                            formatNumber(Number(data.vol24h) / 1000000) + 'M'
-                        );
-                    } else {
-                        setVol24h(formatNumber(Number(data.vol24h)));
-                    }
+                    let vol24h=Number(data.vol24h)
+                    setVol24h(formatFunction(vol24h))
                 }
-
                 if (data.change24h) {
                     setChange24h(Number(data.change24h));
                 }
             }
-
-
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
         [data,localStorage.getItem('fav')]
@@ -57,19 +107,15 @@ export default function Line2({ data, handlePair,favourite,setFavs }) {
     const handleFav = _ => {
         /* Este es la funcion que se encarga de añadir un nuevo favorito a la lista de local storage */
         let favs = localStorage.getItem('fav');
-
         if (!favs) {
             favs = {};
         } else {
             favs = JSON.parse(favs);
         }
-
         favs[data.pair] = !data.fav;
         favs = JSON.stringify(favs);
         localStorage.setItem('fav', favs)
-        setFavs(!favourite) 
-        
-         
+        setFavs(!favourite)      
     };
 
 
@@ -90,7 +136,7 @@ export default function Line2({ data, handlePair,favourite,setFavs }) {
                 <span className="title-m">Last Pr.</span>
                 <div className="text">
                     <span className="emp">
-                        {data ? data.lastPrice : 0}
+                        {data ? data.lastPrice.toFixed(formatingPair.pricePrecision) : 0}
                     </span>
                     <span className="small">${dollars.last}</span>
                 </div>
@@ -99,7 +145,7 @@ export default function Line2({ data, handlePair,favourite,setFavs }) {
                 <span className="title-m">24h Vol</span>
                 <div className="text">
                     <span className="emp">{vol24h}</span>
-                    <span className="small">${formatNumber(dollars.vol)}M</span>
+                    <span className="small">${dollars.vol}</span>
                 </div>
             </div>
 

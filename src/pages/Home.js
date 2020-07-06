@@ -32,7 +32,7 @@ function Home(props) {
     const { orderbook, active, pair, exchange, chart, history } = useSelector(
         state => state.responsive.home
     );
-    const { mode, symbol, supportTradingPairs } = useSelector(state => state.general);
+/*     const { mode, symbol, supportTradingPairs } = useSelector(state => state.general); */
 
     const setSymbol = useCallback(
         payload => dispatch({ type: 'SetSymbol', payload }),
