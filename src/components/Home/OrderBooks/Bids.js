@@ -48,7 +48,7 @@ function calculatePercent27(value) {
 // 	);
 // }
 
-const renderSize = data => {
+const renderSize = (data,format) => {
     let id = 'bid-row-' + Math.floor(Math.random() * 100000);
     let colorClass = 'cell';
     if (!data.dynamic) {
@@ -72,7 +72,7 @@ const renderSize = data => {
 
     return (
         <span className={colorClass} id={id}>
-            {Number(data.size).toFixed(3)}
+            {Number(data.size).toFixed(format)}
         </span>
     );
 };
@@ -86,11 +86,11 @@ function handleExchanges(e) {
     if (drop) drop.classList.toggle('active');
 }
 
-const Bids = props => {
+const Bids = ({dataBid,formatingPair}) => {
     const dispatch = useDispatch();
     const [bids, setBids] = useState();
     const [dataBids, setDataBids] = useState([]);
-    const { symbolB } = useSelector(state => state.general);
+    const symbolB  = useSelector(state => state.general.symbolB);
     const setOrderData = useCallback(
         data => dispatch({ type: 'SetOrderData', payload: data }),
         [dispatch]
@@ -98,13 +98,13 @@ const Bids = props => {
 
     useEffect(
         _ => {
-            if (props.data) {
-                setBids(renderBids(props.data));
-                setDataBids(props.data.bids);
+            if (dataBid) {
+                setBids(renderBids(dataBid));
+                setDataBids(dataBid.bids);
             }
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
-        [props]
+        [dataBid]
     );
 
     function chooseOrderBookLine(data) {
@@ -236,30 +236,14 @@ const Bids = props => {
                             className="progress-light d-green"
                             style={{ width: percentStyle27 }}
                         />
-                        {symbolB === 'BTC' && (
                             <span className="cell emp">
-                                {Number(bids[i].price).toFixed(8)}
+                                {Number(bids[i].price).toFixed(formatingPair.pricePrecision)}
                             </span>
-                        )}
-                        {symbolB === 'USDT' && (
-                            <span className="cell emp">
-                                {Number(bids[i].price).toFixed(2)}
-                            </span>
-                        )}
-
                         {/* <span className="cell">{bids[i].size.toFixed(3)}</span> */}
-                        {renderSize(bids[i])}
-                        {symbolB === 'BTC' && (
+                        {renderSize(bids[i],formatingPair.qtyPrecision)}
                             <span className="cell emp">
-                                {bids[i].total.toFixed(8)}
+                                {bids[i].total.toFixed(formatingPair.quoteAssetPrecision)}
                             </span>
-                        )}
-                        {symbolB === 'USDT' && (
-                            <span className="cell emp">
-                                {bids[i].total.toFixed(2)}
-                            </span>
-                        )}
-
                         <div className="cell exch">
                             <div
                                 className={`exch-content js-exch-content`}

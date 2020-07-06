@@ -32,7 +32,7 @@ function calculatePercent27(value) {
     return (27 * value) / 100;
 }
 
-const renderSize = data => {
+const renderSize = (data,format) => {
     let id = 'ask-row-' + Math.floor(Math.random() * 100000);
     let colorClass = 'cell';
     if (!data.dynamic) {
@@ -56,15 +56,15 @@ const renderSize = data => {
 
     return (
         <span className={colorClass} id={id}>
-            {Number(data.size).toFixed(3)}
+            {Number(data.size).toFixed(format)}
         </span>
     );
 };
 
-const Asks = props => {
+const Asks = ({dataAsk,formatingPair}) => {
     const dispatch = useDispatch();
     const [asks, setAsks] = useState();
-    const { symbolB } = useSelector(state => state.general);
+    const symbolB  = useSelector(state => state.general.symbolB);
     const setOrderData = useCallback(
         data => dispatch({ type: 'SetOrderData', payload: data }),
         [dispatch]
@@ -73,14 +73,14 @@ const Asks = props => {
     // console.log(symbolB)
     useEffect(
         _ => {
-            if (props.data) {
+            if (dataAsk) {
                 // setAsks(null);
-                setAsks(renderAsks(props.data));
-                setDataAsks(props.data.asks);
+                setAsks(renderAsks(dataAsk));
+                setDataAsks(dataAsk.asks);
             }
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
-        [props]
+        [dataAsk]
     );
 
     function chooseOrderBookLine(data) {
@@ -213,28 +213,16 @@ const Asks = props => {
                             className="progress-light d-red"
                             style={{ width: percentStyle27 }}
                         />
-                        {symbolB === 'BTC' && (
-                            <span className="cell emp">
-                                {Number(asks[i].price).toFixed(8)}
+                        
+                        <span className="cell emp">
+                                {Number(asks[i].price).toFixed(formatingPair.pricePrecision)}
                             </span>
-                        )}
-                        {symbolB === 'USDT' && (
-                            <span className="cell emp">
-                                {Number(asks[i].price).toFixed(2)}
+                      
+                        {renderSize(asks[i],formatingPair.qtyPrecision)}
+                        <span className="cell emp">
+                                {asks[i].total.toFixed(formatingPair.quoteAssetPrecision)}
                             </span>
-                        )}
-                        {/* <span className="cell">{asks[i].size.toFixed(3)}</span> */}
-                        {renderSize(asks[i])}
-                        {symbolB === 'BTC' && (
-                            <span className="cell emp">
-                                {asks[i].total.toFixed(8)}
-                            </span>
-                        )}
-                        {symbolB === 'USDT' && (
-                            <span className="cell emp">
-                                {asks[i].total.toFixed(2)}
-                            </span>
-                        )}
+                      
 
                         <div className="cell exch">
                             <div

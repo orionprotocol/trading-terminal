@@ -121,7 +121,12 @@ function updateOrderBookData(data, exchange, stateData, callback) {
 }
 
 const OrderBooks = (props) => {
-	const { symbol, orderBook, mode } = useSelector((state) => state.general);
+	const symbol = useSelector((state) => state.general.symbol);
+	const orderBook = useSelector((state) => state.general.orderBook);
+	const mode = useSelector((state) => state.general.mode);
+	const symbolA = useSelector((state) => state.general.symbolA);
+	const symbolB = useSelector((state) => state.general.symbolB);
+	const supportTradingPairs = useSelector((state) => state.general.supportTradingPairs);
 	// const newData = useSelector(state => state.general);
 	// console.log('general', general);
 	// const dispatch = useDispatch();
@@ -162,6 +167,52 @@ const OrderBooks = (props) => {
 	// 	// 	// });
 	// 	// });
 	// }
+
+
+	/* FORMATING NUMBERS STATE*/
+	//Aca inicia las funciones que se encargan de darle un formato a cada valor que se muestra en pantalla 
+	//a traves de la data que viene del back end
+	const initialState = {
+		minQty: 0,
+		maxQty: 0,
+		minPrice: 0,
+		maxPrice: 0,
+		pricePrecision: 0,
+		qtyPrecision: 0,
+		baseAssetPrecision: 0,
+		quoteAssetPrecision: 0
+	}
+	const [formatingPair, setformatingPair] = useState(initialState)
+
+	useEffect(() => {
+		setformatingPair(initialState)
+	}, [symbolA, symbolB]);
+
+	useEffect(() => {
+
+		if (supportTradingPairs.length > 0) {
+			if (formatingPair.pricePrecision === 0 && formatingPair.maxPrice === 0) {
+				supportTradingPairs.forEach(pair => {
+					if (pair.symbolA === symbolA && pair.symbolB === symbolB) {
+						setformatingPair({
+							...formatingPair,
+							minQty: pair.minQty,
+							maxQty: pair.maxQty,
+							minPrice: pair.minPrice,
+							maxPrice: pair.maxPrice,
+							pricePrecision: pair.pricePrecision,
+							qtyPrecision: pair.qtyPrecision,
+							baseAssetPrecision: pair.baseAssetPrecision,
+							quoteAssetPrecision: pair.quoteAssetPrecision
+						})
+					}
+				});
+			}
+		}
+	}, [supportTradingPairs, formatingPair]);
+	
+	/* END OF FORMATING NUMBERS STATE SECTION*/
+
 	const loadSnapshot = (symbol, depth) => {
 		if (symbol && depth) {
 			let url =
@@ -273,8 +324,8 @@ const OrderBooks = (props) => {
 				}
 
 				{cargando &&
-				
-					<Asks data={state.data} lastPrice={state.data.lastPrice} />
+
+					<Asks formatingPair={formatingPair} dataAsk={state.data}  />
 				}
 				{cargando &&
 					<div className="order-book">
@@ -285,7 +336,7 @@ const OrderBooks = (props) => {
 					</div>
 				}
 				{cargando &&
-					<Bids data={state.data} lastPrice={state.data.lastPrice} />
+					<Bids formatingPair={formatingPair} dataBid={state.data}  />
 				}
 			</div>
 		</div>
