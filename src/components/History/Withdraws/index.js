@@ -257,6 +257,9 @@ export default function Withdraws() {
               <Option value="XRP" className={optsClass}>
                 XRP
               </Option>
+              <Option value="ERD" className={optsClass}>
+                ERD
+              </Option>
             </Select>
           </div>
           <div className="all status">

@@ -75,7 +75,6 @@ function Home(props) {
     if (window.innerWidth > 1130) removeClass();
     else addClass();
   }, []);
-  console.log('home');
   return (
     <Suspense fallback={<Loader />}>
       <IndexNav />

@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 /* REDUX */
 import { Select } from 'antd';
+import './index.scss';
 const { Option } = Select;
 const A = ['XRP', 'ETH', 'USDT', 'ERD'];
 const B = ['BTC', 'USDT'];
@@ -42,7 +43,7 @@ const index = memo(
           value={filterPairB}
           style={{
             width: 80,
-            padding: 0,
+            padding: '2px',
             border: 'none',
           }}
           onChange={(e) => handleChangeB(e)}
@@ -57,10 +58,12 @@ const index = memo(
           })}
         </Select>
       );
-    }, [filterPairB]);
+    }, [filterPairB, optsClass]);
     return (
       <>
-        {SelectorA}/{SelectorB}
+        {SelectorA}
+        <div className="pair-filter separator">/</div>
+        {SelectorB}
       </>
     );
   }

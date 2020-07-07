@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import DatePicker from 'react-datepicker';
 import { Col } from 'antd';
 import CustomDatePickerInput from '../../../../CustomDatePickerInput';
+import 'react-datepicker/dist/react-datepicker.min.css';
 import './date.scss';
 const index = memo(
   ({ startDateA, setStartDateA, startDateB, setStartDateB, handleDateChangeRaw }) => {

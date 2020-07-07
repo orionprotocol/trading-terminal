@@ -10,7 +10,6 @@ import compareValues from '../../funtions/compareValues';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { Row, Col, Layout } from 'antd';
-import 'react-datepicker/dist/react-datepicker.min.css';
 /* Components */
 import Line from './Line';
 import Table from './components/table';
@@ -350,7 +349,6 @@ const Orders = (_) => {
           color: '#e9e9e9a8',
         };
 
-  console.log('test1234');
   return (
     <Fragment>
       <Layout className="father orders">

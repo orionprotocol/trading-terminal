@@ -7,9 +7,7 @@ const initialState = {
     coinbaseConnected: false,
     addWallet: false,
     ethAddress: '',
-    // assets: { WAN: 'WAN', ETH: 'ETH', BTC: 'WBTC', XRP: 'WXRP' }
     assets: { ETH: 'ETH', BTC: 'WBTC', XRP: 'WXRP', USDT: 'USDT', ERD: 'ERD' },
-    // assets: []
 };
 
 export default (state = initialState, { type, ...action }) => {
