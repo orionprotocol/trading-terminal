@@ -9,7 +9,7 @@ import openNotification from '../../../Notification';
 
 // type: { trade: 'buy' or 'sell, selection: 'market' or 'limit-order'}
 export default function BuyAndSellForm({ type, formatingPair }) {
-   /*  console.log(formatingPair) */
+    /*  console.log(formatingPair) */
     /* REDUX */
     const dispatch = useDispatch();
 
@@ -28,12 +28,12 @@ export default function BuyAndSellForm({ type, formatingPair }) {
         data => dispatch({ type: 'SetQtyForm', payload: data }),
         [dispatch]
     );
-    
+
     const setAddWallet = useCallback(
         data => dispatch({ type: 'SetAddWallet', payload: data }),
         [dispatch]
     );
-/* REDUX */
+    /* REDUX */
     // const setSideForm = useCallback((data) => dispatch({ type: 'SetSideForm', payload: data }), [ dispatch ]);
 
     /*  console.log(type.trade)
@@ -87,12 +87,12 @@ export default function BuyAndSellForm({ type, formatingPair }) {
             const [marketTotal, marketPrice] = iterating_price_for_total(orderBook.aggregatedAsks, values.amount, type.trade);
             setValues({
                 ...values,
-                price: marketPrice,
-                total: marketTotal
+                price: marketPrice.toFixed(formatingPair.pricePrecision),
+                total: marketTotal.toFixed(formatingPair.quoteAssetPrecision)
             });
             setTotal(marketTotal.toFixed(formatingPair.quoteAssetPrecision));
         }
-    }, [orderBook.aggregatedAsks, orderBook.aggregatedBids, values.amount, type.selection,formatingPair]);
+    }, [orderBook.aggregatedAsks, orderBook.aggregatedBids, values.amount, type.selection, formatingPair]);
     /* This useEffect works to change the total price when u switch from market to limit order */
     useEffect(() => {
         if (type.selection === 'limit-order') {
@@ -101,21 +101,22 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                 setTotal((values.amount * values.price).toFixed(formatingPair.quoteAssetPrecision));
             }
         }
-    }, [type.selection, values.amount, values.price,formatingPair]);
+    }, [type.selection, values.amount, values.price, formatingPair]);
 
     useEffect(
         _ => {
             if (orderData['price']) {
                 setValues({
                     ...values,
-                    amount: orderData.amount.toFixed(8),
-                    price: parseFloat(orderData.price).toFixed(8),
+                    amount: orderData.amount.toFixed(formatingPair.qtyPrecision),
+                    price: parseFloat(orderData.price).toFixed(formatingPair.pricePrecision),
+
                 });
                 setTotal(orderData.total.toFixed(formatingPair.quoteAssetPrecision));
             }
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
-        [orderData,formatingPair]
+        [orderData, formatingPair]
     );
 
     useEffect(
@@ -400,7 +401,7 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                                 value={values.amount}
                                 onChange={handleChange}
                             />
-                            
+
                             {type.trade === 'buy' ?
                                 <label
                                     style={{
@@ -429,8 +430,17 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                             }
 
                         </div>
-                   {/*      (11111).toString().length>(0.01).toString().length */}
-                        
+
+                        {((values.amount).toString().split('.')[1] && (values.amount).toString().split('.')[1].length > formatingPair.qtyPrecision) &&
+                            <label style={{ color: 'red' }}>only up to {formatingPair.qtyPrecision} decimals allowed</label>
+                        }
+                        {(values.amount && parseFloat(values.amount) > formatingPair.maxQty) &&
+                            <label style={{ color: 'red' }}>You can't {type.trade} more than {formatingPair.maxQty} {symbolA}</label>
+                        }
+                        {(values.amount && parseFloat(values.amount) < formatingPair.minQty) &&
+                            <label style={{ color: 'red' }}>You can't {type.trade} less than {formatingPair.maxQty} {symbolA}</label>
+                        }
+
                         {type.selection === 'limit-order' && (
                             <div>
                                 {type.trade === 'buy' ?
@@ -445,13 +455,24 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                                     value={
                                         values.price !== ''
                                             ? values.price
-                                            : lastPrice
+                                            : lastPrice.toFixed(formatingPair.pricePrecision)
                                     }
                                     onChange={handleChange}
                                 />
-
+                                
+                                {((values.price).toString().split('.')[1] && (values.price).toString().split('.')[1].length > formatingPair.pricePrecision) &&
+                                    <label style={{ color: 'red' }}>only up to {formatingPair.pricePrecision} decimals allowed <br/></label>
+                                }
+                                {(values.price && parseFloat(values.price) > formatingPair.maxPrice) &&
+                                    <label style={{ color: 'red' }}>You can't set more than {formatingPair.maxPrice} for {symbolA} <br/></label>
+                                }
+                                {(values.price && parseFloat(values.price) < formatingPair.minPrice) &&
+                                    <label style={{ color: 'red' }}>You can't set less than {formatingPair.minPrice} for {symbolA} <br/></label>
+                                }
                             </div>
+
                         )}
+
                         <div
                             style={{
                                 justifyContent: 'space-between',
@@ -466,11 +487,11 @@ export default function BuyAndSellForm({ type, formatingPair }) {
 
                             {type.trade === 'buy' ? (
                                 <span className="avl-amount" style={{ color: 'rgb(0, 187, 255)' }} >
-                                    {parseFloat(available).toFixed(formatingPair.quoteAssetPrecision)} {symbolB}
+                                    {available && parseFloat(available).toFixed(formatingPair.quoteAssetPrecision)} {symbolB}
                                 </span>
                             ) : (
                                     <span className="avl-amount" style={{ color: 'rgb(255, 99, 85)' }}>
-                                        {parseFloat(available).toFixed(formatingPair.baseAssetPrecision)} {symbolA}
+                                        {available && parseFloat(available).toFixed(formatingPair.baseAssetPrecision)} {symbolA}
                                     </span>
                                 )}
                         </div>
@@ -555,7 +576,17 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                                         className="submit-form buy"
                                         type="submit"
                                         onClick={submitOrder}
-                                        disabled={(parseFloat(values.price) <= 0 || parseFloat(values.amount) <= 0 || isNaN(parseFloat(values.amount))) ? true : false}
+                                        disabled={
+                                            (parseFloat(values.price) <= 0 || parseFloat(values.amount) <= 0 ||
+                                                isNaN(parseFloat(values.amount)) ||
+                                                ((values.amount).toString().split('.')[1] && (values.amount).toString().split('.')[1].length > formatingPair.qtyPrecision) ||
+                                                ((values.price).toString().split('.')[1] && (values.price).toString().split('.')[1].length > formatingPair.pricePrecision) ||
+                                                (values.amount && parseFloat(values.amount) > formatingPair.maxQty) ||
+                                                (values.price && parseFloat(values.price) > formatingPair.maxPrice) ||
+                                                (values.amount && parseFloat(values.amount) < formatingPair.minQty) ||
+                                                (values.price && parseFloat(values.price) < formatingPair.minPrice) 
+                                                
+                                            ) ? true : false}
                                     >
                                         Buy {symbolA}
                                     </button>
@@ -567,7 +598,16 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                                         className="submit-form sell"
                                         type="submit"
                                         onClick={submitOrder}
-                                        disabled={(parseFloat(values.price) <= 0 || parseFloat(values.amount) <= 0 || isNaN(parseFloat(values.amount))) ? true : false}
+                                        disabled={
+                                            (parseFloat(values.price) <= 0 || parseFloat(values.amount) <= 0 ||
+                                                isNaN(parseFloat(values.amount))) ||
+                                                ((values.amount).toString().split('.')[1] && (values.amount).toString().split('.')[1].length > formatingPair.qtyPrecision) ||
+                                                ((values.price).toString().split('.')[1] && (values.price).toString().split('.')[1].length > formatingPair.pricePrecision) ||
+                                                (values.amount && parseFloat(values.amount) > formatingPair.maxQty) ||
+                                                (values.price && parseFloat(values.price) > formatingPair.maxPrice) ||
+                                                (values.amount && parseFloat(values.amount) < formatingPair.minQty) ||
+                                                (values.price && parseFloat(values.price) < formatingPair.minPrice) 
+                                                ? true : false}
                                     >
                                         Sell {symbolA}
                                     </button>
