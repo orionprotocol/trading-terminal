@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ExchangeImg from './ExchangeImg';
 
@@ -90,7 +90,6 @@ const Bids = ({ dataBid, formatingPair }) => {
   const dispatch = useDispatch();
   const [bids, setBids] = useState();
   const [dataBids, setDataBids] = useState([]);
-  const symbolB = useSelector((state) => state.general.symbolB);
   const setOrderData = useCallback((data) => dispatch({ type: 'SetOrderData', payload: data }), [
     dispatch,
   ]);
