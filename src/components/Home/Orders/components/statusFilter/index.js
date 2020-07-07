@@ -9,7 +9,7 @@ const index = memo(({ optsClass, handleChangeC,setstatusFilterSelection }) => {
             className="price-card-selector emp"
             defaultValue="All"
             style={{
-                width: 100,
+                width: 155,
                 padding: 0,
                 border: 'none',
             }}

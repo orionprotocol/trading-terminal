@@ -73,11 +73,16 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                 remanent -= array[x].size
             }
         }
-        if (array[array.length - 1].price) {
-            cost += (remanent * array[array.length - 1].price)
-        } else {
+        if(array[array.length - 1]){
+            if (array[array.length - 1].price) {
+                cost += (remanent * array[array.length - 1].price)
+            } else {
+                cost += 0
+            }
+        }else{
             cost += 0
         }
+        
 
         return [cost, array[array.length - 1].price * (1 + percent)]
     }
@@ -430,16 +435,22 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                             }
 
                         </div>
-
-                        {((values.amount).toString().split('.')[1] && (values.amount).toString().split('.')[1].length > formatingPair.qtyPrecision) &&
-                            <label style={{ color: 'red' }}>only up to {formatingPair.qtyPrecision} decimals allowed</label>
-                        }
                         {(values.amount && parseFloat(values.amount) > formatingPair.maxQty) &&
-                            <label style={{ color: 'red' }}>You can't {type.trade} more than {formatingPair.maxQty} {symbolA}</label>
+                            <label style={{ color: 'red' }}>You can't {type.trade} more than {formatingPair.maxQty} {symbolA} <br/></label>
                         }
                         {(values.amount && parseFloat(values.amount) < formatingPair.minQty) &&
-                            <label style={{ color: 'red' }}>You can't {type.trade} less than {formatingPair.maxQty} {symbolA}</label>
+                            <label style={{ color: 'red' }}>
+                                The minimum allowed amount is {formatingPair.minQty} {symbolA}
+                               <br/></label>
                         }
+                        {((values.amount).toString().split('.')[1] && (values.amount).toString().split('.')[1].length > formatingPair.qtyPrecision) &&
+                            <label style={{ color: 'red' }}>
+                                {formatingPair.qtyPrecision===0 ? `use only integer quantities for this pair`:`only up to ${formatingPair.qtyPrecision} decimals allowed`}
+                                 <br/>
+                                
+                                </label>
+                        }
+                        
 
                         {type.selection === 'limit-order' && (
                             <div>
@@ -459,16 +470,17 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                                     }
                                     onChange={handleChange}
                                 />
-                                
-                                {((values.price).toString().split('.')[1] && (values.price).toString().split('.')[1].length > formatingPair.pricePrecision) &&
-                                    <label style={{ color: 'red' }}>only up to {formatingPair.pricePrecision} decimals allowed <br/></label>
-                                }
+
                                 {(values.price && parseFloat(values.price) > formatingPair.maxPrice) &&
                                     <label style={{ color: 'red' }}>You can't set more than {formatingPair.maxPrice} for {symbolA} <br/></label>
                                 }
                                 {(values.price && parseFloat(values.price) < formatingPair.minPrice) &&
                                     <label style={{ color: 'red' }}>You can't set less than {formatingPair.minPrice} for {symbolA} <br/></label>
                                 }
+                                {((values.price).toString().split('.')[1] && (values.price).toString().split('.')[1].length > formatingPair.pricePrecision) &&
+                                    <label style={{ color: 'red' }}>only up to {formatingPair.pricePrecision} decimals allowed <br/></label>
+                                }
+                                
                             </div>
 
                         )}
