@@ -69,7 +69,14 @@
     ]
   },
   "devDependencies": {
+    "eslint": "^7.4.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^2.3.0",
+    "prettier": "^2.0.5",
     "react-app-rewired": "^2.1.6",
     "source-map-explorer": "^2.4.2",
     "style-loader": "^1.2.1"
