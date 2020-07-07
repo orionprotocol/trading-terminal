@@ -1,16 +1,10 @@
-import React, { memo } from "react";
-import DatePicker from "react-datepicker";
-import { Col } from "antd";
-import CustomDatePickerInput from "../../../../CustomDatePickerInput";
-import "./date.scss";
+import React, { memo } from 'react';
+import DatePicker from 'react-datepicker';
+import { Col } from 'antd';
+import CustomDatePickerInput from '../../../../CustomDatePickerInput';
+import './date.scss';
 const index = memo(
-  ({
-    startDateA,
-    setStartDateA,
-    startDateB,
-    setStartDateB,
-    handleDateChangeRaw,
-  }) => {
+  ({ startDateA, setStartDateA, startDateB, setStartDateB, handleDateChangeRaw }) => {
     return (
       <Col xs={24} md={8}>
         <div className="orders-dates">

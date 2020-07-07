@@ -125,46 +125,51 @@ function updateOrderBookData(data, exchange, stateData, callback) {
 const OrderBooks = (props) => {
   const symbol = useSelector((state) => state.general.symbol);
   const orderBook = useSelector((state) => state.general.orderBook);
-  // const newData = useSelector(state => state.general);
-  // console.log('general', general);
-  // const dispatch = useDispatch();
-  const [state, setState] = useState({ data: { lastPrice: 0 } });
-  // const setLastPrice = useCallback(data => dispatch({ type: 'SetLastPrice', payload: data }), [ dispatch ]);
-  // const currentSymbol = 'ETH-BTC';
-  // All exchanges
+  const symbolA = useSelector((state) => state.general.symbolA);
+  const symbolB = useSelector((state) => state.general.symbolB);
+  const supportTradingPairs = useSelector((state) => state.general.supportTradingPairs);
 
-  // By each exchange
-  // function loadExchangeSnapshot(exchange, symbol, depth, callback) {
-  // 	if (symbol && depth) {
-  // 		let url =
-  // 			urlBase +
-  // 			'/api/v1/exchange/orderBook?symbol={SYMBOL}&depth={DEPTH}&exchange={EXCHANGE}'
-  // 				.replace('{SYMBOL}', symbol)
-  // 				.replace('{DEPTH}', depth)
-  // 				.replace('{EXCHANGE}', exchange);
-  // 		axios.get(url).then(res => {
-  // 			console.log('loadExchangeSnapshot', res.data);
-  // 			callback(res.data);
-  // 		});
-  // 	}
-  // }
+  /* FORMATING NUMBERS STATE*/
+  //Aca inicia las funciones que se encargan de darle un formato a cada valor que se muestra en pantalla
+  //a traves de la data que viene del back end
+  const initialState = {
+    minQty: 0,
+    maxQty: 0,
+    minPrice: 0,
+    maxPrice: 0,
+    pricePrecision: 0,
+    qtyPrecision: 0,
+    baseAssetPrecision: 0,
+    quoteAssetPrecision: 0,
+  };
+  const [formatingPair, setformatingPair] = useState(initialState);
 
-  // function loadOrderBooks() {
-  // 	loadSnapshot('ETH-BTC', 20);
+  useEffect(() => {
+    setformatingPair(initialState);
+  }, [symbolA, symbolB]);
 
-  // 	// loadExchangeSnapshot('BINANCE', currentSymbol, 20, data => {
-  // 	// 	console.log('loadExchangeSnapshot calllback', data);
-  // 	// 	// this.setState({
-  // 	// 	//     binance: {
-  // 	// 	//         ...data,
-  // 	// 	//         ...{
-  // 	// 	//             lastPrice: 0,
-  // 	// 	//             lastPriceStyle: "#000"
-  // 	// 	//         }
-  // 	// 	//     }
-  // 	// 	// });
-  // 	// });
-  // }
+  useEffect(() => {
+    if (supportTradingPairs.length > 0) {
+      if (formatingPair.pricePrecision === 0 && formatingPair.maxPrice === 0) {
+        supportTradingPairs.forEach((pair) => {
+          if (pair.symbolA === symbolA && pair.symbolB === symbolB) {
+            setformatingPair({
+              ...formatingPair,
+              minQty: pair.minQty,
+              maxQty: pair.maxQty,
+              minPrice: pair.minPrice,
+              maxPrice: pair.maxPrice,
+              pricePrecision: pair.pricePrecision,
+              qtyPrecision: pair.qtyPrecision,
+              baseAssetPrecision: pair.baseAssetPrecision,
+              quoteAssetPrecision: pair.quoteAssetPrecision,
+            });
+          }
+        });
+      }
+    }
+  }, [supportTradingPairs, formatingPair]);
+
   const loadSnapshot = (symbol, depth) => {
     if (symbol && depth) {
       let url =
@@ -270,7 +275,7 @@ const OrderBooks = (props) => {
         </div>
       </div>
       <Suspense fallback={<Loader />}>
-        {cargando && <Asks data={state.data} lastPrice={state.data.lastPrice} />}
+        {cargando && <Asks formatingPair={formatingPair} dataAsk={state.data} />}
         {cargando && (
           <div className="order-book">
             <div className="last-price">
@@ -279,7 +284,7 @@ const OrderBooks = (props) => {
             </div>
           </div>
         )}
-        {cargando && <Bids data={state.data} lastPrice={state.data.lastPrice} />}
+        {cargando && <Bids formatingPair={formatingPair} dataBid={state.data} />}
       </Suspense>
     </div>
   );

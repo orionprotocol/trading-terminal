@@ -7,34 +7,83 @@ const formatNumber = (number) => {
   return new Intl.NumberFormat('en-US', { minimumFractionDigits: 1 }).format(number);
 };
 
-export default function Line2({ data, handlePair, favourite, setFavs }) {
+export default function Line2({ currentQuote, data, handlePair, favourite, setFavs }) {
   /* REDUX */
   const tickers = useSelector((state) => state.general.tickers);
+  const supportTradingPairs = useSelector((state) => state.general.supportTradingPairs);
   /* REDUX */
 
   const [dollars, setDollars] = useState({});
   const [change24h, setChange24h] = useState(0);
   const [vol24h, setVol24h] = useState(0);
 
+  const initialState = {
+    minQty: 0,
+    maxQty: 0,
+    minPrice: 0,
+    maxPrice: 0,
+    pricePrecision: 0,
+    qtyPrecision: 0,
+    baseAssetPrecision: 0,
+    quoteAssetPrecision: 0,
+  };
+  const [formatingPair, setformatingPair] = useState(initialState);
+
+  useEffect(() => {
+    setformatingPair(initialState);
+  }, [currentQuote]);
+
+  useEffect(() => {
+    if (supportTradingPairs.length > 0) {
+      if (formatingPair.pricePrecision === 0 && formatingPair.maxPrice === 0) {
+        supportTradingPairs.forEach((pair) => {
+          if (pair.symbolA === data.symbolA && pair.symbolB === data.symbolB) {
+            setformatingPair({
+              ...formatingPair,
+              minQty: pair.minQty,
+              maxQty: pair.maxQty,
+              minPrice: pair.minPrice,
+              maxPrice: pair.maxPrice,
+              pricePrecision: pair.pricePrecision,
+              qtyPrecision: pair.qtyPrecision,
+              baseAssetPrecision: pair.baseAssetPrecision,
+              quoteAssetPrecision: pair.quoteAssetPrecision,
+            });
+          }
+        });
+      }
+    }
+  }, [supportTradingPairs]);
+  /* END OF FORMATING NUMBERS SECTION*/
+
+  const formatFunction = (vol) => {
+    let volumen;
+    let sizeOfNumber = vol.toString().replace('.', '').length - 3;
+    if (vol <= 999) {
+      volumen = `${vol}`;
+    } else if (vol > 999 && vol <= 999999) {
+      volumen = `${(vol / Math.pow(10, sizeOfNumber)).toFixed(2)} K`;
+    } else if (vol > 999999 && vol <= 999999999) {
+      volumen = `${(vol / Math.pow(10, sizeOfNumber)).toFixed(2)} M`;
+    } else if (vol > 999999999) {
+      volumen = `${(vol / Math.pow(10, sizeOfNumber)).toFixed(2)} B`;
+    }
+    return volumen;
+  };
+
   useEffect(
     (_) => {
       if (data) {
-        let vol = ((Number(data.vol24h) * Number(tickers[`BTC-USDT`].lastPrice)) / 10 ** 6).toFixed(
-          2
-        );
-
+        let vol = (Number(data.vol24h) * Number(tickers[`BTC-USDT`].lastPrice)).toFixed(2);
         let last = (Number(data.lastPrice) * Number(tickers[`BTC-USDT`].lastPrice)).toFixed(2);
         setDollars({
           ...dollars,
-          last: last,
-          vol: vol,
+          last: formatFunction(last),
+          vol: formatFunction(vol),
         });
         if (data.vol24h) {
-          if (Number(data.vol24h) > 1000000) {
-            setVol24h(formatNumber(Number(data.vol24h) / 1000000) + 'M');
-          } else {
-            setVol24h(formatNumber(Number(data.vol24h)));
-          }
+          let vol24h = Number(data.vol24h);
+          setVol24h(formatFunction(vol24h));
         }
 
         if (data.change24h) {
@@ -74,7 +123,9 @@ export default function Line2({ data, handlePair, favourite, setFavs }) {
       <div className="cell short" onClick={(_) => handlePair(data.symbolA, data.symbolB)}>
         <span className="title-m">Last Pr.</span>
         <div className="text">
-          <span className="emp">{data ? data.lastPrice : 0}</span>
+          <span className="emp">
+            {data ? data.lastPrice.toFixed(formatingPair.pricePrecision) : 0}
+          </span>
           <span className="small">${dollars.last}</span>
         </div>
       </div>
@@ -82,7 +133,7 @@ export default function Line2({ data, handlePair, favourite, setFavs }) {
         <span className="title-m">24h Vol</span>
         <div className="text">
           <span className="emp">{vol24h}</span>
-          <span className="small">${formatNumber(dollars.vol)}M</span>
+          <span className="small">${dollars.vol}</span>
         </div>
       </div>
 

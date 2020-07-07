@@ -17,11 +17,69 @@ const CommonInfo = ({ History }) => {
   const vol = useSelector((state) => state.general.vol);
   const change = useSelector((state) => state.general.change);
   const tickers = useSelector((state) => state.general.tickers);
+  const supportTradingPairs = useSelector((state) => state.general.supportTradingPairs);
 
   const [dollars, setDollars] = useState({});
   const [isFav, setIsFav] = useState(false);
+  const [formatVol, setformatVol] = useState(0);
   const [showPairsDropdown, setShowPairsDropdown] = useState(false);
   const togglePairsDropdown = () => setShowPairsDropdown(!showPairsDropdown);
+
+  const initialState = {
+    minQty: 0,
+    maxQty: 0,
+    minPrice: 0,
+    maxPrice: 0,
+    pricePrecision: 0,
+    qtyPrecision: 0,
+    baseAssetPrecision: 0,
+    quoteAssetPrecision: 0,
+  };
+  const [formatingPair, setformatingPair] = useState(initialState);
+
+  useEffect(() => {
+    setformatingPair(initialState);
+  }, [symbolA, symbolB]);
+
+  useEffect(() => {
+    if (supportTradingPairs.length > 0) {
+      if (formatingPair.pricePrecision === 0 && formatingPair.maxPrice === 0) {
+        supportTradingPairs.forEach((pair) => {
+          if (pair.symbolA === symbolA && pair.symbolB === symbolB) {
+            setformatingPair({
+              ...formatingPair,
+              minQty: pair.minQty,
+              maxQty: pair.maxQty,
+              minPrice: pair.minPrice,
+              maxPrice: pair.maxPrice,
+              pricePrecision: pair.pricePrecision,
+              qtyPrecision: pair.qtyPrecision,
+              baseAssetPrecision: pair.baseAssetPrecision,
+              quoteAssetPrecision: pair.quoteAssetPrecision,
+            });
+          }
+        });
+      }
+    }
+  }, [supportTradingPairs, lastPrice, high, low]);
+  /* END OF FORMATING NUMBERS STATE SECTION*/
+
+  /*  console.log("la precision segun el par", formatingPair) */
+
+  const formatFunction = (vol) => {
+    let volumen;
+    let sizeOfNumber = vol.toString().replace('.', '').length - 3;
+    if (vol <= 999) {
+      volumen = `${vol}`;
+    } else if (vol > 999 && vol <= 999999) {
+      volumen = `${(vol / Math.pow(10, sizeOfNumber)).toFixed(2)} K`;
+    } else if (vol > 999999 && vol <= 999999999) {
+      volumen = `${(vol / Math.pow(10, sizeOfNumber)).toFixed(2)} M`;
+    } else if (vol > 999999999) {
+      volumen = `${(vol / Math.pow(10, sizeOfNumber)).toFixed(2)} B`;
+    }
+    return volumen;
+  };
 
   useEffect(
     (_) => {
@@ -38,15 +96,18 @@ const CommonInfo = ({ History }) => {
           last = formatNumber(last);
           h = formatNumber(h);
           l = formatNumber(l);
-          v = (v / 10 ** 6).toFixed(2);
-          v = formatNumber(v);
-          setDollars({ ...dollars, last, low: l, high: h, vol: v });
+          setDollars({ ...dollars, last, low: l, high: h, vol: formatFunction(v) });
         }
       }
     },
     //eslint-disable-next-line react-hooks/exhaustive-deps
     [lastPrice, high, low, vol]
   );
+
+  useEffect(() => {
+    let finalvalue = parseFloat(vol);
+    setformatVol(formatFunction(finalvalue));
+  }, [vol]);
 
   useEffect(
     (_) => {
@@ -101,16 +162,11 @@ const CommonInfo = ({ History }) => {
         <div className="last-price">
           <span className="title">Last price</span>
           <div className="value">
-            {symbolB !== 'USDT' ? (
-              <Fragment>
-                <span className="emp">{lastPrice.toFixed(5)}</span>
-                <span className="dollars">${dollars.last}</span>
-              </Fragment>
-            ) : (
-              <Fragment>
-                <span className="emp">{lastPrice.toFixed(2)}</span>
-              </Fragment>
-            )}
+            <span className="emp">
+              {lastPrice.toFixed(formatingPair.pricePrecision)}
+              {symbolB === 'USDT' && '$'}
+            </span>
+            {symbolB !== 'USDT' && <span className="dollars">${dollars.last}</span>}
           </div>
         </div>
         <div className="change">
@@ -142,25 +198,31 @@ const CommonInfo = ({ History }) => {
         <div className="line">
           <span className="title">24h High</span>
           <p className="value averta">
-            <span>{high}</span>{' '}
+            <span>{parseFloat(high).toFixed(formatingPair.pricePrecision)}</span>
+            {symbolB === 'USDT' && '$'}{' '}
             {symbolB !== 'USDT' && <span className="small">${dollars.high}</span>}
           </p>
         </div>
         <div className="line">
           <span className="title">24h Low</span>
           <p className="value averta">
-            <span>{low}</span> {symbolB !== 'USDT' && <span className="small">${dollars.low}</span>}
+            <span>{parseFloat(low).toFixed(formatingPair.pricePrecision)}</span>
+            {symbolB === 'USDT' && '$'}{' '}
+            {symbolB !== 'USDT' && <span className="small">${dollars.low}</span>}
           </p>
         </div>
         <div className="line">
           <span className="title">24h Vol</span>
           <p className="value averta">
             {symbolB === 'USDT' ? (
-              <Fragment>{formatNumber(vol / 10 ** 6)}M</Fragment>
+              `${formatVol} $`
             ) : (
               <Fragment>
-                <span>{new Intl.NumberFormat('en-US').format(vol)}</span>{' '}
-                <span className="small">${dollars.vol}M</span>
+                <span>
+                  {formatVol}
+                  {/* {new Intl.NumberFormat('en-US').format(vol)} */}
+                </span>{' '}
+                <span className="small">${dollars.vol}</span>
               </Fragment>
             )}
           </p>

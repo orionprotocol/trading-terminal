@@ -1,23 +1,23 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from 'react';
 /* REDUX */
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 /* STYLES */
-import "./index.scss";
-import "./table.css";
+import './index.scss';
+import './table.css';
 /* Exported functions */
-import compareValues from "../../funtions/compareValues";
+import compareValues from '../../funtions/compareValues';
 /*Dependencies */
-import axios from "axios";
-import dayjs from "dayjs";
-import { Row, Col, Layout } from "antd";
-import "react-datepicker/dist/react-datepicker.min.css";
+import axios from 'axios';
+import dayjs from 'dayjs';
+import { Row, Col, Layout } from 'antd';
+import 'react-datepicker/dist/react-datepicker.min.css';
 /* Components */
-import Line from "./Line";
-import Table from "./components/table";
-import TypeOfFilter from "./components/typeOfFilter";
-import DateFilter from "./components/dateFilter";
-import PairFilter from "./components/pairFilter";
-import StatusFilter from "./components/statusFilter";
+import Line from './Line';
+import Table from './components/table';
+import TypeOfFilter from './components/typeOfFilter';
+import DateFilter from './components/dateFilter';
+import PairFilter from './components/pairFilter';
+import StatusFilter from './components/statusFilter';
 
 const urlBase = process.env.REACT_APP_BACKEND;
 
@@ -37,20 +37,20 @@ const Orders = (_) => {
   const [orders, setOrders] = useState([]);
   const [ordersOrigin, setOrdersOrigin] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
-  const [state, setState] = useState({ type: "history", renderOrders: null });
-  const [startDateA, setStartDateA] = useState("");
-  const [startDateB, setStartDateB] = useState("");
-  const [statusFilterSelection, setstatusFilterSelection] = useState("All");
+  const [state, setState] = useState({ type: 'history', renderOrders: null });
+  const [startDateA, setStartDateA] = useState('');
+  const [startDateB, setStartDateB] = useState('');
+  const [statusFilterSelection, setstatusFilterSelection] = useState('All');
   const [filterPairA, setfilterPairA] = useState(symbolA);
   const [filterPairB, setfilterPairB] = useState(symbolB);
   const [classes, setClasses] = useState({
-    type: "angle-down",
-    pair: "angle-down",
-    time: "angle-down",
-    amount: "angle-down",
-    price: "angle-down",
-    status: "angle-down",
-    total: "angle-down",
+    type: 'angle-down',
+    pair: 'angle-down',
+    time: 'angle-down',
+    amount: 'angle-down',
+    price: 'angle-down',
+    status: 'angle-down',
+    total: 'angle-down',
   });
   /*  console.log(balances.contractBalances)  */
   loadOrderHistory = () => {
@@ -61,7 +61,7 @@ const Orders = (_) => {
     if (ethereum) {
       address = ethereum.selectedAddress;
     } else {
-      address = localStorage.getItem("currentAccount") || "";
+      address = localStorage.getItem('currentAccount') || '';
     }
 
     if (address) {
@@ -76,23 +76,21 @@ const Orders = (_) => {
             let newTime = dayjs(startDateA).unix();
             let timeB = dayjs(startDateB).unix();
 
-            if (state.type === "open") {
+            if (state.type === 'open') {
               newOrders = res.data.filter(
                 (d) =>
-                  d.status === "NEW" ||
-                  d.status === "PARTIALLY_FILLED" ||
-                  d.status === "PARTIALLY_CANCELLED"
+                  d.status === 'NEW' ||
+                  d.status === 'PARTIALLY_FILLED' ||
+                  d.status === 'PARTIALLY_CANCELLED'
               );
             } else {
-              if (statusFilterSelection === "All") {
+              if (statusFilterSelection === 'All') {
                 newOrders = res.data;
               } else {
-                newOrders = res.data.filter(
-                  (d) => d.status === statusFilterSelection
-                );
+                newOrders = res.data.filter((d) => d.status === statusFilterSelection);
               }
             }
-            if (startDateA !== "" && startDateB !== "") {
+            if (startDateA !== '' && startDateB !== '') {
               newOrders = newOrders.filter((e) => {
                 let time = String(e.time);
                 time = time.substring(0, 10);
@@ -104,7 +102,7 @@ const Orders = (_) => {
           }
         })
         .catch((err) => {
-          console.log("error", err);
+          console.log('error', err);
         });
     }
   };
@@ -130,25 +128,58 @@ const Orders = (_) => {
     setfilterPairB(symbolB);
   }, [symbolA, symbolB]);
 
+  const initialState = {
+    minQty: 0,
+    maxQty: 0,
+    minPrice: 0,
+    maxPrice: 0,
+    pricePrecision: 0,
+    qtyPrecision: 0,
+    baseAssetPrecision: 0,
+    quoteAssetPrecision: 0,
+  };
+  const [formatingPair, setformatingPair] = useState(initialState);
+  useEffect(() => {
+    setformatingPair(initialState);
+  }, [filterPairA, filterPairB]);
+
+  useEffect(() => {
+    if (supportTradingPairs.length > 0) {
+      if (formatingPair.pricePrecision === 0 && formatingPair.maxPrice === 0) {
+        supportTradingPairs.forEach((pair) => {
+          if (pair.symbolA === filterPairA && pair.symbolB === filterPairB) {
+            setformatingPair({
+              ...formatingPair,
+              minQty: pair.minQty,
+              maxQty: pair.maxQty,
+              minPrice: pair.minPrice,
+              maxPrice: pair.maxPrice,
+              pricePrecision: pair.pricePrecision,
+              qtyPrecision: pair.qtyPrecision,
+              baseAssetPrecision: pair.baseAssetPrecision,
+              quoteAssetPrecision: pair.quoteAssetPrecision,
+            });
+          }
+        });
+      }
+    }
+  }, [supportTradingPairs, formatingPair]);
+
   const handleType = (type) => {
-    document
-      .querySelector("#open-price-card-button")
-      .classList.toggle("active");
-    document
-      .querySelector("#history-price-card-button")
-      .classList.toggle("active");
+    document.querySelector('#open-price-card-button').classList.toggle('active');
+    document.querySelector('#history-price-card-button').classList.toggle('active');
 
     let newOrders = allOrders;
     let newTime = dayjs(startDateA).unix();
     let timeB = dayjs(startDateB).unix();
-    if (type === "open") {
+    if (type === 'open') {
       newOrders = allOrders.filter(
         (d) =>
-          d.status === "NEW" ||
-          d.status === "PARTIALLY_FILLED" ||
-          d.status === "PARTIALLY_CANCELLED"
+          d.status === 'NEW' ||
+          d.status === 'PARTIALLY_FILLED' ||
+          d.status === 'PARTIALLY_CANCELLED'
       );
-      if (startDateA !== "" && startDateB !== "") {
+      if (startDateA !== '' && startDateB !== '') {
         newOrders = newOrders.filter((e) => {
           let time = String(e.time);
           time = time.substring(0, 10);
@@ -156,12 +187,12 @@ const Orders = (_) => {
         });
       }
     } else {
-      if (statusFilterSelection === "All") {
+      if (statusFilterSelection === 'All') {
         newOrders = allOrders;
       } else {
         newOrders = allOrders.filter((d) => d.status === statusFilterSelection);
       }
-      if (startDateA !== "" && startDateB !== "") {
+      if (startDateA !== '' && startDateB !== '') {
         newOrders = newOrders.filter((e) => {
           let time = String(e.time);
           time = time.substring(0, 10);
@@ -176,56 +207,56 @@ const Orders = (_) => {
 
   const handleSort = (type) => {
     let newClasses = {};
-    let sortType = "asc";
+    let sortType = 'asc';
     for (let e in classes) {
       if (e === type) {
-        if (classes[e] === "angle-down") {
-          newClasses[e] = "angle-up";
+        if (classes[e] === 'angle-down') {
+          newClasses[e] = 'angle-up';
         } else {
-          newClasses[e] = "angle-down";
-          sortType = "desc";
+          newClasses[e] = 'angle-down';
+          sortType = 'desc';
         }
       } else {
-        newClasses[e] = "angle-down";
+        newClasses[e] = 'angle-down';
       }
     }
     setClasses(newClasses);
 
-    let sortKey = "";
+    let sortKey = '';
     let ordersSorted = [];
     switch (type) {
-      case "type":
-        sortKey = "side";
+      case 'type':
+        sortKey = 'side';
         ordersSorted = orders.sort(compareValues(sortKey, sortType));
         setOrders([...ordersSorted]);
         break;
-      case "pair":
-        sortKey = "symbol";
+      case 'pair':
+        sortKey = 'symbol';
         ordersSorted = orders.sort(compareValues(sortKey, sortType));
         setOrders([...ordersSorted]);
         break;
-      case "time":
-        sortKey = "time";
+      case 'time':
+        sortKey = 'time';
         ordersSorted = orders.sort(compareValues(sortKey, sortType));
         setOrders([...ordersSorted]);
         break;
-      case "amount":
-        sortKey = "orderQty";
+      case 'amount':
+        sortKey = 'orderQty';
         ordersSorted = orders.sort(compareValues(sortKey, sortType));
         setOrders([...ordersSorted]);
         break;
-      case "price":
-        sortKey = "price";
+      case 'price':
+        sortKey = 'price';
         ordersSorted = orders.sort(compareValues(sortKey, sortType));
         setOrders([...ordersSorted]);
         break;
-      case "status":
-        sortKey = "status";
+      case 'status':
+        sortKey = 'status';
         ordersSorted = orders.sort(compareValues(sortKey, sortType));
         setOrders([...ordersSorted]);
         break;
-      case "total":
-        sortKey = "total";
+      case 'total':
+        sortKey = 'total';
         ordersSorted = orders.sort(compareValues(sortKey, sortType));
         setOrders([...ordersSorted]);
         break;
@@ -239,7 +270,7 @@ const Orders = (_) => {
 
     setTimeout((_) => {
       let newRenderOrders = orders.map((data, i) => (
-        <Line type={state.type} key={i} data={data} />
+        <Line formatingPair={formatingPair} type={state.type} key={i} data={data} />
       ));
 
       setState({ ...state, renderOrders: newRenderOrders });
@@ -263,7 +294,7 @@ const Orders = (_) => {
     setfilterPairB(value);
   }
   function handleChangeC(value) {
-    if (value === "All") {
+    if (value === 'All') {
       setOrders(allOrders);
     } else {
       setOrders(allOrders.filter((e) => e.status === value));
@@ -308,27 +339,26 @@ const Orders = (_) => {
     [startDateB]
   );
 
-  const optsClass =
-    mode === "Light" ? "option-select emp" : "dark-mode option-select emp";
+  const optsClass = mode === 'Light' ? 'option-select emp' : 'dark-mode option-select emp';
 
   const dropdownStyle =
-    mode === "Light"
+    mode === 'Light'
       ? {}
       : {
-          backgroundColor: "#2e2e45",
-          color: "#e9e9e9a8",
+          backgroundColor: '#2e2e45',
+          color: '#e9e9e9a8',
         };
 
-  console.log("test1234");
+  console.log('test1234');
   return (
     <Fragment>
       <Layout className="father orders">
-        <Content style={{ margin: "10px 15px 0 0", overflow: "initial" }}>
+        <Content style={{ margin: '10px 15px 0 0', overflow: 'initial' }}>
           <Row gutter={[8, 8]}>
             <Col span={24}>
               <Row
                 style={{
-                  paddingLeft: "15px",
+                  paddingLeft: '15px',
                 }}
               >
                 <TypeOfFilter handleType={handleType} />

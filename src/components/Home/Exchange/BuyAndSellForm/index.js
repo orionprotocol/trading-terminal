@@ -1,54 +1,46 @@
-import React, { Fragment, useState, useEffect, useCallback } from "react";
-import { Formik, Form, Field } from "formik";
-import validate from "./validation";
-import { useSelector, useDispatch } from "react-redux";
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
+import { Formik, Form, Field } from 'formik';
+import validate from './validation';
+import { useSelector, useDispatch } from 'react-redux';
 // import { WanchainOrder } from '../../../../services/WanchainOrder';
-import { EthereumOrder } from "../../../../services/EthereumOrder";
-import { loadOrderHistory } from "../../Orders/index";
-import openNotification from "../../../Notification";
+import { EthereumOrder } from '../../../../services/EthereumOrder';
+import { loadOrderHistory } from '../../Orders/index';
+import openNotification from '../../../Notification';
 
 // type: { trade: 'buy' or 'sell, selection: 'market' or 'limit-order'}
-export default function BuyAndSellForm({ type }) {
+export default function BuyAndSellForm({ type, formatingPair }) {
   const dispatch = useDispatch();
 
+  const lastPrice = useSelector((state) => state.general.lastPrice);
+  const orderData = useSelector((state) => state.general.orderData);
   const symbol = useSelector((state) => state.general.symbol);
   const symbolA = useSelector((state) => state.general.symbolA);
   const symbolB = useSelector((state) => state.general.symbolB);
-  const orderData = useSelector((state) => state.general.orderData);
-  const lastPrice = useSelector((state) => state.general.lastPrice);
-
-  const metamaskConnected = useSelector(
-    (state) => state.wallet.metamaskConnected
-  );
-  const fortmaticConnected = useSelector(
-    (state) => state.wallet.fortmaticConnected
-  );
-  const coinbaseConnected = useSelector(
-    (state) => state.wallet.coinbaseConnected
-  );
+  const orderBook = useSelector((state) => state.general.orderBook);
+  const metamaskConnected = useSelector((state) => state.wallet.metamaskConnected);
+  const fortmaticConnected = useSelector((state) => state.wallet.fortmaticConnected);
+  const coinbaseConnected = useSelector((state) => state.wallet.coinbaseConnected);
 
   const balances = useSelector((state) => state.balances);
 
-  const setQtyForm = useCallback(
-    (data) => dispatch({ type: "SetQtyForm", payload: data }),
-    [dispatch]
-  );
+  const setQtyForm = useCallback((data) => dispatch({ type: 'SetQtyForm', payload: data }), [
+    dispatch,
+  ]);
   // const setSideForm = useCallback((data) => dispatch({ type: 'SetSideForm', payload: data }), [ dispatch ]);
-  const setAddWallet = useCallback(
-    (data) => dispatch({ type: "SetAddWallet", payload: data }),
-    [dispatch]
-  );
+  const setAddWallet = useCallback((data) => dispatch({ type: 'SetAddWallet', payload: data }), [
+    dispatch,
+  ]);
   const orderBook = useSelector((state) => state.general.orderBook);
   /*  console.log(type.trade)
      if(orderBook){
          console.log( orderBook.aggregatedAsks,orderBook.aggregatedBids )
      } */
   const [values, setValues] = useState({
-    amount: "",
-    available: "0",
-    price: "",
-    percent: "",
-    total: "",
+    amount: '',
+    available: '0',
+    price: '',
+    percent: '',
+    total: '',
   });
 
   const [availableA, setAvailableA] = useState(0);
@@ -63,8 +55,8 @@ export default function BuyAndSellForm({ type }) {
     let totalPrice = 0;
     let remanent = 0;
     let percent = 0.03;
-    if (type === "sell") percent = -0.03;
-    if (amount === "") return [0, 0];
+    if (type === 'sell') percent = -0.03;
+    if (amount === '') return [0, 0];
     remanent = parseFloat(amount);
     for (let x = 0; x < array.length; x++) {
       if (remanent - array[x].size <= 0) {
@@ -75,8 +67,12 @@ export default function BuyAndSellForm({ type }) {
         remanent -= array[x].size;
       }
     }
-    if (array[array.length - 1].price) {
-      cost += remanent * array[array.length - 1].price;
+    if (array[array.length - 1]) {
+      if (array[array.length - 1].price) {
+        cost += remanent * array[array.length - 1].price;
+      } else {
+        cost += 0;
+      }
     } else {
       cost += 0;
     }
@@ -85,7 +81,7 @@ export default function BuyAndSellForm({ type }) {
   };
 
   useEffect(() => {
-    if (type.selection !== "limit-order") {
+    if (type.selection !== 'limit-order') {
       const [marketTotal, marketPrice] = iterating_price_for_total(
         orderBook.aggregatedAsks,
         values.amount,
@@ -93,40 +89,41 @@ export default function BuyAndSellForm({ type }) {
       );
       setValues({
         ...values,
-        price: marketPrice,
-        total: marketTotal,
+        price: marketPrice.toFixed(formatingPair.pricePrecision),
+        total: marketTotal.toFixed(formatingPair.quoteAssetPrecision),
       });
-      setTotal(marketTotal.toFixed(8));
+      setTotal(marketTotal.toFixed(formatingPair.quoteAssetPrecision));
     }
   }, [
     orderBook.aggregatedAsks,
     orderBook.aggregatedBids,
     values.amount,
     type.selection,
+    formatingPair,
   ]);
   /* This useEffect works to change the total price when u switch from market to limit order */
   useEffect(() => {
-    if (type.selection === "limit-order") {
-      console.log("entro aca??", values.amount, values.price);
-      if (values.price !== "" && values.amount !== "") {
-        setTotal((values.amount * values.price).toFixed(8));
+    if (type.selection === 'limit-order') {
+      console.log('entro aca??', values.amount, values.price);
+      if (values.price !== '' && values.amount !== '') {
+        setTotal((values.amount * values.price).toFixed(formatingPair.quoteAssetPrecision));
       }
     }
-  }, [type.selection, values.amount, values.price]);
+  }, [type.selection, values.amount, values.price, formatingPair]);
 
   useEffect(
     (_) => {
-      if (orderData["price"]) {
+      if (orderData['price']) {
         setValues({
           ...values,
-          amount: orderData.amount.toFixed(8),
-          price: parseFloat(orderData.price).toFixed(8),
+          amount: orderData.amount.toFixed(formatingPair.qtyPrecision),
+          price: parseFloat(orderData.price).toFixed(formatingPair.pricePrecision),
         });
-        setTotal(orderData.total.toFixed(8));
+        setTotal(orderData.total.toFixed(formatingPair.quoteAssetPrecision));
       }
     },
     //eslint-disable-next-line react-hooks/exhaustive-deps
-    [orderData]
+    [orderData, formatingPair]
   );
 
   useEffect(
@@ -139,13 +136,13 @@ export default function BuyAndSellForm({ type }) {
             // 	if (symbolA === 'ETH') setAvailableA(contractBalances[key]);
             // 	else if (symbolB === 'ETH') setAvailableB(contractBalances[key]);
             // 	break;
-            case "WBTC":
-              if (symbolA === "BTC") setAvailableA(contractBalances[key]);
-              else if (symbolB === "BTC") setAvailableB(contractBalances[key]);
+            case 'WBTC':
+              if (symbolA === 'BTC') setAvailableA(contractBalances[key]);
+              else if (symbolB === 'BTC') setAvailableB(contractBalances[key]);
               break;
-            case "WXRP":
-              if (symbolA === "XRP") setAvailableA(contractBalances[key]);
-              else if (symbolB === "XRP") setAvailableB(contractBalances[key]);
+            case 'WXRP':
+              if (symbolA === 'XRP') setAvailableA(contractBalances[key]);
+              else if (symbolB === 'XRP') setAvailableB(contractBalances[key]);
               break;
             default:
               if (symbolA === key) setAvailableA(contractBalances[key]);
@@ -161,9 +158,9 @@ export default function BuyAndSellForm({ type }) {
 
   useEffect(
     (_) => {
-      if (type.trade === "buy") {
+      if (type.trade === 'buy') {
         setAvailable(availableB);
-      } else if (type.trade === "sell") {
+      } else if (type.trade === 'sell') {
         setAvailable(availableA);
       }
 
@@ -184,7 +181,7 @@ export default function BuyAndSellForm({ type }) {
   );
 
   const handlePercent = (percent) => {
-    if (type.trade === "sell") {
+    if (type.trade === 'sell') {
       setQtyForm((available * percent).toFixed(8));
       setValues({
         ...values,
@@ -202,12 +199,12 @@ export default function BuyAndSellForm({ type }) {
   };
 
   const handleChange = (e) => {
-    if (e.target.name === "amount" || e.target.name === "price") {
-      if (e.target.name === "amount") {
+    if (e.target.name === 'amount' || e.target.name === 'price') {
+      if (e.target.name === 'amount') {
         setQtyForm(e.target.value);
       }
-      if (type.selection === "limit-order") {
-        if (values.price !== "") {
+      if (type.selection === 'limit-order') {
+        if (values.price !== '') {
           setTotal((e.target.value * values.price).toFixed(8));
         } else {
           setTotal((e.target.value * lastPrice).toFixed(8));
@@ -231,14 +228,14 @@ export default function BuyAndSellForm({ type }) {
   };
 
   const submitOrder = async (_) => {
-    if (values.amount === "" || Number(values.amount) <= 0) {
+    if (values.amount === '' || Number(values.amount) <= 0) {
       openNotification({
         message: `Please, enter a valid amount.`,
       });
       return;
     }
 
-    if (type.trade === "buy") {
+    if (type.trade === 'buy') {
       if (Number(total) > Number(available)) {
         openNotification({
           message: `Insufficient ${symbolB} balance`,
@@ -246,7 +243,7 @@ export default function BuyAndSellForm({ type }) {
 
         return;
       }
-    } else if (type.trade === "sell") {
+    } else if (type.trade === 'sell') {
       if (Number(values.amount) > Number(available)) {
         openNotification({
           message: `Insufficient ${symbolA} balance`,
@@ -256,7 +253,7 @@ export default function BuyAndSellForm({ type }) {
       }
     }
 
-    let price = values.price === "" ? lastPrice : values.price;
+    let price = values.price === '' ? lastPrice : values.price;
 
     // if (Number(price) <= 0) {
     //     openNotification({
@@ -270,20 +267,20 @@ export default function BuyAndSellForm({ type }) {
 
     // ----------------------------------- Ethereum --------------------------------------
 
-    if (symbolA === "BTC") {
-      orderSymbolA = "WBTC";
+    if (symbolA === 'BTC') {
+      orderSymbolA = 'WBTC';
     }
 
-    if (symbolA === "XRP") {
-      orderSymbolA = "WXRP";
+    if (symbolA === 'XRP') {
+      orderSymbolA = 'WXRP';
     }
 
-    if (symbolB === "BTC") {
-      orderSymbolB = "WBTC";
+    if (symbolB === 'BTC') {
+      orderSymbolB = 'WBTC';
     }
 
-    if (symbolB === "XRP") {
-      orderSymbolB = "WXRP";
+    if (symbolB === 'XRP') {
+      orderSymbolB = 'WXRP';
     }
 
     let orderSymbols = [orderSymbolA, orderSymbolB];
@@ -291,10 +288,10 @@ export default function BuyAndSellForm({ type }) {
     try {
       console.log(orderSymbols, type.trade, price, values.amount);
 
-      let ethereumOrderMessage = "";
+      let ethereumOrderMessage = '';
 
       if (fortmaticConnected) {
-        let ethereumOrder = new EthereumOrder("fortmatic");
+        let ethereumOrder = new EthereumOrder('fortmatic');
         ethereumOrderMessage = await ethereumOrder.toEthereumOrder(
           orderSymbols,
           type.trade,
@@ -302,16 +299,16 @@ export default function BuyAndSellForm({ type }) {
           values.amount
         );
       } else if (metamaskConnected) {
-        let ethereumOrder = new EthereumOrder("metamask");
+        let ethereumOrder = new EthereumOrder('metamask');
         ethereumOrderMessage = await ethereumOrder.toEthereumOrder(
           orderSymbols,
           type.trade,
           price,
           values.amount,
-          "metamask"
+          'metamask'
         );
       } else if (coinbaseConnected) {
-        let ethereumOrder = new EthereumOrder("coinbase");
+        let ethereumOrder = new EthereumOrder('coinbase');
         ethereumOrderMessage = await ethereumOrder.toEthereumOrder(
           orderSymbols,
           type.trade,
@@ -324,8 +321,8 @@ export default function BuyAndSellForm({ type }) {
 
       setValues({
         ...values,
-        amount: "",
-        price: "",
+        amount: '',
+        price: '',
       });
       setTotal(0);
 
@@ -333,7 +330,7 @@ export default function BuyAndSellForm({ type }) {
         message: ethereumOrderMessage,
       });
     } catch (e) {
-      console.log("error", e);
+      console.log('error', e);
 
       if (e.msg) {
         openNotification({
@@ -394,34 +391,28 @@ export default function BuyAndSellForm({ type }) {
         {({ errors, touched, setFieldValue }) => (
           <Form>
             <div>
-              {type.trade === "buy" ? (
-                <span style={{ color: "rgb(0, 187, 255)", marginLeft: "10px" }}>
-                  Amount
-                </span>
+              {type.trade === 'buy' ? (
+                <span style={{ color: 'rgb(0, 187, 255)', marginLeft: '10px' }}>Amount</span>
               ) : (
-                <span style={{ color: "rgb(255, 99, 85)", marginLeft: "10px" }}>
-                  Amount
-                </span>
+                <span style={{ color: 'rgb(255, 99, 85)', marginLeft: '10px' }}>Amount</span>
               )}
 
               <Field
-                className={`form-fields-buyandsell after ${
-                  type.trade === "buy" ? "buy" : "sell"
-                }`}
+                className={`form-fields-buyandsell after ${type.trade === 'buy' ? 'buy' : 'sell'}`}
                 name="amount"
                 type="number"
                 min="0"
                 value={values.amount}
                 onChange={handleChange}
               />
-              {type.trade === "buy" ? (
+              {type.trade === 'buy' ? (
                 <label
                   style={{
-                    fontSize: "14px",
-                    color: "#706E7D",
-                    marginLeft: "-40px",
-                    marginTop: "7px",
-                    color: "rgb(0, 187, 255)",
+                    fontSize: '14px',
+                    color: '#706E7D',
+                    marginLeft: '-40px',
+                    marginTop: '7px',
+                    color: 'rgb(0, 187, 255)',
                   }}
                 >
                   {symbolA}
@@ -429,75 +420,100 @@ export default function BuyAndSellForm({ type }) {
               ) : (
                 <label
                   style={{
-                    fontSize: "14px",
-                    color: "#706E7D",
-                    marginLeft: "-40px",
-                    marginTop: "7px",
-                    color: "rgb(255, 99, 85)",
+                    fontSize: '14px',
+                    color: '#706E7D',
+                    marginLeft: '-40px',
+                    marginTop: '7px',
+                    color: 'rgb(255, 99, 85)',
                   }}
                 >
                   {symbolA}
                 </label>
               )}
             </div>
-            {type.selection === "limit-order" && (
+
+            {values.amount && parseFloat(values.amount) > formatingPair.maxQty && (
+              <label style={{ color: 'red' }}>
+                You can't {type.trade} more than {formatingPair.maxQty} {symbolA} <br />
+              </label>
+            )}
+            {values.amount && parseFloat(values.amount) < formatingPair.minQty && (
+              <label style={{ color: 'red' }}>
+                The minimum allowed amount is {formatingPair.minQty} {symbolA}
+                <br />
+              </label>
+            )}
+            {values.amount.toString().split('.')[1] &&
+              values.amount.toString().split('.')[1].length > formatingPair.qtyPrecision && (
+                <label style={{ color: 'red' }}>
+                  {formatingPair.qtyPrecision === 0
+                    ? `use only integer quantities for this pair`
+                    : `only up to ${formatingPair.qtyPrecision} decimals allowed`}
+                  <br />
+                </label>
+              )}
+            {type.selection === 'limit-order' && (
               <div>
-                {type.trade === "buy" ? (
-                  <span
-                    style={{ color: "rgb(0, 187, 255)", marginLeft: "10px" }}
-                  >
-                    Price
-                  </span>
+                {type.trade === 'buy' ? (
+                  <span style={{ color: 'rgb(0, 187, 255)', marginLeft: '10px' }}>Price</span>
                 ) : (
-                  <span
-                    style={{ color: "rgb(255, 99, 85)", marginLeft: "10px" }}
-                  >
-                    Price
-                  </span>
+                  <span style={{ color: 'rgb(255, 99, 85)', marginLeft: '10px' }}>Price</span>
                 )}
 
                 <Field
                   className={`form-fields-buyandsell after ${
-                    type.trade === "buy" ? "buy" : "sell"
+                    type.trade === 'buy' ? 'buy' : 'sell'
                   }`}
                   name="price"
                   type="number"
                   min="0"
-                  value={values.price !== "" ? values.price : lastPrice}
+                  value={
+                    values.price !== ''
+                      ? values.price
+                      : lastPrice.toFixed(formatingPair.pricePrecision)
+                  }
                   onChange={handleChange}
                 />
+                {values.price && parseFloat(values.price) > formatingPair.maxPrice && (
+                  <label style={{ color: 'red' }}>
+                    You can't set more than {formatingPair.maxPrice} for {symbolA} <br />
+                  </label>
+                )}
+                {values.price && parseFloat(values.price) < formatingPair.minPrice && (
+                  <label style={{ color: 'red' }}>
+                    You can't set less than {formatingPair.minPrice} for {symbolA} <br />
+                  </label>
+                )}
+                {values.price.toString().split('.')[1] &&
+                  values.price.toString().split('.')[1].length > formatingPair.pricePrecision && (
+                    <label style={{ color: 'red' }}>
+                      only up to {formatingPair.pricePrecision} decimals allowed <br />
+                    </label>
+                  )}
               </div>
             )}
             <div
               style={{
-                justifyContent: "space-between",
-                display: "flex",
-                paddingTop: "5px",
+                justifyContent: 'space-between',
+                display: 'flex',
+                paddingTop: '5px',
               }}
             >
-              {type.trade === "buy" ? (
-                <span style={{ color: "rgb(0, 187, 255)", marginLeft: "10px" }}>
-                  Available
-                </span>
+              {type.trade === 'buy' ? (
+                <span style={{ color: 'rgb(0, 187, 255)', marginLeft: '10px' }}>Available</span>
               ) : (
-                <span style={{ color: "rgb(255, 99, 85)", marginLeft: "10px" }}>
-                  Available
-                </span>
+                <span style={{ color: 'rgb(255, 99, 85)', marginLeft: '10px' }}>Available</span>
               )}
 
-              {type.trade === "buy" ? (
-                <span
-                  className="avl-amount"
-                  style={{ color: "rgb(0, 187, 255)" }}
-                >
-                  {available} {symbolB}
+              {type.trade === 'buy' ? (
+                <span className="avl-amount" style={{ color: 'rgb(0, 187, 255)' }}>
+                  {available && parseFloat(available).toFixed(formatingPair.quoteAssetPrecision)}{' '}
+                  {symbolB}
                 </span>
               ) : (
-                <span
-                  className="avl-amount"
-                  style={{ color: "rgb(255, 99, 85)" }}
-                >
-                  {available} {symbolA}
+                <span className="avl-amount" style={{ color: 'rgb(255, 99, 85)' }}>
+                  {available && parseFloat(available).toFixed(formatingPair.baseAssetPrecision)}{' '}
+                  {symbolA}
                 </span>
               )}
             </div>
@@ -505,70 +521,56 @@ export default function BuyAndSellForm({ type }) {
               <button
                 type="button"
                 onClick={() => handlePercent(0.25)}
-                className={`percent-button left ${
-                  type.trade === "buy" ? "buy" : "sell"
-                }`}
+                className={`percent-button left ${type.trade === 'buy' ? 'buy' : 'sell'}`}
               >
                 25%
               </button>
               <button
                 type="button"
                 onClick={() => handlePercent(0.5)}
-                className={`percent-button right ${
-                  type.trade === "buy" ? "buy" : "sell"
-                }`}
+                className={`percent-button right ${type.trade === 'buy' ? 'buy' : 'sell'}`}
               >
                 50%
               </button>
               <button
                 type="button"
                 onClick={() => handlePercent(0.75)}
-                className={`percent-button left ${
-                  type.trade === "buy" ? "buy" : "sell"
-                }`}
+                className={`percent-button left ${type.trade === 'buy' ? 'buy' : 'sell'}`}
               >
                 75%
               </button>
               <button
                 type="button"
                 onClick={() => handlePercent(1)}
-                className={`percent-button right ${
-                  type.trade === "buy" ? "buy" : "sell"
-                }`}
+                className={`percent-button right ${type.trade === 'buy' ? 'buy' : 'sell'}`}
               >
                 100%
               </button>
             </div>
 
             <div className="total-price">
-              {type.trade === "buy" ? (
-                <span style={{ color: "rgb(0, 187, 255)", marginLeft: "10px" }}>
-                  Total
-                </span>
+              {type.trade === 'buy' ? (
+                <span style={{ color: 'rgb(0, 187, 255)', marginLeft: '10px' }}>Total</span>
               ) : (
-                <span style={{ color: "rgb(255, 99, 85)", marginLeft: "10px" }}>
-                  Total
-                </span>
+                <span style={{ color: 'rgb(255, 99, 85)', marginLeft: '10px' }}>Total</span>
               )}
 
               <Field
-                className={`form-fields-buyandsell after ${
-                  type.trade === "buy" ? "buy" : "sell"
-                }`}
+                className={`form-fields-buyandsell after ${type.trade === 'buy' ? 'buy' : 'sell'}`}
                 name="total"
                 value={total}
                 min="0"
                 onChange={handleChange}
                 disabled={true}
               />
-              {type.trade === "buy" ? (
+              {type.trade === 'buy' ? (
                 <label
                   style={{
-                    fontSize: "14px",
-                    color: "#706E7D",
-                    marginLeft: "-40px",
-                    marginTop: "7px",
-                    color: "rgb(0, 187, 255)",
+                    fontSize: '14px',
+                    color: '#706E7D',
+                    marginLeft: '-40px',
+                    marginTop: '7px',
+                    color: 'rgb(0, 187, 255)',
                   }}
                 >
                   {symbolB}
@@ -576,20 +578,20 @@ export default function BuyAndSellForm({ type }) {
               ) : (
                 <label
                   style={{
-                    fontSize: "14px",
-                    color: "#706E7D",
-                    marginLeft: "-40px",
-                    marginTop: "7px",
-                    color: "rgb(255, 99, 85)",
+                    fontSize: '14px',
+                    color: '#706E7D',
+                    marginLeft: '-40px',
+                    marginTop: '7px',
+                    color: 'rgb(255, 99, 85)',
                   }}
                 >
                   {symbolB}
                 </label>
               )}
             </div>
-            <div style={{ margin: "30px 0px 20px 0" }}>
+            <div style={{ margin: '30px 0px 20px 0' }}>
               {(metamaskConnected || fortmaticConnected || coinbaseConnected) &&
-                type.trade === "buy" && (
+                type.trade === 'buy' && (
                   <button
                     className="submit-form buy"
                     type="submit"
@@ -597,7 +599,17 @@ export default function BuyAndSellForm({ type }) {
                     disabled={
                       parseFloat(values.price) <= 0 ||
                       parseFloat(values.amount) <= 0 ||
-                      isNaN(parseFloat(values.amount))
+                      isNaN(parseFloat(values.amount)) ||
+                      (values.amount.toString().split('.')[1] &&
+                        values.amount.toString().split('.')[1].length >
+                          formatingPair.qtyPrecision) ||
+                      (values.price.toString().split('.')[1] &&
+                        values.price.toString().split('.')[1].length >
+                          formatingPair.pricePrecision) ||
+                      (values.amount && parseFloat(values.amount) > formatingPair.maxQty) ||
+                      (values.price && parseFloat(values.price) > formatingPair.maxPrice) ||
+                      (values.amount && parseFloat(values.amount) < formatingPair.minQty) ||
+                      (values.price && parseFloat(values.price) < formatingPair.minPrice)
                         ? true
                         : false
                     }
@@ -607,7 +619,7 @@ export default function BuyAndSellForm({ type }) {
                 )}
 
               {(metamaskConnected || fortmaticConnected || coinbaseConnected) &&
-                type.trade === "sell" && (
+                type.trade === 'sell' && (
                   <button
                     className="submit-form sell"
                     type="submit"
@@ -615,7 +627,17 @@ export default function BuyAndSellForm({ type }) {
                     disabled={
                       parseFloat(values.price) <= 0 ||
                       parseFloat(values.amount) <= 0 ||
-                      isNaN(parseFloat(values.amount))
+                      isNaN(parseFloat(values.amount)) ||
+                      (values.amount.toString().split('.')[1] &&
+                        values.amount.toString().split('.')[1].length >
+                          formatingPair.qtyPrecision) ||
+                      (values.price.toString().split('.')[1] &&
+                        values.price.toString().split('.')[1].length >
+                          formatingPair.pricePrecision) ||
+                      (values.amount && parseFloat(values.amount) > formatingPair.maxQty) ||
+                      (values.price && parseFloat(values.price) > formatingPair.maxPrice) ||
+                      (values.amount && parseFloat(values.amount) < formatingPair.minQty) ||
+                      (values.price && parseFloat(values.price) < formatingPair.minPrice)
                         ? true
                         : false
                     }

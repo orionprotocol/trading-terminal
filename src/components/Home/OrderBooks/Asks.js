@@ -56,12 +56,12 @@ const renderSize = (data) => {
 
   return (
     <span className={colorClass} id={id}>
-      {Number(data.size).toFixed(3)}
+      {Number(data.size).toFixed(format)}
     </span>
   );
 };
 
-const Asks = (props) => {
+const Asks = ({ dataAsk, formatingPair }) => {
   const dispatch = useDispatch();
   const [asks, setAsks] = useState();
   const symbolB = useSelector((state) => state.general.symbolB);
@@ -72,14 +72,13 @@ const Asks = (props) => {
   // console.log(symbolB)
   useEffect(
     (_) => {
-      if (props.data) {
-        // setAsks(null);
-        setAsks(renderAsks(props.data));
-        setDataAsks(props.data.asks);
+      if (dataAsk) {
+        setAsks(renderAsks(dataAsk));
+        setDataAsks(dataAsk.asks);
       }
     },
     //eslint-disable-next-line react-hooks/exhaustive-deps
-    [props]
+    [dataAsk]
   );
 
   function chooseOrderBookLine(data) {
@@ -193,16 +192,14 @@ const Asks = (props) => {
             <span className="progress-light l-red" style={{ width: percentStyle }} />
             {/* Max width 27% */}
             <span className="progress-light d-red" style={{ width: percentStyle27 }} />
-            {symbolB === 'BTC' && (
-              <span className="cell emp">{Number(asks[i].price).toFixed(8)}</span>
-            )}
-            {symbolB === 'USDT' && (
-              <span className="cell emp">{Number(asks[i].price).toFixed(2)}</span>
-            )}
+            <span className="cell emp">
+              {Number(asks[i].price).toFixed(formatingPair.pricePrecision)}
+            </span>
             {/* <span className="cell">{asks[i].size.toFixed(3)}</span> */}
-            {renderSize(asks[i])}
-            {symbolB === 'BTC' && <span className="cell emp">{asks[i].total.toFixed(8)}</span>}
-            {symbolB === 'USDT' && <span className="cell emp">{asks[i].total.toFixed(2)}</span>}
+            {renderSize(asks[i], formatingPair.qtyPrecision)}
+            <span className="cell emp">
+              {asks[i].total.toFixed(formatingPair.quoteAssetPrecision)}
+            </span>
 
             <div className="cell exch">
               <div

@@ -1,22 +1,15 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from 'react';
 /* REDUX */
-import { Select } from "antd";
+import { Select } from 'antd';
 const { Option } = Select;
-const A = ["XRP", "ETH", "USDT", "ERD"];
-const B = ["BTC", "USDT"];
+const A = ['XRP', 'ETH', 'USDT', 'ERD'];
+const B = ['BTC', 'USDT'];
 const index = memo(
-  ({
-    dropdownStyle,
-    optsClass,
-    handleChangeA,
-    handleChangeB,
-    filterPairA,
-    filterPairB,
-  }) => {
+  ({ dropdownStyle, optsClass, handleChangeA, handleChangeB, filterPairA, filterPairB }) => {
     const [SelectorA, setSelectorA] = useState(<></>);
     const [SelectorB, setSelectorB] = useState(<></>);
     useEffect(() => {
-      console.log("Se hizo un cambio en el symbol", filterPairA);
+      console.log('Se hizo un cambio en el symbol', filterPairA);
       setSelectorA(null);
       setSelectorA(
         <Select
@@ -24,8 +17,8 @@ const index = memo(
           value={filterPairA}
           style={{
             width: 80,
-            padding: "2px",
-            border: "none",
+            padding: '2px',
+            border: 'none',
           }}
           onChange={(e) => handleChangeA(e)}
           dropdownStyle={dropdownStyle}
@@ -39,7 +32,7 @@ const index = memo(
           })}
         </Select>
       );
-    }, [filterPairA]);
+    }, [filterPairA, optsClass]);
 
     useEffect(() => {
       setSelectorB(null);
@@ -50,7 +43,7 @@ const index = memo(
           style={{
             width: 80,
             padding: 0,
-            border: "none",
+            border: 'none',
           }}
           onChange={(e) => handleChangeB(e)}
           dropdownStyle={dropdownStyle}

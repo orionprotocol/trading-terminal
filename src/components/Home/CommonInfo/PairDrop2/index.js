@@ -273,6 +273,7 @@ const PairDrop2 = ({ handleWrapper, History }) => {
               if (currentQuote === 'FAVS' && res.fav === true) {
                 return (
                   <Line
+                    currentQuote={currentQuote}
                     key={key}
                     handlePair={handlePair}
                     favourite={favs}
@@ -284,6 +285,7 @@ const PairDrop2 = ({ handleWrapper, History }) => {
               if (currentQuote === res.symbolB) {
                 return (
                   <Line
+                    currentQuote={currentQuote}
                     key={key}
                     handlePair={handlePair}
                     favourite={favs}

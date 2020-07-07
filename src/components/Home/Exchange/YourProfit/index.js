@@ -21,6 +21,48 @@ const YourProfit = () => {
     style = { color: ' rgb(139, 139, 139)' };
   }
 
+  /* FORMATING NUMBERS STATE*/
+  //Aca inicia las funciones que se encargan de darle un formato a cada valor que se muestra en pantalla
+  //a traves de la data que viene del back end
+  const initialState = {
+    minQty: 0,
+    maxQty: 0,
+    minPrice: 0,
+    maxPrice: 0,
+    pricePrecision: 0,
+    qtyPrecision: 0,
+    baseAssetPrecision: 0,
+    quoteAssetPrecision: 0,
+  };
+  const [formatingPair, setformatingPair] = useState(initialState);
+
+  useEffect(() => {
+    setformatingPair(initialState);
+  }, [symbolA, symbolB]);
+
+  useEffect(() => {
+    if (supportTradingPairs.length > 0) {
+      if (formatingPair.pricePrecision === 0 && formatingPair.maxPrice === 0) {
+        supportTradingPairs.forEach((pair) => {
+          if (pair.symbolA === symbolA && pair.symbolB === symbolB) {
+            setformatingPair({
+              ...formatingPair,
+              minQty: pair.minQty,
+              maxQty: pair.maxQty,
+              minPrice: pair.minPrice,
+              maxPrice: pair.maxPrice,
+              pricePrecision: pair.pricePrecision,
+              qtyPrecision: pair.qtyPrecision,
+              baseAssetPrecision: pair.baseAssetPrecision,
+              quoteAssetPrecision: pair.quoteAssetPrecision,
+            });
+          }
+        });
+      }
+    }
+  }, [supportTradingPairs, formatingPair]);
+  /* END OF FORMATING NUMBERS STATE SECTION*/
+
   const loadBenefits = () => {
     let quantity = qtyForm;
     if (qtyForm === '') quantity = 0;
@@ -37,8 +79,12 @@ const YourProfit = () => {
           if (Number(result[key].benefitPct) !== 0) {
             aux.push({
               name: key,
-              benefitBtc: parseFloat(result[key].benefitBtc).toFixed(8),
-              benefitPct: parseFloat(result[key].benefitPct).toFixed(8),
+              benefitBtc: parseFloat(result[key].benefitBtc).toFixed(
+                formatingPair.quoteAssetPrecision
+              ),
+              benefitPct: parseFloat(result[key].benefitPct).toFixed(
+                formatingPair.quoteAssetPrecision
+              ),
             });
           }
         }

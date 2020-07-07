@@ -3,27 +3,27 @@ import SlideToggle from 'react-slide-toggle';
 import dayjs from 'dayjs';
 import Subtable from './Subtable';
 
-const Line = (props) => {
+const Line = ({ formatingPair, type, data }) => {
   const [state, setState] = useState({ sub: [] });
 
   useEffect((_) => {
-    let timestamp = Number(String(props.data.time).substring(0, 10));
+    let timestamp = Number(String(data.time).substring(0, 10));
     // let date = moment.unix(timestamp).format('MM-DD HH:mm:ss');
     // 09.09.2019 12:42:4
     let date = dayjs.unix(timestamp).format('DD.MM.YYYY');
     let time = dayjs.unix(timestamp).format('HH:mm:ss');
 
     setState({
-      id: props.data.id,
-      type: props.data.side[0].toUpperCase() + props.data.side.slice(1),
-      pair: props.data.symbol.replace('-', ' / '),
+      id: data.id,
+      type: data.side[0].toUpperCase() + data.side.slice(1),
+      pair: data.symbol.replace('-', ' / '),
       date,
       time,
-      amount: props.data.orderQty,
-      price: props.data.price,
-      status: props.data.status[0].toUpperCase() + props.data.status.slice(1).toLowerCase(),
-      total: (props.data.price * props.data.orderQty).toFixed(8),
-      sub: props.data.subOrders,
+      amount: data.orderQty.toFixed(formatingPair.qtyPrecision),
+      price: data.price.toFixed(formatingPair.pricePrecision),
+      status: data.status[0].toUpperCase() + data.status.slice(1).toLowerCase(),
+      total: (data.price * data.orderQty).toFixed(formatingPair.quoteAssetPrecision),
+      sub: data.subOrders,
     });
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

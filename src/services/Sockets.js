@@ -1,76 +1,52 @@
-import React, { useEffect, useCallback, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import WebsocketHeartbeatJs from "websocket-heartbeat-js";
+import React, { useEffect, useCallback, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import WebsocketHeartbeatJs from 'websocket-heartbeat-js';
 
-import { web3 } from "./Fortmatic";
+import { web3 } from './Fortmatic';
 
-const io = require("socket.io-client");
+const io = require('socket.io-client');
 let socket;
 
 const Sockets = () => {
   const dispatch = useDispatch();
 
-  const contractBalances = useSelector(
-    (state) => state.balances.contractBalances
-  );
+  const contractBalances = useSelector((state) => state.balances.contractBalances);
   const walletBalances = useSelector((state) => state.balances.walletBalances);
   const symbol = useSelector((state) => state.general.symbol);
   const tickers = useSelector((state) => state.general.tickers);
-  const wanmaskConnected = useSelector(
-    (state) => state.wallet.wanmaskConnected
-  );
-  const metamaskConnected = useSelector(
-    (state) => state.wallet.metamaskConnected
-  );
+  const wanmaskConnected = useSelector((state) => state.wallet.wanmaskConnected);
+  const metamaskConnected = useSelector((state) => state.wallet.metamaskConnected);
   const ethAddress = useSelector((state) => state.wallet.ethAddress);
-  const fortmaticConnected = useSelector(
-    (state) => state.wallet.fortmaticConnected
-  );
-  const coinbaseConnected = useSelector(
-    (state) => state.wallet.coinbaseConnected
-  );
+  const fortmaticConnected = useSelector((state) => state.wallet.fortmaticConnected);
+  const coinbaseConnected = useSelector((state) => state.wallet.coinbaseConnected);
 
   const [websocket, setWS] = useState(null);
   let [websocket2, setWS2] = useState(null);
 
-  const setBalances = useCallback(
-    (data) => dispatch({ type: "SetBalances", payload: data }),
-    [dispatch]
-  );
-  const setOrderBook = useCallback(
-    (data) => dispatch({ type: "SetOrderBook", payload: data }),
-    [dispatch]
-  );
-  const setChange = useCallback(
-    (data) => dispatch({ type: "SetChange", payload: data }),
-    [dispatch]
-  );
-  const setHigh = useCallback(
-    (data) => dispatch({ type: "SetHigh", payload: data }),
-    [dispatch]
-  );
-  const setLow = useCallback(
-    (data) => dispatch({ type: "SetLow", payload: data }),
-    [dispatch]
-  );
-  const setVol = useCallback(
-    (data) => dispatch({ type: "SetVol", payload: data }),
-    [dispatch]
-  );
-  const setLastPrice = useCallback(
-    (data) => dispatch({ type: "SetLastPrice", payload: data }),
-    [dispatch]
-  );
-  const setTickers = useCallback(
-    (data) => dispatch({ type: "SetTickers", payload: data }),
-    [dispatch]
-  );
+  const setBalances = useCallback((data) => dispatch({ type: 'SetBalances', payload: data }), [
+    dispatch,
+  ]);
+  const setOrderBook = useCallback((data) => dispatch({ type: 'SetOrderBook', payload: data }), [
+    dispatch,
+  ]);
+  const setChange = useCallback((data) => dispatch({ type: 'SetChange', payload: data }), [
+    dispatch,
+  ]);
+  const setHigh = useCallback((data) => dispatch({ type: 'SetHigh', payload: data }), [dispatch]);
+  const setLow = useCallback((data) => dispatch({ type: 'SetLow', payload: data }), [dispatch]);
+  const setVol = useCallback((data) => dispatch({ type: 'SetVol', payload: data }), [dispatch]);
+  const setLastPrice = useCallback((data) => dispatch({ type: 'SetLastPrice', payload: data }), [
+    dispatch,
+  ]);
+  const setTickers = useCallback((data) => dispatch({ type: 'SetTickers', payload: data }), [
+    dispatch,
+  ]);
   const setChangeInTickers = useCallback(
-    (data) => dispatch({ type: "SetChangeInTickers", payload: data }),
+    (data) => dispatch({ type: 'SetChangeInTickers', payload: data }),
     [dispatch]
   );
 
-  const [address] = useState(localStorage.getItem("currentAccount"));
+  const [address] = useState(localStorage.getItem('currentAccount'));
   const [isConn, setIsConn] = useState(false);
 
   // Normal connection for Socket.io - only Wanmask
@@ -79,15 +55,12 @@ const Sockets = () => {
       // if (window.wan3 && address) {
       if (wanmaskConnected) {
         socket = io.connect(process.env.REACT_APP_SOCKET_URL);
-        socket.on("connect", (_) => {
-          console.log("Connected....................................");
+        socket.on('connect', (_) => {
+          console.log('Connected....................................');
           setIsConn(true);
           if (window.wan3.toChecksumAddress(address)) {
             // Este emit es para subscribirse a los cambios de los balances de esta direccion
-            socket.emit(
-              "clientAddress",
-              window.wan3.toChecksumAddress(address)
-            );
+            socket.emit('clientAddress', window.wan3.toChecksumAddress(address));
           }
         });
       }
@@ -109,8 +82,8 @@ const Sockets = () => {
     (_) => {
       if (
         window.ethereum ||
-        (fortmaticConnected && ethAddress !== "") ||
-        (coinbaseConnected && ethAddress !== "")
+        (fortmaticConnected && ethAddress !== '') ||
+        (coinbaseConnected && ethAddress !== '')
       ) {
         // console.log('window.ethereum');
 
@@ -125,18 +98,18 @@ const Sockets = () => {
 
         if (address) {
           // console.log('selectedAddress', address);
-          localStorage.setItem("ethAddress", address);
+          localStorage.setItem('ethAddress', address);
           // const { web3, ethereum } = window;
           if (socket) {
             socket.close();
-            console.log("Socket.io closed");
+            console.log('Socket.io closed');
           }
           socket = io.connect(process.env.REACT_APP_SOCKET_URL);
-          socket.on("connect", (_) => {
-            console.log("Connected....................................");
+          socket.on('connect', (_) => {
+            console.log('Connected....................................');
             setIsConn(true);
             // Este emit es para subscribirse a los cambios de los balances de esta direccion
-            socket.emit("clientAddress", web3.utils.toChecksumAddress(address));
+            socket.emit('clientAddress', web3.utils.toChecksumAddress(address));
           });
         }
       }
@@ -150,14 +123,11 @@ const Sockets = () => {
 
       if (
         isConn &&
-        (wanmaskConnected ||
-          metamaskConnected ||
-          fortmaticConnected ||
-          coinbaseConnected) &&
-        typeof contractBalances !== "undefined" &&
-        typeof walletBalances !== "undefined"
+        (wanmaskConnected || metamaskConnected || fortmaticConnected || coinbaseConnected) &&
+        typeof contractBalances !== 'undefined' &&
+        typeof walletBalances !== 'undefined'
       ) {
-        socket.on("balanceChange", async (data) => {
+        socket.on('balanceChange', async (data) => {
           // console.log('balanceChange', data);
           const { wan3 } = window;
 
@@ -169,13 +139,11 @@ const Sockets = () => {
 
           if (
             (wanmaskConnected &&
-              wan3.toChecksumAddress(data.user) ===
-                wan3.toChecksumAddress(address)) ||
+              wan3.toChecksumAddress(data.user) === wan3.toChecksumAddress(address)) ||
             ((metamaskConnected || fortmaticConnected || coinbaseConnected) &&
-              web3.utils.toChecksumAddress(data.user) ===
-                web3.utils.toChecksumAddress(ethAddress))
+              web3.utils.toChecksumAddress(data.user) === web3.utils.toChecksumAddress(ethAddress))
           ) {
-            console.log("new balances", data);
+            console.log('new balances', data);
             const newBal = data.newBalance;
 
             let newWalletBal = Number(data.newWalletBalance);
@@ -191,7 +159,7 @@ const Sockets = () => {
             });
           }
 
-          socket.emit("balanceChange", "received balance change");
+          socket.emit('balanceChange', 'received balance change');
         });
       }
     },
@@ -251,8 +219,8 @@ const Sockets = () => {
         /*    console.log('la data cabra', JSON.parse(data.data)) */
         data = JSON.parse(data.data)[1];
         let actualPair;
-        if (window.location.href.includes("trade"))
-          actualPair = window.location.href.split("/")[4].replace("_", "-");
+        if (window.location.href.includes('trade'))
+          actualPair = window.location.href.split('/')[4].replace('_', '-');
 
         /*   console.log(`pair used=${actualPair}, pair obtained=${data[0]}, they are equal?:`,data[0] === actualPair, data) */
         if (data[0] === actualPair) {
@@ -301,8 +269,7 @@ const Sockets = () => {
         };
         tickers[auxArray[0]] = ticker;
 
-        if (window.location.href.includes("dashboard"))
-          setChangeInTickers(Math.random());
+        if (window.location.href.includes('dashboard')) setChangeInTickers(Math.random());
 
         setTickers(tickers);
       }

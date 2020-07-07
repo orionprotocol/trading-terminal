@@ -1,4 +1,4 @@
-import React, { lazy, useState, Suspense } from 'react';
+import React, { lazy, useState, useEffect, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import Loader from '../../Loader';
 import './index.css';
@@ -7,7 +7,11 @@ const BuyAndSellForm = lazy(() => import('./BuyAndSellForm'));
 const YourProfit = lazy(() => import('./YourProfit'));
 
 export default function Exchange() {
+  const mode = useSelector((state) => state.general.mode);
   const orderBook = useSelector((state) => state.general.orderBook);
+  const symbolA = useSelector((state) => state.general.symbolA);
+  const symbolB = useSelector((state) => state.general.symbolB);
+  const supportTradingPairs = useSelector((state) => state.general.supportTradingPairs);
   const [activeTab, setActiveTab] = useState({
     buy: 'buy-tab active',
     sell: 'sell-tab',
@@ -18,6 +22,44 @@ export default function Exchange() {
     rigth: 'limit-order-button',
     type: 'market',
   });
+
+  const initialState = {
+    minQty: 0,
+    maxQty: 0,
+    minPrice: 0,
+    maxPrice: 0,
+    pricePrecision: 0,
+    qtyPrecision: 0,
+    baseAssetPrecision: 0,
+    quoteAssetPrecision: 0,
+  };
+  const [formatingPair, setformatingPair] = useState(initialState);
+
+  useEffect(() => {
+    setformatingPair(initialState);
+  }, [symbolA, symbolB]);
+
+  useEffect(() => {
+    if (supportTradingPairs.length > 0) {
+      if (formatingPair.pricePrecision === 0 && formatingPair.maxPrice === 0) {
+        supportTradingPairs.forEach((pair) => {
+          if (pair.symbolA === symbolA && pair.symbolB === symbolB) {
+            setformatingPair({
+              ...formatingPair,
+              minQty: pair.minQty,
+              maxQty: pair.maxQty,
+              minPrice: pair.minPrice,
+              maxPrice: pair.maxPrice,
+              pricePrecision: pair.pricePrecision,
+              qtyPrecision: pair.qtyPrecision,
+              baseAssetPrecision: pair.baseAssetPrecision,
+              quoteAssetPrecision: pair.quoteAssetPrecision,
+            });
+          }
+        });
+      }
+    }
+  }, [supportTradingPairs, formatingPair]);
 
   return (
     <section>
@@ -83,7 +125,10 @@ export default function Exchange() {
         <div className="buy-and-sell-form">
           <Suspense fallback={<Loader />}>
             {orderBook ? (
-              <BuyAndSellForm type={{ trade: activeTab.type, selection: activeButton.type }} />
+              <BuyAndSellForm
+                formatingPair={formatingPair}
+                type={{ trade: activeTab.type, selection: activeButton.type }}
+              />
             ) : null}
           </Suspense>
         </div>
