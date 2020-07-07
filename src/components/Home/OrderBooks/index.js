@@ -1,11 +1,11 @@
-import React, { lazy, useState, useEffect, Suspense } from "react";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import Loader from "../../Loader";
-import "./index.css";
+import React, { lazy, useState, useEffect, Suspense } from 'react';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import Loader from '../../Loader';
+import './index.css';
 
-const Asks = lazy(() => import("./Asks"));
-const Bids = lazy(() => import("./Bids"));
+const Asks = lazy(() => import('./Asks'));
+const Bids = lazy(() => import('./Bids'));
 
 const urlBase = process.env.REACT_APP_BACKEND;
 
@@ -35,7 +35,7 @@ function updateOrderBookData(data, exchange, stateData, callback) {
   if (!stateAsks || !asks) return;
   for (let i = 0; i < asks.length; i++) {
     let exchanges = asks[i].exchanges || [];
-    if (exchange !== "all") {
+    if (exchange !== 'all') {
       let needExchange = false;
       for (let k = 0; k < exchanges.length; k++) {
         if (exchanges[k] === exchange) {
@@ -76,7 +76,7 @@ function updateOrderBookData(data, exchange, stateData, callback) {
   let stateBids = stateData.bids;
   for (let i = 0; i < bids.length; i++) {
     let exchanges = bids[i].exchanges || [];
-    if (exchange !== "all") {
+    if (exchange !== 'all') {
       let needExchange = false;
       for (let k = 0; k < exchanges.length; k++) {
         if (exchanges[k] === exchange) {
@@ -115,9 +115,9 @@ function updateOrderBookData(data, exchange, stateData, callback) {
     return prev.price > current.price ? prev : current;
   });
   stateBids = stateBids.sort(sortBids).slice(0, 20);
-  let lastPriceStyle = "#e5494d";
+  let lastPriceStyle = '#e5494d';
   if (maxBid.price > data.lastPrice) {
-    lastPriceStyle = "#2051d3";
+    lastPriceStyle = '#2051d3';
   }
   callback(stateAsks, stateBids, maxBid, lastPriceStyle);
 }
@@ -169,9 +169,9 @@ const OrderBooks = (props) => {
     if (symbol && depth) {
       let url =
         urlBase +
-        "/api/v1/orderBook?symbol={SYMBOL}&depth={DEPTH}"
-          .replace("{SYMBOL}", symbol)
-          .replace("{DEPTH}", depth);
+        '/api/v1/orderBook?symbol={SYMBOL}&depth={DEPTH}'
+          .replace('{SYMBOL}', symbol)
+          .replace('{DEPTH}', depth);
       axios.get(url).then((res) => {
         const { data } = res;
 
@@ -181,14 +181,14 @@ const OrderBooks = (props) => {
             data: {
               ...data,
               lastPrice: 0,
-              lastPriceStyle: "#000",
+              lastPriceStyle: '#000',
               ask: data.asks[data.asks.length - 1].price,
               bid: data.bids[0].price,
             },
           });
           setcargando(true);
           setTimeout(() => {
-            const div = document.querySelector(".orders.asks");
+            const div = document.querySelector('.orders.asks');
             if (div) div.scrollTop = div.scrollHeight;
           }, 10);
         } else {
@@ -197,14 +197,14 @@ const OrderBooks = (props) => {
             data: {
               ...data,
               lastPrice: 0,
-              lastPriceStyle: "#000",
+              lastPriceStyle: '#000',
               // ask: data.asks[data.asks.length - 1].price,
               // bid: data.bids[0].price
             },
           });
           setcargando(true);
           setTimeout(() => {
-            const div = document.querySelector(".orders.asks");
+            const div = document.querySelector('.orders.asks');
             if (div) div.scrollTop = div.scrollHeight;
           }, 10);
         }
@@ -232,7 +232,7 @@ const OrderBooks = (props) => {
 
         updateOrderBookData(
           aggregatedData,
-          "all",
+          'all',
           state.data,
           (asks, bids, maxBid, lastPriceStyle) => {
             setState({
@@ -270,9 +270,7 @@ const OrderBooks = (props) => {
         </div>
       </div>
       <Suspense fallback={<Loader />}>
-        {cargando && (
-          <Asks data={state.data} lastPrice={state.data.lastPrice} />
-        )}
+        {cargando && <Asks data={state.data} lastPrice={state.data.lastPrice} />}
         {cargando && (
           <div className="order-book">
             <div className="last-price">
@@ -281,9 +279,7 @@ const OrderBooks = (props) => {
             </div>
           </div>
         )}
-        {cargando && (
-          <Bids data={state.data} lastPrice={state.data.lastPrice} />
-        )}
+        {cargando && <Bids data={state.data} lastPrice={state.data.lastPrice} />}
       </Suspense>
     </div>
   );

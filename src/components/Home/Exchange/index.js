@@ -1,22 +1,22 @@
-import React, { lazy, useState, Suspense } from "react";
-import { useSelector } from "react-redux";
-import Loader from "../../Loader";
-import "./index.css";
+import React, { lazy, useState, Suspense } from 'react';
+import { useSelector } from 'react-redux';
+import Loader from '../../Loader';
+import './index.css';
 
-const BuyAndSellForm = lazy(() => import("./BuyAndSellForm"));
-const YourProfit = lazy(() => import("./YourProfit"));
+const BuyAndSellForm = lazy(() => import('./BuyAndSellForm'));
+const YourProfit = lazy(() => import('./YourProfit'));
 
 export default function Exchange() {
   const orderBook = useSelector((state) => state.general.orderBook);
   const [activeTab, setActiveTab] = useState({
-    buy: "buy-tab active",
-    sell: "sell-tab",
-    type: "buy",
+    buy: 'buy-tab active',
+    sell: 'sell-tab',
+    type: 'buy',
   });
   const [activeButton, setActiveButton] = useState({
-    left: "market-button active",
-    rigth: "limit-order-button",
-    type: "market",
+    left: 'market-button active',
+    rigth: 'limit-order-button',
+    type: 'market',
   });
 
   return (
@@ -27,9 +27,9 @@ export default function Exchange() {
             className={activeTab.buy}
             onClick={() =>
               setActiveTab({
-                buy: "buy-tab active",
-                sell: "sell-tab",
-                type: "buy",
+                buy: 'buy-tab active',
+                sell: 'sell-tab',
+                type: 'buy',
               })
             }
           >
@@ -39,25 +39,25 @@ export default function Exchange() {
             className={activeTab.sell}
             onClick={() =>
               setActiveTab({
-                buy: "buy-tab",
-                sell: "sell-tab active",
-                type: "sell",
+                buy: 'buy-tab',
+                sell: 'sell-tab active',
+                type: 'sell',
               })
             }
           >
             Sell
           </div>
         </div>
-        <div style={{ paddingTop: "1%" }}>
+        <div style={{ paddingTop: '1%' }}>
           <div className="container-buttons-options">
             <div className="buttons-options">
               <button
                 className={activeButton.left}
                 onClick={() =>
                   setActiveButton({
-                    left: "market-button active",
-                    rigth: "limit-order-button",
-                    type: "market",
+                    left: 'market-button active',
+                    rigth: 'limit-order-button',
+                    type: 'market',
                   })
                 }
               >
@@ -69,9 +69,9 @@ export default function Exchange() {
                 className={activeButton.rigth}
                 onClick={() =>
                   setActiveButton({
-                    left: "market-button",
-                    rigth: "limit-order-button active",
-                    type: "limit-order",
+                    left: 'market-button',
+                    rigth: 'limit-order-button active',
+                    type: 'limit-order',
                   })
                 }
               >
@@ -83,16 +83,12 @@ export default function Exchange() {
         <div className="buy-and-sell-form">
           <Suspense fallback={<Loader />}>
             {orderBook ? (
-              <BuyAndSellForm
-                type={{ trade: activeTab.type, selection: activeButton.type }}
-              />
+              <BuyAndSellForm type={{ trade: activeTab.type, selection: activeButton.type }} />
             ) : null}
           </Suspense>
         </div>
       </div>
-      <Suspense fallback={<Loader />}>
-        {orderBook ? <YourProfit /> : null}
-      </Suspense>
+      <Suspense fallback={<Loader />}>{orderBook ? <YourProfit /> : null}</Suspense>
     </section>
   );
 }

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import { CarouselProvider, Slider, Slide } from "pure-react-carousel";
-import "pure-react-carousel/dist/react-carousel.es.css";
-import "./index.css";
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { CarouselProvider, Slider, Slide } from 'pure-react-carousel';
+import 'pure-react-carousel/dist/react-carousel.es.css';
+import './index.css';
 const urlBase = process.env.REACT_APP_BACKEND;
 
 const YourProfit = () => {
@@ -11,19 +11,19 @@ const YourProfit = () => {
   const qtyForm = useSelector((state) => state.general.qtyForm);
   const sideForm = useSelector((state) => state.general.sideForm);
   const mode = useSelector((state) => state.general.mode);
-  const [profits, setProfits] = useState("");
+  const [profits, setProfits] = useState('');
   const [profits2, setProfits2] = useState([]);
 
   let style;
-  if (mode === "Dark") {
-    style = { color: "white" };
+  if (mode === 'Dark') {
+    style = { color: 'white' };
   } else {
-    style = { color: " rgb(139, 139, 139)" };
+    style = { color: ' rgb(139, 139, 139)' };
   }
 
   const loadBenefits = () => {
     let quantity = qtyForm;
-    if (qtyForm === "") quantity = 0;
+    if (qtyForm === '') quantity = 0;
     let url = `${urlBase}/api/v1/order-benefits?symbol=${symbol}&ordQty=${quantity}&side=${sideForm}`;
     let aux = [],
       result;
@@ -61,7 +61,7 @@ const YourProfit = () => {
         }
       })
       .catch((err) => {
-        console.log("err: ", err);
+        console.log('err: ', err);
       });
   };
 
@@ -79,14 +79,14 @@ const YourProfit = () => {
         <p
           style={{
             color: `rgb(120,133,169)`,
-            fontWeight: "900",
-            fontSize: "18px",
+            fontWeight: '900',
+            fontSize: '18px',
           }}
         >
           {res.name}
         </p>
-        <p style={{ fontSize: "12px" }}>+ {res.benefitPct} %</p>
-        <p style={{ fontSize: "12px" }}>+ {res.benefitBtc} BTC </p>
+        <p style={{ fontSize: '12px' }}>+ {res.benefitPct} %</p>
+        <p style={{ fontSize: '12px' }}>+ {res.benefitBtc} BTC </p>
       </Slide>
     );
   });
@@ -95,9 +95,7 @@ const YourProfit = () => {
     return (
       <section className="your-profit">
         <div>
-          <h2 style={{ textAlign: "center" }}>
-            Enter an amount to get your profits
-          </h2>
+          <h2 style={{ textAlign: 'center' }}>Enter an amount to get your profits</h2>
         </div>
       </section>
     );

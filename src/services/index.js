@@ -1,17 +1,15 @@
-import React, { Fragment, useEffect, useState } from "react";
-import Sockets from "./Sockets";
-import WanmaskVerification from "./WanmaskVerification";
-import OrionWanchain from "./OrionWanchain";
-import Metamask from "./Metamask";
-import Fortmatic from "./Fortmatic";
-import Coinbase from "./Coinbase";
-import Assests from "./possibleAssests";
-import { useSelector } from "react-redux";
+import React, { Fragment, useEffect, useState } from 'react';
+import Sockets from './Sockets';
+import WanmaskVerification from './WanmaskVerification';
+import OrionWanchain from './OrionWanchain';
+import Metamask from './Metamask';
+import Fortmatic from './Fortmatic';
+import Coinbase from './Coinbase';
+import Assests from './possibleAssests';
+import { useSelector } from 'react-redux';
 
 const Index = (_) => {
-  const wanmaskConnected = useSelector(
-    (state) => state.wallet.wanmaskConnected
-  );
+  const wanmaskConnected = useSelector((state) => state.wallet.wanmaskConnected);
 
   const [render, setRender] = useState(null);
 

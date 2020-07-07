@@ -1,13 +1,11 @@
-import React, { useEffect, useState, Fragment } from "react";
-import { useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import PairDrop2 from "./PairDrop2";
-import "./index.scss";
+import React, { useEffect, useState, Fragment } from 'react';
+import { useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import PairDrop2 from './PairDrop2';
+import './index.scss';
 
 const formatNumber = (number) => {
-  return new Intl.NumberFormat("en-US", { minimumFractionDigits: 2 }).format(
-    number
-  );
+  return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2 }).format(number);
 };
 let intervalId = 0;
 const CommonInfo = ({ History }) => {
@@ -27,19 +25,15 @@ const CommonInfo = ({ History }) => {
 
   useEffect(
     (_) => {
-      if (symbolB === "USDT") {
+      if (symbolB === 'USDT') {
         return;
       } else {
         /*  console.log(tickers[`${symbolB}-USDT`]) */
         if (tickers[`${symbolB}-USDT`] !== undefined) {
-          let last = (tickers[`${symbolB}-USDT`].lastPrice * lastPrice).toFixed(
-            2
-          );
+          let last = (tickers[`${symbolB}-USDT`].lastPrice * lastPrice).toFixed(2);
           let h = (tickers[`${symbolB}-USDT`].lastPrice * high).toFixed(2);
           let l = (tickers[`${symbolB}-USDT`].lastPrice * low).toFixed(2);
-          let v = (tickers[`${symbolB}-USDT`].lastPrice * Number(vol)).toFixed(
-            2
-          );
+          let v = (tickers[`${symbolB}-USDT`].lastPrice * Number(vol)).toFixed(2);
 
           last = formatNumber(last);
           h = formatNumber(h);
@@ -59,7 +53,7 @@ const CommonInfo = ({ History }) => {
       clearInterval(intervalId);
       intervalId = setInterval(() => {
         const pair = `${symbolA}-${symbolB}`;
-        let favs = localStorage.getItem("favs");
+        let favs = localStorage.getItem('favs');
 
         if (favs) {
           favs = JSON.parse(favs);
@@ -85,9 +79,9 @@ const CommonInfo = ({ History }) => {
       <div className="top">
         <div className="star">
           {isFav ? (
-            <FontAwesomeIcon icon="star" style={{ color: "#00bbff" }} />
+            <FontAwesomeIcon icon="star" style={{ color: '#00bbff' }} />
           ) : (
-            <FontAwesomeIcon icon={["far", "star"]} />
+            <FontAwesomeIcon icon={['far', 'star']} />
           )}
           <span>Pair</span>
         </div>
@@ -107,7 +101,7 @@ const CommonInfo = ({ History }) => {
         <div className="last-price">
           <span className="title">Last price</span>
           <div className="value">
-            {symbolB !== "USDT" ? (
+            {symbolB !== 'USDT' ? (
               <Fragment>
                 <span className="emp">{lastPrice.toFixed(5)}</span>
                 <span className="dollars">${dollars.last}</span>
@@ -124,11 +118,7 @@ const CommonInfo = ({ History }) => {
           <div className="value">
             {change >= 0 ? (
               <Fragment>
-                <img
-                  src="/img/growth.png"
-                  style={{ width: "10px", height: "10px" }}
-                  alt="home"
-                />
+                <img src="/img/growth.png" style={{ width: '10px', height: '10px' }} alt="home" />
                 <p className="emp">
                   {change} <span>%</span>
                 </p>
@@ -137,7 +127,7 @@ const CommonInfo = ({ History }) => {
               <Fragment>
                 <img
                   src="/img/red-arrow.png"
-                  style={{ width: "10px", height: "10px" }}
+                  style={{ width: '10px', height: '10px' }}
                   alt="home"
                 />
                 <p className="emp">
@@ -152,29 +142,24 @@ const CommonInfo = ({ History }) => {
         <div className="line">
           <span className="title">24h High</span>
           <p className="value averta">
-            <span>{high}</span>{" "}
-            {symbolB !== "USDT" && (
-              <span className="small">${dollars.high}</span>
-            )}
+            <span>{high}</span>{' '}
+            {symbolB !== 'USDT' && <span className="small">${dollars.high}</span>}
           </p>
         </div>
         <div className="line">
           <span className="title">24h Low</span>
           <p className="value averta">
-            <span>{low}</span>{" "}
-            {symbolB !== "USDT" && (
-              <span className="small">${dollars.low}</span>
-            )}
+            <span>{low}</span> {symbolB !== 'USDT' && <span className="small">${dollars.low}</span>}
           </p>
         </div>
         <div className="line">
           <span className="title">24h Vol</span>
           <p className="value averta">
-            {symbolB === "USDT" ? (
+            {symbolB === 'USDT' ? (
               <Fragment>{formatNumber(vol / 10 ** 6)}M</Fragment>
             ) : (
               <Fragment>
-                <span>{new Intl.NumberFormat("en-US").format(vol)}</span>{" "}
+                <span>{new Intl.NumberFormat('en-US').format(vol)}</span>{' '}
                 <span className="small">${dollars.vol}M</span>
               </Fragment>
             )}
