@@ -223,7 +223,7 @@ export default class Contract {
         try {
             if (currency === 'eth') {
                 const res = await this.exchange.methods
-                    .depositWan()
+                    .deposit()
                     .send({ from: address, value: newAmount },_=>{
                         if(metamaskConnected){
                             customSwal.fire({
