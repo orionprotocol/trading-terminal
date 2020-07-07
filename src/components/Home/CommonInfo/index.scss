@@ -1,8 +1,6 @@
 .common-info {
-  -webkit-box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06),
-    0 0 1px rgba(20, 16, 41, 0.12);
-  box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06),
-    0 0 1px rgba(20, 16, 41, 0.12);
+  -webkit-box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
+  box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
   border-radius: 4px;
   padding: 8px;
   margin-bottom: 8px;
@@ -78,9 +76,11 @@
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
-        -webkit-box-align: end;
+        flex-direction: column;
+        -ms-flex-direction: column;
+        /* -webkit-box-align: end;
         -ms-flex-align: end;
-        align-items: flex-end;
+        align-items: flex-end; */
         .emp {
           color: rgba(20, 16, 41, 0.8);
           font-size: 16px;
@@ -113,9 +113,6 @@
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
-        img {
-          margin-bottom: 21px;
-        }
         .emp {
           color: rgba(20, 16, 41, 0.8);
           font-size: 16px;
@@ -128,6 +125,7 @@
           -webkit-box-align: baseline;
           -ms-flex-align: baseline;
           align-items: baseline;
+          margin-bottom: 0;
           span {
             font-size: 10px;
             color: rgba(20, 16, 41, 0.6);
@@ -199,10 +197,8 @@
 .dark-mode {
   .common-info {
     background: #2a2a41;
-    -webkit-box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06),
-      0 0 1px 0 rgba(32, 32, 54, 0.12);
-    box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06),
-      0 0 1px 0 rgba(32, 32, 54, 0.12);
+    -webkit-box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
+    box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
     .top {
       background: #2a2a41;
     }
@@ -259,6 +255,6 @@
 
 .wf-active {
   .common-info .top .drop-menu-currecy-select {
-    font-family: "Montserrat", sans-serif;
+    font-family: 'Montserrat', sans-serif;
   }
 }
