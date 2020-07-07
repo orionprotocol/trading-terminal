@@ -102,7 +102,7 @@ const YourProfit = () => {
 		}
 	}, [supportTradingPairs,formatingPair]);
 	/* END OF FORMATING NUMBERS STATE SECTION*/
-console.log(formatingPair)
+
 
 
 	const loadBenefits = () => {
