@@ -8,28 +8,34 @@ import { loadOrderHistory } from '../../Orders/index';
 import openNotification from '../../../Notification';
 
 // type: { trade: 'buy' or 'sell, selection: 'market' or 'limit-order'}
-export default function BuyAndSellForm({ type }) {
+export default function BuyAndSellForm({ type, formatingPair }) {
+   /*  console.log(formatingPair) */
+    /* REDUX */
     const dispatch = useDispatch();
 
-    const { symbol, symbolA, symbolB, orderData, lastPrice } = useSelector(
-        state => state.general
-    );
-    const { metamaskConnected, fortmaticConnected, coinbaseConnected } = useSelector(
-        state => state.wallet
-    );
-
+    const lastPrice = useSelector((state) => state.general.lastPrice);
+    const orderData = useSelector((state) => state.general.orderData);
+    const symbol = useSelector((state) => state.general.symbol);
+    const symbolA = useSelector((state) => state.general.symbolA);
+    const symbolB = useSelector((state) => state.general.symbolB);
+    const orderBook = useSelector((state) => state.general.orderBook);
+    const metamaskConnected = useSelector((state) => state.wallet.metamaskConnected);
+    const fortmaticConnected = useSelector((state) => state.wallet.fortmaticConnected);
+    const coinbaseConnected = useSelector((state) => state.wallet.coinbaseConnected);
     const balances = useSelector(state => state.balances);
 
     const setQtyForm = useCallback(
         data => dispatch({ type: 'SetQtyForm', payload: data }),
         [dispatch]
     );
-    // const setSideForm = useCallback((data) => dispatch({ type: 'SetSideForm', payload: data }), [ dispatch ]);
+    
     const setAddWallet = useCallback(
         data => dispatch({ type: 'SetAddWallet', payload: data }),
         [dispatch]
     );
-    const { orderBook } = useSelector((state) => state.general);
+/* REDUX */
+    // const setSideForm = useCallback((data) => dispatch({ type: 'SetSideForm', payload: data }), [ dispatch ]);
+
     /*  console.log(type.trade)
      if(orderBook){
          console.log( orderBook.aggregatedAsks,orderBook.aggregatedBids )
@@ -47,10 +53,10 @@ export default function BuyAndSellForm({ type }) {
     const [available, setAvailable] = useState(0);
     const [total, setTotal] = useState(0);
     // const [ prevType, setPrevType ] = useState('');
-  
+
     /* This useEffect is made to change the de total if the amount change */
     const iterating_price_for_total = (array, amount, type) => {
-        
+
         let cost = 0
         let totalPrice = 0
         let remanent = 0
@@ -61,19 +67,19 @@ export default function BuyAndSellForm({ type }) {
         for (let x = 0; x < array.length; x++) {
             if (remanent - array[x].size <= 0) {
                 cost += (remanent * array[x].price)
-                return [cost, array[x].price*(1 + percent)]
+                return [cost, array[x].price * (1 + percent)]
             } else if (remanent - array[x].size > 0) {
                 cost += (array[x].size * array[x].price)
                 remanent -= array[x].size
             }
         }
-        if(array[array.length - 1].price){
+        if (array[array.length - 1].price) {
             cost += (remanent * array[array.length - 1].price)
-        }else{
+        } else {
             cost += 0
         }
-        
-        return [cost, array[array.length - 1].price*(1 + percent)]
+
+        return [cost, array[array.length - 1].price * (1 + percent)]
     }
 
     useEffect(() => {
@@ -84,18 +90,18 @@ export default function BuyAndSellForm({ type }) {
                 price: marketPrice,
                 total: marketTotal
             });
-            setTotal(marketTotal.toFixed(8));
+            setTotal(marketTotal.toFixed(formatingPair.quoteAssetPrecision));
         }
-    }, [orderBook.aggregatedAsks, orderBook.aggregatedBids, values.amount,type.selection]);
-/* This useEffect works to change the total price when u switch from market to limit order */
+    }, [orderBook.aggregatedAsks, orderBook.aggregatedBids, values.amount, type.selection,formatingPair]);
+    /* This useEffect works to change the total price when u switch from market to limit order */
     useEffect(() => {
-        if(type.selection==='limit-order'){
-            console.log('entro aca??',values.amount,values.price )
-            if (values.price !== '' && values.amount!=='') {
-                setTotal((values.amount * values.price).toFixed(8));
+        if (type.selection === 'limit-order') {
+            console.log('entro aca??', values.amount, values.price)
+            if (values.price !== '' && values.amount !== '') {
+                setTotal((values.amount * values.price).toFixed(formatingPair.quoteAssetPrecision));
             }
         }
-    }, [type.selection,values.amount,values.price]);
+    }, [type.selection, values.amount, values.price,formatingPair]);
 
     useEffect(
         _ => {
@@ -105,11 +111,11 @@ export default function BuyAndSellForm({ type }) {
                     amount: orderData.amount.toFixed(8),
                     price: parseFloat(orderData.price).toFixed(8),
                 });
-                setTotal(orderData.total.toFixed(8));
+                setTotal(orderData.total.toFixed(formatingPair.quoteAssetPrecision));
             }
         },
         //eslint-disable-next-line react-hooks/exhaustive-deps
-        [orderData]
+        [orderData,formatingPair]
     );
 
     useEffect(
@@ -195,7 +201,7 @@ export default function BuyAndSellForm({ type }) {
             if (e.target.name === 'amount') {
                 setQtyForm(e.target.value);
             }
-           if (type.selection === 'limit-order') {
+            if (type.selection === 'limit-order') {
                 if (values.price !== '') {
                     setTotal((e.target.value * values.price).toFixed(8));
                 } else {
@@ -369,7 +375,7 @@ export default function BuyAndSellForm({ type }) {
 
         // ----------------------------------- End - Wanchain --------------------------------------
     };
-    
+
     return (
         <Fragment>
             <Formik
@@ -394,6 +400,7 @@ export default function BuyAndSellForm({ type }) {
                                 value={values.amount}
                                 onChange={handleChange}
                             />
+                            
                             {type.trade === 'buy' ?
                                 <label
                                     style={{
@@ -422,6 +429,8 @@ export default function BuyAndSellForm({ type }) {
                             }
 
                         </div>
+                   {/*      (11111).toString().length>(0.01).toString().length */}
+                        
                         {type.selection === 'limit-order' && (
                             <div>
                                 {type.trade === 'buy' ?
@@ -457,11 +466,11 @@ export default function BuyAndSellForm({ type }) {
 
                             {type.trade === 'buy' ? (
                                 <span className="avl-amount" style={{ color: 'rgb(0, 187, 255)' }} >
-                                    {available} {symbolB}
+                                    {parseFloat(available).toFixed(formatingPair.quoteAssetPrecision)} {symbolB}
                                 </span>
                             ) : (
                                     <span className="avl-amount" style={{ color: 'rgb(255, 99, 85)' }}>
-                                        {available} {symbolA}
+                                        {parseFloat(available).toFixed(formatingPair.baseAssetPrecision)} {symbolA}
                                     </span>
                                 )}
                         </div>
@@ -470,7 +479,7 @@ export default function BuyAndSellForm({ type }) {
                                 type="button"
                                 onClick={() => handlePercent(0.25)}
                                 className={`percent-button left ${type.trade === 'buy' ? 'buy' : 'sell'}`}
-                                
+
                             >
 
                                 25%
@@ -546,7 +555,7 @@ export default function BuyAndSellForm({ type }) {
                                         className="submit-form buy"
                                         type="submit"
                                         onClick={submitOrder}
-                                        disabled={( parseFloat(values.price)<=0 || parseFloat(values.amount)<=0 || isNaN(parseFloat(values.amount)) )  ? true:false}
+                                        disabled={(parseFloat(values.price) <= 0 || parseFloat(values.amount) <= 0 || isNaN(parseFloat(values.amount))) ? true : false}
                                     >
                                         Buy {symbolA}
                                     </button>
@@ -558,7 +567,7 @@ export default function BuyAndSellForm({ type }) {
                                         className="submit-form sell"
                                         type="submit"
                                         onClick={submitOrder}
-                                        disabled={( parseFloat(values.price)<=0 || parseFloat(values.amount)<=0 || isNaN(parseFloat(values.amount)) )  ? true:false}
+                                        disabled={(parseFloat(values.price) <= 0 || parseFloat(values.amount) <= 0 || isNaN(parseFloat(values.amount))) ? true : false}
                                     >
                                         Sell {symbolA}
                                     </button>
