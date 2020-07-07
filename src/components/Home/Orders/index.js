@@ -34,6 +34,7 @@ const Orders = (_) => {
   const mode = useSelector((state) => state.general.mode);
   const balances = useSelector((state) => state.balances);
   const ethAddress = useSelector((state) => state.wallet.ethAddress);
+  const supportTradingPairs = useSelector((state) => state.general.supportTradingPairs);
   const [orders, setOrders] = useState([]);
   const [ordersOrigin, setOrdersOrigin] = useState([]);
   const [allOrders, setAllOrders] = useState([]);

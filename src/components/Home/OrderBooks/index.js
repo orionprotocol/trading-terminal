@@ -128,6 +128,7 @@ const OrderBooks = (props) => {
   const symbolA = useSelector((state) => state.general.symbolA);
   const symbolB = useSelector((state) => state.general.symbolB);
   const supportTradingPairs = useSelector((state) => state.general.supportTradingPairs);
+  const [state, setState] = useState({ data: { lastPrice: 0 } });
 
   /* FORMATING NUMBERS STATE*/
   //Aca inicia las funciones que se encargan de darle un formato a cada valor que se muestra en pantalla

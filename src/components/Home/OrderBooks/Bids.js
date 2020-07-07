@@ -48,7 +48,7 @@ function calculatePercent27(value) {
 // 	);
 // }
 
-const renderSize = (data) => {
+const renderSize = (data, format) => {
   let id = 'bid-row-' + Math.floor(Math.random() * 100000);
   let colorClass = 'cell';
   if (!data.dynamic) {
@@ -104,17 +104,6 @@ const Bids = ({ dataBid, formatingPair }) => {
     },
     //eslint-disable-next-line react-hooks/exhaustive-deps
     [dataBid]
-  );
-
-  useEffect(
-    (_) => {
-      if (props.data) {
-        setBids(renderBids(props.data));
-        setDataBids(props.data.bids);
-      }
-    },
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-    [props]
   );
 
   function chooseOrderBookLine(data) {

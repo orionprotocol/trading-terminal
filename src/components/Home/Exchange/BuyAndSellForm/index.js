@@ -30,11 +30,6 @@ export default function BuyAndSellForm({ type, formatingPair }) {
   const setAddWallet = useCallback((data) => dispatch({ type: 'SetAddWallet', payload: data }), [
     dispatch,
   ]);
-  const orderBook = useSelector((state) => state.general.orderBook);
-  /*  console.log(type.trade)
-     if(orderBook){
-         console.log( orderBook.aggregatedAsks,orderBook.aggregatedBids )
-     } */
   const [values, setValues] = useState({
     amount: '',
     available: '0',

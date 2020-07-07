@@ -7,10 +7,13 @@ import './index.css';
 const urlBase = process.env.REACT_APP_BACKEND;
 
 const YourProfit = () => {
-  const symbol = useSelector((state) => state.general.symbol);
   const qtyForm = useSelector((state) => state.general.qtyForm);
   const sideForm = useSelector((state) => state.general.sideForm);
   const mode = useSelector((state) => state.general.mode);
+  const symbol = useSelector((state) => state.general.symbol);
+  const symbolA = useSelector((state) => state.general.symbolA);
+  const symbolB = useSelector((state) => state.general.symbolB);
+  const supportTradingPairs = useSelector((state) => state.general.supportTradingPairs);
   const [profits, setProfits] = useState('');
   const [profits2, setProfits2] = useState([]);
 

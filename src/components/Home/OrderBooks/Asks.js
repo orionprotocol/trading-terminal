@@ -32,7 +32,7 @@ function calculatePercent27(value) {
   return (27 * value) / 100;
 }
 
-const renderSize = (data) => {
+const renderSize = (data, format) => {
   let id = 'ask-row-' + Math.floor(Math.random() * 100000);
   let colorClass = 'cell';
   if (!data.dynamic) {
@@ -64,7 +64,6 @@ const renderSize = (data) => {
 const Asks = ({ dataAsk, formatingPair }) => {
   const dispatch = useDispatch();
   const [asks, setAsks] = useState();
-  const symbolB = useSelector((state) => state.general.symbolB);
   const setOrderData = useCallback((data) => dispatch({ type: 'SetOrderData', payload: data }), [
     dispatch,
   ]);
