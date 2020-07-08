@@ -268,13 +268,15 @@ const Orders = (_) => {
   const renderOrders = (_) => {
     setState({ ...state, renderOrders: null });
 
-    setTimeout((_) => {
-      let newRenderOrders = orders.map((data, i) => (
-        <Line formatingPair={formatingPair} type={state.type} key={i} data={data} />
-      ));
+    if (orders && orders.length > 0) {
+      setTimeout((_) => {
+        let newRenderOrders = orders.map((data, i) => (
+          <Line formatingPair={formatingPair} type={state.type} key={i} data={data} />
+        ));
 
-      setState({ ...state, renderOrders: newRenderOrders });
-    }, 0);
+        setState({ ...state, renderOrders: newRenderOrders });
+      }, 0);
+    }
   };
 
   useEffect(
@@ -318,25 +320,7 @@ const Orders = (_) => {
 
       setOrders(newOrders);
     },
-    //eslint-disable-next-line react-hooks/exhaustive-deps
     [startDateA, startDateB]
-  );
-
-  useEffect(
-    (_) => {
-      let newTime = dayjs(startDateB).unix();
-      let timeA = dayjs(startDateA).unix();
-
-      let newOrders = ordersOrigin.filter((e) => {
-        let time = String(e.time);
-        time = time.substring(0, 10);
-        return time <= newTime && time >= timeA;
-      });
-
-      setOrders(newOrders);
-    },
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-    [startDateB]
   );
 
   const optsClass = mode === 'Light' ? 'option-select emp' : 'dark-mode option-select emp';
@@ -392,7 +376,7 @@ const Orders = (_) => {
           </Row>
           {/* AQUI */}
           <Row style={{ paddingLeft: 15, paddingBottom: 10 }}>
-            <Table handleSort={handleSort} classes={classes} state={state} />
+            <Table handleSort={handleSort} classes={classes} renderOrders={state.renderOrders} />
           </Row>
         </Content>
       </Layout>
