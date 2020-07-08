@@ -133,7 +133,7 @@ class CandlesService {
         onResetCacheNeededCallback
       );
 
-      if (candles.length > 1) {
+      if (candles.length > 0) {
         this._updateLastTime(candles);
         CandlesService.filterCandlesByTime(candles, from, to).forEach(onRealtimeCallback);
       }
