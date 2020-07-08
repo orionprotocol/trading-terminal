@@ -188,7 +188,7 @@ class CandlesService {
     }
 
     _updateLastTime(candles) {
-        const lastTime = candles[candles.length - 2].timeStart;
+        const lastTime = candles[candles.length].timeStart;
         if (this._lastTime >= lastTime) {
             return false;
         }
@@ -225,8 +225,6 @@ class CandlesService {
         const exchange = symbolInfo.exchange;
         //const path = `${baseUrl}/candles/${amountId}/${priceId}`;
         const path = 'https://candles.orionprotocol.io/api/v1/candles';
-
-        from = from + 3600;
 
         const fetchPath =
             exchange == 'all'
