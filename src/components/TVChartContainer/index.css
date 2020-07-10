@@ -1,28 +1,8 @@
 .TVChartContainer {
-    height: 100%;
-    width: 100%;
-}
-#chart-container{
-    margin-bottom: 10px !important;
-}
-.image.js-chart.js-panel-item{
-padding-right: 4px;
+  height: 100%;
+  width: 100%;
 }
 .pane-legend-line span {
-    pointer-events: auto;
-    margin-right: 10px !important;
+  pointer-events: auto;
+  margin-right: 10px !important;
 }
-@media only screen and (max-width: 900px) {
-    #chart-container {
-        position: absolute;
-        top: 30vh;
-        left: 3vh;
-        width: 100vw !important;
-        left: 0 !important;
-    }
-    iframe{
-        margin-top: 10px;
-        width: 100% !important;
-    }
-  }
- 

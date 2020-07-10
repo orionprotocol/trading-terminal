@@ -1,4 +1,5 @@
 .mobile-navigation {
+  margin-bottom: 16px;
   .prices {
     padding: 8px;
   }
@@ -29,7 +30,12 @@
         font-weight: 600;
       }
       &.active {
-        color: #00bbff !important;
+        img path {
+          fill: #00bbff;
+        }
+        .text {
+          color: #00bbff !important;
+        }
       }
     }
   }

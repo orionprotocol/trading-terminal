@@ -4,14 +4,6 @@
   /* padding-top: 10%; */
 }
 
-.left-panel.js-panel {
-  display: flex;
-  /* flex-wrap: wrap; */
-  flex-direction: column;
-  /* overflow-y: auto;
-	overflow-x: visible; */
-}
-
 .exchange .container-buttons-options {
   background-color: #fafafa;
   width: 90%;
@@ -88,7 +80,7 @@
 }
 
 .wf-active .buy-and-sell-form {
-  font-family: "Montserrat", sans-serif !important;
+  font-family: 'Montserrat', sans-serif !important;
 }
 
 .buy-and-sell-form form {
@@ -178,10 +170,10 @@
     rgba(0, 197, 243, 1) 49%,
     rgba(64, 125, 246, 1) 100%
   );
-  -webkit-box-shadow: 0 8px 12px rgba(0, 187, 255, 0.24),
-    0 2px 4px -1px rgba(10, 70, 82, 0.12), 0 0 1px rgba(0, 187, 255, 0.24);
-  box-shadow: 0 8px 12px rgba(0, 187, 255, 0.24),
-    0 2px 4px -1px rgba(10, 70, 82, 0.12), 0 0 1px rgba(0, 187, 255, 0.24);
+  -webkit-box-shadow: 0 8px 12px rgba(0, 187, 255, 0.24), 0 2px 4px -1px rgba(10, 70, 82, 0.12),
+    0 0 1px rgba(0, 187, 255, 0.24);
+  box-shadow: 0 8px 12px rgba(0, 187, 255, 0.24), 0 2px 4px -1px rgba(10, 70, 82, 0.12),
+    0 0 1px rgba(0, 187, 255, 0.24);
 }
 .submit-form.sell {
   background: rgb(248, 199, 0);
@@ -191,10 +183,10 @@
     rgba(243, 122, 0, 1) 50%,
     rgba(246, 64, 64, 1) 100%
   );
-  -webkit-box-shadow: 0 8px 12px rgba(255, 0, 0, 0.24),
-    0 2px 4px -1px rgba(82, 10, 10, 0.12), 0 0 1px rgba(255, 0, 0, 0.24);
-  box-shadow: 0 8px 12px rgba(255, 0, 0, 0.24),
-    0 2px 4px -1px rgba(82, 10, 10, 0.12), 0 0 1px rgba(255, 0, 0, 0.24);
+  -webkit-box-shadow: 0 8px 12px rgba(255, 0, 0, 0.24), 0 2px 4px -1px rgba(82, 10, 10, 0.12),
+    0 0 1px rgba(255, 0, 0, 0.24);
+  box-shadow: 0 8px 12px rgba(255, 0, 0, 0.24), 0 2px 4px -1px rgba(82, 10, 10, 0.12),
+    0 0 1px rgba(255, 0, 0, 0.24);
 }
 
 .avl-amount {

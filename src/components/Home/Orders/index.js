@@ -352,7 +352,7 @@ const Orders = (_) => {
   return (
     <Fragment>
       <Layout className="father orders">
-        <Content style={{ margin: '10px 15px 0 0', overflow: 'initial' }}>
+        <Content style={{ margin: '10px 15px', overflow: 'initial' }}>
           <Row gutter={[8, 8]}>
             <Col span={24}>
               <Row

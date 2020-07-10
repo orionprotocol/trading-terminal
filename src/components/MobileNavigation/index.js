@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Col, Row } from 'antd';
 import './index.scss';
@@ -20,48 +20,23 @@ const MobileNavigation = (_) => {
   const setChart = useCallback((_) => dispatch({ type: 'SetHomeChart' }), [dispatch]);
   const setHistory = useCallback((_) => dispatch({ type: 'SetHomeHistory' }), [dispatch]);
   const setOrderbook = useCallback((_) => dispatch({ type: 'SetHomeOrderbook' }), [dispatch]);
-  const setSymbol = useCallback((payload) => dispatch({ type: 'SetSymbol', payload }), [dispatch]);
 
   const update = (_) => {
     setPair();
-    let orderbook = document.querySelector('.right-panel.js-panel');
-    if (orderbook) orderbook.classList.add('active');
   };
 
   useEffect((_) => {
     window.addEventListener('resize', (_) => {
       if (window.innerWidth > 1130) {
-        // setActive(true);
-        // update();
         setActive(false);
       } else {
-        //setActive(false);
       }
     });
     if (window.innerWidth < 1130) {
       update();
       setActive(true);
     }
-    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(
-    (_) => {
-      const div = document.querySelector('#chart-container');
-      if (div) {
-        if (chart) {
-          div.style.visibility = 'visible';
-          setSymbol(symbol);
-        } else div.style.visibility = 'hidden';
-      }
-    },
-    //eslint-disable-next-line react-hooks/exhaustive-deps
-    [pair, exchange, chart, history, orderbook]
-  );
-
-  const handleChart = (_) => {
-    setChart();
-  };
 
   return (
     <Col className="mobile-navigation" xs={24} lg={0}>
@@ -82,7 +57,7 @@ const MobileNavigation = (_) => {
           xs={6}
           className={`nav-item ${chart ? 'active' : ''}`}
           data-nav="chart"
-          onClick={handleChart}
+          onClick={setChart}
         >
           <img className="chart-icon" src="/img/svg/chart.svg" alt="chart" />
           <div className="text">Chart</div>

@@ -1,13 +1,4 @@
 #chart-container {
-	height: 56.5vh;
-	visibility: visible !important;
-}
-
-@media (max-width: 1130px) {
-	#chart-container {
-		position: absolute;
-		top: 30vh;
-		left: 3vh;
-		width: 93vw;
-	}
+  height: 56.5vh;
+  visibility: visible !important;
 }

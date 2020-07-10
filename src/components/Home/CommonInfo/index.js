@@ -129,7 +129,7 @@ const CommonInfo = ({ History }) => {
   );
 
   return (
-    <div className="common-info js-panel-item js-pair">
+    <div className="common-info js-pair">
       {showPairsDropdown ? (
         <div
           className="wrapper-pair js-wrapper-pair"

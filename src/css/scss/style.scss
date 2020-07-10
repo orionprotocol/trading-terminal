@@ -150,21 +150,9 @@ body.dark {
   font-family: 'Averta';
 }
 .index {
-  /*  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  height: calc(100vh); */
   overflow: hidden;
-  /*   .js-panel.active {
-    max-width: 100%;
-    margin: -1px;
-    padding: 1px;
-  } */
   .left-panel {
-    margin: -1px;
-    padding: 1px;
     border-radius: 4px;
-    /* margin-left: 5px; */
     .buy-sell {
       -webkit-box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
       box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
@@ -697,11 +685,6 @@ body.dark {
   }
 
   .center-panel {
-    /*     max-width: 57.6666%;
-    width: 100%;
-    margin: 0 8px;
-    height: calc(100vh - 30px); */
-    padding: 1px;
     border-radius: 4px;
     .image {
       border-radius: 4px;
@@ -1044,21 +1027,12 @@ body.dark {
     }
   }
   .right-panel {
-    /*     max-width: 22%;
-    width: 100%;
-    height: calc(100vh - 30px); */
-    margin: -1px;
-    padding: 1px;
     -webkit-box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
     box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
     border-radius: 4px;
     .order-book {
       border-radius: 4px;
       background: #ffffff;
-      max-height: calc(100vh - 60px);
-      &:last-child {
-        margin-bottom: 15px;
-      }
       .heading {
         font-weight: 600;
         padding: 8px;
@@ -4284,11 +4258,6 @@ div {
   .index {
     overflow: visible;
     height: initial;
-    .js-panel {
-      max-width: 0;
-      margin: 0;
-      padding: 0;
-    }
     .common-info {
       padding: 19px;
       width: 50%;
@@ -5238,15 +5207,18 @@ input[type='number'] {
 }
 
 .home-container {
-  width: 100%;
-
-  .content-container {
-    padding: 16px;
-  }
+  padding: 16px;
 }
 
 @media (max-width: 991px) {
   .home-container {
     margin-top: 30px;
+  }
+}
+
+@media (min-width: 992px) {
+  .home-container {
+    width: 100%;
+    height: 100vh;
   }
 }

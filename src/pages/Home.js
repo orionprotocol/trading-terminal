@@ -21,22 +21,6 @@ const TVChart = lazy(() =>
   import(/* webpackChunkName: 'TVChart' */ '../components/TVChartContainer')
 );
 
-function addClass() {
-  let e = document.querySelector('.left-panel.js-panel');
-  if (e) e.classList.add('active');
-
-  let orderbook = document.querySelector('.right-panel.js-panel');
-  if (orderbook) orderbook.classList.add('active');
-}
-
-function removeClass() {
-  let e = document.querySelector('.left-panel.js-panel');
-  if (e) e.classList.remove('active');
-
-  let orderbook = document.querySelector('.right-panel.js-panel');
-  if (orderbook) orderbook.classList.remove('active');
-}
-
 function Home(props) {
   const dispatch = useDispatch();
   const setSymbol = useCallback((payload) => dispatch({ type: 'SetSymbol', payload }), [dispatch]);
@@ -66,15 +50,6 @@ function Home(props) {
   const history = useSelector((state) => state.responsive.home.history);
   const orderbook = useSelector((state) => state.responsive.home.orderbook);
 
-  useEffect(() => {
-    window.addEventListener('resize', (_) => {
-      if (window.innerWidth > 1130) removeClass();
-      else addClass();
-    });
-
-    if (window.innerWidth > 1130) removeClass();
-    else addClass();
-  }, []);
   return (
     <Suspense fallback={<Loader />}>
       <div className="index">
@@ -82,21 +57,32 @@ function Home(props) {
         <Row className="home-container">
           <MobileNavigation />
           <Col xs={24}>
-            <Row className="content-container" gutter={[8, 8]}>
-              <Col className="left-panel" xs={24} lg={4}>
+            <Row gutter={[8]}>
+              <Col className="left-panel" xs={24} lg={5}>
                 {!active || (active && pair) ? <CommonInfo History={props} /> : null}
-
                 {!active || (active && exchange) ? <Exchange /> : null}
               </Col>
 
               <Col className="center-panel" xs={24} lg={14}>
-                {!active || (active && chart) ? <TVChart /> : null}
-                {!active || (active && history) ? <Orders /> : null}
+                <Row gutter={[0, 8]}>
+                  {!active || (active && chart) ? (
+                    <Col xs={24}>
+                      <TVChart />
+                    </Col>
+                  ) : null}
+                  {!active || (active && history) ? (
+                    <Col xs={24}>
+                      <Orders />
+                    </Col>
+                  ) : null}
+                </Row>
               </Col>
 
-              <Col className="right-panel" xs={24} lg={6}>
-                {!active || (active && orderbook) ? <OrderBooks /> : null}
-              </Col>
+              {!active || (active && orderbook) ? (
+                <Col className="right-panel" xs={24} lg={5}>
+                  <OrderBooks />
+                </Col>
+              ) : null}
             </Row>
           </Col>
         </Row>

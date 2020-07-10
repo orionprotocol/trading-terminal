@@ -265,7 +265,7 @@ const OrderBooks = (props) => {
   const [cargando, setcargando] = useState(false);
 
   return (
-    <div className={`js-panel-item js-orderbook`}>
+    <div className="js-orderbook">
       <div className="order-book">
         <p className="heading">Order Book</p>
         <div className="titles">
