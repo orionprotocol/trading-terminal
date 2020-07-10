@@ -242,7 +242,7 @@ const Bids = ({dataBid,formatingPair}) => {
                         {/* <span className="cell">{bids[i].size.toFixed(3)}</span> */}
                         {renderSize(bids[i],formatingPair.qtyPrecision)}
                             <span className="cell emp">
-                                {bids[i].total.toFixed(formatingPair.quoteAssetPrecision)}
+                                {bids[i].total.toFixed(formatingPair.pricePrecision)}
                             </span>
                         <div className="cell exch">
                             <div
