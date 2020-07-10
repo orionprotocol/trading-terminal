@@ -220,7 +220,7 @@ const Asks = ({dataAsk,formatingPair}) => {
                       
                         {renderSize(asks[i],formatingPair.qtyPrecision)}
                         <span className="cell emp">
-                                {asks[i].total.toFixed(formatingPair.quoteAssetPrecision)}
+                                {asks[i].total.toFixed(formatingPair.pricePrecision)}
                             </span>
                       
 
