@@ -1,8 +1,8 @@
 import React, { lazy, useEffect, useCallback, Suspense } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
+import { Col, Row } from 'antd';
+import MobileNavigation from '../components/MobileNavigation';
 import Loader from '../components/Loader';
-import IndexNav from '../components/Home/IndexNav';
 
 const CommonInfo = lazy(() =>
   import(/* webpackChunkName: 'CommonInfo' */ '../components/Home/CommonInfo')
@@ -77,40 +77,29 @@ function Home(props) {
   }, []);
   return (
     <Suspense fallback={<Loader />}>
-      <IndexNav />
-
       <div className="index">
         <Sidebar history={props.history} />
+        <Row className="home-container">
+          <MobileNavigation />
+          <Col xs={24}>
+            <Row className="content-container" gutter={[8, 8]}>
+              <Col className="left-panel" xs={24} lg={4}>
+                {!active || (active && pair) ? <CommonInfo History={props} /> : null}
 
-        <div className="my-container">
-          <div className="my-row">
-            <div className="left-panel js-panel">
-              {!active || (active && pair) ? <CommonInfo History={props} /> : null}
+                {!active || (active && exchange) ? <Exchange /> : null}
+              </Col>
 
-              {!active || (active && exchange) ? <Exchange /> : null}
-            </div>
+              <Col className="center-panel" xs={24} lg={14}>
+                {!active || (active && chart) ? <TVChart /> : null}
+                {!active || (active && history) ? <Orders /> : null}
+              </Col>
 
-            {/* Large */}
-            {!active ? (
-              <div className="center-panel js-panel">
-                <TVChart />
-                <Orders />
-              </div>
-            ) : null}
-
-            {/* Small */}
-            {(active && chart) || (active && history) ? (
-              <div>
-                {active && chart ? <TVChart /> : null}
-
-                {active && history ? <Orders /> : null}
-              </div>
-            ) : null}
-            <div className="right-panel js-panel active">
-              {!active || (active && orderbook) ? <OrderBooks /> : null}
-            </div>
-          </div>
-        </div>
+              <Col className="right-panel" xs={24} lg={6}>
+                {!active || (active && orderbook) ? <OrderBooks /> : null}
+              </Col>
+            </Row>
+          </Col>
+        </Row>
       </div>
     </Suspense>
   );
