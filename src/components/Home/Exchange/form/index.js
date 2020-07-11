@@ -216,24 +216,14 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                     setTotal((e.target.value * lastPrice).toFixed(Math.min(formatingPair.quoteAssetPrecision,(formatingPair.pricePrecision+formatingPair.qtyPrecision))));
                 }
             }
-            /* if (type.selection === 'market') {
-                setTotal((e.target.value * lastPrice).toFixed(8));
-            } else if (type.selection === 'limit-order') {
-                if (values.price !== '') {
-                    setTotal((e.target.value * values.price).toFixed(8));
-                } else {
-                    setTotal((e.target.value * lastPrice).toFixed(8));
-                }
-            } */
         }
-       /*  console.log(formatingPair.quoteAssetPrecision,formatingPair.pricePrecision,formatingPair.qtyPrecision)
-        console.log(Math.min(formatingPair.quoteAssetPrecision,(formatingPair.pricePrecision+formatingPair.qtyPrecision))) */
+      
         let fixFormatValue = e.target.value
         /* Falta arreglar el tema de que pasa si meten mas de 1 punto */
         /* fixFormatValue=fixFormatValue.replace(/[.]|,/g,',') */
         let array = e.target.value.split('.')
         let typeOfFormat
-        
+        console.log(array)
         e.target.name === 'amount' ? typeOfFormat = formatingPair.qtyPrecision : typeOfFormat = formatingPair.pricePrecision
         if (array.length > 1 ) {
             if( typeOfFormat>0){
@@ -243,15 +233,10 @@ export default function BuyAndSellForm({ type, formatingPair }) {
             } 
         }
        /*  if (array.length > 1 && array[1].length >= typeOfFormat) fixFormatValue = parseFloat(fixFormatValue).toFixed(typeOfFormat) */
-
-        console.log(fixFormatValue,formatingPair.qtyPrecision)
         setValues({
             ...values,
             [e.target.name]: fixFormatValue,
         });
-
-
-
     };
 
     const submitOrder = async _ => {
@@ -426,9 +411,7 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                                 name="amount"
                                 type="number"
                                 value={values.amount}
-
                                 onChange={handleChange}
-                                step='001'
                             /*  maxLength={`${formatingPair.qtyPrecision}`} */
                             />
                             {/*  <Field
