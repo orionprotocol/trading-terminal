@@ -158,7 +158,7 @@ const YourProfit = () => {
         <CarouselProvider
           naturalSlideWidth={100}
           naturalSlideHeight={25}
-          totalSlides={3}
+          totalSlides={profits2.length}
           interval={5000}
           isPlaying
           infinite

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ExchangeImg from './ExchangeImg';
 
@@ -90,7 +90,6 @@ const Bids = ({ dataBid, formatingPair }) => {
   const dispatch = useDispatch();
   const [bids, setBids] = useState();
   const [dataBids, setDataBids] = useState([]);
-  const symbolB = useSelector((state) => state.general.symbolB);
   const setOrderData = useCallback((data) => dispatch({ type: 'SetOrderData', payload: data }), [
     dispatch,
   ]);
@@ -223,9 +222,7 @@ const Bids = ({ dataBid, formatingPair }) => {
 
             {/* <span className="cell">{bids[i].size.toFixed(3)}</span> */}
             {renderSize(bids[i], formatingPair.qtyPrecision)}
-            <span className="cell emp">
-              {bids[i].total.toFixed(formatingPair.quoteAssetPrecision)}
-            </span>
+            <span className="cell emp">{bids[i].total.toFixed(formatingPair.pricePrecision)}</span>
 
             <div className="cell exch">
               <div

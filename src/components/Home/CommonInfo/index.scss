@@ -76,9 +76,11 @@
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex;
-        -webkit-box-align: end;
+        flex-direction: column;
+        -ms-flex-direction: column;
+        /* -webkit-box-align: end;
         -ms-flex-align: end;
-        align-items: flex-end;
+        align-items: flex-end; */
         .emp {
           color: rgba(20, 16, 41, 0.8);
           font-size: 16px;
@@ -111,9 +113,6 @@
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
-        img {
-          margin-bottom: 21px;
-        }
         .emp {
           color: rgba(20, 16, 41, 0.8);
           font-size: 16px;
@@ -126,6 +125,7 @@
           -webkit-box-align: baseline;
           -ms-flex-align: baseline;
           align-items: baseline;
+          margin-bottom: 0;
           span {
             font-size: 10px;
             color: rgba(20, 16, 41, 0.6);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ExchangeImg from './ExchangeImg';
 
@@ -79,6 +79,13 @@ const Asks = ({ dataAsk, formatingPair }) => {
     //eslint-disable-next-line react-hooks/exhaustive-deps
     [dataAsk]
   );
+
+  useEffect(() => {
+    if (asks) {
+      var elmnt = document.getElementById('orders-asks');
+      elmnt.scrollTop = elmnt.scrollHeight;
+    }
+  }, [asks]);
 
   function chooseOrderBookLine(data) {
     let { price } = data;
@@ -196,9 +203,7 @@ const Asks = ({ dataAsk, formatingPair }) => {
             </span>
             {/* <span className="cell">{asks[i].size.toFixed(3)}</span> */}
             {renderSize(asks[i], formatingPair.qtyPrecision)}
-            <span className="cell emp">
-              {asks[i].total.toFixed(formatingPair.quoteAssetPrecision)}
-            </span>
+            <span className="cell emp">{asks[i].total.toFixed(formatingPair.pricePrecision)}</span>
 
             <div className="cell exch">
               <div
@@ -220,7 +225,9 @@ const Asks = ({ dataAsk, formatingPair }) => {
 
   return (
     <div className="order-book">
-      <div className="orders asks">{asks}</div>
+      <div id="orders-asks" className="orders asks">
+        {asks}
+      </div>
     </div>
   );
 };

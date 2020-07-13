@@ -62,7 +62,7 @@ export default function Exchange() {
   }, [supportTradingPairs, formatingPair]);
 
   return (
-    <section>
+    <>
       <div className="exchange">
         <div>
           <div
@@ -133,7 +133,7 @@ export default function Exchange() {
           </Suspense>
         </div>
       </div>
-      <Suspense fallback={<Loader />}>{orderBook ? <YourProfit /> : null}</Suspense>
-    </section>
+      <Suspense fallback="">{orderBook ? <YourProfit /> : null}</Suspense>
+    </>
   );
 }

@@ -22,7 +22,12 @@ const Line = ({ formatingPair, type, data }) => {
       amount: data.orderQty.toFixed(formatingPair.qtyPrecision),
       price: data.price.toFixed(formatingPair.pricePrecision),
       status: data.status[0].toUpperCase() + data.status.slice(1).toLowerCase(),
-      total: (data.price * data.orderQty).toFixed(formatingPair.quoteAssetPrecision),
+      total: (data.price * data.orderQty).toFixed(
+        Math.min(
+          formatingPair.quoteAssetPrecision,
+          formatingPair.pricePrecision + formatingPair.qtyPrecision
+        )
+      ),
       sub: data.subOrders,
     });
     //eslint-disable-next-line react-hooks/exhaustive-deps
