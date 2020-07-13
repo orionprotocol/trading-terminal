@@ -20,6 +20,7 @@ export default function Exchange() {
 	/* FORMATING NUMBERS STATE*/
 	//Aca inicia las funciones que se encargan de darle un formato a cada valor que se muestra en pantalla 
 	//a traves de la data que viene del back end
+
 	const initialState = {
 		minQty: 0,
 		maxQty: 0,

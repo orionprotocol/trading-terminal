@@ -217,7 +217,7 @@ const Sockets = () => {
             /*  console.log(`orderBook.aggregatedAsks[0].price (${orderBook.aggregatedAsks[0].price}) is grater than orderBook.aggregatedAsks[1].price (${orderBook.aggregatedAsks[1].price})` ,orderBook.aggregatedAsks[0].price>orderBook.aggregatedAsks[1].price) */
 
             ws.onmessage = function (data) {
-                /* console.log(JSON.parse(data.data)) */
+                /*  console.log(JSON.parse(data.data))  */
                 setOrderBook(JSON.parse(data.data));
             };
 

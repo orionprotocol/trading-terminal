@@ -83,6 +83,14 @@ const Asks = ({dataAsk,formatingPair}) => {
         [dataAsk]
     );
 
+    useEffect(() => {
+        if(asks){
+            var elmnt = document.getElementById("orders-asks");
+            elmnt.scrollIntoView({block: "end"});
+        }
+        
+    }, [asks]);
+
     function chooseOrderBookLine(data) {
         let { price } = data;
         let amount = 0;
@@ -201,6 +209,7 @@ const Asks = ({dataAsk,formatingPair}) => {
                     <div
                         className={`order ${localStorage.getItem('mode')==='Dark'? 'dark':''}`}
                         key={key + time}
+                       
                         onClick={_ => chooseOrderBookLine(asks[i])}
                     >
                         {/* TOTAL - Max width 100% */}
@@ -239,12 +248,13 @@ const Asks = ({dataAsk,formatingPair}) => {
                 );
             }
         }
+        
         return renderData;
     }
 
     return (
-        <div className="order-book">
-            <div className="orders asks">{asks}</div>
+        <div  className="order-book">
+            <div id='orders-asks' className="orders asks">{asks}</div>
         </div>
     );
 };
