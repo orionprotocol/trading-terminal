@@ -163,7 +163,7 @@ const YourProfit = () => {
           isPlaying
           infinite
         >
-          <Slider>{prof}</Slider>
+          <Slider >{prof}</Slider>
         </CarouselProvider>
       </div>
     </section>

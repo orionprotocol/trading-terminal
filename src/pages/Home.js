@@ -58,29 +58,29 @@ function Home(props) {
           <MobileNavigation />
           <Col xs={24}>
             <Row gutter={[8]}>
-              <Col className="left-panel" xs={24} lg={5}>
-                {!active || (active && pair) ? <CommonInfo History={props} /> : null}
-                {!active || (active && exchange) ? <Exchange /> : null}
+              <Col className="left-panel" xs={24} lg={4}>
+                <Row >
+                    {!active || (active && pair)
+                      ?  null /* <CommonInfo History={props} /> */
+                      : null}
+                </Row>
+                
+                 <Row >
+                 {!active || (active && exchange) ? <Exchange /> : null}
+                 </Row>
+                
               </Col>
 
-              <Col className="center-panel" xs={24} lg={14}>
+              <Col className="center-panel" xs={24} lg={16}>
                 <Row gutter={[0, 8]}>
-                  {!active || (active && chart) ? (
-                    <Col xs={24}>
-                      <TVChart />
-                    </Col>
-                  ) : null}
-                  {!active || (active && history) ? (
-                    <Col xs={24}>
-                      <Orders />
-                    </Col>
-                  ) : null}
+                  {!active || (active && chart) ? <Col xs={24}>{/*   <TVChart /> */}</Col> : null}
+                  {!active || (active && history) ? <Col xs={24}>{/*  <Orders /> */}</Col> : null}
                 </Row>
               </Col>
 
               {!active || (active && orderbook) ? (
-                <Col className="right-panel" xs={24} lg={5}>
-                  <OrderBooks />
+                <Col className="right-panel" xs={24} lg={4}>
+                  {/* <OrderBooks /> */}
                 </Col>
               ) : null}
             </Row>

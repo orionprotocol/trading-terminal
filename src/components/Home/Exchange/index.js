@@ -131,9 +131,11 @@ export default function Exchange() {
               />
             ) : null}
           </Suspense>
+          
         </div>
+    
       </div>
-      <Suspense fallback="">{orderBook ? <YourProfit /> : null}</Suspense>
+         <Suspense fallback="">{orderBook ? <YourProfit /> : null}</Suspense>
     </>
   );
 }

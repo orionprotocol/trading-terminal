@@ -2,12 +2,16 @@
   background-color: #fff !important;
   padding-bottom: 1px;
   /* padding-top: 10%; */
+  width: 100%;
+ 
 }
 
 .exchange .container-buttons-options {
   background-color: #fafafa;
   width: 90%;
   display: flex;
+ 
+  
   flex-wrap: wrap;
   margin: 20% 8% 5% 5%;
   border-radius: 3px;
@@ -95,13 +99,14 @@
   height: 32px;
   padding: 5px;
   font-size: 15px;
+  color: #9797B3;
 }
-.form-fields-buyandsell.buy {
+/* .form-fields-buyandsell.buy {
   color: rgb(0, 187, 255);
 }
 .form-fields-buyandsell.sell {
   color: rgb(255, 99, 85);
-}
+} */
 .form-fields-buyandsell.after {
   padding-right: 40px;
 }
