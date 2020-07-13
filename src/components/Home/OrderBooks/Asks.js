@@ -80,6 +80,13 @@ const Asks = ({ dataAsk, formatingPair }) => {
     [dataAsk]
   );
 
+  useEffect(() => {
+    if (asks) {
+      var elmnt = document.getElementById('orders-asks');
+      elmnt.scrollIntoView({ block: 'end' });
+    }
+  }, [asks]);
+
   function chooseOrderBookLine(data) {
     let { price } = data;
     let amount = 0;
@@ -196,9 +203,7 @@ const Asks = ({ dataAsk, formatingPair }) => {
             </span>
             {/* <span className="cell">{asks[i].size.toFixed(3)}</span> */}
             {renderSize(asks[i], formatingPair.qtyPrecision)}
-            <span className="cell emp">
-              {asks[i].total.toFixed(formatingPair.quoteAssetPrecision)}
-            </span>
+            <span className="cell emp">{asks[i].total.toFixed(formatingPair.pricePrecision)}</span>
 
             <div className="cell exch">
               <div
