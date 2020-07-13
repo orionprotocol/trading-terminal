@@ -116,7 +116,6 @@ const Bids = ({ dataBid, formatingPair }) => {
         total = total + bids[i].total;
       }
     }
-
     setOrderData({ price, amount, total });
   }
 
