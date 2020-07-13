@@ -59,6 +59,7 @@ export default function BuyAndSellForm({ type, formatingPair }) {
   const [available, setAvailable] = useState(0);
   const [total, setTotal] = useState(0);
   const [dotRepeatBehavior, setdotRepeatBehavior] = useState(false);
+  const [dotRepeatBehaviorPrice, setdotRepeatBehaviorPrice] = useState(false);
   // const [ prevType, setPrevType ] = useState('');
 
   /* This useEffect is made to change the de dotRepeatBehavior if the amount change */
@@ -257,15 +258,15 @@ export default function BuyAndSellForm({ type, formatingPair }) {
   };
 
   /* Change de inputs value */
-  const preventDotrepeat = (e) => {
+  const preventDotrepeat = (e,funcionSet,behaviorOfInput) => {
     let element = document.getElementById("amount-input").value;
     var patt = new RegExp("[0-9]|[.]");
     if (patt.test(e.key)) {
       if (e.key === ".") {
         console.log(e.target.value);
-        if (!dotRepeatBehavior) {
-          setdotRepeatBehavior(true);
-        } else if (dotRepeatBehavior && element.includes(".")) {
+        if (!behaviorOfInput) {
+            funcionSet(true);
+        } else if (behaviorOfInput && element.includes(".")) {
           e.preventDefault();
         }
       }
@@ -273,9 +274,10 @@ export default function BuyAndSellForm({ type, formatingPair }) {
       e.preventDefault();
     }
   };
-  
+
   const handleChange = (e) => {
-    if (e.target.value.indexOf(".") === -1) setdotRepeatBehavior(false);
+    if (e.target.name === "amount"  && e.target.value.indexOf(".") === -1) setdotRepeatBehavior(false);
+    if (e.target.name === "price"  && e.target.value.indexOf(".") === -1) setdotRepeatBehaviorPrice(false);
 
     if (e.target.name === "amount" || e.target.name === "price") {
       if (e.target.name === "amount") {
@@ -503,7 +505,7 @@ export default function BuyAndSellForm({ type, formatingPair }) {
               )}
               <input
                 id="amount-input"
-                onKeyPress={(e) => preventDotrepeat(e)}
+                onKeyPress={(e) => preventDotrepeat(e,setdotRepeatBehavior,dotRepeatBehavior)}
                 className={`form-fields-buyandsell after ${
                   type.trade === "buy" ? "buy" : "sell"
                 }`}
@@ -590,6 +592,7 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                   className={`form-fields-buyandsell after ${
                     type.trade === "buy" ? "buy" : "sell"
                   }`}
+                  onKeyPress={(e) => preventDotrepeat(e,setdotRepeatBehaviorPrice,dotRepeatBehaviorPrice)}
                   name="price"
                   type="text"
                   value={
