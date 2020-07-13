@@ -129,7 +129,6 @@ export default function BuyAndSellForm({ type, formatingPair }) {
   /* This useEffect works to change the total price when u switch from market to limit order */
   useEffect(() => {
     if (type.selection === "limit-order") {
-      console.log("entro aca??", values.amount, values.price);
       if (values.price !== "" && values.amount !== "") {
         setTotal(
           (values.amount * values.price).toFixed(
@@ -307,11 +306,8 @@ export default function BuyAndSellForm({ type, formatingPair }) {
     }
 
     let fixFormatValue = e.target.value;
-    /* Falta arreglar el tema de que pasa si meten mas de 1 punto */
-    /* fixFormatValue=fixFormatValue.replace(/[.]|,/g,',') */
     let array = e.target.value.split(".");
     let typeOfFormat;
-    console.log(array);
     e.target.name === "amount"
       ? (typeOfFormat = formatingPair.qtyPrecision)
       : (typeOfFormat = formatingPair.pricePrecision);
@@ -322,8 +318,6 @@ export default function BuyAndSellForm({ type, formatingPair }) {
         fixFormatValue = array[0];
       }
     }
-
-    /*  if (array.length > 1 && array[1].length >= typeOfFormat) fixFormatValue = parseFloat(fixFormatValue).toFixed(typeOfFormat) */
     setValues({
       ...values,
       [e.target.name]: fixFormatValue,
