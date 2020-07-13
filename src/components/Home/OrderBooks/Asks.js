@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ExchangeImg from './ExchangeImg';
 
+
+
 function handleExchanges(e) {
   const cl = e.target.classList;
   const idDiv = 'div-' + cl[cl.length - 1];
@@ -62,12 +64,17 @@ const renderSize = (data, format) => {
 };
 
 const Asks = ({ dataAsk, formatingPair }) => {
+
+/* REDUX */
   const dispatch = useDispatch();
-  const [asks, setAsks] = useState();
   const setOrderData = useCallback((data) => dispatch({ type: 'SetOrderData', payload: data }), [
     dispatch,
   ]);
+/* REDUX */
+
+  const [asks, setAsks] = useState();
   const [dataAsks, setDataAsks] = useState([]);
+  const [scrollRenderEffect, setscrollRenderEffect] = useState(1);
   // console.log(symbolB)
   useEffect(
     (_) => {
@@ -81,10 +88,12 @@ const Asks = ({ dataAsk, formatingPair }) => {
   );
 
   useEffect(() => {
-    if (asks) {
+    if (asks && asks.length>0 && scrollRenderEffect<=1) {
       var elmnt = document.getElementById('orders-asks');
       elmnt.scrollTop = elmnt.scrollHeight;
+      setscrollRenderEffect(scrollRenderEffect+1)
     }
+     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asks]);
 
   function chooseOrderBookLine(data) {
@@ -103,6 +112,7 @@ const Asks = ({ dataAsk, formatingPair }) => {
   }
 
   function renderAsks(data) {
+
     let renderData = [];
     let key = 0;
     if (data && data.asks && data.asks.length > 0) {
