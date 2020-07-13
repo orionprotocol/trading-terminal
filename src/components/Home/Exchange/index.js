@@ -1,7 +1,7 @@
 import React, { lazy, useState, useEffect, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import Loader from '../../Loader';
-import './index.css';
+import './index.scss';
 
 const BuyAndSellForm = lazy(() => import('./BuyAndSellForm'));
 const YourProfit = lazy(() => import('./YourProfit'));
@@ -17,12 +17,12 @@ export default function Exchange() {
     sell: 'sell-tab',
     type: 'buy',
   });
-  const [activeButton, setActiveButton] = useState({
-    left: 'market-button active',
-    rigth: 'limit-order-button',
+
+  const [activeButton2, setactiveButton2] = useState({
+    left: 'btn-opt active',
+    rigth: 'btn-opt',
     type: 'market',
   });
-
   const initialState = {
     minQty: 0,
     maxQty: 0,
@@ -62,80 +62,75 @@ export default function Exchange() {
   }, [supportTradingPairs, formatingPair]);
 
   return (
-    <>
+    <div className='container-exchange'>
       <div className="exchange">
-        <div>
-          <div
-            className={activeTab.buy}
-            onClick={() =>
-              setActiveTab({
-                buy: 'buy-tab active',
-                sell: 'sell-tab',
-                type: 'buy',
-              })
-            }
-          >
-            Buy
-          </div>
-          <div
-            className={activeTab.sell}
-            onClick={() =>
-              setActiveTab({
-                buy: 'buy-tab',
-                sell: 'sell-tab active',
-                type: 'sell',
-              })
-            }
-          >
-            Sell
+        <div
+          className={`${activeTab.buy} ${mode}`}
+          onClick={() =>
+            setActiveTab({
+              buy: 'buy-tab active',
+              sell: 'sell-tab',
+              type: 'buy',
+            })
+          }
+        >
+          Buy
+        </div>
+        <div
+          className={`${activeTab.sell} ${mode}`}
+          onClick={() =>
+            setActiveTab({
+              buy: 'buy-tab',
+              sell: 'sell-tab active',
+              type: 'sell',
+            })
+          }
+        >
+          Sell
+        </div>
+
+        <div className="content-buttons">
+          <div className={`container-options-buttons ${mode}`}>
+            <button
+              className={`${activeButton2.left} `}
+              onClick={() =>
+                setactiveButton2({
+                  left: 'btn-opt active',
+                  rigth: 'btn-opt ',
+                  type: 'market',
+                })
+              }
+            >
+              Market
+            </button>
+            <button
+              className={`${activeButton2.rigth}`}
+              onClick={() =>
+                setactiveButton2({
+                  left: 'btn-opt',
+                  rigth: 'btn-opt active',
+                  type: 'limit-order',
+                })
+              }
+            >
+              Limit order
+            </button>
           </div>
         </div>
-        <div style={{ paddingTop: '1%' }}>
-          <div className="container-buttons-options">
-            <div className="buttons-options">
-              <button
-                className={activeButton.left}
-                onClick={() =>
-                  setActiveButton({
-                    left: 'market-button active',
-                    rigth: 'limit-order-button',
-                    type: 'market',
-                  })
-                }
-              >
-                Market
-              </button>
-            </div>
-            <div className="buttons-options">
-              <button
-                className={activeButton.rigth}
-                onClick={() =>
-                  setActiveButton({
-                    left: 'market-button',
-                    rigth: 'limit-order-button active',
-                    type: 'limit-order',
-                  })
-                }
-              >
-                Limit order
-              </button>
-            </div>
-          </div>
-        </div>
+
         <div className="buy-and-sell-form">
           <Suspense fallback={<Loader />}>
             {orderBook ? (
               <BuyAndSellForm
                 formatingPair={formatingPair}
-                type={{ trade: activeTab.type, selection: activeButton.type }}
+                type={{ trade: activeTab.type, selection: activeButton2.type }}
               />
             ) : null}
           </Suspense>
-          
         </div>
-    
       </div>
-         <Suspense fallback="">{orderBook ? <YourProfit /> : null}</Suspense>
-    </>
+
+      <Suspense fallback="">{orderBook ? <YourProfit /> : null}</Suspense>
+    </div>
   );
 }

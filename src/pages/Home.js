@@ -59,15 +59,15 @@ function Home(props) {
           <Col xs={24}>
             <Row gutter={[8]}>
               <Col className="left-panel" xs={24} lg={4}>
-                <Row >
+           
                     {!active || (active && pair)
                       ?  null /* <CommonInfo History={props} /> */
                       : null}
-                </Row>
+             
                 
-                 <Row >
-                 {!active || (active && exchange) ? <Exchange /> : null}
-                 </Row>
+               
+                  {!active || (active && exchange) ? <Exchange /> : null}
+                
                 
               </Col>
 

@@ -20,7 +20,7 @@
 .your-profit-data {
   background-color: #fff;
   width: 100%;
-  min-height: 13vh;
+  min-height: 50px;
 }
 
 .dark-mode .your-profit-data {

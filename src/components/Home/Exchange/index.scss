@@ -1,22 +1,15 @@
+.container-exchange{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
 .exchange {
   background-color: #fff !important;
   padding-bottom: 1px;
   /* padding-top: 10%; */
   width: 100%;
- 
+  border-radius: 5px;
 }
-
-.exchange .container-buttons-options {
-  background-color: #fafafa;
-  width: 90%;
-  display: flex;
- 
-  
-  flex-wrap: wrap;
-  margin: 20% 8% 5% 5%;
-  border-radius: 3px;
-}
-
 .buy-tab,
 .sell-tab {
   text-align: center;
@@ -26,52 +19,78 @@
   cursor: pointer;
   padding: 8px 0px;
   font-weight: 600;
-  border-bottom: 1px solid #f1f1f2;
+  &.Dark {
+    border-bottom: 2px solid #2e2e45 !important;
+    color: #9797b3;
+  }
+  &.Light {
+    border-bottom: 2px solid #9797971c !important;
+    color: #7e7e80;
+  }
 }
 .buy-tab.active {
-  border-bottom: 1px solid rgb(0, 187, 255);
-  background-color: rgba(211, 244, 255, 0.198);
+  border-bottom: 2px solid rgb(0, 187, 255) !important;
+  background-color: #007ba82f;
   color: rgb(0, 187, 255);
+  border-radius: 5px 0 0 0;
 }
 .sell-tab.active {
-  border-bottom: 1px solid rgb(255, 99, 85);
-  background-color: rgba(230, 155, 148, 0.137);
+  border-bottom: 2px solid rgb(255, 99, 85) !important;
+  background-color: rgba(250, 21, 0, 0.075);
   color: rgb(255, 99, 85);
+  border-radius: 0 5px 0 0;
 }
 
 .ant-col.ant-col-12.sell-tab,
 .ant-col.ant-col-12.buy-tab {
   padding: 0px !important;
 }
-.buttons-options {
-  text-align: center;
-  width: 50%;
+.exchange .content-buttons {
+  margin: 50px 10px 20px 10px;
+
+  .container-options-buttons {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 5px;
+
+    &.Dark {
+      background-color: rgb(45, 45, 69);
+      color: rgb(151, 151, 179);
+      .btn-opt.active {
+        color: white;
+        -webkit-box-shadow: 0px 0px 6px 0px rgba(5, 5, 5, 0.500);
+        -moz-box-shadow: 0px 0px 6px 0px rgba(5, 5, 5, 0.500);
+        box-shadow: 0px 0px 6px 0px rgba(5, 5, 5, 0.500);
+      }
+    }
+    &.Light {
+      background-color: #fafafa;
+      color: rgb(161, 159, 169);
+      .btn-opt.active {
+        color: black;
+        -webkit-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.199);
+        -moz-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.199);
+        box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.199);
+      }
+    }
+    .btn-opt {
+      width: 48%;
+      background-color: transparent;
+      border: none;
+      height: 85%;
+      padding: 0;
+      cursor: pointer;
+      border-radius: 5px;
+     
+    }
+  }
 }
 
-.market-button,
-.limit-order-button {
-  background-color: transparent;
-  width: 100%;
-  font-weight: 300;
-  padding: 10px 10px;
-  border-radius: 6%;
-  border: none;
-  box-shadow: 0 0 0 #f4f4f4;
-  outline: none;
-  cursor: pointer;
-}
-.market-button.active,
-.limit-order-button.active {
-  width: 100%;
-  background-color: #fff;
-  margin: 2px;
-  padding: 8px 10px;
-  border-radius: 6%;
-  border: 1px solid #efeff0;
-  box-shadow: 1px 1px 1px #f4f4f4;
-  outline: none;
-  cursor: pointer;
-}
+
+
 .buy-and-sell-form {
   width: 100%;
   max-height: 360px;
@@ -93,13 +112,20 @@
 /* Form Css */
 .form-fields-buyandsell {
   width: 100%;
-  border-radius: 5px;
+  border-radius: 2px;
   background-color: #fafafa;
-  border: 1px solid #fafafa;
   height: 32px;
   padding: 5px;
   font-size: 15px;
-  color: #9797B3;
+ &.Dark{
+  border: 0.5px solid #e5e5e523 !important;
+  color: white;
+ }
+ &.Light{
+  border: 0.5px solid #e5e5e58a !important;
+  color: black;
+ }
+  
 }
 /* .form-fields-buyandsell.buy {
   color: rgb(0, 187, 255);
@@ -129,18 +155,15 @@
   border: 1px solid #fafafa;
   outline: none;
 }
-.percent-button.left.buy {
-  color: rgb(0, 187, 255);
+.percent-button {
+  &.Dark {
+    color: #9797b3;
+  }
+  &.Light {
+    color: #141029;
+  }
 }
-.percent-button.right.buy {
-  color: rgb(0, 187, 255);
-}
-.percent-button.left.sell {
-  color: rgb(255, 99, 85);
-}
-.percent-button.right.sell {
-  color: rgb(255, 99, 85);
-}
+
 .percent-button.right {
   margin: 2px 0px 2px 2px;
 }
@@ -223,5 +246,43 @@
 
   .exchange span {
     font-size: 13px;
+  }
+}
+
+.container-dep-with{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0;
+  &.Dark {
+    button{
+      background-color: rgb(45, 45, 69);
+      color: rgb(151, 151, 179);
+      &:focus{
+        color: white;
+      }
+    }
+  }
+  &.Light {
+    button{
+      background-color: #fafafa;
+    color: rgb(161, 159, 169);
+    &:focus{
+      color: black;
+    }
+    }
+  }
+  button{
+    cursor: pointer;
+    width: 49%;
+    height: 35px;
+    font-size: 14px;
+    color: #706e7e;
+    border-radius: 2px;
+    border: none;
+    outline: none;
+
+  
   }
 }
