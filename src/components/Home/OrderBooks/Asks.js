@@ -83,7 +83,7 @@ const Asks = ({ dataAsk, formatingPair }) => {
   useEffect(() => {
     if (asks) {
       var elmnt = document.getElementById('orders-asks');
-      elmnt.scrollIntoView({ block: 'end' });
+      elmnt.scrollTop = elmnt.scrollHeight;
     }
   }, [asks]);
 
@@ -225,7 +225,9 @@ const Asks = ({ dataAsk, formatingPair }) => {
 
   return (
     <div className="order-book">
-      <div className="orders asks">{asks}</div>
+      <div id="orders-asks" className="orders asks">
+        {asks}
+      </div>
     </div>
   );
 };
