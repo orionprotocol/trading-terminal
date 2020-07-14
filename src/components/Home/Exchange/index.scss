@@ -272,7 +272,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  
+  margin-top: 10px;
   &.Dark {
     button{
       background-color: rgb(45, 45, 69);
@@ -290,6 +290,11 @@
       color: black;
     }
     }
+  }
+  span{ 
+    width: 49%;
+    color: rgb(151, 151, 179);
+    
   }
   button{
     cursor: pointer;

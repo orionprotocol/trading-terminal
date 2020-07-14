@@ -1,0 +1,110 @@
+.modal-custom-home-exchange{
+    .ant-modal-close{
+        margin-top: 30px;
+        margin-right: 10px;
+      
+    }
+    .ant-modal-body{
+        padding: 33px;
+    }
+    &.Dark{
+        .ant-modal-close, .custom-modal-container-amount>label {
+            color: rgba(224, 224, 255, 0.4)
+        }
+       
+        h3{
+            color: #FFFFFF;
+        }
+        .ant-modal-content{
+            background-color: #2a2a41;
+        }
+        .custom-modal-container-amount{
+        
+            input{
+                background-color:#2d2d45;
+                color:#FFFFFF
+            }
+            
+        }  
+        .custom-modal-footer{
+            button{
+                &:nth-child(1){
+                    background-color:#2d2d45;
+                    color:#FFFFFF
+                }
+            }
+        }
+       
+    }
+    &.Light{
+        .ant-modal-close, h3 ,.custom-modal-container-amount>label {
+            color:rgba(20, 16, 41, 0.4)
+        }
+        .ant-modal-content{
+            background-color: #FFFFFF;
+        }
+        .custom-modal-container-amount{
+
+            input{
+                background-color: rgba(20, 16, 41, 0.02);
+                color: rgba(20, 16, 41, 0.8)
+            }
+        }
+        
+    }
+
+   h3{
+    text-transform: capitalize;
+    font-weight: 600;
+      font-size: 24px;
+      line-height: 24px;
+      margin-right: 25px;
+      margin-bottom: 30px;
+   } 
+   
+   .custom-modal-container-amount{
+       display: flex;
+       flex-direction: column;
+       label{
+        margin-left: 10px;
+        margin-bottom: 10px;
+       
+     }
+       input{
+        padding: 12px 16px;
+        border-radius: 2px;
+        border: none;
+        font-size: 16px;
+        line-height: 24px;
+        width: 100%;
+        margin-bottom: 40px;
+       }
+   }
+   .custom-modal-footer{
+       display: flex;
+       justify-content: space-between;
+       width: 100%;
+       button{
+        border: none;
+        padding: 12px 24px;
+        cursor: pointer;
+        border-radius: 2px;
+        font-size: 16px;
+        line-height: 24px;
+        font-weight: 600;
+        text-align: center;
+        transition: all 0.3s;
+        &:nth-child(1){
+            span{
+                margin-left: 20px;
+            }
+        }
+           &:nth-child(2){
+            background-image: linear-gradient(135deg, #00ffaa 0%, #00bbff 53%, #4579f5 100%);
+            color: #ffffff;
+            box-shadow: 0 8px 12px rgba(0, 187, 255, 0.24), 0 2px 4px -1px rgba(10, 70, 82, 0.12), 0 0 1px rgba(0, 187, 255, 0.24);
+           }
+        
+       }
+   }
+}

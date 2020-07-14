@@ -17,11 +17,11 @@ export default function BuyAndSellForm({ type, formatingPair }) {
   const symbolA = useSelector((state) => state.general.symbolA);
   const symbolB = useSelector((state) => state.general.symbolB);
   const orderBook = useSelector((state) => state.general.orderBook);
+  const balances = useSelector((state) => state.balances);
   const metamaskConnected = useSelector((state) => state.wallet.metamaskConnected);
   const fortmaticConnected = useSelector((state) => state.wallet.fortmaticConnected);
   const coinbaseConnected = useSelector((state) => state.wallet.coinbaseConnected);
 
-  const balances = useSelector((state) => state.balances);
 
   const setQtyForm = useCallback((data) => dispatch({ type: 'SetQtyForm', payload: data }), [
     dispatch,
@@ -505,7 +505,7 @@ export default function BuyAndSellForm({ type, formatingPair }) {
               )}
             </div>
             
-            <WithdrawAndDeposit />
+            <WithdrawAndDeposit contractBalance={balances.contractBalances[symbolA]} walletBalance={balances.walletBalances[symbolA]}/>
 
             <div className={`group-buttons-percent`}>
               <button

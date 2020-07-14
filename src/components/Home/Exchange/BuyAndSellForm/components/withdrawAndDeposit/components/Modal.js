@@ -1,18 +1,20 @@
-import React, { Fragment, useState, useEffect } from "react";
-import FadeIn from "react-fade-in";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import openNotification from "../../../../../../Notification";
-import { FadeLoader } from "react-spinners";
+import React, { Fragment, useState, useEffect } from 'react';
+import FadeIn from 'react-fade-in';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import openNotification from '../../../../../../Notification';
+import { FadeLoader } from 'react-spinners';
+import { Modal } from 'antd';
+import './modalStyle.scss';
 
 const Modal2 = (props) => {
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState('');
   const [loading, setLoading] = useState(false);
-
+  
   const handleSubmit = (_) => {
-    if (props.operation === "Withdraw") {
+    if (props.operation === 'Withdraw') {
       if (Number(amount) > Number(props.maxWithdraw)) {
         openNotification({
-          message: "Insufficient balance",
+          message: 'Insufficient balance',
         });
       } else {
         props.submit(amount);
@@ -32,14 +34,61 @@ const Modal2 = (props) => {
     if (props.show === false) {
       setLoading(false);
     }
-    setAmount("");
+    setAmount('');
   }, [props.show]);
 
   return (
-    <Fragment>
+    <Modal
+      wrapClassName={`modal-custom-home-exchange ${props.mode}`}
+      centered={true}
+      visible={props.show}
+      footer={null}
+      onCancel={props.toggle}
+    >
+      <h3>{props.operation}</h3>
+      {loading ? (
+        <div className="methods">
+          <div className="tabs">
+            <div className="tab-key tab">
+              <div className="private-key wait">
+                <span>Please wait . . .</span>
+                <div>
+                  <FadeLoader
+                    height={15}
+                    width={5}
+                    radius={2}
+                    margin={2}
+                    color={'#84c8da'}
+                    loading={loading}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <div className="custom-modal-container-amount">
+            <label>Enter amount</label>
+            <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
+          </div>
+          <div className="custom-modal-footer">
+            <button type="button" onClick={props.toggle}>
+              <FontAwesomeIcon icon="angle-left" size="lg" />
+              <span>Go back</span>
+            </button>
+            <button type="submit">
+              <span>{props.operation}</span>
+            </button>
+          </div>
+        </form>
+      )}
+    </Modal>
+
+    /* <Fragment>
       {props.show ? (
         <FadeIn transitionDuration={500}>
-          <div className="popup-wrapper deposit-withdraw">
+          <div className=" deposit-withdraw">
             <div className="popup-body">
               <div className="add-wallet-2">
                 <div className="popup-top">
@@ -108,7 +157,7 @@ const Modal2 = (props) => {
           </div>
         </FadeIn>
       ) : null}
-    </Fragment>
+    </Fragment> */
   );
 };
 

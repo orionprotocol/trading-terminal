@@ -19,7 +19,7 @@ const WithdrawAndDeposit = (props) => {
   const assets = useSelector((state) => state.wallet.assets);
   const ethAddress = useSelector((state) => state.wallet.ethAddress);
   const [contract, setContract] = useState();
-/* console.log(depositModal,withdrawModal) */
+  /* console.log(depositModal,withdrawModal) */
   useEffect(
     (_) => {
       if (metamaskConnected) {
@@ -70,31 +70,38 @@ const WithdrawAndDeposit = (props) => {
 
   return (
     <>
-    <div className={`container-dep-with ${mode}`}>
-      <button type='button' onClick={handleDeposit}>
-        {' '}
-        <i className="fa fa-arrow-up"></i> Deposit{' '}
-      </button>
-      <button type='button' onClick={handleWithdraw}>
-        {' '}
-        <i className="fa fa-arrow-down"></i> Withdraw{' '}
-      </button>
-    </div>
-    <Modal
+      <div className={`container-dep-with ${mode}`}>
+        <span>Wallet</span>
+       
+        <span>Contract</span>
+        <span>{parseFloat(props.walletBalance).toFixed(8)}</span>
+        <span>{props.contractBalance}</span>
+
+        <button disabled={props.walletBalance<=0} type="button" onClick={handleDeposit}>
+          {' '}
+          <i className="fa fa-arrow-down"></i> Deposit{' '}
+        </button>
+        <button disabled={props.contractBalance<=0} type="button" onClick={handleWithdraw}>
+          {' '}
+          <i className="fa fa-arrow-up"></i> Withdraw{' '}
+        </button>
+      </div>
+      <Modal
+      mode={mode}
         show={depositModal}
         operation="Deposit"
         toggle={(_) => toggleDepositModal(!depositModal)}
         submit={submitDeposit}
       />
       <Modal
+      mode={mode}
         show={withdrawModal}
         operation="Withdraw"
         toggle={(_) => toggleWithdrawModal(!withdrawModal)}
         submit={submitWithdraw}
-        maxWithdraw={props.contract}
+        maxWithdraw={props.contractBalance}
       />
     </>
-    
 
     /* <div className="line">
       
