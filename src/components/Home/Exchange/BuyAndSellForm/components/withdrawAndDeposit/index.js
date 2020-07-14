@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import Modal from './components/Modal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector } from 'react-redux';
 // import { deposit, withdraw } from '../../../services/Metamask';
 import { deposit as depositWan, withdraw as withdrawWan } from '../../../../../../services/Wanmask';
-
 import Contract from '../../../../../../services/Contract';
 
-const WithdrawAndDeposit = (props) => {
-  const [depositModal, toggleDepositModal] = useState(false);
-  const [withdrawModal, toggleWithdrawModal] = useState(false);
+import Alert from '../../../../../../css/icons/alert-exchange.svg';
+
+const WithdrawAndDeposit = memo((props) => {
   const symbolA = useSelector((state) => state.general.symbolA);
   const mode = useSelector((state) => state.general.mode);
   const wanmaskConnected = useSelector((state) => state.wallet.wanmaskConnected);
@@ -18,8 +17,12 @@ const WithdrawAndDeposit = (props) => {
   const coinbaseConnected = useSelector((state) => state.wallet.coinbaseConnected);
   const assets = useSelector((state) => state.wallet.assets);
   const ethAddress = useSelector((state) => state.wallet.ethAddress);
+
+  const [depositModal, toggleDepositModal] = useState(false);
+  const [withdrawModal, toggleWithdrawModal] = useState(false);
   const [contract, setContract] = useState();
-  /* console.log(depositModal,withdrawModal) */
+  const [conBalance, setconBalance] = useState(0);
+  const [wallBalance, setwallBalance] = useState(0);
   useEffect(
     (_) => {
       if (metamaskConnected) {
@@ -32,6 +35,22 @@ const WithdrawAndDeposit = (props) => {
     },
     [metamaskConnected, fortmaticConnected, coinbaseConnected]
   );
+  useEffect(() => {
+    if (props.balances) {
+      for (const asset in props.balances.contractBalances) {
+        if (asset.includes(symbolA)) {
+          if (props.balances.contractBalances[asset] !== '')
+            setconBalance(props.balances.contractBalances[asset]);
+        }
+      }
+      for (const asset in props.balances.walletBalances) {
+        if (asset.includes(symbolA)) {
+          if (props.balances.walletBalances[asset] !== '')
+            setwallBalance(props.balances.walletBalances[asset]);
+        }
+      }
+    }
+  }, [props.balances, symbolA]);
 
   const currentAccount = localStorage.getItem('currentAccount');
 
@@ -71,30 +90,52 @@ const WithdrawAndDeposit = (props) => {
   return (
     <>
       <div className={`container-dep-with ${mode}`}>
-        <span>Wallet</span>
-       
-        <span>Contract</span>
-        <span>{parseFloat(props.walletBalance).toFixed(8)}</span>
-        <span>{props.contractBalance}</span>
+        {conBalance === 0 && wallBalance === 0 ? (
+          <div className="alert-message">
+            <span>
+              <img src={Alert} alt="replenish the balance" />
+            </span>
+            {localStorage.getItem('address') ? (
+              <span>First you need to replenish the balance of the contract</span>
+            ) : (
+              <span>First you need to add a wallet</span>
+            )}
+          </div>
+        ) : (
+          <>
+            <span>Wallet</span>
+            <span>Contract</span>
+            <span>{parseFloat(wallBalance).toPrecision(8)}</span>
+            <span>{conBalance}</span>
+          </>
+        )}
 
-        <button disabled={props.walletBalance<=0} type="button" onClick={handleDeposit}>
+        <button
+          disabled={(conBalance === 0 && wallBalance === 0) || parseFloat(wallBalance) <= 0}
+          type="button"
+          onClick={handleDeposit}
+        >
           {' '}
           <i className="fa fa-arrow-down"></i> Deposit{' '}
         </button>
-        <button disabled={props.contractBalance<=0} type="button" onClick={handleWithdraw}>
+        <button
+          disabled={(conBalance === 0 && wallBalance === 0) || parseFloat(conBalance) <= 0}
+          type="button"
+          onClick={handleWithdraw}
+        >
           {' '}
           <i className="fa fa-arrow-up"></i> Withdraw{' '}
         </button>
       </div>
       <Modal
-      mode={mode}
+        mode={mode}
         show={depositModal}
         operation="Deposit"
         toggle={(_) => toggleDepositModal(!depositModal)}
         submit={submitDeposit}
       />
       <Modal
-      mode={mode}
+        mode={mode}
         show={withdrawModal}
         operation="Withdraw"
         toggle={(_) => toggleWithdrawModal(!withdrawModal)}
@@ -131,6 +172,6 @@ const WithdrawAndDeposit = (props) => {
       />
     </div> */
   );
-};
+});
 
 export default WithdrawAndDeposit;

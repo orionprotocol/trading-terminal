@@ -30,18 +30,28 @@ export default function BuyAndSellForm({ type, formatingPair }) {
   const setAddWallet = useCallback((data) => dispatch({ type: 'SetAddWallet', payload: data }), [
     dispatch,
   ]);
-  const [values, setValues] = useState({
+  const initialValues={
     amount: '',
     available: '0',
     price: '',
     percent: '',
     total: '',
-  });
+  }
+  const [values, setValues] = useState(initialValues);
 
   const [availableA, setAvailableA] = useState(0);
   const [availableB, setAvailableB] = useState(0);
   const [available, setAvailable] = useState(0);
   const [total, setTotal] = useState(0);
+
+useEffect(() => {
+  setValues(initialValues)
+  setAvailableA(0)
+  setAvailableB(0)
+  setAvailable(0)
+  setTotal(0)
+}, [symbol]);
+
   // const [ prevType, setPrevType ] = useState('');
 
   /* This useEffect is made to change the de total if the amount change */
@@ -179,10 +189,10 @@ export default function BuyAndSellForm({ type, formatingPair }) {
       });
       setTotal((available * percent * lastPrice).toFixed(8));
     } else {
-      setQtyForm(((available * percent) / lastPrice).toFixed(8));
+      setQtyForm(((available * percent) / lastPrice).toFixed(formatingPair.qtyPrecision));
       setValues({
         ...values,
-        amount: ((available * percent) / lastPrice).toFixed(8),
+        amount: ((available * percent) / lastPrice).toFixed(formatingPair.qtyPrecision),
       });
       setTotal((available * percent).toFixed(8));
     }
@@ -195,9 +205,9 @@ export default function BuyAndSellForm({ type, formatingPair }) {
       }
       if (type.selection === 'limit-order') {
         if (values.price !== '') {
-          setTotal((e.target.value * values.price).toFixed(8));
+          setTotal((e.target.value * values.price).toFixed(formatingPair.pricePrecision));
         } else {
-          setTotal((e.target.value * lastPrice).toFixed(8));
+          setTotal((e.target.value * lastPrice).toFixed(formatingPair.pricePrecision));
         }
       }
     }
@@ -359,7 +369,7 @@ export default function BuyAndSellForm({ type, formatingPair }) {
 
     // ----------------------------------- End - Wanchain --------------------------------------
   };
-
+  
   return (
     <Fragment>
       <Formik
@@ -505,7 +515,7 @@ export default function BuyAndSellForm({ type, formatingPair }) {
               )}
             </div>
             
-            <WithdrawAndDeposit contractBalance={balances.contractBalances[symbolA]} walletBalance={balances.walletBalances[symbolA]}/>
+            <WithdrawAndDeposit balances={balances} />
 
             <div className={`group-buttons-percent`}>
               <button
@@ -571,7 +581,7 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                 {symbolB}
               </label>
             </div>
-            <div style={{ margin: '30px 0px 20px 0' }}>
+            <div style={{ margin: '20px 0px 20px 0' }}>
               {(metamaskConnected || fortmaticConnected || coinbaseConnected) &&
                 type.trade === 'buy' && (
                   <button
