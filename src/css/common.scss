@@ -66,7 +66,7 @@ body {
 
         @media (min-width: 992px) {
             font-size: 25px;
-            margin: 0 0 50px;
+            margin: 0 0 47px;
         }
 
         &_center {
@@ -87,12 +87,38 @@ body {
     background: #FFFFFF;
     box-shadow: 0 2px 4px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
     border-radius: 4px;
-    padding: 23px 35px;
+    padding: 10px 15px;
+    margin: 0 0 15px;
+
+    @media (min-width: 768px) {
+        padding: 32px 24px;
+        margin: 0 0 22px;
+    }
 
     .page__box_column & {
         width: 100%;
-        max-width: 847px;
-        margin: 44px auto;
+
+        .form__row {
+            @media (max-width: 767px) {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 768px) {
+            max-width: 847px;
+            margin: 0 auto 22px;
+        }
+    }
+
+    &__title {
+        font-weight: 600;
+        font-size: 20px;
+        margin: 0 0 20px;
+        color: #434054;
+
+        .dark & {
+            color: $color_withe;
+        }
     }
 
     .dark & {
@@ -102,12 +128,18 @@ body {
 }
 
 .form {
-    &__row {}
+    &__row {
+        margin-bottom: 15px;
+        min-width: 0;
+        @media (min-width: 768px) {
+            width: 100%;
+        }
+    }
 
     &__label {
         font-weight: 600;
         font-size: 16px;
-        margin-bottom: 13px;
+        margin-bottom: 6px;
         color: #434054;
         display: block;
 
@@ -128,22 +160,24 @@ body {
     }
 
     &__field {
+        position: relative;
+        background: #FFFFFF;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+        border-radius: 2px;
+
+        .dark & {
+            background: #2E2E45;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
         &_duble {
             display: flex;
-            background: #FFFFFF;
-            box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
-            border-radius: 2px;
-
-            .dark & {
-                background: #2E2E45;
-                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-            }
         }
 
         input {
             flex-grow: 1;
             font-size: 16px;
-            padding: 14px 25px;
+            padding: 6px 21px;
             outline: 0;
             border: 0;
             background-color: transparent;
@@ -160,7 +194,7 @@ body {
     &__info {
         display: flex;
         align-items: flex-start;
-        margin: 20px 0;
+        margin: 5px 0 20px;
         font-size: 12px;
         line-height: 1.2;
 
@@ -197,10 +231,83 @@ body {
         margin: 15px 0;
     }
 
+    &__action {
+        text-align: center;
+        margin: 30px 0;
+    }
+
+    &__terms {
+        margin: 15px 0;
+        text-align: center;
+        color: #A19FA9;
+        font-size: 12px;
+        font-weight: 500;
+
+        a {
+            color: inherit;
+            text-decoration: underline;
+
+            &:hover {
+                color: inherit;
+            }
+        }
+    }
+
+}
+
+.btn {
+    border: 0;
+    padding: 12px 25px;
+    font-size: 16px;
+    line-height: 1.2;
+    border-radius: 2px;
+    outline: 0;
+    background-color: transparent;
+    text-align: center;
+    cursor: pointer;
+
+    &_lg {
+        padding: 16px 25px;
+        width: 100%;
+        max-width: 230px;
+    }
+
+    &_grade {
+        position: relative;
+        z-index: 1;
+        box-shadow: 0 8px 8px rgba(0, 187, 255, 0.12), 0 16px 24px rgba(0, 187, 255, 0.24), 0 2px 4px rgba(10, 70, 82, 0.12), 0 0 1px rgba(0, 187, 255, 0.24);
+        color: $color_withe;
+        overflow: hidden;
+        transition: box-shadow 0.3s;
+
+        &:after {
+            content: '';
+            background: linear-gradient(90deg, #00FFAA 0%, #00BBFF 53.09%, #4579F5 100%);
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            z-index: -1;
+            transition: width 0.3s;
+        }
+
+        &:hover {
+            box-shadow: 0 8px 8px rgba(0, 187, 255, 0.12), 0 10px 16px rgba(0, 187, 255, 0.24), 0 2px 4px rgba(10, 70, 82, 0.12), 0 0 1px rgba(0, 187, 255, 0.24);
+
+            &:after {
+                width: 130%;
+            }
+        }
+
+        &:active {
+            box-shadow: none;
+        }
+    }
 }
 
 .formSelect {
-    position: relative;
+    // position: relative;
     color: #434054;
     border-radius: 2px;
     font-size: 14px;
@@ -268,6 +375,7 @@ body {
         box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
         border-radius: 2px;
         min-width: 100%;
+        padding: 21px 15px;
 
         &:before {
             content: '';
@@ -287,7 +395,7 @@ body {
 
     &__option {
         display: flex;
-        padding: 8px 15px;
+        padding: 9px 2px;
         cursor: pointer;
         position: relative;
 
@@ -297,6 +405,69 @@ body {
             .dark & {
                 background-color: #27273E;
             }
+        }
+    }
+
+    &__list {
+        max-height: 150px;
+        overflow-y: auto;
+
+        @media (min-width: 768px) {
+            max-height: 191px;
+        }
+    }
+
+    &__row {
+        display: flex;
+        justify-content: space-between;
+        margin: 0 -10px 18px;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        border: 1px solid #E6E6E7;
+        border-radius: 3px;
+        padding: 6px 8px;
+        margin: 0 10px 10px;
+        cursor: pointer;
+
+        @media (min-width: 768px) {
+            padding: 6px 17px;
+        }
+
+        .formSelect {
+            &__logo {
+                font-size: 18px;
+                margin-right: 10px;
+            }
+
+            &__name {
+                font-size: 12px;
+            }
+        }
+    }
+
+    &__search {
+        // width: 36px;
+        position: relative;
+        margin-bottom: 23px;
+
+        input {
+            border-bottom: 1px solid #A19FA9;
+            font-size: 12px;
+            text-align: left;
+            padding-left: 52px;
+            width: 100%;
+            font-weight: 500;
+        }
+
+        .icon_search {
+            color: #A19FA9;
+            position: absolute;
+            left: 18px;
+            top: 7px;
+            font-size: 18px;
         }
     }
 }
@@ -313,20 +484,38 @@ body {
 
 .swapChoose {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    flex-direction: column;
+
+    @media (min-width: 768px) {
+        flex-direction: row;
+        align-items: flex-start;
+    }
 
     &__item {
-        flex: 1;
-        min-width: 0;
+        max-width: 100%;
+
+        @media (min-width: 768px) {
+            flex-grow: 1;
+            min-width: 0;
+            width: 50%;
+        }
+
+        @media (max-width: 767px) {
+            width: 100%;
+        }
     }
 
     &__replace {
         cursor: pointer;
         font-size: 24px;
-        margin: 0 13px;
         color: #00BBFF;
-        margin-top: 47px;
-        min-width: 24px;
+        margin: 0;
+
+        @media (min-width: 768px) {
+            min-width: 24px;
+            margin: 33px 13px 0;
+        }
 
         .dark & {
             color: #E0E0FF;
@@ -334,7 +523,15 @@ body {
     }
 
     .formCollapse {
-        padding-top: 50px;
+        padding-top: 10px;
+
+        @media (min-width: 768px) {
+            padding-top: 50px;
+        }
+
+        @media (max-width: 767px) {
+            width: 100%;
+        }
     }
 }
 
@@ -483,4 +680,140 @@ body {
         padding: 6px 15px;
     }
 
+}
+
+.swapHistory {
+    &__top {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    &__choose {
+        display: flex;
+        align-items: center;
+        margin-right: 40px;
+
+        .icon_arrow {
+            margin: 10px;
+            cursor: pointer;
+            color: #00BBFF;
+
+            .dark & {
+                color: #E0E0FF;
+            }
+        }
+    }
+
+    &__dateGroupp {
+        display: flex;
+        align-items: center;
+    }
+
+}
+
+.formSelect {
+    &__current {}
+
+    &__name {}
+
+    &__drop {}
+
+    &__list {}
+
+    &__option {}
+
+}
+
+.formDate {
+    position: relative;
+    // margin-right: 20px;
+    position: relative;
+    // flex-grow: 1;
+    // min-width: 0;
+
+    .icon_date {
+        position: absolute;
+        right: 10px;
+        top: 7px;
+        font-size: 18px;
+        color: #D8D8D8;
+        cursor: pointer;
+
+        .dark & {
+            color: #7B6565;
+        }
+    }
+
+    &__line {
+        border-top: 1px solid;
+        width: 12px;
+        margin: 4px;
+    }
+
+    .react-datepicker {
+        border: 0;
+
+        .dark & {
+            background: #2E2E45;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            color: $color_withe;
+
+            .react-datepicker__triangle {
+                border-top-color: #2E2E45;
+
+                &:before {
+                    border-top-color: rgba(0, 0, 0, 0.01);
+                }
+            }
+
+            .react-datepicker__header {
+                background: #2E2E45 !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .react-datepicker__current-month,
+            .react-datepicker__day {
+                color: $color_withe !important;
+            }
+
+            .react-datepicker__day-name {
+                color: $color_dark_thems !important;
+            }
+        }
+    }
+
+    .react-datepicker-wrapper {
+        width: 100% !important;
+        line-height: normal;
+        display: block;
+        vertical-align: inherit;
+    }
+
+    .react-datepicker__input-container {
+        width: 100% !important;
+        line-height: normal;
+        display: block;
+        vertical-align: inherit;
+
+        input {
+            width: 100%;
+            border-radius: 2px;
+            color: #434054;
+            background: $color_withe;
+            box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
+            border-radius: 2px;
+            border: 0;
+            font-size: 14px;
+            padding: 9px 35px 9px 12px;
+            outline: 0;
+            margin: 0;
+
+            .dark & {
+                background: #2E2E45;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+                color: $color_withe;
+            }
+
+        }
+    }
 }

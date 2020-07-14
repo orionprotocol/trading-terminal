@@ -1,9 +1,11 @@
 $icomoon-font-family: "orion" !default;
 $icomoon-font-path: "/fonts/orion/fonts" !default;
 
+$icon_search: "\e907";
 $icon_chart: "\e903";
 $icon_wallet: "\e905";
 $icon_wanchain: "\e904";
+$icon_wanchain1: "\e906";
 $icon_ethereum: "\e901";
 $icon_bitmax: "\e902";
 $icon_binance: "\e900";
@@ -51,6 +53,12 @@ $icon_moon: "\e923";
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon_search {
+    &:before {
+        content: $icon_search;
+    }
+}
+
 .icon_chart {
     &:before {
         content: $icon_chart;
@@ -66,6 +74,12 @@ $icon_moon: "\e923";
 .icon_wanchain {
     &:before {
         content: $icon_wanchain;
+    }
+}
+
+.icon_wanchain1 {
+    &:before {
+        content: $icon_wanchain1;
     }
 }
 

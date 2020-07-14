@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'orion';
   src:
-    url('fonts/orion.ttf?vd2ire') format('truetype'),
-    url('fonts/orion.woff?vd2ire') format('woff'),
-    url('fonts/orion.svg?vd2ire#orion') format('svg');
+    url('fonts/orion.ttf?3806ue') format('truetype'),
+    url('fonts/orion.woff?3806ue') format('woff'),
+    url('fonts/orion.svg?3806ue#orion') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -24,6 +24,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon_search:before {
+  content: "\e907";
+}
 .icon_chart:before {
   content: "\e903";
 }
@@ -32,6 +35,9 @@
 }
 .icon_wanchain:before {
   content: "\e904";
+}
+.icon_wanchain1:before {
+  content: "\e906";
 }
 .icon_ethereum:before {
   content: "\e901";
