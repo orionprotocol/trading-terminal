@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { EthereumOrder } from '../../../../services/EthereumOrder';
 import { loadOrderHistory } from '../../Orders/index';
 import openNotification from '../../../Notification';
-
+import WithdrawAndDeposit from './components/withdrawAndDeposit';
 // type: { trade: 'buy' or 'sell, selection: 'market' or 'limit-order'}
 export default function BuyAndSellForm({ type, formatingPair }) {
   const dispatch = useDispatch();
@@ -200,15 +200,6 @@ export default function BuyAndSellForm({ type, formatingPair }) {
           setTotal((e.target.value * lastPrice).toFixed(8));
         }
       }
-      /* if (type.selection === 'market') {
-                setTotal((e.target.value * lastPrice).toFixed(8));
-            } else if (type.selection === 'limit-order') {
-                if (values.price !== '') {
-                    setTotal((e.target.value * values.price).toFixed(8));
-                } else {
-                    setTotal((e.target.value * lastPrice).toFixed(8));
-                }
-            } */
     }
 
     setValues({
@@ -380,30 +371,39 @@ export default function BuyAndSellForm({ type, formatingPair }) {
       >
         {({ errors, touched, setFieldValue }) => (
           <Form>
-            <div>
-      
-              <span style={{ color:mode==='Dark' ? '#FFFFFF':'black', fontWeight:'bold',fontSize:'14', marginLeft: '10px' }}>Amount</span>
-              <Field
-                className={`form-fields-buyandsell ${mode} after `}
-                name="amount"
-                type="number"
-                min="0"
-                value={values.amount}
-                onChange={handleChange}
-
-              />
-                <label
-                  style={{
-                    fontSize: '14px',
-                    color: '#706E7D',
-                    marginLeft: '-40px',
-                    marginTop: '7px',
-                    color: mode==='Dark' ? '#9797B3':'#141029',
-                  }}
-                >
-                  {symbolA}
-                </label>
+            <span
+              style={{
+                color: mode === 'Dark' ? '#FFFFFF' : 'black',
+                fontWeight: 'bold',
+                fontSize: '14',
+                marginLeft: '10px',
+                marginTop: '10px',
+              }}
+            >
+              Amount
+            </span>
+            <div className="amount-field">
+            <Field
+              className={`form-fields-buyandsell ${mode} after `}
+              name="amount"
+              type="number"
+              min="0"
+              value={values.amount}
+              onChange={handleChange}
+            />
+            <label
+              style={{
+                fontSize: '14px',
+                color: '#706E7D',
+                marginLeft: '-40px',
+                marginTop: '7px',
+                color: mode === 'Dark' ? '#9797B3' : '#141029',
+              }}
+            >
+              {symbolA}
+            </label>
             </div>
+           
 
             {touched.amount && values.amount && parseFloat(values.amount) > formatingPair.maxQty && (
               <label style={{ color: 'red' }}>
@@ -428,14 +428,23 @@ export default function BuyAndSellForm({ type, formatingPair }) {
               )}
             {type.selection === 'limit-order' && (
               <div>
-              
-              <span style={{ color:mode==='Dark' ? '#FFFFFF':'black', fontWeight:'bold',fontSize:'14', marginLeft: '10px' }}>Price</span>
+                <span
+                  style={{
+                    color: mode === 'Dark' ? '#FFFFFF' : 'black',
+                    fontWeight: 'bold',
+                    fontSize: '14',
+                    marginLeft: '10px',
+                    marginTop: '10px',
+                  }}
+                >
+                  Price
+                </span>
 
                 <Field
                   className={`form-fields-buyandsell ${mode}`}
                   name="price"
                   type="number"
-                  min="0"
+                  
                   value={
                     values.price !== ''
                       ? values.price
@@ -473,62 +482,73 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                 paddingTop: '5px',
               }}
             >
-            
-                <span style={{ color: mode==='Dark' ? '#9797B3':'#A19FA9', marginLeft: '10px' }}>Available</span>
-            
+              <span style={{ color: mode === 'Dark' ? '#9797B3' : '#A19FA9', marginLeft: '10px' }}>
+                Available
+              </span>
+
               {type.trade === 'buy' ? (
-                <span className="avl-amount" style={{ color: mode==='Dark' ? '#9797B3':'#A19FA9' }}>
+                <span
+                  className="avl-amount"
+                  style={{ color: mode === 'Dark' ? '#9797B3' : '#A19FA9' }}
+                >
                   {available && parseFloat(available).toFixed(formatingPair.quoteAssetPrecision)}{' '}
                   {symbolB}
                 </span>
               ) : (
-                <span className="avl-amount" style={{ color: mode==='Dark' ? '#9797B3':'#A19FA9' }}>
+                <span
+                  className="avl-amount"
+                  style={{ color: mode === 'Dark' ? '#9797B3' : '#A19FA9' }}
+                >
                   {available && parseFloat(available).toFixed(formatingPair.baseAssetPrecision)}{' '}
                   {symbolA}
                 </span>
               )}
             </div>
+            
+            <WithdrawAndDeposit />
 
-            <div className={`container-dep-with ${mode}`} >
-              <button> <i class="fa fa-arrow-up"></i> Deposit </button>
-              <button> <i class="fa fa-arrow-down"></i> Withdraw </button>
-            </div>
-
-            <div className={`percent-buttons ${mode}`}>
+            <div className={`group-buttons-percent`}>
               <button
                 type="button"
                 onClick={() => handlePercent(0.25)}
-                className={`percent-button left ${type.trade === 'buy' ? 'buy' : 'sell'}`}
+                className={`${mode}`}
               >
                 25%
               </button>
               <button
                 type="button"
                 onClick={() => handlePercent(0.5)}
-                className={`percent-button right ${type.trade === 'buy' ? 'buy' : 'sell'}`}
+                className={`${mode}`}
               >
                 50%
               </button>
               <button
                 type="button"
                 onClick={() => handlePercent(0.75)}
-                className={`percent-button left ${type.trade === 'buy' ? 'buy' : 'sell'}`}
+                className={`${mode}`}
               >
                 75%
               </button>
               <button
                 type="button"
                 onClick={() => handlePercent(1)}
-                className={`percent-button right ${type.trade === 'buy' ? 'buy' : 'sell'}`}
+                className={`${mode}`}
               >
                 100%
               </button>
             </div>
 
             <div className="total-price">
-          
-            <span style={{ color:mode==='Dark' ? '#FFFFFF':'black', fontWeight:'bold',fontSize:'14', marginLeft: '10px' }}>Total</span>
-           
+              <span
+                style={{
+                  color: mode === 'Dark' ? '#FFFFFF' : 'black',
+                  fontWeight: 'bold',
+                  fontSize: '14',
+                  marginLeft: '10px',
+                }}
+              >
+                Total
+              </span>
 
               <Field
                 className={`form-fields-buyandsell ${mode} after `}
@@ -538,19 +558,18 @@ export default function BuyAndSellForm({ type, formatingPair }) {
                 onChange={handleChange}
                 disabled={true}
               />
-           
-                <label
-                  style={{
-                    fontSize: '14px',
-                    color: '#706E7D',
-                    marginLeft: '-40px',
-                    marginTop: '7px',
-                    color: mode==='Dark' ? '#9797B3':'#141029',
-                  }}
-                >
-                  {symbolB}
-                </label>
-            
+
+              <label
+                style={{
+                  fontSize: '14px',
+                  color: '#706E7D',
+                  marginLeft: '-40px',
+                  marginTop: '7px',
+                  color: mode === 'Dark' ? '#9797B3' : '#141029',
+                }}
+              >
+                {symbolB}
+              </label>
             </div>
             <div style={{ margin: '30px 0px 20px 0' }}>
               {(metamaskConnected || fortmaticConnected || coinbaseConnected) &&
@@ -621,7 +640,6 @@ export default function BuyAndSellForm({ type, formatingPair }) {
             </div>
           </Form>
         )}
-
       </Formik>
     </Fragment>
   );
