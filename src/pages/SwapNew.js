@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import TopMenu from '../components/TopMenu';
 import Sidebar from '../components/Sidebar';
 import SwapSelector from '../components/Swap';
@@ -6,10 +6,11 @@ import DatePicker from 'react-datepicker';
 import '../css/common.scss';
 
 class Swap extends React.Component {
-    state = {
-        startDate: new Date()
+    constructor( props ){
+        super( props )
+        this.state = {startDate: new Date()};
     }
-
+    
     handleChange = date => {
         this.setState({
             startDate: date
@@ -326,7 +327,171 @@ class Swap extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="swapHistory__table"></div>
+                                <div className="swapTable">
+                                    <div className="swapTable__row swapTable__header">
+                                        <div className="swapTable__col">Date</div>
+                                        <div className="swapTable__col">From</div>
+                                        <div className="swapTable__col">To</div>
+                                        <div className="swapTable__col">Average price</div>
+                                        <div className="swapTable__col">Status</div>
+                                    </div>
+                                    <div className="swapTable__row">
+                                        <div className="swapTable__col">
+                                            <div className="swapTable__date">09.09.2019 12:42:41</div>
+                                        </div>
+                                        <div className="swapTable__col">
+                                            <div className="swapTable__item swapTable__from">
+                                                <i className="swapTable__coin icon_binance"></i>
+                                                ETC
+                                                <i className="swapTable__arrow icon_arrow"></i>
+                                            </div>
+                                        </div>
+                                        <div className="swapTable__col">
+                                            <div className="swapTable__item swapTable__to">
+                                                <i className="swapTable__coin icon_binance"></i>
+                                                ETC
+                                            </div>
+                                        </div>
+                                        <div className="swapTable__col">~0.123</div>
+                                        <div className="swapTable__col">
+                                            <div className="swapTable__status swapTable__status_panding">
+                                                Pending
+                                                <i className="swapTable__toggle icon_carret"></i>
+                                            </div>
+                                        </div>
+                                        <div className="swapTable__drop swapTable__drop_open">
+                                            <div className="swapTable__row swapTable__header">
+                                                <div className="swapTable__col">Side</div>
+                                                <div className="swapTable__col">Exchange</div>
+                                                <div className="swapTable__col">Amount</div>
+                                                <div className="swapTable__col">Price</div>
+                                                <div className="swapTable__col">Status</div>
+                                            </div>
+                                            <div className="swapTable__row">
+                                                <div className="swapTable__col">
+                                                    <span className="txt_danger">Sell</span>
+                                                </div>
+                                                <div className="swapTable__col">Binance</div>
+                                                <div className="swapTable__col">0.05 ETC</div>
+                                                <div className="swapTable__col">0.23</div>
+                                                <div className="swapTable__col">Partial</div>
+                                            </div>
+                                            <div className="swapTable__row">
+                                                <div className="swapTable__col">
+                                                    <span className="txt_warning">Buy</span>
+                                                </div>
+                                                <div className="swapTable__col">Poloniex</div>
+                                                <div className="swapTable__col">14 ORN</div>
+                                                <div className="swapTable__col">0.24</div>
+                                                <div className="swapTable__col">Partial</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="swapTable__row">
+                                        <div className="swapTable__col">
+                                            <div className="swapTable__date">09.09.2019 12:42:41</div>
+                                        </div>
+                                        <div className="swapTable__col">
+                                            <div className="swapTable__item swapTable__from">
+                                                <i className="swapTable__coin icon_binance"></i>
+                                                ETC
+                                                <i className="swapTable__arrow icon_arrow"></i>
+                                            </div>
+                                        </div>
+                                        <div className="swapTable__col">
+                                            <div className="swapTable__item swapTable__to">
+                                                <i className="swapTable__coin icon_binance"></i>
+                                                ETC
+                                            </div>
+                                        </div>
+                                        <div className="swapTable__col">~0.123</div>
+                                        <div className="swapTable__col">
+                                            <div className="swapTable__status swapTable__status_filled">
+                                                Filled
+                                                <i className="swapTable__toggle icon_carret"></i>
+                                            </div>
+                                        </div>
+                                        <div className="swapTable__drop">
+                                            <div className="swapTable__row swapTable__header">
+                                                <div className="swapTable__col">Side</div>
+                                                <div className="swapTable__col">Exchange</div>
+                                                <div className="swapTable__col">Amount</div>
+                                                <div className="swapTable__col">Price</div>
+                                                <div className="swapTable__col">Status</div>
+                                            </div>
+                                            <div className="swapTable__row">
+                                                <div className="swapTable__col">
+                                                    <span className="txt_danger">Sell</span>
+                                                </div>
+                                                <div className="swapTable__col">Binance</div>
+                                                <div className="swapTable__col">0.05 ETC</div>
+                                                <div className="swapTable__col">0.23</div>
+                                                <div className="swapTable__col">Partial</div>
+                                            </div>
+                                            <div className="swapTable__row">
+                                                <div className="swapTable__col">
+                                                    <span className="txt_warning">Buy</span>
+                                                </div>
+                                                <div className="swapTable__col">Poloniex</div>
+                                                <div className="swapTable__col">14 ORN</div>
+                                                <div className="swapTable__col">0.24</div>
+                                                <div className="swapTable__col">Partial</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="swapTable__row">
+                                        <div className="swapTable__col">
+                                            <div className="swapTable__date">09.09.2019 12:42:41</div>
+                                        </div>
+                                        <div className="swapTable__col">
+                                            <div className="swapTable__item swapTable__from">
+                                                <i className="swapTable__coin icon_binance"></i>
+                                                ETC
+                                                <i className="swapTable__arrow icon_arrow"></i>
+                                            </div>
+                                        </div>
+                                        <div className="swapTable__col">
+                                            <div className="swapTable__item swapTable__to">
+                                                <i className="swapTable__coin icon_binance"></i>
+                                                ETC
+                                            </div>
+                                        </div>
+                                        <div className="swapTable__col">~0.123</div>
+                                        <div className="swapTable__col">
+                                            <div className="swapTable__status swapTable__status_panding">
+                                                Pending
+                                                <i className="swapTable__toggle icon_carret"></i>
+                                            </div>
+                                        </div>
+                                        <div className="swapTable__drop">
+                                            <div className="swapTable__row swapTable__header">
+                                                <div className="swapTable__col">Side</div>
+                                                <div className="swapTable__col">Exchange</div>
+                                                <div className="swapTable__col">Amount</div>
+                                                <div className="swapTable__col">Price</div>
+                                                <div className="swapTable__col">Status</div>
+                                            </div>
+                                            <div className="swapTable__row">
+                                                <div className="swapTable__col">
+                                                    <span className="txt_danger">Sell</span>
+                                                </div>
+                                                <div className="swapTable__col">Binance</div>
+                                                <div className="swapTable__col">0.05 ETC</div>
+                                                <div className="swapTable__col">0.23</div>
+                                                <div className="swapTable__col">Partial</div>
+                                            </div>
+                                            <div className="swapTable__row">
+                                                <div className="swapTable__col">
+                                                    <span className="txt_warning">Buy</span>
+                                                </div>
+                                                <div className="swapTable__col">Poloniex</div>
+                                                <div className="swapTable__col">14 ORN</div>
+                                                <div className="swapTable__col">0.24</div>
+                                                <div className="swapTable__col">Partial</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

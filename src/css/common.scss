@@ -375,7 +375,7 @@ body {
         box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
         border-radius: 2px;
         min-width: 100%;
-        padding: 21px 15px;
+        padding: 15px 15px 10px;
 
         &:before {
             content: '';
@@ -395,7 +395,7 @@ body {
 
     &__option {
         display: flex;
-        padding: 9px 2px;
+        padding: 9px 15px;
         cursor: pointer;
         position: relative;
 
@@ -411,6 +411,8 @@ body {
     &__list {
         max-height: 150px;
         overflow-y: auto;
+        margin-left: -15px;
+        margin-right: -14px;
 
         @media (min-width: 768px) {
             max-height: 191px;
@@ -686,41 +688,34 @@ body {
     &__top {
         display: flex;
         align-items: flex-start;
+        margin-bottom: 9px;
     }
 
     &__choose {
         display: flex;
         align-items: center;
-        margin-right: 40px;
+        margin-right: 50px;
 
         .icon_arrow {
-            margin: 10px;
+            margin: 10px 19px;
             cursor: pointer;
-            color: #00BBFF;
+            color: $color_muted;
+            font-size: 12px;
 
-            .dark & {
-                color: #E0E0FF;
-            }
+            // .dark & {
+            //     color: $color_muted;
+            // }
         }
     }
 
     &__dateGroupp {
         display: flex;
         align-items: center;
+
+        .formDate {
+            max-width: 148px;
+        }
     }
-
-}
-
-.formSelect {
-    &__current {}
-
-    &__name {}
-
-    &__drop {}
-
-    &__list {}
-
-    &__option {}
 
 }
 
@@ -738,9 +733,18 @@ body {
         font-size: 18px;
         color: #D8D8D8;
         cursor: pointer;
+        transition: color 0.3s;
+
+        &:hover {
+            color: darken(#D8D8D8, 10%);
+        }
 
         .dark & {
             color: #7B6565;
+
+            &:hover {
+                color: lighten(#7B6565, 10%);
+            }
         }
     }
 
@@ -752,6 +756,7 @@ body {
 
     .react-datepicker {
         border: 0;
+        box-shadow: 0 0 3px rgba(0, 0, 0, 0.25);
 
         .dark & {
             background: #2E2E45;
@@ -766,6 +771,15 @@ body {
                 }
             }
 
+            &-popper[data-placement^="bottom"] .react-datepicker__triangle,
+            &-popper[data-placement^="bottom"] .react-datepicker__triangle::before {
+                border-bottom-color: #2E2E45;
+            }
+
+            &-popper[data-placement^="bottom"] .react-datepicker__triangle::before {
+                border-bottom-color: rgba(0, 0, 0, 0.01);
+            }
+
             .react-datepicker__header {
                 background: #2E2E45 !important;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -777,6 +791,31 @@ body {
             }
 
             .react-datepicker__day-name {
+                color: $color_dark_thems !important;
+            }
+
+            .react-datepicker__day:hover,
+            .react-datepicker__month-text:hover,
+            .react-datepicker__quarter-text:hover {
+                background-color: transparent;
+                position: relative;
+
+                &:before {
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    border: 1px solid;
+                    border-radius: 0.3rem;
+                }
+            }
+
+            .react-datepicker__day--today,
+            .react-datepicker__month-text--today,
+            .react-datepicker__quarter-text--today {
                 color: $color_dark_thems !important;
             }
         }
@@ -814,6 +853,179 @@ body {
                 color: $color_withe;
             }
 
+        }
+    }
+}
+
+.swapTable {
+    font-size: 14px;
+
+    .dark & {
+        color: $color_withe;
+    }
+
+    &__row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__header {
+        font-weight: 600;
+        color: $color_dark;
+
+        .dark & {
+            color: $color_withe;
+        }
+    }
+
+    &__col {
+        flex-grow: 1;
+        padding: 13px 17px;
+
+        &:first-child {
+            width: 14%;
+        }
+
+        &:nth-child(2) {
+            width: 12%;
+        }
+
+        &:nth-child(3) {
+            width: 9%;
+        }
+
+        &:nth-child(4) {
+            width: 19%;
+        }
+
+        &:nth-child(5) {
+            width: 7%;
+        }
+
+        .dark & {}
+
+        .swapTable {
+            &__header & {
+                &:first-child {
+                    padding-left: 36px;
+                }
+            }
+        }
+    }
+
+    &__date {
+        color: #72707f;
+
+        .dark & {
+            color: rgba(224, 224, 255, 0.6);
+        }
+    }
+
+    &__item {}
+
+    &__from {}
+
+    &__arrow {
+        color: $color_muted;
+        float: right;
+        margin-top: 4px;
+    }
+
+    &__coin {
+        margin-right: 17px;
+        font-size: 21px;
+        vertical-align: middle;
+
+        .dark & {
+            color: $color_light;
+        }
+    }
+
+    &__to {}
+
+    &__status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .icon_carret {
+            margin-left: 15px;
+            font-size: 10px;
+            cursor: pointer;
+            color: $color_light_thems;
+
+            .dark & {
+                color: $color_withe;
+            }
+        }
+
+        &_panding {
+            color: #16b862;
+
+            .dark & {
+                color: #00ffaa;
+            }
+        }
+
+        &_filled {
+            color: #ffaa00;
+
+            .dark & {
+                color: $color_warning;
+            }
+        }
+    }
+
+    &__toggle {}
+
+    &__drop {
+        width: 100%;
+        border-radius: 2px;
+        padding: 4px 0 20px;
+        box-shadow: none;
+        color: $color_light_thems;
+        display: none;
+
+        .dark & {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        &_open {
+            display: block;
+            box-shadow: 0 16px 16px rgba(20, 16, 41, 0.06), 0 4px 8px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
+
+            .dark & {
+                box-shadow: 0 10px 10px rgba(20, 16, 41, 0.1), 0 0 8px rgba(20, 16, 41, 0.24), 0 0 1px rgba(20, 16, 41, 0.4);
+            }
+        }
+
+        .swapTable__col {
+            padding: 9px 17px;
+        }
+    }
+
+}
+
+.icon_binance {}
+
+.icon_arrow {}
+
+.icon_carret {}
+
+.txt {
+    &_danger {
+        color: #f54562;
+
+        .dark & {
+            color: #ff00aa;
+        }
+    }
+
+    &_warning {
+        color: #16b862;
+
+        .dark & {
+            color: #00ffaa;
         }
     }
 }
