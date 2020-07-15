@@ -2,7 +2,7 @@
 
 const initialState = {
     symbol: 'ETH-BTC',
-    mode: 'Light',
+    mode: 'Dark',
     symbolA: 'ETH',
     symbolB: 'BTC',
     lastPrice: 0,
