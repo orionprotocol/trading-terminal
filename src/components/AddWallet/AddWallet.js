@@ -24,7 +24,7 @@ const walletsList =[
         name:'Formatic',
         logo:LogoForma,
     },
-    {
+    /* {
         id:'coin_base',
         name:'Coinbase Wallet',
         logo:LogoCoin,
@@ -38,7 +38,7 @@ const walletsList =[
         id:'private_key',
         name:'Privatekey',
         logo:LogoPrivateKey,
-    }
+    } */
 ]
 
 const AddWallet = memo(() => {

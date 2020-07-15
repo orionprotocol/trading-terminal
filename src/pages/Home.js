@@ -61,26 +61,26 @@ function Home(props) {
               <Col className="left-panel" xs={24} lg={4}>
            
                     {!active || (active && pair)
-                      ?   <CommonInfo History={props} />
+                      ?  null  /* <CommonInfo History={props} /> */
                       : null}
              
                 
                
-                  {!active || (active && exchange) ? <Exchange /> : null}
+                  {!active || (active && exchange) ? null /* <Exchange />  */: null}
                 
                 
               </Col>
 
               <Col className="center-panel" xs={24} lg={16}>
                 <Row gutter={[0, 8]}>
-                  {!active || (active && chart) ? <Col xs={24}>  <TVChart /></Col> : null}
+                  {!active || (active && chart) ? <Col xs={24}>  {/* <TVChart /> */}</Col> : null}
                   {!active || (active && history) ? <Col xs={24}> <Orders /></Col> : null}
                 </Row>
               </Col>
 
               {!active || (active && orderbook) ? (
                 <Col className="right-panel" xs={24} lg={4}>
-                  <OrderBooks />
+                  {/* <OrderBooks /> */}
                 </Col>
               ) : null}
             </Row>
