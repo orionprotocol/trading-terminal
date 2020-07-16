@@ -6,7 +6,7 @@ const { Option } = Select;
 const A = ['XRP', 'ETH', 'USDT', 'ERD'];
 const B = ['BTC', 'USDT'];
 const index = memo(
-  ({ dropdownStyle, optsClass, handleChangeA, handleChangeB, filterPairA, filterPairB }) => {
+  ({ dropdownStyle, optsClass, handleChangeA, handleChangeB, filterPairA, filterPairB ,mode }) => {
     const [SelectorA, setSelectorA] = useState(<></>);
     const [SelectorB, setSelectorB] = useState(<></>);
     useEffect(() => {
@@ -14,13 +14,9 @@ const index = memo(
       setSelectorA(null);
       setSelectorA(
         <Select
-          className="price-card-selector emp"
+          
           value={filterPairA}
-          style={{
-            width: 80,
-            padding: '2px',
-            border: 'none',
-          }}
+          className="selector"
           onChange={(e) => handleChangeA(e)}
           dropdownStyle={dropdownStyle}
         >
@@ -39,13 +35,8 @@ const index = memo(
       setSelectorB(null);
       setSelectorB(
         <Select
-          className="price-card-selector emp"
+          className="selector"
           value={filterPairB}
-          style={{
-            width: 80,
-            padding: '2px',
-            border: 'none',
-          }}
           onChange={(e) => handleChangeB(e)}
           dropdownStyle={dropdownStyle}
         >
@@ -60,11 +51,11 @@ const index = memo(
       );
     }, [filterPairB, optsClass]);
     return (
-      <>
+      <div className={`container-pair ${mode}`}>
         {SelectorA}
         <div className="pair-filter separator">/</div>
         {SelectorB}
-      </>
+      </div>
     );
   }
 );

@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { Select } from 'antd';
+import './status.scss'
 const { Option } = Select;
 const status = [
   'All',
@@ -11,16 +12,12 @@ const status = [
   'REJECTED',
 ];
 
-const StatusFilter = ({ dropdownStyle, optsClass, handleChangeC, setstatusFilterSelection }) => {
+const StatusFilter = ({ dropdownStyle, optsClass, handleChangeC, setstatusFilterSelection, mode }) => {
   return (
-    <Select
-      className="price-card-selector emp"
+    <div className={`container-status ${mode}`}>
+      <Select
+      className="selector"
       defaultValue="All"
-      style={{
-        width: 155,
-        padding: '2px',
-        border: 'none',
-      }}
       onChange={handleChangeC}
       dropdownStyle={dropdownStyle}
     >
@@ -39,6 +36,8 @@ const StatusFilter = ({ dropdownStyle, optsClass, handleChangeC, setstatusFilter
         );
       })}
     </Select>
+    </div>
+    
   );
 };
 

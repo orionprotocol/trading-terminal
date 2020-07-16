@@ -166,8 +166,8 @@ const Orders = (_) => {
   }, [supportTradingPairs, formatingPair]);
 
   const handleType = (type) => {
-    document.querySelector('#open-price-card-button').classList.toggle('active');
-    document.querySelector('#history-price-card-button').classList.toggle('active');
+    document.querySelector('#btn-left-type-filter').classList.toggle('active');
+    document.querySelector('#btn-rigth-type-filter').classList.toggle('active');
 
     let newOrders = allOrders;
     let newTime = dayjs(startDateA).unix();
@@ -339,18 +339,15 @@ const Orders = (_) => {
         <Content style={{ margin: '10px 15px', overflow: 'initial' }}>
           <Row gutter={[8, 8]}>
             <Col span={24}>
-              <Row
-                style={{
-                  paddingLeft: '15px',
-                }}
-              >
-                <TypeOfFilter handleType={handleType} />
+              <Row>
+                <TypeOfFilter handleType={handleType} mode={mode} />
                 <DateFilter
                   startDateA={startDateA}
                   startDateB={startDateB}
                   setStartDateA={setStartDateA}
                   setStartDateB={setStartDateB}
                   handleDateChangeRaw={handleDateChangeRaw}
+                  mode={mode}
                 />
                 <Col xs={24} md={10}>
                   <div className="orders-selects">
@@ -362,12 +359,14 @@ const Orders = (_) => {
                       handleChangeA={handleChangeA}
                       handleChangeB={handleChangeB}
                       dropdownStyle={dropdownStyle}
+                      mode={mode}
                     />
                     <StatusFilter
                       setstatusFilterSelection={setstatusFilterSelection}
                       optsClass={optsClass}
                       handleChangeC={handleChangeC}
                       dropdownStyle={dropdownStyle}
+                      mode={mode}
                     />
                   </div>
                 </Col>
@@ -375,7 +374,7 @@ const Orders = (_) => {
             </Col>
           </Row>
           {/* AQUI */}
-          <Row style={{ paddingLeft: 15, paddingBottom: 10 }}>
+          <Row >
             <Table handleSort={handleSort} classes={classes} renderOrders={state.renderOrders} />
           </Row>
         </Content>

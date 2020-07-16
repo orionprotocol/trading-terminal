@@ -47,7 +47,9 @@
 
 .orders-selects {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .dark-mode.option-select.emp {

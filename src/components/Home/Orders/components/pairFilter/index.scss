@@ -1,3 +1,49 @@
-.pair-filter.separator {
-  margin: 0px 0.5rem;
+.container-pair{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 48%;
+  &.Dark {
+    .ant-select-arrow{
+      color: rgb(151, 151, 179);
+    }
+
+    .ant-select-selector{
+      background-color: rgb(45, 45, 69);
+      color: rgb(151, 151, 179);
+      border: 1px solid rgba(216, 216, 216, 0.363);
+      &:hover{
+        border-color:rgba(216, 216, 216, 0.363)
+    }
+    }
+  }
+  &.Light {
+    .ant-select-arrow{
+      color: black;
+    }
+    .ant-select-selector{
+      background-color: #fafafa;
+      color: rgb(161, 159, 169);
+      border: 1px solid rgba(216, 216, 216, 0.363);
+      color: black;
+      &:hover{
+        border-color:rgba(216, 216, 216, 0.363)
+    }
+    }
+  }
+  .selector{
+    width: 100%;
+    border-radius: 5px;
+    height: 35px;
+  }
+  .ant-select-selector{
+    height: 35px !important;
+    border-radius: 5px !important;
+    outline: none;
+
 }
+  .pair-filter.separator {
+    margin: 0px 0.5rem;
+  }
+}
+

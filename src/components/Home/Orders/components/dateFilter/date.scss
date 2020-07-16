@@ -1,3 +1,6 @@
+
+/* OLD STYLES */
+
 .react-datepicker__input-container {
   width: 100% !important;
   input {
@@ -48,6 +51,62 @@
 .react-datepicker__day--today {
   color: #46abee !important;
 }
+
+/* NEW STYLES */
+
+.container-filter-date{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  &.Dark {
+    .customDatePickerInputWrapper{
+      background-color: rgb(45, 45, 69);
+      color: rgb(151, 151, 179);
+      border: 1px solid rgba(216, 216, 216, 0.363);
+    }
+    input{
+      color: white;
+    }
+  
+  }
+  &.Light {
+    .customDatePickerInputWrapper{
+      background-color: #fafafa;
+      color: rgb(161, 159, 169);
+      border: 1px solid rgba(216, 216, 216, 0.363);
+      input{
+        color: black;
+      }
+    }
+  }
+  .customDatePickerInputWrapper{
+    padding: 0 5px;
+    border-radius: 5px;
+    height: 35px;
+    width: auto;
+    .customDatePickerInputWrapper svg{
+      top:13px;
+      right:  10px;
+    }
+    input{
+      height: auto;
+      padding: 0;
+      background: none;
+      color: white;
+      font-size: 12px;
+      &::placeholder{
+        color: rgba(224, 224, 255, 0.6);
+      }
+    }
+  }
+  .line-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(216, 216, 216, 0.363);
+    
+  }
+}
 .react-datepicker-wrapper {
-  width: 40% !important;
+  width: 48%;
 }
