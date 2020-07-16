@@ -7,7 +7,7 @@ import './date.scss';
 const index = memo(
   ({ startDateA, setStartDateA, startDateB, setStartDateB, handleDateChangeRaw, mode }) => {
     return (
-     /*  <Col xs={24} md={8}> */
+   
         <div className={`container-filter-date ${mode}`}>
           <DatePicker
             selected={startDateA}
@@ -38,7 +38,7 @@ const index = memo(
             popperPlacement="bottom-center"
           />
         </div>
-     /*  </Col> */
+
     );
   }
 );

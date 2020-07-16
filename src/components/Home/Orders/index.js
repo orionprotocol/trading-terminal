@@ -336,7 +336,7 @@ const Orders = (_) => {
   return (
     <Fragment>
       <Layout className="father orders">
-        <Content /* style={{ margin: '10px 15px', overflow: 'initial' }} */>
+        <Content >
           <div className={`container-filters-header ${mode}`}>
             <TypeOfFilter handleType={handleType} mode={mode} />
             <DateFilter
@@ -367,21 +367,10 @@ const Orders = (_) => {
                     />
                   </div>
           </div>
-         {/*  <Row gutter={[8, 8]}>
-            <Col span={24}>
-              <Row> */}
-
-                
-               
-               {/*  <Col xs={24} md={10}> */}
-                  
-           {/*      </Col>
-              </Row>
-            </Col>
-          </Row> */}
-          {/* AQUI */}
         
-            <Table handleSort={handleSort} classes={classes} renderOrders={state.renderOrders} />
+          <Table handleSort={handleSort} classes={classes} renderOrders={state.renderOrders} />
+         
+            
         
         </Content>
       </Layout>

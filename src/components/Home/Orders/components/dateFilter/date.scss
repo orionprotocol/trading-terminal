@@ -70,6 +70,9 @@
     }
     input{
       color: white;
+      &::placeholder{
+        color: rgba(224, 224, 255, 0.6);
+      }
     }
   
   }
@@ -77,9 +80,12 @@
     .customDatePickerInputWrapper{
       background-color: #fafafa;
       color: rgb(161, 159, 169);
-      border: 1px solid #46465C;
+      border: 1px solid #E5E5E5;
       input{
         color: black;
+        &::placeholder{
+          color: rgba(107, 107, 107, 0.6);
+        }
       }
     }
   }
@@ -98,9 +104,7 @@
       background: none;
       color: white;
       font-size: 12px;
-      &::placeholder{
-        color: rgba(224, 224, 255, 0.6);
-      }
+      
     }
   }
   .line-container{

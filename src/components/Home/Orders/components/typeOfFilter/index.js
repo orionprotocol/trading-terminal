@@ -5,7 +5,7 @@ import './typefilter.scss'
 const index = memo(({ handleType,mode }) => {
     return (
 
-    /*     <Col xs={24} md={6}> */
+    
 
         <div className="content-buttons-filter">
           <div className={`container-options-buttons ${mode}`}>
@@ -26,7 +26,7 @@ const index = memo(({ handleType,mode }) => {
             </button>
           </div>
         </div>
-       /*  </Col> */
+      
     );
 });
 
