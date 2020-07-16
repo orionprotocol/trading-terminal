@@ -1,3 +1,23 @@
+@import '../../../css/scss/resposiveSize';
+
+.container-filters-header{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  /* height: 10vh; */
+  padding: 20px;
+  @include media('xs'){
+    flex-direction: column;
+  }
+  &.Dark{
+    background-color:#33334A ;
+    filter: drop-shadow(0 10px 4px #0000002a);
+  }
+  &.Light{
+    filter: drop-shadow(0 10px 4px #a7a7a733);
+    background-color:#FFFFFF ;
+  }
+}
 .subtable.active {
   display: block !important;
 }
@@ -49,7 +69,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: 38% !important;
 }
 
 .dark-mode.option-select.emp {

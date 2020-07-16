@@ -12,6 +12,7 @@ import { Dark, Light } from "../funtions/handleMode";
 import FadeIn from "react-fade-in";
 import { ethereum } from "../../services/Coinbase";
 import "./sidebar.scss";
+import ModalAddWallet from '../../components/AddWallet/AddWallet';
 
 const AddWallet1 = lazy(() => import("../AddWallet/AddWallet1"));
 const AddWallet2 = lazy(() => import("../AddWallet/AddWallet2"));
@@ -276,6 +277,7 @@ const Sidebar = (props) => {
       // onMouseLeave={onMouseLeave}
       // onMouseOver={onMouseOver}
     >
+      <ModalAddWallet/>
      {/*  <Suspense fallback="">
         {show1 ? (
           <FadeIn transitionDuration={10}>

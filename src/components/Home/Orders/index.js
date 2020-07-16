@@ -336,12 +336,10 @@ const Orders = (_) => {
   return (
     <Fragment>
       <Layout className="father orders">
-        <Content style={{ margin: '10px 15px', overflow: 'initial' }}>
-          <Row gutter={[8, 8]}>
-            <Col span={24}>
-              <Row>
-                <TypeOfFilter handleType={handleType} mode={mode} />
-                <DateFilter
+        <Content /* style={{ margin: '10px 15px', overflow: 'initial' }} */>
+          <div className={`container-filters-header ${mode}`}>
+            <TypeOfFilter handleType={handleType} mode={mode} />
+            <DateFilter
                   startDateA={startDateA}
                   startDateB={startDateB}
                   setStartDateA={setStartDateA}
@@ -349,8 +347,7 @@ const Orders = (_) => {
                   handleDateChangeRaw={handleDateChangeRaw}
                   mode={mode}
                 />
-                <Col xs={24} md={10}>
-                  <div className="orders-selects">
+                <div className="orders-selects">
                     <PairFilter
                       filterPairA={filterPairA}
                       filterPairB={filterPairB}
@@ -369,14 +366,23 @@ const Orders = (_) => {
                       mode={mode}
                     />
                   </div>
-                </Col>
+          </div>
+         {/*  <Row gutter={[8, 8]}>
+            <Col span={24}>
+              <Row> */}
+
+                
+               
+               {/*  <Col xs={24} md={10}> */}
+                  
+           {/*      </Col>
               </Row>
             </Col>
-          </Row>
+          </Row> */}
           {/* AQUI */}
-          <Row >
+        
             <Table handleSort={handleSort} classes={classes} renderOrders={state.renderOrders} />
-          </Row>
+        
         </Content>
       </Layout>
     </Fragment>

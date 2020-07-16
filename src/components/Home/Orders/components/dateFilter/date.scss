@@ -57,12 +57,12 @@
 .container-filter-date{
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  width: 38%;
   &.Dark {
     .customDatePickerInputWrapper{
-      background-color: rgb(45, 45, 69);
+      background-color: #35354E;
       color: rgb(151, 151, 179);
-      border: 1px solid rgba(216, 216, 216, 0.363);
+      border: 1px solid #46465C;
     }
     input{
       color: white;
@@ -73,7 +73,7 @@
     .customDatePickerInputWrapper{
       background-color: #fafafa;
       color: rgb(161, 159, 169);
-      border: 1px solid rgba(216, 216, 216, 0.363);
+      border: 1px solid #46465C;
       input{
         color: black;
       }
@@ -103,7 +103,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(216, 216, 216, 0.363);
+    color: #46465C;
     
   }
 }

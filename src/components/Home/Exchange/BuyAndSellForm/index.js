@@ -7,7 +7,7 @@ import { EthereumOrder } from '../../../../services/EthereumOrder';
 import { loadOrderHistory } from '../../Orders/index';
 import openNotification from '../../../Notification';
 import WithdrawAndDeposit from './components/withdrawAndDeposit';
-import ModalAddWallet from '../../../../components/AddWallet/AddWallet';
+
 
 // type: { trade: 'buy' or 'sell, selection: 'market' or 'limit-order'}
 export default function BuyAndSellForm({ type, formatingPair }) {
@@ -649,7 +649,7 @@ useEffect(() => {
                   Add Wallet
                 </button>
               )}
-              <ModalAddWallet/>
+              
             </div>
           </Form>
         )}

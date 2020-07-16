@@ -9,11 +9,11 @@
     }
 
     .ant-select-selector{
-      background-color: rgb(45, 45, 69);
+      background-color: #35354E;
       color: rgb(151, 151, 179);
-      border: 1px solid rgba(216, 216, 216, 0.363);
+      border: 1px solid #46465C;
       &:hover{
-        border-color:rgba(216, 216, 216, 0.363)
+        border-color:#46465C
     }
     }
   }
@@ -24,10 +24,10 @@
     .ant-select-selector{
       background-color: #fafafa;
       color: rgb(161, 159, 169);
-      border: 1px solid rgba(216, 216, 216, 0.363);
+      border: 1px solid #46465C;
       color: black;
       &:hover{
-        border-color:rgba(216, 216, 216, 0.363)
+        border-color:#46465C
     }
     }
   }

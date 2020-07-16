@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const index = memo(({ handleSort, classes, renderOrders }) => {
   return (
-    <Col className="table-content" xs={24}>
+    <Col className="table-content" style={{padding:'15px'}} xs={24}>
       <div className="titles">
         <div className="title short" onClick={(_) => handleSort('type')}>
           <span>Type</span>

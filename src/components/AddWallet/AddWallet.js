@@ -24,12 +24,12 @@ const walletsList =[
         name:'Formatic',
         logo:LogoForma,
     },
-    /* {
+     {
         id:'coin_base',
         name:'Coinbase Wallet',
         logo:LogoCoin,
     },
-    {
+    /*{
         id:'key_store',
         name:'Keystore',
         logo:LogoKeystore,
@@ -161,9 +161,9 @@ const handleConnect = async (id) => {
                 </div>
             )
         })}
-        <div  className="wallet">
+        {/* <div  className="wallet">
             <p>Other wallets</p>
-        </div>
+        </div> */}
       </div>
       
     </Modal>
