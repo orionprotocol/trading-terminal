@@ -63,7 +63,7 @@ const renderSize = (data, format) => {
   );
 };
 
-const Asks = ({ dataAsk, formatingPair }) => {
+const Asks = ({ dataAsk, formatingPair,mode }) => {
 
 /* REDUX */
   const dispatch = useDispatch();
@@ -200,7 +200,7 @@ const Asks = ({ dataAsk, formatingPair }) => {
         let percentStyle27 = calculatePercent27(percentStyle2) + '%';
         renderData.push(
           <div
-            className={`order ${localStorage.getItem('mode') === 'Dark' ? 'dark' : ''}`}
+            className={`order ${mode === 'Dark' ? 'dark' : ''}`}
             key={key + time}
             onClick={(_) => chooseOrderBookLine(asks[i])}
           >
@@ -208,13 +208,18 @@ const Asks = ({ dataAsk, formatingPair }) => {
             <span className="progress-light l-red" style={{ width: percentStyle }} />
             {/* Max width 27% */}
             <span className="progress-light d-red" style={{ width: percentStyle27 }} />
+
+            {/* NUMBERS IN CELLS */}
+
             <span className="cell emp">
               {Number(asks[i].price).toFixed(formatingPair.pricePrecision)}
             </span>
-            {/* <span className="cell">{asks[i].size.toFixed(3)}</span> */}
+          
             {renderSize(asks[i], formatingPair.qtyPrecision)}
+
             <span className="cell emp">{asks[i].total.toFixed(formatingPair.pricePrecision)}</span>
 
+        
             <div className="cell exch">
               <div
                 className="exch-content js-exch-content"
@@ -226,6 +231,7 @@ const Asks = ({ dataAsk, formatingPair }) => {
               </div>
               {exchangesExtras}
             </div>
+            {/*END NUMBERS IN CELLS */}
           </div>
         );
       }
