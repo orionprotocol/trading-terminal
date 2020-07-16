@@ -14,7 +14,6 @@ const index = memo(
       setSelectorA(null);
       setSelectorA(
         <Select
-          
           value={filterPairA}
           className="selector"
           onChange={(e) => handleChangeA(e)}

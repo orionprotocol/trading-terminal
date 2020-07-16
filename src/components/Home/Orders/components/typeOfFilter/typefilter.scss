@@ -1,5 +1,11 @@
+@import '../../../../../css/scss/resposiveSize';
+
 .content-buttons-filter{
 width: 20%;
+@include media(md){
+  width: 100%;
+  margin-bottom: 15px;
+}
     .container-options-buttons {
         width: 100%;
         height: 35px;

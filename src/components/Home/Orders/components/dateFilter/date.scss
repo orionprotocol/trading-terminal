@@ -1,4 +1,4 @@
-
+@import '../../../../../css/scss/resposiveSize';
 /* OLD STYLES */
 
 .react-datepicker__input-container {
@@ -58,6 +58,10 @@
   display: flex;
   justify-content: space-between;
   width: 38%;
+  @include media(md){
+    width: 100%;
+    margin-bottom: 15px;
+  }
   &.Dark {
     .customDatePickerInputWrapper{
       background-color: #35354E;
@@ -108,5 +112,5 @@
   }
 }
 .react-datepicker-wrapper {
-  width: 48%;
+  width: 47%;
 }

@@ -11,10 +11,10 @@
   }
   &.Dark{
     background-color:#33334A ;
-    filter: drop-shadow(0 10px 4px #0000002a);
+    filter: drop-shadow(0 5px 4px #0000002a);
   }
   &.Light{
-    filter: drop-shadow(0 10px 4px #a7a7a733);
+    filter: drop-shadow(0 5px 4px #a7a7a733);
     background-color:#FFFFFF ;
   }
 }
@@ -69,7 +69,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 38% !important;
+  width: 38% ;
+  @include media(md){
+    width: 100% ;
+  }
 }
 
 .dark-mode.option-select.emp {

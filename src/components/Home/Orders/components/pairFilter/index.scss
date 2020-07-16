@@ -1,8 +1,13 @@
+@import '../../../../../css/scss/resposiveSize';
+
 .container-pair{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 48%;
+  width: 58%;
+  @include media(md){
+    width: 55%;
+  }
   &.Dark {
     .ant-select-arrow{
       color: rgb(151, 151, 179);
@@ -32,9 +37,13 @@
     }
   }
   .selector{
-    width: 100%;
+    width: 50%;
     border-radius: 5px;
     height: 35px;
+      @include media(md){
+        width: 48%;
+      }
+    
   }
   .ant-select-selector{
     height: 35px !important;
@@ -43,7 +52,13 @@
 
 }
   .pair-filter.separator {
-    margin: 0px 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10%;
+    @include media(md){
+    display: none;
+    }
   }
 }
 

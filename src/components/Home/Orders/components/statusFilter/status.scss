@@ -1,8 +1,12 @@
+@import '../../../../../css/scss/resposiveSize';
 .container-status{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 48%;
+    width: 40%;
+    @include media(md){
+      width: 40%;
+    }
     &.Dark {
       .ant-select-arrow{
         color: rgb(151, 151, 179);
