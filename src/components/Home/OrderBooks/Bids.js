@@ -48,16 +48,16 @@ function calculatePercent27(value) {
 // 	);
 // }
 
-const renderSize = (data, format) => {
+const renderSize = (data, format,mode) => {
   let id = 'bid-row-' + Math.floor(Math.random() * 100000);
-  let colorClass = 'cell';
+  let colorClass = 'cell amount';
   if (!data.dynamic) {
   } else {
     if (data.dynamic === 1) {
-      colorClass = 'cell green';
+      colorClass = 'cell amount green';
     }
     if (data.dynamic === -1) {
-      colorClass = 'cell red';
+      colorClass = 'cell amount red';
     }
   }
   data.dynamic = 0;
@@ -71,7 +71,7 @@ const renderSize = (data, format) => {
   }, 300);
 
   return (
-    <span className={colorClass} id={id}>
+    <span  className={colorClass} id={id}>
       {Number(data.size).toFixed(format)}
     </span>
   );
@@ -86,7 +86,7 @@ function handleExchanges(e) {
   if (drop) drop.classList.toggle('active');
 }
 
-const Bids = ({ dataBid, formatingPair }) => {
+const Bids = ({ dataBid, formatingPair ,mode}) => {
   const dispatch = useDispatch();
   const [bids, setBids] = useState();
   const [dataBids, setDataBids] = useState([]);
@@ -206,7 +206,7 @@ const Bids = ({ dataBid, formatingPair }) => {
         let percentStyle27 = calculatePercent27(percentStyle2) + '%';
         renderData.push(
           <div
-            className={`order ${localStorage.getItem('mode') === 'Dark' ? 'dark' : ''}`}
+            className={`order ${mode}`}
             key={key + time + 'bids'}
             onClick={(_) => chooseOrderBookLine(bids[i])}
           >
@@ -214,25 +214,21 @@ const Bids = ({ dataBid, formatingPair }) => {
             <span className="progress-light l-green" style={{ width: percentStyle }} />
             {/* Max width 27% */}
             <span className="progress-light d-green" style={{ width: percentStyle27 }} />
-            <span className="cell emp">
-              {' '}
+
+
+
+            <span className="cell price emp" >
               {Number(bids[i].price).toFixed(formatingPair.pricePrecision)}
             </span>
+            {renderSize(bids[i], formatingPair.qtyPrecision,mode)}
+            <span className="cell total emp">{bids[i].total.toFixed(formatingPair.pricePrecision)}</span>
 
-            {/* <span className="cell">{bids[i].size.toFixed(3)}</span> */}
-            {renderSize(bids[i], formatingPair.qtyPrecision)}
-            <span className="cell emp">{bids[i].total.toFixed(formatingPair.pricePrecision)}</span>
-
-            <div className="cell exch">
-              <div
-                className={`exch-content js-exch-content`}
-                onClick={handleExchanges}
-                id={'div-bid-' + key}
-              >
-                {imgExchanges}
-                {arrow}
-              </div>
-              {exchangesExtras}
+            <div className="cell  exch">
+            {bids[i].exchanges.map((res,key)=>{
+              return(
+                <div key={key} className={`image-exch ${res}`}></div>
+              )
+            })}
             </div>
           </div>
         );

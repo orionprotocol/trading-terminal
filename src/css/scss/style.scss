@@ -2217,19 +2217,19 @@ div {
         color: #ffffff !important;
       }
       .cell {
-        color: rgba(224, 224, 255, 0.6) !important;
+        color: rgba(224, 224, 255, 0.6) ;
       }
       .cell.emp {
-        color: #ffffff !important;
+        color: #ffffff ;
       }
       .cell.filled {
-        color: #eeff00 !important;
+        color: #eeff00 ;
       }
       .cell.open {
-        color: #00ffaa !important;
+        color: #00ffaa ;
       }
       .cell.cancel {
-        color: #ff00aa !important;
+        color: #ff00aa ;
       }
       .line-small {
         .data {
@@ -4177,6 +4177,7 @@ div {
               padding: 12px 0;
               font-size: 14px;
               line-height: 24px;
+              
             }
             .cell.exch {
               padding: 0;
