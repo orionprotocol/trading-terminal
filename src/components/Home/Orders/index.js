@@ -120,6 +120,7 @@ const Orders = (_) => {
       balances.contractBalances.USDT,
       balances.contractBalances.WBTC,
       balances.contractBalances.WXRP,
+      balances.contractBalances.ERD,
     ]
   );
 

@@ -6,8 +6,6 @@ export const reformatNameCoins = (coin) => {
       return "XRP";
     case "USDT":
       return "USD";
-    case "ERD":
-      return "ERD";
     default:
       return coin;
   }
