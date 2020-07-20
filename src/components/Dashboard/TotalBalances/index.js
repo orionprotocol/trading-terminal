@@ -259,7 +259,7 @@ const TotalBalances = (_) => {
           ))}
       </div>
       <button onClick={handleDisconnect} type='button' className={`btn-disconnet ${mode}`}>
-        {disconnecting?
+        {!disconnecting?
         <>
       <img
         src={require(`../../../css/icons/dashboard/totalBalance/minusIcon-${mode}.svg`)}
