@@ -21,10 +21,6 @@
       }
     }
   }
-
-  .dashboard .graph .graph-container {
-    font-family: 'Montserrat', sans-serif !important;
-  }
 }
 
 body {
@@ -1536,70 +1532,7 @@ body.dark {
       }
     }
   }
-  .graph {
-    -webkit-box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
-    box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
-    border-radius: 4px;
-    background: #ffffff;
-    padding: 24px;
-    width: 24%;
-    height: calc(100vh - 30px);
-    overflow-y: auto;
-    h2 {
-      margin-bottom: 32px;
-    }
-    .graph-container {
-      width: 250px;
-      height: 250px;
-      font-weight: 700 !important;
-      font-family: sans-serif !important;
-      -webkit-transform: translateX(-10px);
-      -ms-transform: translateX(-10px);
-      transform: translateX(-10px);
-      margin: auto;
-    }
-    .coins {
-      margin-top: 36px;
-      .coin {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-        justify-content: space-between;
-        margin: 8px 0;
-        .left {
-          display: -webkit-box;
-          display: -ms-flexbox;
-          display: flex;
-          -webkit-box-align: center;
-          -ms-flex-align: center;
-          align-items: center;
-          img {
-            width: 20px;
-            height: 20px;
-            margin-right: 18px;
-          }
-          .name {
-            font-size: 14px;
-            line-height: 24px;
-            letter-spacing: 1px;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: rgba(20, 16, 41, 0.8);
-          }
-        }
-        .num {
-          font-size: 14px;
-          line-height: 24px;
-          color: rgba(20, 16, 41, 0.8);
-        }
-      }
-    }
-  }
+ 
 }
 .wallet-page {
   display: -webkit-box;
@@ -2459,22 +2392,7 @@ div {
   h2 {
     color: #ffffff;
   }
-  .graph {
-    -webkit-box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
-    box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
-    background-color: #2a2a41;
-    tspan {
-      fill: #ffffff !important;
-    }
-    .coin {
-      .name {
-        color: #ffffff !important;
-      }
-      .num {
-        color: #ffffff !important;
-      }
-    }
-  }
+ 
   .wallets {
     -webkit-box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
     box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
@@ -4292,12 +4210,7 @@ div {
         }
       }
     }
-    .graph {
-      width: 27%;
-      margin-right: 8px;
-      padding: 16px;
-      height: initial;
-    }
+    
   }
   .wallet-page {
     overflow: visible;
@@ -4370,16 +4283,7 @@ div {
     }
   }
 }
-@media (max-width: 980px) {
-  .dashboard {
-    .graph {
-      .graph-container {
-        width: 210px;
-        height: 210px;
-      }
-    }
-  }
-}
+
 @media (max-width: 916px) {
   .wallet-page {
     .wrapper {
@@ -4484,14 +4388,6 @@ div {
         margin-bottom: 16px;
       }
     }
-    .graph {
-      width: 60%;
-      margin: 0 0 16px 0;
-      .graph-container {
-        width: 300px;
-        height: 300px;
-      }
-    }
   }
 }
 @media (max-width: 810px) {
@@ -4518,17 +4414,7 @@ div {
     }
   }
 }
-@media (max-width: 666px) {
-  .dashboard {
-    .graph {
-      .graph-container {
-        -webkit-transform: translateX(0);
-        -ms-transform: translateX(0);
-        transform: translateX(0);
-      }
-    }
-  }
-}
+
 @media (max-width: 645px) {
   .wallet-page {
     .wrapper {
@@ -4554,13 +4440,7 @@ div {
     }
   }
 }
-@media (max-width: 582px) {
-  .dashboard {
-    .graph {
-      width: 100%;
-    }
-  }
-}
+
 @media (max-width: 576px) {
   .index {
     .common-info {
@@ -4905,16 +4785,7 @@ div {
     }
   }
 }
-@media (max-width: 360px) {
-  .dashboard {
-    .graph {
-      .graph-container {
-        width: 260px;
-        height: 260px;
-      }
-    }
-  }
-}
+
 
 /* Chrome, Safari, Edge, Opera */
 input[type='number']::-webkit-outer-spin-button,

@@ -190,7 +190,7 @@ const Wallets = (_) => {
           {Object.keys(contract).map((a) => (
             <div className={`wallet ${a.toLowerCase()}`} key={a}>
               <div className="title">
-                <img src={`./img/${a.toLowerCase()}-wallet.png`} alt={a} />
+              <img src={require(`../../../css/icons/currencies_highlight/${a.toLowerCase()}.svg`)} alt={a} />
                 <span>Details</span>
               </div>
               <p className="money">

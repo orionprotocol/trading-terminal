@@ -45,7 +45,7 @@ const WalletsTable = (props) => {
               wallet: wallet[a.toUpperCase()].toFixed(8),
               contract: contract[a.toUpperCase()].toFixed(8),
               open: 0,
-              img: `./img/${a.toLowerCase()}-wallet.png`,
+              img: require(`../../../css/icons/currencies_highlight/${a.toLowerCase()}.svg`)
             };
           } else {
             return {
@@ -61,7 +61,7 @@ const WalletsTable = (props) => {
     },
     [contract, wallet]
   );
-
+  
   useEffect(
     (_) => {
       try {
