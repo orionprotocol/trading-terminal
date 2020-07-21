@@ -1,11 +1,13 @@
-import React, { lazy, useState, useEffect, Suspense,useRef } from 'react';
-import { useSelector } from 'react-redux';
+import React, { lazy, useState, useEffect, Suspense, useRef, useCallback } from 'react';
+import { useSelector,useDispatch } from 'react-redux';
 import Slider from 'react-slick';
 import FadeIn from 'react-fade-in';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ethereum } from "../../../services/Coinbase";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './wallets.scss';
+
 
 const AddWallet1 = lazy(() => import('../../AddWallet/AddWallet1'));
 const AddWallet2 = lazy(() => import('../../AddWallet/AddWallet2'));
@@ -37,13 +39,19 @@ const settings = {
 
 const Wallets = (_) => {
   /* REDUX */
+  const dispatch = useDispatch();
   const mode = useSelector((state) => state.general.mode);
   const balances = useSelector((state) => state.balances);
   const assets = useSelector((state) => state.wallet.assets);
   const tickers = useSelector((state) => state.general.tickers);
   const changeInTickers = useSelector((state) => state.general.changeInTickers);
+  const setAddWallet = useCallback(
+    (payload) => dispatch({ type: "SetAddWallet", payload }),
+    [dispatch]
+  );
   /* REDUX */
 
+ const [disconnecting, setdisconnecting] = useState(false)
   const [contract, setContract] = useState({});
   const [wallet, setWallet] = useState({});
   const [show1, setShow1] = useState(false);
@@ -54,7 +62,6 @@ const Wallets = (_) => {
 
   const textAreaRef = useRef(null);
 
-  
   useEffect(
     (_) => {
       let newContract = {},
@@ -110,6 +117,30 @@ const Wallets = (_) => {
     //eslint-disable-next-line react-hooks/exhaustive-deps
     [balances]
   );
+
+  /* Disconnection function */
+  const clearLocalStorage = (_) => {
+    localStorage.removeItem('wanmaskConnected');
+    localStorage.removeItem('metamaskConnected');
+    localStorage.removeItem('fortmaticConnected');
+    localStorage.removeItem('coinbaseConnected');
+    localStorage.removeItem('ethAddress');
+    localStorage.removeItem('address');
+  };
+
+  const handleDisconnect = (_) => {
+    setdisconnecting(true);
+    if (localStorage.getItem('coinbaseConnected')) {
+      ethereum.close();
+    }
+    clearLocalStorage();
+
+    setTimeout(() => {
+      setdisconnecting(false);
+      window.location.replace('/');
+    }, 1000);
+  };
+  /* Disconnection function */
 
   const setTotals = async (_) => {
     let newTotal = {},
@@ -174,7 +205,7 @@ const Wallets = (_) => {
     }, 100);
   };
 
- const copyToClipboard = (e) => {
+  const copyToClipboard = (e) => {
     textAreaRef.current.select();
     document.execCommand('copy');
     // This is just personal preference.
@@ -201,28 +232,43 @@ const Wallets = (_) => {
                   src={require(`../../../css/icons/currencies_highlight/${a.toLowerCase()}.svg`)}
                   alt={a}
                 />
-                {/* <span>Details</span> */}
+
+                <button
+                  onClick={handleDisconnect}
+                  type="button"
+                  className={`btn-disconnet-wallet ${mode}`}
+                >
+                  <img
+                    src={require(`../../../css/icons/dashboard/totalBalance/minusIcon-${mode}.svg`)}
+                    alt={'minus'}
+                  />
+                  Disconnect Wallet
+                </button>
               </div>
 
-              <div className="copy-address">
+              <div className={`copy-address ${mode}`}>
                 <form>
-                  <input
-                  
+                  <textarea
+                    name=""
+                    id=""
                     ref={textAreaRef}
                     value={localStorage.getItem('address')}
-                  />
+                  ></textarea>
+                  <textarea disabled={true} className="invisible" />
                 </form>
                 {
                   /* Logical shortcut for only displaying the 
             button if the copy command exists */
                   document.queryCommandSupported('copy') && (
-                    
-                      <img onClick={copyToClipboard} src={require(`../../../css/icons/dashboard/wallets/copy-icon-${mode}.svg`)} alt="copy"/>
-                      
-                   
+                    <img
+                      onClick={copyToClipboard}
+                      src={require(`../../../css/icons/dashboard/wallets/copy-icon-${mode}.svg`)}
+                      alt="copy"
+                    />
                   )
                 }
               </div>
+              <span className={`title-total ${mode}`}>Total value</span>
               <p className="money">
                 <span className="num">
                   {typeof total[a.toUpperCase()] === 'undefined' ? 0 : total[a.toUpperCase()]}
@@ -235,10 +281,20 @@ const Wallets = (_) => {
                 {typeof inBTC[a.toUpperCase()] === 'undefined' ? 0 : inBTC[a.toUpperCase()]} btc
               </p>
               <p className="currency-2">
-                ${typeof inUSD[a.toUpperCase()] === 'undefined' ? 0 : inUSD[a.toUpperCase()]}
+                <span>
+                 {typeof inUSD[a.toUpperCase()] === 'undefined' ? 0 : inUSD[a.toUpperCase()]} USD
+                </span>
+                <button type="button" className={`${mode}`}>Details</button>
               </p>
             </div>
           ))}
+
+          <div onClick={_=>setAddWallet(true)} className={`wallet add-wallet ${mode}`}>
+            <div className="add-w">
+            <FontAwesomeIcon icon="plus" />
+            Add wallet
+            </div>
+          </div>
         </Slider>
       </div>
 

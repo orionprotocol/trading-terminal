@@ -1,3 +1,7 @@
+ $colorDarkLetters:#9090A8;
+ $colorLightLetters:#726E7A;
+ $colorDarkBorder:#67677F;
+ $colorLightBorder:#72707F;
 .dashboard.dark-mode {
 	.wallets {
 		-webkit-box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
@@ -18,7 +22,7 @@
 			}
 		  }
 		  .currency-2 {
-			color: rgba(224, 224, 255, 0.6) !important;
+			color: white !important;
 		  }
 		  .money {
 			.num {
@@ -37,9 +41,9 @@
 		box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
 		border-radius: 4px;
 		background: #ffffff;
-		padding: 24px;
+		padding: 20px;
 		margin-bottom: 8px;
-		height: calc(50vh - 30px);
+		
 		.top {
 		  display: -webkit-box;
 		  display: -ms-flexbox;
@@ -49,8 +53,10 @@
 		  align-items: center;
 		  -webkit-box-pack: justify;
 		  -ms-flex-pack: justify;
-		  justify-content: space-between;
-		  margin-bottom: 20px;
+		  margin-bottom: 10px;
+		  h2{
+			  margin-bottom: 0;
+		  }
 		  .add {
 			background: rgba(20, 16, 41, 0.02);
 			-webkit-transition: all 0.2s;
@@ -69,6 +75,7 @@
 			padding: 8px 16px;
 			border: none;
 			cursor: pointer;
+			margin-left: 50px;
 			&:hover {
 			  background: rgba(20, 16, 41, 0.04);
 			}
@@ -87,32 +94,100 @@
 		  margin-bottom: 24px;
 		  .wallet {
 			padding: 16px;
+			padding-bottom: 0;
 			border-radius: 2px;
 			-webkit-transition: all 0.1s;
 			-o-transition: all 0.1s;
 			transition: all 0.1s;
-			&:not(:last-child) {
+			min-height: 35vh ;
+			
+			/* &:not(:last-child) {
 			  margin-right: 16px;
+			} */
+			&.add-wallet{
+				position: relative;
+				display: flex !important;
+				justify-content: center;
+				align-items: center;
+				width: 99%;
+				font-size: 16px;
+				/* height: 35vh ; */
+				
+				/* .add-w{
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					margin: auto;
+				} */
+				&.Dark{
+					border: 1px solid $colorDarkBorder;
+					color:$colorDarkBorder
+				}
+				&.Light{
+					border: 1px solid $colorLightBorder;
+					color:$colorLightBorder
+				}
 			}
 
+
+.title-total{
+	font-size: 12px;
+	font-weight: bold;
+		&.Dark{
+		color:$colorDarkLetters;
+	}
+	&.Light{
+		color:$colorLightLetters
+	}
+}
 .copy-address{
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
+	&.Dark{
+		form{
+			textarea{
+				color:$colorDarkLetters
+			}
+		}
+		
+	}
+	&.Light{
+		form{
+			textarea{
+				color:$colorLightLetters;
+			}
+		}
+		
+	}
 	form{
-		width: 80%;
-		input{
+		width: 85%;
+		position: relative;
+		textarea{
 			width: 100%;
 			white-space: initial;
 			font-size: 1vw;
 			border: none;
 			background-color: transparent ;
+			&.invisible{
+				position: absolute;
+				left: 0;
+				z-index: 1;
+			}
 		}
 	}
 	
 	img{
 		height: 20px;
-		width: 20%;
+		width: 15%;
+		cursor: pointer;
+		border-radius: 2px;
+		margin-top: 5px;
+		&:hover{
+			transform: scale(1.2);;
+		}
 	}
 }
 
@@ -129,6 +204,27 @@
 			  font-size: 14px;
 			  line-height: 16px;
 			  margin-bottom: 28px;
+			  .btn-disconnet-wallet{
+				padding: 5px 20px;
+				border: none;
+				border-radius: 2px;
+				font-size: 13px;
+				display: flex;
+				align-items: center;
+				cursor: pointer;
+				img{
+				  margin-right: 5px;
+				}
+				
+				&.Dark{
+				  background-color:#2E2E45;
+				  color: #9897B5;
+				}
+				&.Light{
+				  background-color:#F9F9F9;
+				  color: #706D7C;
+				}
+			  }
 			}
 			.money {
 			  display: -webkit-box;
@@ -150,6 +246,7 @@
 				font-weight: 700;
 				color: rgba(20, 16, 41, 0.8);
 				text-transform: uppercase;
+				
 			  }
 			}
 			.currency-2 {
@@ -157,6 +254,21 @@
 			  line-height: 16px;
 			  text-transform: uppercase;
 			  font-weight: 600;
+			  display: flex;
+			  justify-content: space-between;
+			  color:#413B54;
+			  button{
+				  background-color: transparent;
+				  border: none;
+				  font-weight: bold;
+				  cursor: pointer;
+				  &.Dark{
+					color: $colorDarkLetters
+				  }
+				  &.Light{
+					color: $colorLightLetters
+				  }
+			  }
 			}
 		  }
 		  .wallet.btc {
