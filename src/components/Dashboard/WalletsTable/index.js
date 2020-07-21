@@ -3,10 +3,11 @@ import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Line from "./Line";
 import compareValues from "../../funtions/compareValues";
-import "./index.css";
+import "./walletsTable.scss";
 
 const WalletsTable = (props) => {
   const assets = useSelector((state) => state.wallet.assets);
+  const mode = useSelector((state) => state.general.mode);
   const balances = useSelector((state) => state.balances);
   const [contract, setContract] = useState({});
   const [wallet, setWallet] = useState({});
@@ -134,6 +135,26 @@ const WalletsTable = (props) => {
 
   return (
     <div className="wallets-table">
+
+    <div className={`header-table-wallets ${mode}`}>
+      <div className="left">
+        <div className="title">
+          Deposit to start Trading
+        </div>
+        <ul className="list">
+          <li>
+            <div className="circle"></div>Choose a token and click on deposit.</li>
+          <li> <div className="circle"></div>Send asset to Contract Balance</li>
+          <li> <div className="circle"></div>Start trading in a few minute</li>
+        </ul>
+      </div>
+      <div className="right">
+          <button type='button'>
+            Learn more
+          </button>
+      </div>
+    </div>
+
       <div className="titles">
         <div className="title" onClick={(_) => handleSort("token")}>
           <span>Token</span>

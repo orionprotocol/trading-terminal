@@ -1286,7 +1286,7 @@ body.dark {
       box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
       border-radius: 4px;
       background: #ffffff;
-      padding: 22px;
+      
       .titles {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -1294,8 +1294,8 @@ body.dark {
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
-        padding: 0 12px;
-        margin-bottom: 12px;
+        padding: 0 22px;
+        margin-top: 22px;
         .title {
           width: 18.5%;
           color: rgba(20, 16, 41, 0.8);
@@ -1326,7 +1326,8 @@ body.dark {
         }
       }
       .lines {
-        padding-bottom: 10px;
+        padding: 10px 22px;
+        padding-top: 0;
         overflow-y: auto;
         max-height: calc(50vh - 80px);
         .line {
@@ -1425,7 +1426,7 @@ body.dark {
       box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
       border-radius: 4px;
       background: #ffffff;
-      padding: 22px 0 22px 22px;
+      /* padding: 22px 0 22px 22px; */
       .search {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -3996,7 +3997,7 @@ div {
       margin: 0 0 8px 0;
        
       .wallets-table {
-        padding: 18px;
+        /* padding: 18px; */
         .titles {
           display: none;
         }
@@ -4059,7 +4060,7 @@ div {
     padding: 0 0 15px;
     .wrapper {
       .wallets-table {
-        padding: 18px;
+       /*  padding: 18px; */
         .lines {
           padding: 18px;
           height: initial;
