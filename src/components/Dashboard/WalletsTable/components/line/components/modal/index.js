@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import FadeIn from "react-fade-in";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import openNotification from "../../Notification";
+import openNotification from "../../../../../../Notification";
 import { FadeLoader } from "react-spinners";
 
 const Modal = (props) => {
@@ -15,13 +15,13 @@ const Modal = (props) => {
           message: "Insufficient balance",
         });
       } else {
-        props.submit(amount);
+        props.submit(amount,props.currency);
       }
       //-------------------------------------------------------------------------
       // withdraw('wbtc', amount, address);
     } else {
       setLoading(true);
-      props.submit(amount);
+      props.submit(amount,props.currency);
       //-------------------------------------------------------------------------
       // console.log('deposit', 'WBTC', amount, address);
       // deposit('wbtc', amount, address);

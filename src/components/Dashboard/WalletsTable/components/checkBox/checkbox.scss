@@ -1,0 +1,130 @@
+.checkbox-container{
+margin-right: 10px;
+}
+$inputDark:#2E2E45;
+$inputLight:#FAFAFB;
+$LColorDark:#9797B3;
+$LColorLight:#72707F;
+.wallets-table{
+    .titles{
+        &.Dark{
+            .checkbox {
+                --border: #47475f;
+                --border-hover: #47475f;
+                --border-active: #9797B3;
+            }
+        }
+        &.Light{
+            .checkbox {
+                --border: #c2c2c2;
+                --border-hover: #c2c2c2;
+                --border-active: #72707F;
+            }
+        }
+    }}
+.checkbox {
+    --background: transparent;
+    
+    --tick: #fff;
+    position: relative;
+    
+    input,
+    svg {
+        width: 21px;
+        height: 21px;
+        display: block;
+    }
+    input {
+        
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        position: relative;
+        outline: none;
+        background: var(--background);
+        border: none;
+        margin: 0;
+        padding: 0;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: box-shadow .3s;
+        box-shadow: inset 0 0 0 var(--s, 1px) var(--b, var(--border));
+        &:hover {
+            --s: 2px;
+            --b: var(--border-hover);
+        }
+        &:checked {
+            --b: var(--border-active);
+        }
+    }
+    svg {
+        pointer-events: none;
+        fill: none;
+        stroke-width: 2px;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke: var(--stroke, var(--border-active));
+        position: absolute;
+        margin-left: 0 !important;
+        top: 0;
+        left: 0;
+        width: 21px;
+        height: 21px;
+        transform: scale(var(--scale, 1)) translateZ(0);
+    }
+    &.path {
+        input {
+            &:checked {
+                --s: 2px;
+                transition-delay: .4s;
+                & + svg {
+                    --a: 16.1 86.12;
+                    --o: 102.22;
+                }
+            }
+        }
+        svg {
+            stroke-dasharray: var(--a, 86.12);
+            stroke-dashoffset: var(--o, 86.12);
+            transition: stroke-dasharray .6s, stroke-dashoffset .6s;
+        }
+    }
+    &.bounce {
+        --stroke: var(--tick);
+        input {
+            &:checked {
+                --s: 11px;
+                & + svg {
+                    animation: bounce .4s linear forwards .2s;
+                }
+            }
+        }
+        svg {
+            --scale: 0;
+        }
+    }
+}
+
+@keyframes bounce {
+    50% {
+        transform: scale(1.2);
+    }
+    75% {
+        transform: scale(.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+html {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+* {
+    box-sizing: inherit;
+    &:before,
+    &:after {
+        box-sizing: inherit;
+    }
+}

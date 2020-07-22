@@ -10,7 +10,100 @@ $LColorDark:#9797B3;
 $LColorLight:#72707F;
 $listColor:#00BBFF;
 
+ $colorDarkSearch:#67677F;
+ $colorLightSearch:#72707F;
+$inputDark:#2E2E45;
+$inputLight:#FAFAFB;
+
 .wallets-table{
+
+.titles{
+
+&.Dark{
+  .search {
+    .input{
+      svg{
+        path{
+          fill:$colorDarkSearch;
+        }
+      }
+      input {
+        background-color: $inputDark;
+        color: $colorDarkSearch;
+        &::placeholder {
+          color: $colorDarkSearch;
+        }
+       
+      }
+    }
+  }
+}
+&.Light{
+  .search {
+    .input {
+      svg{
+        path{
+          fill: $colorLightSearch;
+        }
+      }
+      input{
+        background-color: $inputLight;
+      color: $colorLightSearch;
+        &::placeholder {
+          color: $colorLightSearch;
+        }
+      }
+    }
+  }
+}
+
+.zero-filter{
+width:30%;
+display:flex;
+justify-content: center;
+align-items: center;
+}
+
+  .search {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    width: 70%;
+    .input {
+      position: relative;
+      width: 100%;
+      
+      svg {
+        position: absolute;
+        top: 17px;
+        left: 12px;
+        font-size: 15px;
+      }
+      input {
+        border-radius: 2px;
+        padding: 12px 15px 12px 48px;
+      
+        font-size: 16px;
+        line-height: 24px;
+        border: none;
+        width: 100%;
+        &::placeholder {
+          font-size: 16px;
+          line-height: 24px;
+        }
+      }
+    }
+    
+  
+  }
+}
+
   .header-table-wallets{
     border-radius: 5px 5px 0 0;
     display: flex;

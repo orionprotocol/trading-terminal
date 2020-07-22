@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import Modal from "./Modal";
+import Modal from "./components/modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
 // import { deposit, withdraw } from '../../../services/Metamask';
 import {
   deposit as depositWan,
   withdraw as withdrawWan,
-} from "../../../services/Wanmask";
+} from "../../../../../services/Wanmask";
 
-import Contract from "../../../services/Contract";
+import Contract from "../../../../../services/Contract";
 
 const Line = (props) => {
   const [depositModal, toggleDepositModal] = useState(false);

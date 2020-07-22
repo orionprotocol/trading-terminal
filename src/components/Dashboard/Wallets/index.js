@@ -249,8 +249,7 @@ const Wallets = (_) => {
               <div className={`copy-address ${mode}`}>
                 <form>
                   <textarea
-                    name=""
-                    id=""
+                    readOnly
                     ref={textAreaRef}
                     value={localStorage.getItem('address')}
                   ></textarea>

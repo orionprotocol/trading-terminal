@@ -1294,7 +1294,7 @@ body.dark {
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
-        padding: 0 22px;
+        padding: 0 34px;
         margin-top: 22px;
         .title {
           width: 18.5%;
@@ -1322,7 +1322,7 @@ body.dark {
           -webkit-box-pack: end;
           -ms-flex-pack: end;
           justify-content: flex-end;
-          padding-right: 20px;
+          
         }
       }
       .lines {
@@ -1362,6 +1362,7 @@ body.dark {
             -ms-flex-pack: end;
             justify-content: flex-end;
             button {
+              width: 33.333%;
               padding: 8px 16px;
               background: rgba(20, 16, 41, 0.02);
               border-radius: 2px;
