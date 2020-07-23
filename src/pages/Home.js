@@ -44,47 +44,52 @@ function Home(props) {
   }, [props.history.location.pathname]);
 
   const active = useSelector((state) => state.responsive.home.active);
-  const pair = useSelector((state) => state.responsive.home.pair);
+ /*  const pair = useSelector((state) => state.responsive.home.pair); */
   const exchange = useSelector((state) => state.responsive.home.exchange);
   const chart = useSelector((state) => state.responsive.home.chart);
   const history = useSelector((state) => state.responsive.home.history);
   const orderbook = useSelector((state) => state.responsive.home.orderbook);
-
+/*   console.log(exchange) */
   return (
     <Suspense fallback={<Loader />}>
       <div className="index">
         <Sidebar history={props.history} />
         <Row className="home-container">
           <MobileNavigation />
-          <Col xs={24}>
-            <Row gutter={[8]}>
-              <Col className="left-panel" xs={24} lg={4}>
-           
-                    {!active || (active && pair)
-                      ?    <CommonInfo History={props} />
-                      : null}
-             
-                
-               
-                  {!active || (active && exchange) ?  <Exchange /> : null}
-                
-                
-              </Col>
+          {/* NORMAL SIZE */}
+         {/*  {!active ? ( */}
+            <Col xs={24}>
+              <Row gutter={[8]}>
+                <Col className="left-panel" xs={24} lg={4}>
+                 {!active &&  <CommonInfo History={props} />  }
+                 {(!active || (active&&exchange)) &&  <Exchange />  }
+                  
+                </Col>
 
-              <Col className="center-panel" xs={24} lg={16}>
-                <Row gutter={[0, 8]}>
-                  {!active || (active && chart) ? <Col xs={24}>  <TVChart /></Col> : null}
-                  {!active || (active && history) ? <Col xs={24}> <Orders /></Col> : null}
-                </Row>
-              </Col>
+                <Col className="center-panel" xs={24} lg={16}>
+                  <Row gutter={[0, 8]}>
+                      <Col xs={24}>
+                        {' '}
+                         {(!active || (active&&chart)) &&   <TVChart />  }
+                       
+                      </Col>
+                      <Col xs={24}>
+                        {' '}
+                        {(!active || (active&&history)) &&  <Orders /> }
+                        
+                      </Col>
+                  </Row>
+                </Col>
 
-              {!active || (active && orderbook) ? (
-                <Col  className="right-panel"  xs={24} lg={4}>
-                  <OrderBooks />
-               </Col> 
-              ) : null}
-            </Row>
-          </Col>
+                  <Col className="right-panel" xs={24} lg={4}>
+                  {(!active || (active&&orderbook)) &&  <OrderBooks /> }
+                    
+                  </Col>
+              </Row>
+            </Col>
+        {/*    ) : null} */}
+
+          {/*END NORMAL SIZE */}
         </Row>
       </div>
     </Suspense>

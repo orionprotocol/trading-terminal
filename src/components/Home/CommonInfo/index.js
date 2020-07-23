@@ -9,6 +9,8 @@ const formatNumber = (number) => {
 };
 let intervalId = 0;
 const CommonInfo = ({ History }) => {
+  /* REDUX */
+  const pair = useSelector((state) => state.responsive.home.pair);
   const symbolA = useSelector((state) => state.general.symbolA);
   const symbolB = useSelector((state) => state.general.symbolB);
   const lastPrice = useSelector((state) => state.general.lastPrice);
@@ -18,7 +20,7 @@ const CommonInfo = ({ History }) => {
   const change = useSelector((state) => state.general.change);
   const tickers = useSelector((state) => state.general.tickers);
   const supportTradingPairs = useSelector((state) => state.general.supportTradingPairs);
-
+/* REDUX */
   const [dollars, setDollars] = useState({});
   const [isFav, setIsFav] = useState(false);
   const [formatVol, setformatVol] = useState(0);
@@ -129,7 +131,7 @@ const CommonInfo = ({ History }) => {
   );
 
   return (
-    <div className="common-info js-pair">
+    <div className={`common-info js-pair`}>
       {showPairsDropdown ? (
         <div
           className="wrapper-pair js-wrapper-pair"

@@ -1,10 +1,12 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback,memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Col, Row } from 'antd';
 import './index.scss';
 
-const MobileNavigation = (_) => {
+const MobileNavigation = memo((_) => {
+  /* Redux */
   const pair = useSelector((state) => state.responsive.home.pair);
+  const active = useSelector((state) => state.responsive.home.active);
   const exchange = useSelector((state) => state.responsive.home.exchange);
   const chart = useSelector((state) => state.responsive.home.chart);
   const history = useSelector((state) => state.responsive.home.history);
@@ -20,23 +22,29 @@ const MobileNavigation = (_) => {
   const setChart = useCallback((_) => dispatch({ type: 'SetHomeChart' }), [dispatch]);
   const setHistory = useCallback((_) => dispatch({ type: 'SetHomeHistory' }), [dispatch]);
   const setOrderbook = useCallback((_) => dispatch({ type: 'SetHomeOrderbook' }), [dispatch]);
+ /* Redux */
 
-  const update = (_) => {
+
+ window.addEventListener('resize', (_) => {
+  if (window.innerWidth > 991 && active ) {
+    setActive(false);
+  } else if (window.innerWidth <= 991 && !active) {
+    setActive(true);
+  }
+});
+
+  /* const update = (_) => {
     setPair();
-  };
-
-  useEffect((_) => {
-    window.addEventListener('resize', (_) => {
-      if (window.innerWidth > 1130) {
-        setActive(false);
-      } else {
+  }; */
+ 
+ useEffect((_) => {
+   /*  window.addEventListener('resize', (_) => { */
+       if (window.innerWidth < 1130) {
+        setActive(true);
       }
-    });
-    if (window.innerWidth < 1130) {
-      update();
-      setActive(true);
-    }
-  }, []);
+   /*  }); */
+    
+  }, []); 
 
   return (
     <Col className="mobile-navigation" xs={24} lg={0}>
@@ -83,6 +91,6 @@ const MobileNavigation = (_) => {
       </Row>
     </Col>
   );
-};
+});
 
 export default MobileNavigation;

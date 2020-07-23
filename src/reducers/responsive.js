@@ -2,7 +2,7 @@ const initialState = {
 	home: {
 		active: false,
 		pair: false,
-		exchange: false,
+		exchange: true,
 		chart: false,
 		history: false,
 		orderbook: false
