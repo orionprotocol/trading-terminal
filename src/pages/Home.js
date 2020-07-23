@@ -56,6 +56,7 @@ function Home(props) {
         <Sidebar history={props.history} />
         <Row className="home-container">
           <MobileNavigation />
+<<<<<<< HEAD
           {/* NORMAL SIZE */}
          {/*  {!active ? ( */}
             <Col xs={24}>
@@ -90,6 +91,38 @@ function Home(props) {
         {/*    ) : null} */}
 
           {/*END NORMAL SIZE */}
+=======
+          <Col xs={24}>
+            <Row gutter={[8]}>
+              <Col className="left-panel" xs={24} lg={5}>
+                {!active || (active && pair) ? <CommonInfo History={props} /> : null}
+
+                {!active || (active && exchange) ? <Exchange /> : null}
+              </Col>
+
+              <Col className="center-panel" xs={24} lg={14}>
+                <Row gutter={[0, 8]}>
+                  {!active || (active && chart) ? (
+                    <Col xs={24}>
+                      <TVChart />
+                    </Col>
+                  ) : null}
+                  {!active || (active && history) ? (
+                    <Col xs={24}>
+                      <Orders />
+                    </Col>
+                  ) : null}
+                </Row>
+              </Col>
+
+              {!active || (active && orderbook) ? (
+                <Col className="right-panel" xs={24} lg={5}>
+                  <OrderBooks />
+                </Col>
+              ) : null}
+            </Row>
+          </Col>
+>>>>>>> 003ffb7df7fb03dcb939addddb126d0b971714a5
         </Row>
       </div>
     </Suspense>

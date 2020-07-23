@@ -1,22 +1,22 @@
-@import '../../../css/scss/resposiveSize';
-
-.container-filters-header{
+@import '../../../css/scss/core/responsiveSize';
+.container-filters-header {
   width: 100%;
   display: flex;
   justify-content: space-around;
   /* height: 10vh; */
   padding: 20px;
-  @include media('xs'){
+  @include media('xs') {
     flex-direction: column;
   }
-  &.Dark{
-    background-color:#33334A ;
+  &.Dark {
+    background-color: #33334a;
     filter: drop-shadow(0 5px 4px #0000002a);
   }
-  &.Light{
+  &.Light {
     filter: drop-shadow(0 5px 4px #a7a7a733);
-    background-color:#FFFFFF ;
+    background-color: #ffffff;
   }
+
 }
 .subtable.active {
   display: block !important;
@@ -69,9 +69,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 38% ;
-  @include media(md){
-    width: 100% ;
+  width: 38%;
+  @include media(md) {
+    width: 100%;
   }
 }
 

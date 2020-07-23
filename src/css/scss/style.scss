@@ -967,7 +967,6 @@ body.dark {
           transition: all 0.3s;
         }
         .line-small {
-         
           cursor: pointer;
           -webkit-transition: all 0.3s;
           -o-transition: all 0.3s;
@@ -1271,22 +1270,16 @@ body.dark {
   }
 }
 .dashboard {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  height: calc(100vh);
-  overflow: hidden;
-  padding: 15px 0;
   .wrapper {
-    width: 75%;
-    margin-left: 8px;
+    /*  width: 75%;
+    margin-left: 8px; */
 
     .wallets-table {
       -webkit-box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
       box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
       border-radius: 4px;
       background: #ffffff;
-      
+
       .titles {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -1322,12 +1315,11 @@ body.dark {
           -webkit-box-pack: end;
           -ms-flex-pack: end;
           justify-content: flex-end;
-          
         }
       }
       .lines {
-        padding: 10px 22px;
-        padding-top: 0;
+        padding-left: 20px;
+        padding-right: 20px;
         overflow-y: auto;
         max-height: calc(50vh - 80px);
         .line {
@@ -1410,7 +1402,6 @@ body.dark {
       }
     }
   }
- 
 }
 .wallet-page {
   display: -webkit-box;
@@ -1830,8 +1821,7 @@ div {
   }
 }
 .my-container {
-  /*   margin: 0 auto;
-  padding: 0 10px; */
+  padding: 16px;
   width: 100%;
 }
 .my-row {
@@ -2028,19 +2018,19 @@ div {
         color: #ffffff !important;
       }
       .cell {
-        color: rgba(224, 224, 255, 0.6) ;
+        color: rgba(224, 224, 255, 0.6);
       }
       .cell.emp {
-        color: #ffffff ;
+        color: #ffffff;
       }
       .cell.filled {
-        color: #eeff00 ;
+        color: #eeff00;
       }
       .cell.open {
-        color: #00ffaa ;
+        color: #00ffaa;
       }
       .cell.cancel {
-        color: #ff00aa ;
+        color: #ff00aa;
       }
       .line-small {
         .data {
@@ -2124,7 +2114,7 @@ div {
   .right-panel {
     -webkit-box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
     box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
-    
+
     .exch-drop {
       box-shadow: 0 16px 16px -4px rgba(20, 16, 41, 0.24), 0 4px 8px -1px rgba(20, 16, 41, 0.24),
         0 0 1px 0 rgba(20, 16, 41, 0.4) !important;
@@ -2270,8 +2260,6 @@ div {
   h2 {
     color: #ffffff;
   }
- 
-  
 
   .wallets-table {
     -webkit-box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
@@ -3944,7 +3932,6 @@ div {
               padding: 12px 0;
               font-size: 14px;
               line-height: 24px;
-              
             }
             .cell.exch {
               padding: 0;
@@ -3996,7 +3983,7 @@ div {
     .wrapper {
       width: 72%;
       margin: 0 0 8px 0;
-       
+
       .wallets-table {
         /* padding: 18px; */
         .titles {
@@ -4053,7 +4040,6 @@ div {
         }
       }
     }
-    
   }
   .wallet-page {
     overflow: visible;
@@ -4061,7 +4047,7 @@ div {
     padding: 0 0 15px;
     .wrapper {
       .wallets-table {
-       /*  padding: 18px; */
+        /*  padding: 18px; */
         .lines {
           padding: 18px;
           height: initial;
@@ -4609,7 +4595,6 @@ div {
   }
 }
 
-
 /* Chrome, Safari, Edge, Opera */
 input[type='number']::-webkit-outer-spin-button,
 input[type='number']::-webkit-inner-spin-button {
@@ -4645,18 +4630,22 @@ input[type='number'] {
   }
 }
 
-.home-container {
+.home-container,
+.dashboard-container,
+.history-container {
   padding: 16px;
 }
 
 @media (max-width: 991px) {
-  .home-container {
+  .home-container,
+  .dashboard-container {
     margin-top: 30px;
   }
 }
 
 @media (min-width: 992px) {
-  .home-container {
+  .home-container,
+  .dashboard-container {
     width: 100%;
     height: 100vh;
   }

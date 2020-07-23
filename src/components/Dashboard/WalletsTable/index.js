@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Col } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Line from './components/line';
 import CheckBox from './components/checkBox';
@@ -26,7 +27,7 @@ const WalletsTable = (props) => {
   const [initialLines, setinitialLines] = useState([]);
   const [filterCheck, setfilterCheck] = useState(false);
   const [searcher, setsearcher] = useState('');
-  console.log(lines)
+  console.log(lines);
   useEffect(
     (_) => {
       let newContract = {},
@@ -44,28 +45,28 @@ const WalletsTable = (props) => {
 
   useEffect(
     (_) => {
-     let linesArray= Object.keys(contract).map((a) => {
-      // console.log(wallet[a.toUpperCase()]);
-      if (typeof wallet[a.toUpperCase()] === 'number') {
-        return {
-          token: a.toUpperCase(),
-          wallet: wallet[a.toUpperCase()].toFixed(8),
-          contract: contract[a.toUpperCase()].toFixed(8),
-          open: 0,
-          img: require(`../../../css/icons/currencies_highlight/${a.toLowerCase()}.svg`),
-        };
-      } else {
-        return {
-          token: null,
-          wallet: null,
-          contract: null,
-          open: 0,
-          img: null,
-        };
-      }
-    })
-      setLines(linesArray)
-      setinitialLines(linesArray)
+      let linesArray = Object.keys(contract).map((a) => {
+        // console.log(wallet[a.toUpperCase()]);
+        if (typeof wallet[a.toUpperCase()] === 'number') {
+          return {
+            token: a.toUpperCase(),
+            wallet: wallet[a.toUpperCase()].toFixed(8),
+            contract: contract[a.toUpperCase()].toFixed(8),
+            open: 0,
+            img: `/img/icons/currencies_highlight/${a.toLowerCase()}.svg`,
+          };
+        } else {
+          return {
+            token: null,
+            wallet: null,
+            contract: null,
+            open: 0,
+            img: null,
+          };
+        }
+      });
+      setLines(linesArray);
+      setinitialLines(linesArray);
     },
     [contract, wallet]
   );
@@ -110,19 +111,19 @@ const WalletsTable = (props) => {
     [balances]
   );
   useEffect(() => {
-    if(filterCheck){
-      let AuxLines= lines.filter((e) => {
+    if (filterCheck) {
+      let AuxLines = lines.filter((e) => {
         let replace = '^' + searcher;
         let regex = new RegExp(replace, 'i');
         return regex.test(e.token);
-      })
+      });
       setLines(
-        AuxLines.filter(e=>{
-          if(parseFloat(e.contract)!==0 && parseFloat(e.wallet)!==0) return e
+        AuxLines.filter((e) => {
+          if (parseFloat(e.contract) !== 0 && parseFloat(e.wallet) !== 0) return e;
         })
       );
-    }else{
-       if(searcher!==''){
+    } else {
+      if (searcher !== '') {
         setLines(
           initialLines.filter((e) => {
             let replace = '^' + searcher;
@@ -130,14 +131,12 @@ const WalletsTable = (props) => {
             return regex.test(e.token);
           })
         );
-       }else{
-        setLines(initialLines)
-       }
-      
+      } else {
+        setLines(initialLines);
+      }
     }
   }, [filterCheck]);
 
-  
   const handleSort = (type) => {
     // let newLines = []
 
@@ -164,12 +163,12 @@ const WalletsTable = (props) => {
     }, 0);
   };
 
- /* HANDLE CHANGE FOR SEARCH FILTER */
+  /* HANDLE CHANGE FOR SEARCH FILTER */
   const handleChange = (e) => {
     let field = e.target.value;
     setsearcher(e.target.value);
     if (field === '') {
-      setLines(initialLines)
+      setLines(initialLines);
     } else {
       setLines(
         lines.filter((e) => {
@@ -183,7 +182,7 @@ const WalletsTable = (props) => {
   /*END  HANDLE CHANGE FOR SEARCH FILTER */
 
   return (
-    <div className="wallets-table">
+    <Col xs={24} className="wallets-table">
       <div className={`header-table-wallets ${mode}`}>
         <div className="left">
           <div className="title">Deposit to start Trading</div>
@@ -232,12 +231,7 @@ const WalletsTable = (props) => {
 
           <div className="search">
             <div className="input">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={handleChange}
-                value={searcher}
-              />
+              <input type="text" placeholder="Search..." onChange={handleChange} value={searcher} />
               <FontAwesomeIcon icon="search" />
             </div>
           </div>
@@ -258,7 +252,7 @@ const WalletsTable = (props) => {
           />
         ))}
       </div>
-    </div>
+    </Col>
   );
 };
 

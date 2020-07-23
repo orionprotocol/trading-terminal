@@ -1,4 +1,3 @@
-
 .js-exch-drop {
   display: none !important;
 }
@@ -26,91 +25,88 @@
 /* NEW STYLE */
 .js-orderbook {
   width: 100%;
-  
+  padding: 1px;
+
   border-radius: 5px;
-  &.Dark{
-    background: #2A2A41;
-    .last-price-line{
-      background-color: #35354E;
+  &.Dark {
+    background: #2a2a41;
+    .last-price-line {
+      background-color: #35354e;
       color: rgb(151, 151, 179);
-      border: 1px solid #46465C;
+      border: 1px solid #46465c;
     }
-    .order-book-header{
-      background: #34344C;
+    .order-book-header {
+      background: #34344c;
       filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.192));
-      .heading{
-        color: #9A9AB6
+      .heading {
+        color: #9a9ab6;
       }
       .title {
-          color: #ffffff !important;
+        color: #ffffff !important;
       }
     }
   }
- 
-&.Light{
-  background: #FFFFFF;
-  .last-price-line{
-    background-color: #fafafa;
-    border: 1px solid #E5E5E5;
-    color: black;
-  }
-  .order-book-header{
-    background: #FFFFFF;
-    filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.192));
-    .heading{
-      color: #72707F
+
+  &.Light {
+    background: #ffffff;
+    .last-price-line {
+      background-color: #fafafa;
+      border: 1px solid #e5e5e5;
+      color: black;
     }
-    .title {
-      color: #434054 !important;
+    .order-book-header {
+      background: #ffffff;
+      filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.192));
+      .heading {
+        color: #72707f;
+      }
+      .title {
+        color: #434054 !important;
+      }
     }
   }
-}
 
-.last-price-line{
-  border-radius: 2px;
-  padding: 5px;
-  margin: 10px 8.666%;
-  align-items: center;
-  justify-content: space-between;
-  display: flex;
-}
-
-
-.order-book-header{
-  border-radius: 5px 5px 0 0;
-  padding-bottom: 10px;
-  .heading{
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 5px;
-    padding-top: 10px;
-    padding-left: 20px;
-  }
-  .titles {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
+  .last-price-line {
+    border-radius: 2px;
+    padding: 5px;
+    margin: 10px 8.666%;
     align-items: center;
-    
-    .title {
-      width: 26.666%;
-      text-align: center;
-      color: rgba(20, 16, 41, 0.8);
-      
-      &:nth-child(4){
-        width: 21%;
-        text-align: start;
-        padding-left: 22px;
+    justify-content: space-between;
+    display: flex;
+  }
+
+  .order-book-header {
+    border-radius: 5px 5px 0 0;
+    padding-bottom: 10px;
+    .heading {
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+      padding-top: 10px;
+      padding-left: 20px;
+    }
+    .titles {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+
+      .title {
+        width: 26.666%;
+        text-align: center;
+        color: rgba(20, 16, 41, 0.8);
+
+        &:nth-child(4) {
+          width: 21%;
+          text-align: start;
+          padding-left: 22px;
+        }
       }
     }
-   
   }
-}
-
-
 
   .order-book {
     .heading {
@@ -152,7 +148,7 @@
       .progress-light.d-red {
         background: rgba(255, 0, 170, 0.4);
       }
-     /*  &:hover {
+      /*  &:hover {
         background: rgba(224, 224, 255, 0.02);
       } */
       .cell {
@@ -176,10 +172,9 @@
   }
 }
 
-
 .order-book {
   border-radius: 4px;
-  
+
   .last-price {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -208,7 +203,6 @@
       -ms-flex-align: center;
       align-items: center;
       position: relative;
-
 
       .progress-light {
         position: absolute;
@@ -276,8 +270,8 @@
           display: none;
           -webkit-box-shadow: 0 16px 16px -4px rgba(20, 16, 41, 0.06),
             0 4px 8px -1px rgba(20, 16, 41, 0.06), 0 0 1px 0 rgba(20, 16, 41, 0.12);
-          box-shadow: 0 16px 16px -4px rgba(20, 16, 41, 0.06),
-            0 4px 8px -1px rgba(20, 16, 41, 0.06), 0 0 1px 0 rgba(20, 16, 41, 0.12);
+          box-shadow: 0 16px 16px -4px rgba(20, 16, 41, 0.06), 0 4px 8px -1px rgba(20, 16, 41, 0.06),
+            0 0 1px 0 rgba(20, 16, 41, 0.12);
           .drop {
             padding: 8px;
             display: -webkit-box;
@@ -337,183 +331,181 @@
         color: #f54562;
         background: rgba(245, 69, 98, 0.12);
       }
-     /*  &:hover {
+      /*  &:hover {
         background: rgba(20, 16, 41, 0.02);
       } */
     }
   }
 }
 
-.order{
- 
-  &.Dark{
-    .cell{
-      &.price{
-        color:#FFFFFF !important
+.order {
+  &.Dark {
+    .cell {
+      &.price {
+        color: #ffffff !important;
       }
-      &.amount,&.total{
-        color:#8989A5 !important 
-      }
-    }
-    
-  }
-  &.Light{
-    .cell{
-      &.price{
-        color:#524E69 !important
-      }
-      &.amount,&.total{
-        color:#72707F !important
+      &.amount,
+      &.total {
+        color: #8989a5 !important;
       }
     }
-   
   }
-  @mixin image($url){
+  &.Light {
+    .cell {
+      &.price {
+        color: #524e69 !important;
+      }
+      &.amount,
+      &.total {
+        color: #72707f !important;
+      }
+    }
+  }
+  @mixin image($url) {
     background-image: url($url);
     background-repeat: no-repeat;
     background-size: 100%;
     display: inline-block;
     width: 20px;
     height: 20px;
-    content: "";
+    content: '';
     position: absolute;
-    top:-5px
+    top: -5px;
   }
- .cell.exch{
-   .image-exch{
-    &:nth-child(1){
-      &::after{
-        left: 0;
+  .cell.exch {
+    .image-exch {
+      &:nth-child(1) {
+        &::after {
+          left: 0;
+        }
+      }
+      &:nth-child(2) {
+        &::after {
+          left: 22px;
+        }
+      }
+
+      &.binance {
+        &::after {
+          @include image('/img/icons/orderbooks/normal/Binance.svg');
+        }
+      }
+      &.bitcoin {
+        &::after {
+          @include image('/img/icons/orderbooks/normal/Bitcoinsv.svg');
+        }
+      }
+      &.bitmax {
+        &::after {
+          @include image('/img/icons/orderbooks/normal/Bitmax.svg');
+        }
+      }
+      &.bittrex {
+        &::after {
+          @include image('/img/icons/orderbooks/normal/Bittrex.svg');
+        }
+      }
+      &.dash {
+        &::after {
+          @include image('/img/icons/orderbooks/normal/Dash.svg');
+        }
+      }
+      &.ethereum {
+        &::after {
+          @include image('/img/icons/orderbooks/normal/Ethereum.svg');
+        }
+      }
+      &.huobi {
+        &::after {
+          @include image('/img/icons/orderbooks/normal/Huobi.svg');
+        }
+      }
+      &.okex {
+        &::after {
+          @include image('/img/icons/orderbooks/normal/Okex.svg');
+        }
+      }
+      &.orion {
+        &::after {
+          @include image('/img/icons/orderbooks/normal/Orion.svg');
+        }
+      }
+      &.poloniex {
+        &::after {
+          @include image('/img/icons/orderbooks/normal/Poloneix.svg');
+        }
       }
     }
-    &:nth-child(2){
-      &::after{
-        left: 22px;
-      }
-    }
+  }
 
-     &.binance{
-      &::after{
-        @include image('../../../css/icons/orderbooks/normal/Binance.svg')
-        }
-     }
-     &.bitcoin{
-      &::after{
-        @include image('../../../css/icons/orderbooks/normal/Bitcoinsv.svg')
-        }
-     }
-     &.bitmax{
-      &::after{
-        @include image('../../../css/icons/orderbooks/normal/Bitmax.svg')
-        }
-     }
-     &.bittrex{
-      &::after{
-        @include image('../../../css/icons/orderbooks/normal/Bittrex.svg')
-        }
-     }
-     &.dash{
-      &::after{
-        @include image('../../../css/icons/orderbooks/normal/Dash.svg')
-        }
-     }
-     &.ethereum{
-      &::after{
-        @include image('../../../css/icons/orderbooks/normal/Ethereum.svg')
-        }
-     }
-     &.huobi{
-      &::after{
-        @include image('../../../css/icons/orderbooks/normal/Huobi.svg')
-        }
-     }
-     &.okex{
-      &::after{
-        @include image('../../../css/icons/orderbooks/normal/Okex.svg')
-        }
-     }
-     &.orion{
-      &::after{
-        @include image('../../../css/icons/orderbooks/normal/Orion.svg')
-        }
-     }
-     &.poloniex{
-      &::after{
-        @include image('../../../css/icons/orderbooks/normal/Poloneix.svg')
-        }
-     }
-   }
- }
-
-   &:hover{
-     background-color: #E0E0FF;
-     cursor: pointer;
-     .cell{
+  &:hover {
+    background-color: #e0e0ff;
+    cursor: pointer;
+    .cell {
       color: black !important;
       font-weight: 600;
-     }
-     .cell{
-      &.price,&.amount,&.total{
+    }
+    .cell {
+      &.price,
+      &.amount,
+      &.total {
         color: black !important;
       }
-     }
+    }
 
-     .cell.exch{
-      .image-exch{
-        &.binance{
-          &::after{
-            @include image('../../../css/icons/orderbooks/selected/Binance.svg')
-            }
-         }
-         &.bitcoin{
-          &::after{
-            @include image('../../../css/icons/orderbooks/selected/Bitcoinsv.svg')
-            }
-         }
-         &.bitmax{
-          &::after{
-            @include image('../../../css/icons/orderbooks/selected/Bitmax.svg')
-            }
-         }
-         &.bittrex{
-          &::after{
-            @include image('../../../css/icons/orderbooks/selected/Bittrex.svg')
-            }
-         }
-         &.dash{
-          &::after{
-            @include image('../../../css/icons/orderbooks/selected/Dash.svg')
-            }
-         }
-         &.ethereum{
-          &::after{
-            @include image('../../../css/icons/orderbooks/selected/Ethereum.svg')
-            }
-         }
-         &.huobi{
-          &::after{
-            @include image('../../../css/icons/orderbooks/selected/Huobi.svg')
-            }
-         }
-         &.okex{
-          &::after{
-            @include image('../../../css/icons/orderbooks/selected/Okex.svg')
-            }
-         }
-         &.orion{
-          &::after{
-            @include image('../../../css/icons/orderbooks/selected/Orion.svg')
-            }
-         }
-         &.poloniex{
-          &::after{
-            @include image('../../../css/icons/orderbooks/selected/Poloneix.svg')
-            }
-         }
+    .cell.exch {
+      .image-exch {
+        &.binance {
+          &::after {
+            @include image('/img/icons/orderbooks/selected/Binance.svg');
+          }
+        }
+        &.bitcoin {
+          &::after {
+            @include image('/img/icons/orderbooks/selected/Bitcoinsv.svg');
+          }
+        }
+        &.bitmax {
+          &::after {
+            @include image('/img/icons/orderbooks/selected/Bitmax.svg');
+          }
+        }
+        &.bittrex {
+          &::after {
+            @include image('/img/icons/orderbooks/selected/Bittrex.svg');
+          }
+        }
+        &.dash {
+          &::after {
+            @include image('/img/icons/orderbooks/selected/Dash.svg');
+          }
+        }
+        &.ethereum {
+          &::after {
+            @include image('/img/icons/orderbooks/selected/Ethereum.svg');
+          }
+        }
+        &.huobi {
+          &::after {
+            @include image('/img/icons/orderbooks/selected/Huobi.svg');
+          }
+        }
+        &.okex {
+          &::after {
+            @include image('/img/icons/orderbooks/selected/Okex.svg');
+          }
+        }
+        &.orion {
+          &::after {
+            @include image('/img/icons/orderbooks/selected/Orion.svg');
+          }
+        }
+        &.poloniex {
+          &::after {
+            @include image('/img/icons/orderbooks/selected/Poloneix.svg');
+          }
+        }
       }
     }
-   }
- 
+  }
 }
-
-  
