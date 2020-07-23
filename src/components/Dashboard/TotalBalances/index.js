@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { Col } from 'antd';
 import './totalb.scss';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
@@ -235,47 +236,43 @@ const TotalBalances = (_) => {
   );
 
   return (
-    <div className="graph">
-      <h2>Total Balance</h2>
-      <div className="graph-container" id="pie" />
-      <div className="coins">
-        {contract &&
-          Object.keys(contract).map((a) => (
-            <div className="coin" key={a}>
-              <div className="left">
-                {/* i can also import the image from public folder like this, but only works from public folder
+    <Col xs={24} lg={6}>
+      <div className="graph">
+        <h2>Total Balance</h2>
+        <div className="graph-container" id="pie" />
+        <div className="coins">
+          {contract &&
+            Object.keys(contract).map((a) => (
+              <div className="coin" key={a}>
+                <div className="left">
+                  {/* i can also import the image from public folder like this, but only works from public folder
                <img src={`./img/currencies_highlight/${a.toLowerCase()}.svg`} alt={a} />  */}
-                <img
-                  src={`/img/icons/currencies_highlight/${a.toLowerCase()}.svg`}
-                  alt={a}
-                />
+                  <img src={`/img/icons/currencies_highlight/${a.toLowerCase()}.svg`} alt={a} />
 
-                <span className="name">{a.toUpperCase()}</span>
+                  <span className="name">{a.toUpperCase()}</span>
+                </div>
+                <span className="num">{Number(contract[a.toUpperCase()]).toFixed(6)}</span>
               </div>
-              <span className="num">{Number(contract[a.toUpperCase()]).toFixed(6)}</span>
+            ))}
+        </div>
+        <button onClick={handleDisconnect} type="button" className={`btn-disconnet ${mode}`}>
+          {!disconnecting ? (
+            <>
+              <img src={`/img/icons/dashboard/totalBalance/minusIcon-${mode}.svg`} alt={'minus'} />
+              <span>Disconnect All</span>
+            </>
+          ) : (
+            <div class="spinner-loader-btn">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
             </div>
-          ))}
+          )}
+        </button>
       </div>
-      <button onClick={handleDisconnect} type="button" className={`btn-disconnet ${mode}`}>
-        {!disconnecting ? (
-          <>
-            <img
-              src={`/img/icons/dashboard/totalBalance/minusIcon-${mode}.svg`}
-              alt={'minus'}
-            />
-            <span>Disconnect All</span>
-          </>
-        ) : (
-          <div class="spinner-loader-btn">
-            <div class="rect1"></div>
-            <div class="rect2"></div>
-            <div class="rect3"></div>
-            <div class="rect4"></div>
-            <div class="rect5"></div>
-          </div>
-        )}
-      </button>
-    </div>
+    </Col>
   );
 };
 

@@ -15,7 +15,9 @@ $inputDark: #2e2e45;
 $inputLight: #fafafb;
 
 .wallets-table {
+  padding: 0 !important;
   .titles {
+    overflow-y: auto;
     &.Dark {
       .search {
         .input {

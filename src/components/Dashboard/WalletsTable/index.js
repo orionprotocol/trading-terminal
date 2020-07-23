@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Col } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Line from './components/line';
 import CheckBox from './components/checkBox';
@@ -181,7 +182,7 @@ const WalletsTable = (props) => {
   /*END  HANDLE CHANGE FOR SEARCH FILTER */
 
   return (
-    <div className="wallets-table">
+    <Col xs={24} className="wallets-table">
       <div className={`header-table-wallets ${mode}`}>
         <div className="left">
           <div className="title">Deposit to start Trading</div>
@@ -251,7 +252,7 @@ const WalletsTable = (props) => {
           />
         ))}
       </div>
-    </div>
+    </Col>
   );
 };
 

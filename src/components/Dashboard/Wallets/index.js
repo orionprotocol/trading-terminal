@@ -1,5 +1,6 @@
 import React, { lazy, useState, useEffect, Suspense, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Col } from 'antd';
 import Slider from 'react-slick';
 import FadeIn from 'react-fade-in';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -213,7 +214,7 @@ const Wallets = (_) => {
   };
 
   return (
-    <div className="wallets">
+    <Col xs={24} className="wallets">
       <div className="top">
         <h2>Wallets</h2>
         <button className="add js-add-wallet" onClick={handleAddWallet}>
@@ -310,7 +311,7 @@ const Wallets = (_) => {
           </FadeIn>
         ) : null}
       </Suspense>
-    </div>
+    </Col>
   );
 };
 

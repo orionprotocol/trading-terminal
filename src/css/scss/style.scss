@@ -1270,15 +1270,9 @@ body.dark {
   }
 }
 .dashboard {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  height: calc(100vh);
-  overflow: hidden;
-  padding: 15px 0;
   .wrapper {
-    width: 75%;
-    margin-left: 8px;
+    /*  width: 75%;
+    margin-left: 8px; */
 
     .wallets-table {
       -webkit-box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
@@ -1324,8 +1318,8 @@ body.dark {
         }
       }
       .lines {
-        padding: 10px 22px;
-        padding-top: 0;
+        padding-left: 20px;
+        padding-right: 20px;
         overflow-y: auto;
         max-height: calc(50vh - 80px);
         .line {
@@ -1827,8 +1821,7 @@ div {
   }
 }
 .my-container {
-  /*   margin: 0 auto;
-  padding: 0 10px; */
+  padding: 16px;
   width: 100%;
 }
 .my-row {
@@ -4637,18 +4630,22 @@ input[type='number'] {
   }
 }
 
-.home-container {
+.home-container,
+.dashboard-container,
+.history-container {
   padding: 16px;
 }
 
 @media (max-width: 991px) {
-  .home-container {
+  .home-container,
+  .dashboard-container {
     margin-top: 30px;
   }
 }
 
 @media (min-width: 992px) {
-  .home-container {
+  .home-container,
+  .dashboard-container {
     width: 100%;
     height: 100vh;
   }
