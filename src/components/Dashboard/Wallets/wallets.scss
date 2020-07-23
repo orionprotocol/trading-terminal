@@ -1,0 +1,322 @@
+ $colorDarkLetters:#9090A8;
+ $colorLightLetters:#726E7A;
+ $colorDarkBorder:#67677F;
+ $colorLightBorder:#72707F;
+.dashboard.dark-mode {
+	.wallets {
+		-webkit-box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
+		box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
+		background-color: #2a2a41;
+		.add {
+		  background: rgba(224, 224, 255, 0.02) !important;
+		  color: #ffffff !important;
+		  img {
+			-webkit-filter: invert(100%);
+			filter: invert(100%);
+		  }
+		}
+		.wallet {
+		  .title {
+			span {
+			  color: rgba(224, 224, 255, 0.6) !important;
+			}
+		  }
+		  .currency-2 {
+			color: white !important;
+		  }
+		  .money {
+			.num {
+			  color: #ffffff !important;
+			}
+			.currency {
+			  color: #ffffff !important;
+			}
+		  }
+		}
+	  }
+}
+.wrapper {
+	.wallets {
+		-webkit-box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
+		box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
+		border-radius: 4px;
+		background: #ffffff;
+		padding: 20px;
+		margin-bottom: 8px;
+		
+		.top {
+		  display: -webkit-box;
+		  display: -ms-flexbox;
+		  display: flex;
+		  -webkit-box-align: center;
+		  -ms-flex-align: center;
+		  align-items: center;
+		  -webkit-box-pack: justify;
+		  -ms-flex-pack: justify;
+		  margin-bottom: 10px;
+		  h2{
+			  margin-bottom: 0;
+		  }
+		  .add {
+			background: rgba(20, 16, 41, 0.02);
+			-webkit-transition: all 0.2s;
+			-o-transition: all 0.2s;
+			transition: all 0.2s;
+			border-radius: 2px;
+			font-size: 14px;
+			line-height: 20px;
+			color: rgba(20, 16, 41, 0.8);
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-align: center;
+			-ms-flex-align: center;
+			align-items: center;
+			padding: 8px 16px;
+			border: none;
+			cursor: pointer;
+			margin-left: 50px;
+			&:hover {
+			  background: rgba(20, 16, 41, 0.04);
+			}
+			svg {
+			  margin-right: 12px;
+			}
+		  }
+		  .add.disabled {
+			color: rgba(20, 16, 41, 0.24);
+			img {
+			  opacity: 0.24;
+			}
+		  }
+		}
+		.crypto-wallets {
+		  margin-bottom: 24px;
+		  .wallet {
+			padding: 16px;
+			padding-bottom: 0;
+			border-radius: 2px;
+			-webkit-transition: all 0.1s;
+			-o-transition: all 0.1s;
+			transition: all 0.1s;
+			min-height: 35vh ;
+			
+			/* &:not(:last-child) {
+			  margin-right: 16px;
+			} */
+			&.add-wallet{
+				position: relative;
+				display: flex !important;
+				justify-content: center;
+				align-items: center;
+				width: 99%;
+				font-size: 16px;
+				cursor:pointer;
+				/* height: 35vh ; */
+				
+				/* .add-w{
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					margin: auto;
+				} */
+				&.Dark{
+					border: 1px solid $colorDarkBorder;
+					color:$colorDarkBorder
+				}
+				&.Light{
+					border: 1px solid $colorLightBorder;
+					color:$colorLightBorder
+				}
+			}
+
+
+.title-total{
+	font-size: 12px;
+	font-weight: bold;
+		&.Dark{
+		color:$colorDarkLetters;
+	}
+	&.Light{
+		color:$colorLightLetters
+	}
+}
+.copy-address{
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	&.Dark{
+		form{
+			textarea{
+				color:$colorDarkLetters
+			}
+		}
+		
+	}
+	&.Light{
+		form{
+			textarea{
+				color:$colorLightLetters;
+			}
+		}
+		
+	}
+	form{
+		width: 85%;
+		position: relative;
+		textarea{
+			width: 100%;
+			white-space: initial;
+			font-size: 1vw;
+			border: none;
+			background-color: transparent ;
+			&.invisible{
+				position: absolute;
+				left: 0;
+				z-index: 1;
+			}
+		}
+	}
+	
+	img{
+		height: 20px;
+		width: 15%;
+		cursor: pointer;
+		border-radius: 2px;
+		margin-top: 5px;
+		&:hover{
+			transform: scale(1.2);;
+		}
+	}
+}
+
+			.title {
+			  display: -webkit-box;
+			  display: -ms-flexbox;
+			  display: flex;
+			  -webkit-box-align: start;
+			  -ms-flex-align: start;
+			  align-items: flex-start;
+			  -webkit-box-pack: justify;
+			  -ms-flex-pack: justify;
+			  justify-content: space-between;
+			  font-size: 14px;
+			  line-height: 16px;
+			  margin-bottom: 28px;
+			  .btn-disconnet-wallet{
+				padding: 5px 20px;
+				border: none;
+				border-radius: 2px;
+				font-size: 13px;
+				display: flex;
+				align-items: center;
+				cursor: pointer;
+				img{
+				  margin-right: 5px;
+				}
+				
+				&.Dark{
+				  background-color:#2E2E45;
+				  color: #9897B5;
+				}
+				&.Light{
+				  background-color:#F9F9F9;
+				  color: #706D7C;
+				}
+			  }
+			}
+			.money {
+			  display: -webkit-box;
+			  display: -ms-flexbox;
+			  display: flex;
+			  -webkit-box-align: end;
+			  -ms-flex-align: end;
+			  align-items: flex-end;
+			  margin-bottom: 12px;
+			  .num {
+				font-size: 36px;
+				line-height: 48px;
+				font-weight: 700;
+				color: rgba(20, 16, 41, 0.8);
+			  }
+			  .currency {
+				font-size: 18px;
+				line-height: 34px;
+				font-weight: 700;
+				color: rgba(20, 16, 41, 0.8);
+				text-transform: uppercase;
+				
+			  }
+			}
+			.currency-2 {
+			  font-size: 14px;
+			  line-height: 16px;
+			  text-transform: uppercase;
+			  font-weight: 600;
+			  display: flex;
+			  justify-content: space-between;
+			  color:#413B54;
+			  button{
+				  background-color: transparent;
+				  border: none;
+				  font-weight: bold;
+				  cursor: pointer;
+				  &.Dark{
+					color: $colorDarkLetters
+				  }
+				  &.Light{
+					color: $colorLightLetters
+				  }
+			  }
+			}
+		  }
+		  .wallet.btc {
+			background: rgba(247, 147, 26, 0.03);
+			&:hover {
+			  background: rgba(247, 147, 26, 0.1);
+			}
+		  }
+		  .wallet.eth {
+			background: rgba(136, 0, 255, 0.03);
+			&:hover {
+			  background: rgba(136, 0, 255, 0.1);
+			}
+		  }
+		  .wallet.dash {
+			background: rgba(0, 187, 255, 0.03);
+			&:hover {
+			  background: rgba(0, 187, 255, 0.1);
+			}
+		  }
+		}
+	  }
+}
+
+@media (max-width: 850px) {
+	.dashboard {
+	  .wrapper {
+		.wallets {
+		  .crypto-wallets {
+			.wallet {
+			  max-width: 260px;
+			  width: 100%;
+			}
+		  }
+		}
+	  }
+	}
+  }
+  @media (max-width: 830px) {
+	.dashboard {
+	  .wrapper {
+		width: 100%;
+		margin: 0;
+		.wallets {
+		  margin-bottom: 16px;
+		}
+	  }
+	}
+  }
+

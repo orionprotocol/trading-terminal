@@ -12,6 +12,7 @@ import { Dark, Light } from "../funtions/handleMode";
 import FadeIn from "react-fade-in";
 import { ethereum } from "../../services/Coinbase";
 import "./sidebar.scss";
+import ModalAddWallet from '../../components/AddWallet/AddWallet';
 
 const AddWallet1 = lazy(() => import("../AddWallet/AddWallet1"));
 const AddWallet2 = lazy(() => import("../AddWallet/AddWallet2"));
@@ -260,7 +261,7 @@ const Sidebar = (props) => {
     [addWallet]
   );
 
-  useEffect(
+  /* useEffect(
     (_) => {
       if (show1 === false || show2 === false) {
         setAddWallet(false);
@@ -268,7 +269,7 @@ const Sidebar = (props) => {
     },
     //eslint-disable-next-line react-hooks/exhaustive-deps
     [show1, show2]
-  );
+  ); */
 
   return (
     <div
@@ -276,7 +277,8 @@ const Sidebar = (props) => {
       // onMouseLeave={onMouseLeave}
       // onMouseOver={onMouseOver}
     >
-      <Suspense fallback="">
+      <ModalAddWallet/>
+     {/*  <Suspense fallback="">
         {show1 ? (
           <FadeIn transitionDuration={10}>
             <AddWallet1 show2={handleShow2} hide1={(_) => setShow1(false)} />
@@ -288,7 +290,8 @@ const Sidebar = (props) => {
             <AddWallet2 show1={handleShow1} hide2={(_) => setShow2(false)} />
           </FadeIn>
         ) : null}
-      </Suspense>
+      </Suspense> */}
+
       <div className="navbar__top">
         <a className="logo" href="/">
           <img src="/img/svg/orion_full.svg" alt="home" />
@@ -390,14 +393,23 @@ const Sidebar = (props) => {
               </span>
             </Fragment>
           ) : (
-            <Fragment>
+           /*  <Fragment>
               <span className="addWallet__btn" onClick={handleAddWallet}>
                 <i className="addWallet__icon">
                   <i className="icon_add"></i>
                 </i>
                 <span className="addWallet__text">Add Wallet</span>
               </span>
+            </Fragment> */
+            <Fragment>
+              <span className="addWallet__btn" onClick={_=>setAddWallet(true)}>
+                <i className="addWallet__icon">
+                  <i className="icon_add"></i>
+                </i>
+                <span className="addWallet__text">Add Wallet</span>
+              </span>
             </Fragment>
+            
           )}
         </div>
       </div>

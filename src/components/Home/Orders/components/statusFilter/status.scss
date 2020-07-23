@@ -1,0 +1,53 @@
+@import '../../../../../css/scss/resposiveSize';
+.container-status{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 40%;
+    @include media(md){
+      width: 40%;
+    }
+    &.Dark {
+      .ant-select-arrow{
+        color: rgb(151, 151, 179);
+      }
+  
+      .ant-select-selector{
+        background-color: #35354E;
+        color: rgb(151, 151, 179);
+        border: 1px solid #46465C;
+        &:hover{
+            border-color:#46465C
+        }
+      }
+    }
+    &.Light {
+      .ant-select-arrow{
+        color: black;
+      }
+      .ant-select-selector{
+        background-color: #fafafa;
+        color: rgb(161, 159, 169);
+        border: 1px solid #E5E5E5;
+        color: black;
+        &:hover{
+            border-color:#E5E5E5
+        }
+      }
+    }
+    .selector{
+      width: 100%;
+      border-radius: 5px;
+     
+    }
+    .ant-select-selector{
+        height: 35px !important;
+        border-radius: 5px !important;
+        outline: none;
+
+    }
+    .ant-select-selector{
+        height: 35px;
+    }
+   
+  }

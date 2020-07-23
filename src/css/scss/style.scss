@@ -21,10 +21,6 @@
       }
     }
   }
-
-  .dashboard .graph .graph-container {
-    font-family: 'Montserrat', sans-serif !important;
-  }
 }
 
 body {
@@ -971,7 +967,6 @@ body.dark {
           transition: all 0.3s;
         }
         .line-small {
-          padding: 6px 12px;
           cursor: pointer;
           -webkit-transition: all 0.3s;
           -o-transition: all 0.3s;
@@ -1030,196 +1025,6 @@ body.dark {
     -webkit-box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
     box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
     border-radius: 4px;
-    .order-book {
-      border-radius: 4px;
-      background: #ffffff;
-      .heading {
-        font-weight: 600;
-        padding: 8px;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin-bottom: 13px;
-      }
-      .titles {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        margin-bottom: 11px;
-        .title {
-          width: 26.666%;
-          text-align: center;
-          color: rgba(20, 16, 41, 0.8);
-        }
-        .title.exch {
-          width: 11%;
-          text-align: left;
-          margin-right: 39px;
-        }
-      }
-      .last-price {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        padding: 6px 12px 6px 6px;
-        background: rgba(20, 16, 41, 0.02);
-        -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-        justify-content: space-between;
-        margin: 5px 0 5px 13px;
-        .cell {
-          color: rgba(20, 16, 41, 0.8);
-        }
-      }
-      .orders {
-        max-height: calc(50vh - 69px);
-        overflow-y: auto;
-        .order {
-          display: -webkit-box;
-          display: -ms-flexbox;
-          display: flex;
-          -webkit-box-align: center;
-          -ms-flex-align: center;
-          align-items: center;
-          position: relative;
-          .progress-light {
-            position: absolute;
-            width: 33%;
-            height: 100%;
-            top: 0;
-            left: 0;
-          }
-          .progress-light.l-green {
-            background: rgba(22, 184, 98, 0.03);
-          }
-          .progress-light.d-green {
-            background: rgba(22, 184, 98, 0.4);
-            width: 20%;
-          }
-          .progress-light.l-red {
-            background: rgba(245, 69, 98, 0.03);
-          }
-          .progress-light.d-red {
-            background: rgba(245, 69, 98, 0.4);
-            width: 20%;
-          }
-          .cell {
-            width: 26.666%;
-            text-align: center;
-            padding: 6px 0;
-            position: relative;
-          }
-          .cell.exch {
-            width: 11%;
-            max-height: 24px;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-            -webkit-box-pack: start;
-            -ms-flex-pack: start;
-            justify-content: flex-start;
-            position: relative;
-            .exch-content {
-              display: -webkit-box;
-              display: -ms-flexbox;
-              display: flex;
-              -webkit-box-align: center;
-              -ms-flex-align: center;
-              align-items: center;
-              -webkit-box-pack: start;
-              -ms-flex-pack: start;
-              justify-content: flex-start;
-              cursor: pointer;
-            }
-            .exch-drop {
-              border-radius: 4px;
-              position: absolute;
-              bottom: 0;
-              left: 0;
-              -webkit-transform: translate(-57%, 100%);
-              -ms-transform: translate(-57%, 100%);
-              transform: translate(-57%, 100%);
-              z-index: 6;
-              min-width: 132px;
-              background: #ffffff;
-              display: none;
-              -webkit-box-shadow: 0 16px 16px -4px rgba(20, 16, 41, 0.06),
-                0 4px 8px -1px rgba(20, 16, 41, 0.06), 0 0 1px 0 rgba(20, 16, 41, 0.12);
-              box-shadow: 0 16px 16px -4px rgba(20, 16, 41, 0.06),
-                0 4px 8px -1px rgba(20, 16, 41, 0.06), 0 0 1px 0 rgba(20, 16, 41, 0.12);
-              .drop {
-                padding: 8px;
-                display: -webkit-box;
-                display: -ms-flexbox;
-                display: flex;
-                -webkit-box-align: center;
-                -ms-flex-align: center;
-                align-items: center;
-                background: #ffffff;
-                -webkit-transition: all 0.2s;
-                -o-transition: all 0.2s;
-                transition: all 0.2s;
-                &:hover {
-                  background: rgba(20, 16, 41, 0.02);
-                  cursor: pointer;
-                }
-                img {
-                  width: 16px;
-                  height: 16px;
-                  margin-right: 6px;
-                }
-                span {
-                  font-size: 14px;
-                  line-height: 24px;
-                  color: rgba(20, 16, 41, 0.8);
-                }
-              }
-            }
-            img {
-              -ms-flex-negative: 0;
-              flex-shrink: 0;
-              &:not(:last-child) {
-                margin-right: 2px;
-              }
-            }
-            .arrow {
-              opacity: 0.4;
-              width: 14px;
-              height: 14px;
-              margin-left: -2px;
-              -webkit-transition: all 0.2s;
-              -o-transition: all 0.2s;
-              transition: all 0.2s;
-            }
-            .cell-img {
-              opacity: 0.4;
-            }
-          }
-          .cell.emp {
-            color: rgba(20, 16, 41, 0.8);
-          }
-          .cell.green {
-            color: #16b862;
-            background: rgba(22, 184, 98, 0.12);
-          }
-          .cell.red {
-            color: #f54562;
-            background: rgba(245, 69, 98, 0.12);
-          }
-          &:hover {
-            background: rgba(20, 16, 41, 0.02);
-          }
-        }
-      }
-    }
   }
 }
 .history {
@@ -1474,137 +1279,13 @@ body.dark {
   .wrapper {
     width: 75%;
     margin-left: 8px;
-    .wallets {
-      -webkit-box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
-      box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
-      border-radius: 4px;
-      background: #ffffff;
-      padding: 24px;
-      margin-bottom: 8px;
-      height: calc(50vh - 30px);
-      .top {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-        justify-content: space-between;
-        margin-bottom: 20px;
-        .add {
-          background: rgba(20, 16, 41, 0.02);
-          -webkit-transition: all 0.2s;
-          -o-transition: all 0.2s;
-          transition: all 0.2s;
-          border-radius: 2px;
-          font-size: 14px;
-          line-height: 20px;
-          color: rgba(20, 16, 41, 0.8);
-          display: -webkit-box;
-          display: -ms-flexbox;
-          display: flex;
-          -webkit-box-align: center;
-          -ms-flex-align: center;
-          align-items: center;
-          padding: 8px 16px;
-          border: none;
-          cursor: pointer;
-          &:hover {
-            background: rgba(20, 16, 41, 0.04);
-          }
-          svg {
-            margin-right: 12px;
-          }
-        }
-        .add.disabled {
-          color: rgba(20, 16, 41, 0.24);
-          img {
-            opacity: 0.24;
-          }
-        }
-      }
-      .crypto-wallets {
-        margin-bottom: 24px;
-        .wallet {
-          padding: 16px;
-          border-radius: 2px;
-          -webkit-transition: all 0.1s;
-          -o-transition: all 0.1s;
-          transition: all 0.1s;
-          &:not(:last-child) {
-            margin-right: 16px;
-          }
-          .title {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: start;
-            -ms-flex-align: start;
-            align-items: flex-start;
-            -webkit-box-pack: justify;
-            -ms-flex-pack: justify;
-            justify-content: space-between;
-            font-size: 14px;
-            line-height: 16px;
-            margin-bottom: 28px;
-          }
-          .money {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: end;
-            -ms-flex-align: end;
-            align-items: flex-end;
-            margin-bottom: 12px;
-            .num {
-              font-size: 36px;
-              line-height: 48px;
-              font-weight: 700;
-              color: rgba(20, 16, 41, 0.8);
-            }
-            .currency {
-              font-size: 18px;
-              line-height: 34px;
-              font-weight: 700;
-              color: rgba(20, 16, 41, 0.8);
-              text-transform: uppercase;
-            }
-          }
-          .currency-2 {
-            font-size: 14px;
-            line-height: 16px;
-            text-transform: uppercase;
-            font-weight: 600;
-          }
-        }
-        .wallet.btc {
-          background: rgba(247, 147, 26, 0.03);
-          &:hover {
-            background: rgba(247, 147, 26, 0.1);
-          }
-        }
-        .wallet.eth {
-          background: rgba(136, 0, 255, 0.03);
-          &:hover {
-            background: rgba(136, 0, 255, 0.1);
-          }
-        }
-        .wallet.dash {
-          background: rgba(0, 187, 255, 0.03);
-          &:hover {
-            background: rgba(0, 187, 255, 0.1);
-          }
-        }
-      }
-    }
+
     .wallets-table {
       -webkit-box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
       box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
       border-radius: 4px;
       background: #ffffff;
-      padding: 22px;
+
       .titles {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -1612,8 +1293,8 @@ body.dark {
         -webkit-box-align: center;
         -ms-flex-align: center;
         align-items: center;
-        padding: 0 12px;
-        margin-bottom: 12px;
+        padding: 0 34px;
+        margin-top: 22px;
         .title {
           width: 18.5%;
           color: rgba(20, 16, 41, 0.8);
@@ -1640,11 +1321,11 @@ body.dark {
           -webkit-box-pack: end;
           -ms-flex-pack: end;
           justify-content: flex-end;
-          padding-right: 20px;
         }
       }
       .lines {
-        padding-bottom: 10px;
+        padding: 10px 22px;
+        padding-top: 0;
         overflow-y: auto;
         max-height: calc(50vh - 80px);
         .line {
@@ -1679,6 +1360,7 @@ body.dark {
             -ms-flex-pack: end;
             justify-content: flex-end;
             button {
+              width: 33.333%;
               padding: 8px 16px;
               background: rgba(20, 16, 41, 0.02);
               border-radius: 2px;
@@ -1726,70 +1408,6 @@ body.dark {
       }
     }
   }
-  .graph {
-    -webkit-box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
-    box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
-    border-radius: 4px;
-    background: #ffffff;
-    padding: 24px;
-    width: 24%;
-    height: calc(100vh - 30px);
-    overflow-y: auto;
-    h2 {
-      margin-bottom: 32px;
-    }
-    .graph-container {
-      width: 250px;
-      height: 250px;
-      font-weight: 700 !important;
-      font-family: sans-serif !important;
-      -webkit-transform: translateX(-10px);
-      -ms-transform: translateX(-10px);
-      transform: translateX(-10px);
-      margin: auto;
-    }
-    .coins {
-      margin-top: 36px;
-      .coin {
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: flex;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        -webkit-box-pack: justify;
-        -ms-flex-pack: justify;
-        justify-content: space-between;
-        margin: 8px 0;
-        .left {
-          display: -webkit-box;
-          display: -ms-flexbox;
-          display: flex;
-          -webkit-box-align: center;
-          -ms-flex-align: center;
-          align-items: center;
-          img {
-            width: 20px;
-            height: 20px;
-            margin-right: 18px;
-          }
-          .name {
-            font-size: 14px;
-            line-height: 24px;
-            letter-spacing: 1px;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: rgba(20, 16, 41, 0.8);
-          }
-        }
-        .num {
-          font-size: 14px;
-          line-height: 24px;
-          color: rgba(20, 16, 41, 0.8);
-        }
-      }
-    }
-  }
 }
 .wallet-page {
   display: -webkit-box;
@@ -1806,7 +1424,7 @@ body.dark {
       box-shadow: 0 2px 4px -1px rgba(20, 16, 41, 0.06), 0 0 1px rgba(20, 16, 41, 0.12);
       border-radius: 4px;
       background: #ffffff;
-      padding: 22px 0 22px 22px;
+      /* padding: 22px 0 22px 22px; */
       .search {
         display: -webkit-box;
         display: -ms-flexbox;
@@ -2407,19 +2025,19 @@ div {
         color: #ffffff !important;
       }
       .cell {
-        color: rgba(224, 224, 255, 0.6) !important;
+        color: rgba(224, 224, 255, 0.6);
       }
       .cell.emp {
-        color: #ffffff !important;
+        color: #ffffff;
       }
       .cell.filled {
-        color: #eeff00 !important;
+        color: #eeff00;
       }
       .cell.open {
-        color: #00ffaa !important;
+        color: #00ffaa;
       }
       .cell.cancel {
-        color: #ff00aa !important;
+        color: #ff00aa;
       }
       .line-small {
         .data {
@@ -2503,73 +2121,7 @@ div {
   .right-panel {
     -webkit-box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
     box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
-    .js-orderbook {
-      padding: 1px;
-      background: #2a2a41;
-    }
-    .order-book {
-      background: #2a2a41;
-      .heading {
-        color: rgba(224, 224, 255, 0.6);
-      }
-      .titles {
-        .title {
-          color: #ffffff !important;
-        }
-      }
-      .last-price {
-        .cell {
-          color: #ffffff !important;
-        }
-        .last {
-          color: rgba(224, 224, 255, 0.6) !important;
-        }
-        border-radius: 2px;
-        background-color: rgba(224, 224, 255, 0.02);
-      }
-      .order {
-        .cell.green {
-          color: #00ffaa !important;
-          background: rgba(0, 255, 170, 0.12) !important;
-        }
-        .cell.red {
-          color: #ff00aa !important;
-          background: rgba(255, 0, 170, 0.12) !important;
-        }
-        .progress-light.l-green {
-          background: rgba(0, 255, 170, 0.03);
-        }
-        .progress-light.d-green {
-          background: rgba(0, 255, 170, 0.4);
-        }
-        .progress-light.l-red {
-          background: rgba(255, 0, 170, 0.03);
-        }
-        .progress-light.d-red {
-          background: rgba(255, 0, 170, 0.4);
-        }
-        &:hover {
-          background: rgba(224, 224, 255, 0.02);
-        }
-        .cell {
-          .cell-img {
-            opacity: 1 !important;
-          }
-        }
-      }
-      .cell {
-        color: rgba(224, 224, 255, 0.6) !important;
-      }
-      .cell.emp {
-        color: #ffffff !important;
-      }
-      .cell.exch {
-        img {
-          -webkit-filter: invert(100%);
-          filter: invert(100%);
-        }
-      }
-    }
+
     .exch-drop {
       box-shadow: 0 16px 16px -4px rgba(20, 16, 41, 0.24), 0 4px 8px -1px rgba(20, 16, 41, 0.24),
         0 0 1px 0 rgba(20, 16, 41, 0.4) !important;
@@ -2715,53 +2267,7 @@ div {
   h2 {
     color: #ffffff;
   }
-  .graph {
-    -webkit-box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
-    box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
-    background-color: #2a2a41;
-    tspan {
-      fill: #ffffff !important;
-    }
-    .coin {
-      .name {
-        color: #ffffff !important;
-      }
-      .num {
-        color: #ffffff !important;
-      }
-    }
-  }
-  .wallets {
-    -webkit-box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
-    box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
-    background-color: #2a2a41;
-    .add {
-      background: rgba(224, 224, 255, 0.02) !important;
-      color: #ffffff !important;
-      img {
-        -webkit-filter: invert(100%);
-        filter: invert(100%);
-      }
-    }
-    .wallet {
-      .title {
-        span {
-          color: rgba(224, 224, 255, 0.6) !important;
-        }
-      }
-      .currency-2 {
-        color: rgba(224, 224, 255, 0.6) !important;
-      }
-      .money {
-        .num {
-          color: #ffffff !important;
-        }
-        .currency {
-          color: #ffffff !important;
-        }
-      }
-    }
-  }
+
   .wallets-table {
     -webkit-box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
     box-shadow: 0 2px 4px -1px rgba(32, 32, 54, 0.06), 0 0 1px 0 rgba(32, 32, 54, 0.12);
@@ -4484,15 +3990,9 @@ div {
     .wrapper {
       width: 72%;
       margin: 0 0 8px 0;
-      .wallets {
-        padding: 16px;
-        height: initial;
-        .crypto-wallets {
-          margin-bottom: 0;
-        }
-      }
+
       .wallets-table {
-        padding: 18px;
+        /* padding: 18px; */
         .titles {
           display: none;
         }
@@ -4547,12 +4047,6 @@ div {
         }
       }
     }
-    .graph {
-      width: 27%;
-      margin-right: 8px;
-      padding: 16px;
-      height: initial;
-    }
   }
   .wallet-page {
     overflow: visible;
@@ -4560,7 +4054,7 @@ div {
     padding: 0 0 15px;
     .wrapper {
       .wallets-table {
-        padding: 18px;
+        /*  padding: 18px; */
         .lines {
           padding: 18px;
           height: initial;
@@ -4625,16 +4119,7 @@ div {
     }
   }
 }
-@media (max-width: 980px) {
-  .dashboard {
-    .graph {
-      .graph-container {
-        width: 210px;
-        height: 210px;
-      }
-    }
-  }
-}
+
 @media (max-width: 916px) {
   .wallet-page {
     .wrapper {
@@ -4711,41 +4196,13 @@ div {
     overflow-y: scroll;
   }
 }
-@media (max-width: 850px) {
-  .dashboard {
-    .wrapper {
-      .wallets {
-        .crypto-wallets {
-          .wallet {
-            max-width: 260px;
-            width: 100%;
-          }
-        }
-      }
-    }
-  }
-}
+
 @media (max-width: 830px) {
   .dashboard {
     .my-row {
       -webkit-box-pack: center;
       -ms-flex-pack: center;
       justify-content: center;
-    }
-    .wrapper {
-      width: 100%;
-      margin: 0;
-      .wallets {
-        margin-bottom: 16px;
-      }
-    }
-    .graph {
-      width: 60%;
-      margin: 0 0 16px 0;
-      .graph-container {
-        width: 300px;
-        height: 300px;
-      }
     }
   }
 }
@@ -4773,17 +4230,7 @@ div {
     }
   }
 }
-@media (max-width: 666px) {
-  .dashboard {
-    .graph {
-      .graph-container {
-        -webkit-transform: translateX(0);
-        -ms-transform: translateX(0);
-        transform: translateX(0);
-      }
-    }
-  }
-}
+
 @media (max-width: 645px) {
   .wallet-page {
     .wrapper {
@@ -4809,13 +4256,7 @@ div {
     }
   }
 }
-@media (max-width: 582px) {
-  .dashboard {
-    .graph {
-      width: 100%;
-    }
-  }
-}
+
 @media (max-width: 576px) {
   .index {
     .common-info {
@@ -5157,16 +4598,6 @@ div {
     .add {
       padding: 17px 20px;
       margin-left: 0;
-    }
-  }
-}
-@media (max-width: 360px) {
-  .dashboard {
-    .graph {
-      .graph-container {
-        width: 260px;
-        height: 260px;
-      }
     }
   }
 }

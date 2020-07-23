@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ExchangeImg from './ExchangeImg';
 
-
+import './orderBooks.scss'
 
 function handleExchanges(e) {
   const cl = e.target.classList;
@@ -34,16 +34,16 @@ function calculatePercent27(value) {
   return (27 * value) / 100;
 }
 
-const renderSize = (data, format) => {
+const renderSize = (data, format,mode) => {
   let id = 'ask-row-' + Math.floor(Math.random() * 100000);
-  let colorClass = 'cell';
+  let colorClass = 'cell amount';
   if (!data.dynamic) {
   } else {
     if (data.dynamic === 1) {
-      colorClass = 'cell green';
+      colorClass = 'cell amount green';
     }
     if (data.dynamic === -1) {
-      colorClass = 'cell red';
+      colorClass = 'cell amount red';
     }
   }
   data.dynamic = 0;
@@ -57,13 +57,13 @@ const renderSize = (data, format) => {
   }, 300);
 
   return (
-    <span className={colorClass} id={id}>
+    <span  className={colorClass} id={id}>
       {Number(data.size).toFixed(format)}
     </span>
   );
 };
 
-const Asks = ({ dataAsk, formatingPair }) => {
+const Asks = ({ dataAsk, formatingPair,mode }) => {
 
 /* REDUX */
   const dispatch = useDispatch();
@@ -200,7 +200,7 @@ const Asks = ({ dataAsk, formatingPair }) => {
         let percentStyle27 = calculatePercent27(percentStyle2) + '%';
         renderData.push(
           <div
-            className={`order ${localStorage.getItem('mode') === 'Dark' ? 'dark' : ''}`}
+            className={`order ${mode}`}
             key={key + time}
             onClick={(_) => chooseOrderBookLine(asks[i])}
           >
@@ -208,15 +208,26 @@ const Asks = ({ dataAsk, formatingPair }) => {
             <span className="progress-light l-red" style={{ width: percentStyle }} />
             {/* Max width 27% */}
             <span className="progress-light d-red" style={{ width: percentStyle27 }} />
-            <span className="cell emp">
+
+            {/* NUMBERS IN CELLS */}
+
+            <span className="cell price emp" >
+
               {Number(asks[i].price).toFixed(formatingPair.pricePrecision)}
             </span>
-            {/* <span className="cell">{asks[i].size.toFixed(3)}</span> */}
-            {renderSize(asks[i], formatingPair.qtyPrecision)}
-            <span className="cell emp">{asks[i].total.toFixed(formatingPair.pricePrecision)}</span>
+          
+            {renderSize(asks[i], formatingPair.qtyPrecision,mode)}
 
+            <span /* style={{color:mode==='Dark'? '#8989A5':'#72707F' }} */ className="cell total emp">{asks[i].total.toFixed(formatingPair.pricePrecision)}</span>
+
+        
             <div className="cell exch">
-              <div
+            {asks[i].exchanges.map((res,key)=>{
+              return(
+                <div key={key} className={`image-exch ${res}`}></div>
+              )
+            })}
+              {/* <div
                 className="exch-content js-exch-content"
                 id={'div-ask-' + key}
                 onClick={handleExchanges}
@@ -224,8 +235,10 @@ const Asks = ({ dataAsk, formatingPair }) => {
                 {imgExchanges}
                 {arrow}
               </div>
-              {exchangesExtras}
+              {exchangesExtras} */}
+
             </div>
+            {/*END NUMBERS IN CELLS */}
           </div>
         );
       }

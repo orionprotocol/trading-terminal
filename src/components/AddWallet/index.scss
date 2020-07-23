@@ -1,0 +1,133 @@
+.modal-custom-addwallet{
+	&.Dark{
+		.ant-modal-close-x{
+			color:rgb(151, 151, 179);
+		}
+		.ant-modal-header,.ant-modal-body{
+			background-color: #27273E;
+		}
+		.ant-modal-header{
+			.ant-modal-title{
+				color: white;
+			}
+				border-bottom:1px solid rgba(151, 151, 179, 0.055);
+		}
+		.ant-modal-body{
+			h5{
+				color: white;
+			}
+			.container-wallets{
+				.wallet{
+					background-color: #2d2d45;
+					&:hover{
+						background-color: #ffffff15;
+						p,span{
+							color:#00BBFF
+						}	
+					}
+					p,span{
+						color: #9090A8;
+						
+					}
+				}
+			}
+		}
+
+	}
+
+	&.Light{
+		.ant-modal-header,.ant-modal-body{
+			background-color: #FFFFFF;
+		}
+		.ant-modal-body{
+			
+			.container-wallets{
+				.wallet{
+					background-color: #FAFAFA;
+					&:hover{
+						background-color: #F5F5F5;
+						p,span{
+							color:#00BBFF
+						}	
+					}
+					p,span{
+						color: #A19FA9;
+						
+					}
+				}
+			}
+		}
+	}
+
+	.ant-modal-header{
+		padding: 30px 50px;
+		.ant-modal-title{
+			font-weight: bold;
+			font-size: 25px;
+		}
+	}
+	.ant-modal-body{
+		padding: 30px 50px;
+		h5{
+			font-size: 16px;
+			font-weight: bold;
+		}
+		.container-wallets{
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+			width: 100%;
+			.wallet{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+				width: 25%;
+				padding: 15px;
+				margin: 12px;
+				text-align: center;
+				cursor: pointer;
+				span{
+					margin-top: 10px;
+					font-weight: bold;
+				}
+				&:last-child{
+					padding: 15px 0;
+					p{
+						text-decoration: underline;
+					}
+				}
+			}
+		}
+		
+	}
+}
+
+
+
+
+
+
+
+
+/* OLD STYLES */
+
+.popup-wrapper.js-add-wallet-1 {
+	display: block;
+}
+
+.popup-wrapper.js-add-wallet-2 {
+	display: block;
+}
+
+/* .popup-wrapper.js-add-wallet-1.active {
+	display: block;
+}
+
+.popup-wrapper.js-add-wallet-2.active {
+	display: block;
+} */
+
+.popup-wrapper.js-add-wallet-2 .add-wallet-2 {
+	height: 98%;
+}

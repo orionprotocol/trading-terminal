@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./index.css";
+import "./index.scss";
 
 const AddWallet1 = (props) => {
   const dispatch = useDispatch();

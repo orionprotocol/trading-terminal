@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const index = memo(({ handleSort, classes, renderOrders }) => {
   return (
-    <Col className="table-content" xs={24}>
+    <div className="table-content" style={{padding:'15px'}} >
       <div className="titles">
         <div className="title short" onClick={(_) => handleSort('type')}>
           <span>Type</span>
@@ -37,7 +37,7 @@ const index = memo(({ handleSort, classes, renderOrders }) => {
       </div>
 
       <div className="lines">{renderOrders}</div>
-    </Col>
+    </div>
   );
 });
 

@@ -1,0 +1,258 @@
+@import '../../../css/scss/resposiveSize';
+
+$bgColorDark:#34344C;
+$bgColorLight:#FFFFFF;
+$shadowDark:#000000b0;
+$shadowLight:#8a8a8a4b;
+$TColorDark:#FFFFFF;
+$TColorLight:#4E4C5E;
+$LColorDark:#9797B3;
+$LColorLight:#72707F;
+$listColor:#00BBFF;
+
+ $colorDarkSearch:#67677F;
+ $colorLightSearch:#72707F;
+$inputDark:#2E2E45;
+$inputLight:#FAFAFB;
+
+.wallets-table{
+
+.titles{
+
+&.Dark{
+  .search {
+    .input{
+      svg{
+        path{
+          fill:$colorDarkSearch;
+        }
+      }
+      input {
+        background-color: $inputDark;
+        color: $colorDarkSearch;
+        &::placeholder {
+          color: $colorDarkSearch;
+        }
+       
+      }
+    }
+  }
+}
+&.Light{
+  .search {
+    .input {
+      svg{
+        path{
+          fill: $colorLightSearch;
+        }
+      }
+      input{
+        background-color: $inputLight;
+      color: $colorLightSearch;
+        &::placeholder {
+          color: $colorLightSearch;
+        }
+      }
+    }
+  }
+}
+
+.zero-filter{
+width:30%;
+display:flex;
+justify-content: center;
+align-items: center;
+}
+
+  .search {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    width: 70%;
+    .input {
+      position: relative;
+      width: 100%;
+      
+      svg {
+        position: absolute;
+        top: 17px;
+        left: 12px;
+        font-size: 15px;
+      }
+      input {
+        border-radius: 2px;
+        padding: 12px 15px 12px 48px;
+      
+        font-size: 16px;
+        line-height: 24px;
+        border: none;
+        width: 100%;
+        &::placeholder {
+          font-size: 16px;
+          line-height: 24px;
+        }
+      }
+    }
+    
+  
+  }
+}
+
+  .header-table-wallets{
+    border-radius: 5px 5px 0 0;
+    display: flex;
+    padding: 15px 40px;
+    width: 100%;
+
+    @include media(md){
+      flex-direction: column;
+      margin-bottom: 22px;
+    }
+
+   .left{
+     display: flex;
+     align-items: center;
+     width: 60%;
+     @include media(md){
+      width: 100%;
+      flex-direction: column;
+      .title{
+        text-align: center;
+      }
+    }
+     .title{
+       font-size: 18px;
+       font-weight: bold;
+     }
+    .list{
+      list-style-type: none;
+      margin-bottom: 0;
+      & li{
+        display: flex;
+        font-size: 12px;
+        margin: 5px 0;
+       /*  justify-content: center; */
+        align-items: center;
+        .circle{
+          margin-right: 10px;
+          width: 6px;
+          height: 6px;
+          background-color: $listColor;
+          border-radius: 50%;
+        }
+      }
+    }
+  }
+  .right{
+    width: 40%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    @include media(md){
+      width: 100%;
+      justify-content: center;
+    }
+    button{
+      border: none;
+      background-color: transparent;
+      border-radius: 2px;
+      padding: 8px 30px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  }
+    
+
+    &.Dark{
+      background-color: $bgColorDark;
+      box-shadow: 0px 0px 10px $shadowDark;
+      .left{
+        .title{
+          color:$TColorDark
+        }
+        .list{
+          color: $LColorDark;
+        }
+      }
+      .right{
+        button{
+          color:$LColorDark;
+          border: 1px solid $LColorDark;
+          
+        }
+      }
+    }
+    &.Light{
+      background-color: $bgColorLight;
+      box-shadow: 0px 0px 10px $shadowLight;
+      .left{
+        .title{
+          color:$TColorLight
+        }
+        .list{
+          color: $LColorLight;
+        }
+      }
+      .right{
+        button{
+          color:$LColorLight;
+          border: 1px solid $LColorLight;
+        }
+      }
+    }
+  }
+}
+
+
+.popup-wrapper.deposit-withdraw {
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(20, 16, 41, 0.06);
+  z-index: 55555;
+}
+
+@media (max-width: 1130px) {
+  .popup-wrapper.deposit-withdraw .add-wallet-2 {
+    max-height: 50%;
+  }
+}
+
+.popup-wrapper.deposit-withdraw .popup-body .popup-top {
+  margin-bottom: 15px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.dashboard .wrapper .wallets-table .titles .title svg {
+  margin-left: 10px;
+}
+
+.private-key.wait {
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.private-key.wait > span {
+  margin-bottom: 30px !important;
+  font-size: 20px !important;
+}

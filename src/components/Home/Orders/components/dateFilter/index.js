@@ -5,10 +5,10 @@ import CustomDatePickerInput from '../../../../CustomDatePickerInput';
 import 'react-datepicker/dist/react-datepicker.min.css';
 import './date.scss';
 const index = memo(
-  ({ startDateA, setStartDateA, startDateB, setStartDateB, handleDateChangeRaw }) => {
+  ({ startDateA, setStartDateA, startDateB, setStartDateB, handleDateChangeRaw, mode }) => {
     return (
-      <Col xs={24} md={8}>
-        <div className="orders-dates">
+   
+        <div className={`container-filter-date ${mode}`}>
           <DatePicker
             selected={startDateA}
             onChange={(date) => setStartDateA(date)}
@@ -21,7 +21,10 @@ const index = memo(
             customInput={<CustomDatePickerInput />}
             popperPlacement="bottom-center"
           />
-          <span className="price-card-date-line"></span>
+          <div className="line-container">
+            <i className="fas fa-minus"></i>
+          </div>
+
           <DatePicker
             selected={startDateB}
             onChange={(date) => setStartDateB(date)}
@@ -35,7 +38,7 @@ const index = memo(
             popperPlacement="bottom-center"
           />
         </div>
-      </Col>
+
     );
   }
 );

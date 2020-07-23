@@ -2,7 +2,7 @@ import React, { lazy, useState, useEffect, Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Loader from '../../Loader';
-import './index.css';
+import './orderBooks.scss';
 
 const Asks = lazy(() => import('./Asks'));
 const Bids = lazy(() => import('./Bids'));
@@ -123,6 +123,7 @@ function updateOrderBookData(data, exchange, stateData, callback) {
 }
 
 const OrderBooks = (props) => {
+  const mode = useSelector((state) => state.general.mode);
   const symbol = useSelector((state) => state.general.symbol);
   const orderBook = useSelector((state) => state.general.orderBook);
   const symbolA = useSelector((state) => state.general.symbolA);
@@ -265,28 +266,30 @@ const OrderBooks = (props) => {
   const [cargando, setcargando] = useState(false);
 
   return (
-    <div className="js-orderbook">
-      <div className="order-book">
+    <div className={`js-orderbook ${mode}`}>
+      
+      <div className="order-book-header">
         <p className="heading">Order Book</p>
         <div className="titles">
           <span className="title">Price</span>
           <span className="title">Amount</span>
           <span className="title">Total</span>
-          <span className="title exch">Exch</span>
+          <span className="title">Exch</span>
         </div>
       </div>
+  
       <Suspense fallback={<Loader />}>
-        {cargando && <Asks formatingPair={formatingPair} dataAsk={state.data} />}
+        {cargando && <Asks formatingPair={formatingPair} dataAsk={state.data} mode={mode} />}
         {cargando && (
-          <div className="order-book">
-            <div className="last-price">
-              <span className="cell">{state.data.lastPrice}</span>
-              <span className="last">Last Price</span>
+        
+            <div className="last-price-line">
+              <span className="price">{state.data.lastPrice}</span>
+              <span>Last Price</span>
             </div>
-          </div>
+         
         )}
-        {cargando && <Bids formatingPair={formatingPair} dataBid={state.data} />}
-      </Suspense>
+        {cargando && <Bids mode={mode}  formatingPair={formatingPair} dataBid={state.data} />}
+      </Suspense> 
     </div>
   );
 };
