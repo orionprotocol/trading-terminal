@@ -1,13 +1,12 @@
 import React, { lazy, useState, useEffect, Suspense, useRef, useCallback } from 'react';
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Slider from 'react-slick';
 import FadeIn from 'react-fade-in';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ethereum } from "../../../services/Coinbase";
+import { ethereum } from '../../../services/Coinbase';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './wallets.scss';
-
 
 const AddWallet1 = lazy(() => import('../../AddWallet/AddWallet1'));
 const AddWallet2 = lazy(() => import('../../AddWallet/AddWallet2'));
@@ -45,13 +44,12 @@ const Wallets = (_) => {
   const assets = useSelector((state) => state.wallet.assets);
   const tickers = useSelector((state) => state.general.tickers);
   const changeInTickers = useSelector((state) => state.general.changeInTickers);
-  const setAddWallet = useCallback(
-    (payload) => dispatch({ type: "SetAddWallet", payload }),
-    [dispatch]
-  );
+  const setAddWallet = useCallback((payload) => dispatch({ type: 'SetAddWallet', payload }), [
+    dispatch,
+  ]);
   /* REDUX */
 
- const [disconnecting, setdisconnecting] = useState(false)
+  const [disconnecting, setdisconnecting] = useState(false);
   const [contract, setContract] = useState({});
   const [wallet, setWallet] = useState({});
   const [show1, setShow1] = useState(false);
@@ -229,7 +227,7 @@ const Wallets = (_) => {
             <div className={`wallet ${a.toLowerCase()}`} key={a}>
               <div className="title">
                 <img
-                  src={require(`../../../css/icons/currencies_highlight/${a.toLowerCase()}.svg`)}
+                  src={`/img/icons/currencies_highlight/${a.toLowerCase()}.svg`}
                   alt={a}
                 />
 
@@ -239,7 +237,7 @@ const Wallets = (_) => {
                   className={`btn-disconnet-wallet ${mode}`}
                 >
                   <img
-                    src={require(`../../../css/icons/dashboard/totalBalance/minusIcon-${mode}.svg`)}
+                    src={`/img/icons/dashboard/totalBalance/minusIcon-${mode}.svg`}
                     alt={'minus'}
                   />
                   Disconnect Wallet
@@ -261,7 +259,7 @@ const Wallets = (_) => {
                   document.queryCommandSupported('copy') && (
                     <img
                       onClick={copyToClipboard}
-                      src={require(`../../../css/icons/dashboard/wallets/copy-icon-${mode}.svg`)}
+                      src={`/img/icons/dashboard/wallets/copy-icon-${mode}.svg`}
                       alt="copy"
                     />
                   )
@@ -281,17 +279,19 @@ const Wallets = (_) => {
               </p>
               <p className="currency-2">
                 <span>
-                 {typeof inUSD[a.toUpperCase()] === 'undefined' ? 0 : inUSD[a.toUpperCase()]} USD
+                  {typeof inUSD[a.toUpperCase()] === 'undefined' ? 0 : inUSD[a.toUpperCase()]} USD
                 </span>
-                <button type="button" className={`${mode}`}>Details</button>
+                <button type="button" className={`${mode}`}>
+                  Details
+                </button>
               </p>
             </div>
           ))}
 
-          <div onClick={_=>setAddWallet(true)} className={`wallet add-wallet ${mode}`}>
+          <div onClick={(_) => setAddWallet(true)} className={`wallet add-wallet ${mode}`}>
             <div className="add-w">
-            <FontAwesomeIcon icon="plus" />
-            Add wallet
+              <FontAwesomeIcon icon="plus" />
+              Add wallet
             </div>
           </div>
         </Slider>

@@ -6,38 +6,33 @@ import { ethereum } from "../../services/Coinbase";
 import { useSelector, useDispatch } from 'react-redux';
 import { Modal } from 'antd';
 /* STYLES */
-import LogoMeta from '../../css/icons/modal_metamask.svg'
-import LogoForma from '../../css/icons/modal_formatic.svg'
-import LogoCoin from '../../css/icons/modal_coinbase.svg'
-import LogoKeystore from '../../css/icons/modal_keystore.svg'
-import LogoPrivateKey from '../../css/icons/modal_private_key.svg'
 import './index.scss'
 
 const walletsList =[
     {
         id:'metamask',
         name:'Metamask',
-        logo:LogoMeta,
+        logo: '/img/icons/modal_metamask.svg',
     },
     {
         id:'formatic',
         name:'Formatic',
-        logo:LogoForma,
+        logo: '/img/icons/modal_fortmatic.svg',
     },
      {
         id:'coin_base',
         name:'Coinbase Wallet',
-        logo:LogoCoin,
+        logo: '/img/icons/modal_coinbase.svg',
     },
     /*{
         id:'key_store',
         name:'Keystore',
-        logo:LogoKeystore,
+        logo: '/img/icons/modal_keystore.svg',
     },
     {
         id:'private_key',
         name:'Privatekey',
-        logo:LogoPrivateKey,
+        logo: '/img/icons/modal_private_key.svg',
     } */
 ]
 

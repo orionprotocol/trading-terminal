@@ -6,8 +6,6 @@ import { useSelector } from 'react-redux';
 import { deposit as depositWan, withdraw as withdrawWan } from '../../../../../../services/Wanmask';
 import Contract from '../../../../../../services/Contract';
 
-import Alert from '../../../../../../css/icons/alert-exchange.svg';
-
 const WithdrawAndDeposit = memo((props) => {
   const symbolA = useSelector((state) => state.general.symbolA);
   const mode = useSelector((state) => state.general.mode);
@@ -93,7 +91,7 @@ const WithdrawAndDeposit = memo((props) => {
         {conBalance === 0 && wallBalance === 0 ? (
           <div className="alert-message">
             <span>
-              <img src={Alert} alt="replenish the balance" />
+              <img src="/img/icons/alert-exchange.svg" alt="replenish the balance" />
             </span>
             {localStorage.getItem('address') ? (
               <span>First you need to replenish the balance of the contract</span>

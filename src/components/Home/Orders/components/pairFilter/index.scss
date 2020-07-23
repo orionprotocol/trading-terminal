@@ -1,64 +1,60 @@
-@import '../../../../../css/scss/resposiveSize';
-
-.container-pair{
+@import '../../../../../css/scss/core/responsiveSize';
+.container-pair {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 58%;
-  @include media(md){
+  @include media(md) {
     width: 55%;
   }
   &.Dark {
-    .ant-select-arrow{
+    .ant-select-arrow {
       color: rgb(151, 151, 179);
     }
 
-    .ant-select-selector{
-      background-color: #35354E;
+    .ant-select-selector {
+      background-color: #35354e;
       color: rgb(151, 151, 179);
-      border: 1px solid #46465C;
-      &:hover{
-        border-color:#46465C
-    }
+      border: 1px solid #46465c;
+      &:hover {
+        border-color: #46465c;
+      }
     }
   }
   &.Light {
-    .ant-select-arrow{
+    .ant-select-arrow {
       color: black;
     }
-    .ant-select-selector{
+    .ant-select-selector {
       background-color: #fafafa;
       color: rgb(161, 159, 169);
-      border: 1px solid #E5E5E5;
+      border: 1px solid #e5e5e5;
       color: black;
-      &:hover{
-        border-color:#E5E5E5
-    }
+      &:hover {
+        border-color: #e5e5e5;
+      }
     }
   }
-  .selector{
+  .selector {
     width: 50%;
     border-radius: 5px;
     height: 35px;
-      @include media(md){
-        width: 48%;
-      }
-    
+    @include media(md) {
+      width: 48%;
+    }
   }
-  .ant-select-selector{
+  .ant-select-selector {
     height: 35px !important;
     border-radius: 5px !important;
     outline: none;
-
-}
+  }
   .pair-filter.separator {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 10%;
-    @include media(md){
-    display: none;
+    @include media(md) {
+      display: none;
     }
   }
 }
-

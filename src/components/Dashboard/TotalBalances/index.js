@@ -4,7 +4,7 @@ import './totalb.scss';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
-import { ethereum } from "../../../services/Coinbase";
+import { ethereum } from '../../../services/Coinbase';
 
 am4core.useTheme(am4themes_animated);
 
@@ -15,35 +15,33 @@ const TotalBalances = (_) => {
   const assets = useSelector((state) => state.wallet.assets);
   const tickers = useSelector((state) => state.general.tickers);
   const [contract, setContract] = useState({});
- /* REDUX */
+  /* REDUX */
 
- const [disconnecting, setdisconnecting] = useState(false)
+  const [disconnecting, setdisconnecting] = useState(false);
 
-
-/* Disconnection function */
+  /* Disconnection function */
   const clearLocalStorage = (_) => {
-    localStorage.removeItem("wanmaskConnected");
-    localStorage.removeItem("metamaskConnected");
-    localStorage.removeItem("fortmaticConnected");
-    localStorage.removeItem("coinbaseConnected");
-    localStorage.removeItem("ethAddress");
-    localStorage.removeItem("address");
+    localStorage.removeItem('wanmaskConnected');
+    localStorage.removeItem('metamaskConnected');
+    localStorage.removeItem('fortmaticConnected');
+    localStorage.removeItem('coinbaseConnected');
+    localStorage.removeItem('ethAddress');
+    localStorage.removeItem('address');
   };
 
   const handleDisconnect = (_) => {
-    setdisconnecting(true)
-    if (localStorage.getItem("coinbaseConnected")) {
+    setdisconnecting(true);
+    if (localStorage.getItem('coinbaseConnected')) {
       ethereum.close();
     }
     clearLocalStorage();
 
     setTimeout(() => {
-      setdisconnecting(false)
-      window.location.replace("/");
+      setdisconnecting(false);
+      window.location.replace('/');
     }, 1000);
-   
   };
-/* Disconnection function */
+  /* Disconnection function */
   useEffect(
     (_) => {
       let newContract = {};
@@ -248,7 +246,7 @@ const TotalBalances = (_) => {
                 {/* i can also import the image from public folder like this, but only works from public folder
                <img src={`./img/currencies_highlight/${a.toLowerCase()}.svg`} alt={a} />  */}
                 <img
-                  src={require(`../../../css/icons/currencies_highlight/${a.toLowerCase()}.svg`)}
+                  src={`/img/icons/currencies_highlight/${a.toLowerCase()}.svg`}
                   alt={a}
                 />
 
@@ -258,26 +256,24 @@ const TotalBalances = (_) => {
             </div>
           ))}
       </div>
-      <button onClick={handleDisconnect} type='button' className={`btn-disconnet ${mode}`}>
-        {!disconnecting?
-        <>
-      <img
-        src={require(`../../../css/icons/dashboard/totalBalance/minusIcon-${mode}.svg`)}
-        alt={'minus'}
-      />
-      <span>Disconnect All</span>
-      </>
-      :  
-      <div class="spinner-loader-btn">
-  <div class="rect1"></div>
-  <div class="rect2"></div>
-  <div class="rect3"></div>
-  <div class="rect4"></div>
-  <div class="rect5"></div>
-</div>
-      }
-        
-       
+      <button onClick={handleDisconnect} type="button" className={`btn-disconnet ${mode}`}>
+        {!disconnecting ? (
+          <>
+            <img
+              src={`/img/icons/dashboard/totalBalance/minusIcon-${mode}.svg`}
+              alt={'minus'}
+            />
+            <span>Disconnect All</span>
+          </>
+        ) : (
+          <div class="spinner-loader-btn">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+          </div>
+        )}
       </button>
     </div>
   );
