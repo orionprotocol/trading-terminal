@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Col, Row } from 'antd';
 import './index.scss';
 
+import LastPriceMobile from './components/lastPrice'
+
 const MobileNavigation = memo((_) => {
   /* Redux */
   const pair = useSelector((state) => state.responsive.home.pair);
@@ -48,9 +50,7 @@ const MobileNavigation = memo((_) => {
 
   return (
     <Col className="mobile-navigation" xs={24} lg={0}>
-      <Row className="prices">
-        <Col>Last price</Col>
-      </Row>
+      <LastPriceMobile/>
       <Row className="navigation">
         <Col
           xs={6}

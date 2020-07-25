@@ -10,7 +10,7 @@ const formatNumber = (number) => {
 let intervalId = 0;
 const CommonInfo = ({ History }) => {
   /* REDUX */
-  const pair = useSelector((state) => state.responsive.home.pair);
+  /* const pair = useSelector((state) => state.responsive.home.pair); */
   const symbolA = useSelector((state) => state.general.symbolA);
   const symbolB = useSelector((state) => state.general.symbolB);
   const lastPrice = useSelector((state) => state.general.lastPrice);

@@ -1,0 +1,54 @@
+.container-lastprice-mobile {
+  display: flex;
+  width: 100%;
+  padding: 15px 0;
+  &.Dark {
+    span,
+    p {
+      color: #6d6d86;
+    }
+    .last-price,.change {
+        .emp {
+          color: #9393af;
+        }
+    }
+  }
+  &.Light {
+    color: #a9a7b1;
+    .last-price,.change {
+        .emp {
+          color: #706e7d;
+        }
+    }
+  }
+  .last-price {
+    width: 55%;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    .title {
+      font-size: 12px;
+      margin-right: 5px;
+    }
+    .emp {
+      font-size: 15px;
+    margin: 0 5px;
+    }
+  }
+  .change {
+    display: flex;
+    width: 45%;
+    align-items: center;
+    justify-content: flex-end;
+    .title {
+        font-size: 12px;
+      }
+      img{
+        margin: 0 5px; 
+      }
+      .emp {
+        font-size: 15px;
+        margin: 0;
+      }
+  }
+}
