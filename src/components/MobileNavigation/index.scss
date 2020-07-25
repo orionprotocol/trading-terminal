@@ -1,9 +1,14 @@
 .mobile-navigation {
-  margin-bottom: 16px;
+  margin-bottom: 70px;
+  
   .prices {
     padding: 8px;
   }
   .navigation {
+    position: absolute;
+    height: 50px;
+    width: 100vw;
+    left: -16px;
     .nav-item {
       display: -webkit-box;
       display: -ms-flexbox;
@@ -18,11 +23,8 @@
       -ms-flex-pack: center;
       justify-content: center;
       padding: 11px;
-
-      .chart-icon {
-        transform: matrix(1, 0, 0, -1, 0, 0);
-      }
-
+      
+     
       .text {
         font-size: 8px;
         line-height: 2;

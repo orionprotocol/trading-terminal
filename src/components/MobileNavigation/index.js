@@ -7,13 +7,14 @@ import LastPriceMobile from './components/lastPrice'
 
 const MobileNavigation = memo((_) => {
   /* Redux */
-  const pair = useSelector((state) => state.responsive.home.pair);
+/*   const pair = useSelector((state) => state.responsive.home.pair); */
+  const mode = useSelector((state) => state.general.mode);
   const active = useSelector((state) => state.responsive.home.active);
   const exchange = useSelector((state) => state.responsive.home.exchange);
   const chart = useSelector((state) => state.responsive.home.chart);
   const history = useSelector((state) => state.responsive.home.history);
   const orderbook = useSelector((state) => state.responsive.home.orderbook);
-  const symbol = useSelector((state) => state.general.symbol);
+  /* const symbol = useSelector((state) => state.general.symbol); */
   const dispatch = useDispatch();
 
   const setActive = useCallback((payload) => dispatch({ type: 'SetHomeActive', payload }), [
@@ -58,7 +59,12 @@ const MobileNavigation = memo((_) => {
           data-nav="exchange"
           onClick={setExchange}
         >
-          <img src="/img/svg/exchange.svg" alt="exchange" />
+          {mode==='Dark' ? 
+          <img src={`/img/svg/${exchange? 'exchange-active':'exchange-dark'}.svg`} alt="exchange" />
+          :
+          <img src={`/img/svg/${exchange? 'exchange-active':'exchange-light'}.svg`} alt="exchange" />
+          }
+          
           <div className="text">Exchange</div>
         </Col>
         <Col
@@ -67,7 +73,12 @@ const MobileNavigation = memo((_) => {
           data-nav="chart"
           onClick={setChart}
         >
-          <img className="chart-icon" src="/img/svg/chart.svg" alt="chart" />
+          {mode==='Dark' ? 
+          <img src={`/img/svg/${chart? 'chart-active':'chart-dark'}.svg`} alt="chart" />
+          :
+          <img src={`/img/svg/${chart? 'chart-active':'chart-light'}.svg`} alt="chart" />
+          }
+          
           <div className="text">Chart</div>
         </Col>
         <Col
@@ -76,7 +87,13 @@ const MobileNavigation = memo((_) => {
           data-nav="history"
           onClick={setHistory}
         >
-          <img src="/img/svg/history.svg" alt="history" />
+           {mode==='Dark' ? 
+           
+          <img src={`/img/svg/${history? 'history-active':'history-dark'}.svg`} alt="history" />
+          :
+          <img src={`/img/svg/${history? 'history-active':'history-light'}.svg`} alt="history" />
+          }
+         
           <div className="text">History</div>
         </Col>
         <Col
@@ -85,7 +102,13 @@ const MobileNavigation = memo((_) => {
           data-nav="orderbook"
           onClick={setOrderbook}
         >
-          <img className="chart-icon" src="/img/svg/orderbook.svg" alt="orderbook" />
+           {mode==='Dark' ? 
+           
+          <img src={`/img/svg/${orderbook? 'orderbook-active':'orderbook-dark'}.svg`} alt="orderbook" />
+          :
+          <img src={`/img/svg/${orderbook? 'orderbook-active':'orderbook-light'}.svg`} alt="orderbook" />
+          }
+          {/* <img className="chart-icon" src={`/img/svg/orderbook${orderbook? '-active':''}.svg`} alt="orderbook" /> */}
           <div className="text">Orderbook</div>
         </Col>
       </Row>
