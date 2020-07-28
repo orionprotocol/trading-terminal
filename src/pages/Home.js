@@ -1,9 +1,9 @@
-import React, { lazy, useEffect, useCallback, Suspense } from 'react';
+import React, { lazy, useEffect, useCallback, Suspense, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Col, Row } from 'antd';
 import MobileNavigation from '../components/MobileNavigation';
 import Loader from '../components/Loader';
-
+import PairDrop2 from './components/PairDrop2';
 const CommonInfo = lazy(() =>
   import(/* webpackChunkName: 'CommonInfo' */ '../components/Home/CommonInfo')
 );
@@ -44,51 +44,69 @@ function Home(props) {
   }, [props.history.location.pathname]);
 
   const active = useSelector((state) => state.responsive.home.active);
- /*  const pair = useSelector((state) => state.responsive.home.pair); */
+  /*  const pair = useSelector((state) => state.responsive.home.pair); */
   const exchange = useSelector((state) => state.responsive.home.exchange);
   const chart = useSelector((state) => state.responsive.home.chart);
   const history = useSelector((state) => state.responsive.home.history);
   const orderbook = useSelector((state) => state.responsive.home.orderbook);
-/*   console.log(exchange) */
+  /*   console.log(exchange) */
+  const [showPairsDropdown, setShowPairsDropdown] = useState(false);
+  const togglePairsDropdown = () => setShowPairsDropdown(!showPairsDropdown);
+
   return (
     <Suspense fallback={<Loader />}>
       <div className="index">
-        <Sidebar history={props.history} />
+        <Sidebar
+          history={props.history}
+          togglePairsDropdown={togglePairsDropdown}
+          showPairsDropdown={showPairsDropdown}
+        />
+
         <Row className="home-container">
-          <MobileNavigation />
+          {!showPairsDropdown && <MobileNavigation />}
+          {active && showPairsDropdown && (
+                  /* <div className={`common-info js-pair`}>
+                    <div
+                      className="wrapper-pair js-wrapper-pair"
+                      id="js-wrapper-pair"
+                      onClick={togglePairsDropdown}
+                    />
+                    <div className="top">
+                      <div className="pair-select"> */
+                        <PairDrop2 History={props.history} handleWrapper={togglePairsDropdown} />
+                    /*   </div>
+                    </div>
+                  </div> */
+                )}
           {/* NORMAL SIZE */}
-         {/*  {!active ? ( */}
-            <Col xs={24}>
-              <Row gutter={[8]}>
-                <Col className="left-panel" xs={24} lg={4}>
-                 {!active &&  <CommonInfo History={props} />  }
-                 {(!active || (active&&exchange)) &&  <Exchange />  }
-                  
-                </Col>
+          {/*  {!active ? ( */}
+          <Col xs={24}>
+            <Row gutter={[8]}>
+              <Col className="left-panel" xs={24} lg={4}>
+                {!active && <CommonInfo History={props} />}
+               
 
-                <Col className="center-panel" xs={24} lg={16}>
-                  <Row gutter={[0, 8]}>
-                      <Col xs={24}>
-                        {' '}
-                         {(!active || (active&&chart)) &&   <TVChart />  }
-                       
-                      </Col>
-                      <Col xs={24}>
-                        {' '}
-                        {(!active || (active&&history)) &&  <Orders /> }
-                        
-                      </Col>
-                  </Row>
-                </Col>
+                {(!active || (active && exchange && !showPairsDropdown)) && <Exchange />}
+              </Col>
 
-                  <Col className="right-panel" xs={24} lg={4}>
-                  {(!active || (active&&orderbook)) &&  <OrderBooks /> }
-                    
+              <Col className="center-panel" xs={24} lg={16}>
+                <Row gutter={[0, 8]}>
+                  <Col xs={24}>
+                    {' '}
+                    {(!active || (active && chart && !showPairsDropdown)) && <TVChart />}
                   </Col>
-              </Row>
-            </Col>
-        {/*    ) : null} */}
+                  <Col xs={24}>
+                    {' '}
+                    {(!active || (active && history && !showPairsDropdown)) && <Orders />}
+                  </Col>
+                </Row>
+              </Col>
 
+              <Col className="right-panel" xs={24} lg={4}>
+                {(!active || (active && orderbook && !showPairsDropdown)) && <OrderBooks />}
+              </Col>
+            </Row>
+          </Col>
           {/*END NORMAL SIZE */}
         </Row>
       </div>

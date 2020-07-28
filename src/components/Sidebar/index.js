@@ -1,22 +1,23 @@
 import React, {
-  lazy,
+/*   lazy, */
   useCallback,
   useEffect,
   useState,
   Fragment,
-  Suspense,
+/*   Suspense, */
 } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { Dark, Light } from "../funtions/handleMode";
-import FadeIn from "react-fade-in";
+/* Modules */
 import { ethereum } from "../../services/Coinbase";
-import "./sidebar.scss";
 import ModalAddWallet from '../../components/AddWallet/AddWallet';
+import { Dark, Light } from "../funtions/handleMode";
+/* Styles */
+import "./sidebar.scss";
 
-const AddWallet1 = lazy(() => import("../AddWallet/AddWallet1"));
-const AddWallet2 = lazy(() => import("../AddWallet/AddWallet2"));
-
+/* const AddWallet1 = lazy(() => import("../AddWallet/AddWallet1")); */
+/* const AddWallet2 = lazy(() => import("../AddWallet/AddWallet2")); */
+/* import FadeIn from "react-fade-in"; */
 const Sidebar = (props) => {
   const dispatch = useDispatch();
 
@@ -71,13 +72,13 @@ const Sidebar = (props) => {
   const symbolB = useSelector((state) => state.general.symbolB);
   const [walletActive, setWalletActive] = useState(false);
   const [addWalletOpt, setAddWalletOpt] = useState(false);
-
+ 
   const [show1, setShow1] = useState(false);
-  const [show2, setShow2] = useState(false);
+/*   const [show2, setShow2] = useState(false); */
 
   // const history = useHistory();
 
-  const handleShow2 = (_) => {
+ /*  const handleShow2 = (_) => {
     setShow1(false);
     setTimeout(() => {
       setShow2(true);
@@ -89,7 +90,7 @@ const Sidebar = (props) => {
     setTimeout(() => {
       setShow1(true);
     }, 100);
-  };
+  }; */
 
   useEffect(
     (_) => {
@@ -271,6 +272,8 @@ const Sidebar = (props) => {
     [show1, show2]
   ); */
 
+
+/* console.log(window.location.href,props.history) */
   return (
     <div
       className="navbar js-navbar"
@@ -278,6 +281,7 @@ const Sidebar = (props) => {
       // onMouseOver={onMouseOver}
     >
       <ModalAddWallet/>
+      
      {/*  <Suspense fallback="">
         {show1 ? (
           <FadeIn transitionDuration={10}>
@@ -297,7 +301,19 @@ const Sidebar = (props) => {
           <img src="/img/svg/orion_full.svg" alt="home" />
         </a>
         <div className="navbar__toggle" onClick={onClick}></div>
+
+        <div className={`responsive-common-info-container ${mode}`}>
+          <div className="link js-pair-link" onClick={props.togglePairsDropdown}>
+            <span>
+              {symbolA} / {symbolB}
+            </span>
+            {props.showPairsDropdown? <i  className="fas fa-chevron-up"></i>:<i  className="fas fa-chevron-down"></i>}
+          </div>
+        </div>
       </div>
+
+    {/*    */}
+
       <div className="navbar__wrapper">
         <div className="navbar__list">
           <div

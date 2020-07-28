@@ -1,0 +1,9 @@
+.cell.chg{
+    width: 120px !important;
+    display: flex;
+    justify-content: space-between;
+    .change{
+        display: flex;
+        justify-content: space-between;
+    }
+}
