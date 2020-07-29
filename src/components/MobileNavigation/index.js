@@ -52,7 +52,7 @@ const MobileNavigation = memo((_) => {
   return (
     <Col className="mobile-navigation" xs={24} lg={0}>
       <LastPriceMobile/>
-      <Row className="navigation">
+      <Row className={`navigation ${mode}`}>
         <Col
           xs={6}
           className={`nav-item ${exchange ? 'active' : ''}`}

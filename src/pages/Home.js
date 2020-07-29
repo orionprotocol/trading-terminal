@@ -63,32 +63,21 @@ function Home(props) {
         />
 
         <Row className="home-container">
+          {/* Mobile modules */}
           {!showPairsDropdown && <MobileNavigation />}
           {active && showPairsDropdown && (
-                  /* <div className={`common-info js-pair`}>
-                    <div
-                      className="wrapper-pair js-wrapper-pair"
-                      id="js-wrapper-pair"
-                      onClick={togglePairsDropdown}
-                    />
-                    <div className="top">
-                      <div className="pair-select"> */
-                        <PairDrop2 History={props.history} handleWrapper={togglePairsDropdown} />
-                    /*   </div>
-                    </div>
-                  </div> */
-                )}
-          {/* NORMAL SIZE */}
-          {/*  {!active ? ( */}
+            <PairDrop2 History={props.history} handleWrapper={togglePairsDropdown} />
+          )}
+          {/* Mobile modules */}
+
+          {/* Sections */}
           <Col xs={24}>
             <Row gutter={[8]}>
               <Col className="left-panel" xs={24} lg={4}>
                 {!active && <CommonInfo History={props} />}
-               
 
                 {(!active || (active && exchange && !showPairsDropdown)) && <Exchange />}
               </Col>
-
               <Col className="center-panel" xs={24} lg={16}>
                 <Row gutter={[0, 8]}>
                   <Col xs={24}>
@@ -107,7 +96,7 @@ function Home(props) {
               </Col>
             </Row>
           </Col>
-          {/*END NORMAL SIZE */}
+          {/* Sections */}
         </Row>
       </div>
     </Suspense>

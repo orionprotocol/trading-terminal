@@ -9,6 +9,11 @@
     height: 50px;
     width: 100vw;
     left: -16px;
+    &.Light{
+      background-color: white;
+      border-radius: 5px;
+      filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.13));
+    }
     .nav-item {
       display: -webkit-box;
       display: -ms-flexbox;
