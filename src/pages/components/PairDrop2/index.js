@@ -254,14 +254,15 @@ const PairDrop2 = ({ handleWrapper, History }) => {
             <span>Last Pr.</span>
             <FontAwesomeIcon icon="angle-down" size="lg" />
           </div>
-          <div
+
+          {/* <div
             className="title "
-         
             onClick={(_) => handleSort('vol24h', 'number')}
           >
             <span>24h Vol</span>
             <FontAwesomeIcon icon="angle-down" size="lg" />
-          </div>
+          </div> */}
+
           <div
             className="title "
             onClick={(_) => handleSort('change24h', 'number')}

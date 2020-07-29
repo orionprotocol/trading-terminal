@@ -122,8 +122,7 @@ export default function Line2({ currentQuote, data, handlePair, favourite, setFa
         </div>
       </div>
 
-      <div className="cell short" onClick={(_) => handlePair(data.symbolA, data.symbolB)}>
-        <span className="title-m">Last Pr.</span>
+      <div className="cell" onClick={(_) => handlePair(data.symbolA, data.symbolB)}>
         <div className="text">
           <span className="emp">
             {data ? data.lastPrice.toFixed(formatingPair.pricePrecision) : 0}
@@ -132,13 +131,13 @@ export default function Line2({ currentQuote, data, handlePair, favourite, setFa
         </div>
       </div>
 
-      <div className="cell short" onClick={(_) => handlePair(data.symbolA, data.symbolB)}>
+      {/* <div className="cell short" onClick={(_) => handlePair(data.symbolA, data.symbolB)}>
         <span className="title-m">24h Vol</span>
         <div className="text">
           <span className="emp">{vol24h}</span>
           <span className="small">${dollars.vol}</span>
         </div>
-      </div>
+      </div> */}
 
       <div className="cell chg">
         <div className="change">
