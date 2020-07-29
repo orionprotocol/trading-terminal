@@ -88,11 +88,11 @@ const Line = (props) => {
         <span>{props.currency}</span>
       </div>
       <span className="cell">
-        <span className="title-m">Wallet</span>
-        {props.wallet}
+        <span className="title-m">Wallet cabra</span>
+        {parseFloat(props.wallet).toFixed(5)} 
       </span>
       <span className="cell">
-        <span className="title-m">Contract</span> {props.contract}
+        <span className="title-m">Contract</span> {parseFloat(props.contract).toFixed(5)}
       </span>
       <span className="cell">
         <span className="title-m">In open order</span> 0

@@ -3,7 +3,7 @@ import React, { memo, useEffect, useState } from 'react';
 import { Select } from 'antd';
 import './index.scss';
 const { Option } = Select;
-const A = ['XRP', 'ETH', 'USDT', 'ERD'];
+const A = ['XRP', 'ETH', 'ERD','USDT', 'BTC'];
 const B = ['BTC', 'USDT'];
 const index = memo(
   ({ dropdownStyle, optsClass, handleChangeA, handleChangeB, filterPairA, filterPairB ,mode }) => {

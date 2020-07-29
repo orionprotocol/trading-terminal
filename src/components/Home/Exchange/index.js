@@ -60,7 +60,7 @@ export default function Exchange() {
       }
     }
   }, [supportTradingPairs, formatingPair]);
-  console.log(orderBook)
+  /* console.log(orderBook) */
   if (orderBook===null) return null
   return (
     <div className='container-exchange'>

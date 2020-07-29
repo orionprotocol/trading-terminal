@@ -12,6 +12,7 @@ const WalletsTable = (props) => {
   const assets = useSelector((state) => state.wallet.assets);
   const mode = useSelector((state) => state.general.mode);
   const balances = useSelector((state) => state.balances);
+  const supportTradingPairs = useSelector((state) => state.general.supportTradingPairs);
   /* Redux */
 
   const [contract, setContract] = useState({});
@@ -27,7 +28,47 @@ const WalletsTable = (props) => {
   const [initialLines, setinitialLines] = useState([]);
   const [filterCheck, setfilterCheck] = useState(false);
   const [searcher, setsearcher] = useState('');
-  console.log(lines);
+  
+const initialState = {
+    minQty: 0,
+    maxQty: 0,
+    minPrice: 0,
+    maxPrice: 0,
+    pricePrecision: 0,
+    qtyPrecision: 0,
+    baseAssetPrecision: 0,
+    quoteAssetPrecision: 0,
+  };
+  const [formatingPair, setformatingPair] = useState(initialState);
+
+  useEffect(() => {
+    setformatingPair(initialState);
+  }, []);
+
+  useEffect(() => {
+    let auxFormat=[]
+    if (supportTradingPairs.length > 0) {
+      if (formatingPair.pricePrecision === 0 && formatingPair.maxPrice === 0) {
+        supportTradingPairs.forEach((pair) => {
+          auxFormat.push({
+            pair:pair.symbolA,
+            minQty: pair.minQty,
+            maxQty: pair.maxQty,
+            minPrice: pair.minPrice,
+            maxPrice: pair.maxPrice,
+            pricePrecision: pair.pricePrecision,
+            qtyPrecision: pair.qtyPrecision,
+            baseAssetPrecision: pair.baseAssetPrecision,
+            quoteAssetPrecision: pair.quoteAssetPrecision,
+          })
+        });
+        setformatingPair(auxFormat);
+      }
+    }
+  }, [supportTradingPairs]);
+  /* END OF FORMATING NUMBERS SECTION*/
+
+console.log(formatingPair)
   useEffect(
     (_) => {
       let newContract = {},
@@ -119,7 +160,7 @@ const WalletsTable = (props) => {
       });
       setLines(
         AuxLines.filter((e) => {
-          if (parseFloat(e.contract) !== 0 && parseFloat(e.wallet) !== 0) return e;
+          if (parseFloat(e.contract) !== 0 && parseFloat(e.wallet) !== 0 && parseFloat(e.open) !== 0) return e;
         })
       );
     } else {

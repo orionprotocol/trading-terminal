@@ -26,7 +26,7 @@
 .js-orderbook {
   width: 100%;
   padding: 1px;
-
+  height: 100%;
   border-radius: 5px;
   &.Dark {
     background: #2a2a41;
@@ -193,7 +193,7 @@
     } */
   }
   .orders {
-    max-height: calc(50vh - 69px);
+    max-height: calc(50vh - 69px) !important;
     overflow-y: auto;
     .order {
       display: -webkit-box;
