@@ -63,10 +63,21 @@ const CommonInfo = ({ History }) => {
         });
       }
     }
+
   }, [supportTradingPairs, lastPrice, high, low]);
   /* END OF FORMATING NUMBERS STATE SECTION*/
 
-  /*  console.log("la precision segun el par", formatingPair) */
+
+/* Setting the title with the last price */
+useEffect(() => {
+  if (formatingPair.pricePrecision !== 0 && formatingPair.maxPrice !== 0) {
+    document.title = `${lastPrice.toFixed(formatingPair.pricePrecision)} | ${symbolA}${symbolB} | Orion Protocol`
+  }
+}, [formatingPair,lastPrice,symbolA,symbolB]);
+/* End of Setting the title with the last price */
+
+
+  /*  console.log(lastPrice.toFixed(formatingPair.pricePrecision)}) */
 
   const formatFunction = (vol) => {
     let volumen;

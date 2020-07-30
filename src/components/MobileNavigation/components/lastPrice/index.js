@@ -70,6 +70,14 @@ useEffect(() => {
   }, [supportTradingPairs, lastPrice, high, low]);
 /* End of format function */
 
+/* Setting the title with the last price */
+useEffect(() => {
+  if (formatingPair.pricePrecision !== 0 && formatingPair.maxPrice !== 0) {
+    document.title = `${lastPrice.toFixed(formatingPair.pricePrecision)} | ${symbolA}${symbolB} | Orion Protocol`
+  }
+}, [formatingPair,lastPrice,symbolA,symbolB]);
+/* End of Setting the title with the last price */
+
 /* Set dolar function */
 useEffect(
     (_) => {
