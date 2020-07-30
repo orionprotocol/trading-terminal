@@ -3460,7 +3460,7 @@ div {
 }
 @media screen and (min-width: 1300px) {
   .index {
-    padding-left: 72px;
+    
     .center-panel {
       .table-content {
         height: calc(40vh - 84px);
@@ -3759,7 +3759,7 @@ div {
     height: initial;
     .common-info {
       padding: 19px;
-      width: 50%;
+      width: 100%;
       .top {
         .star {
           font-size: 14px;
@@ -3815,15 +3815,15 @@ div {
       }
     }
     .left-panel {
-      height: auto;
+     /* height: auto;
       display: -webkit-box;
       display: -ms-flexbox;
-      display: flex;
+       display: flex;
       -webkit-box-pack: center;
       -ms-flex-pack: center;
-      justify-content: center;
+      justify-content: center; */
       .buy-sell {
-        width: 50%;
+        width: 100%;
         .top {
           button {
             padding: 12px 0;
@@ -4646,7 +4646,8 @@ input[type='number'] {
 @media (min-width: 992px) {
   .home-container,
   .dashboard-container {
-    width: 100%;
+  margin-left: 72px;
+    width: calc(100% - 72px);
     height: 100vh;
   }
 }

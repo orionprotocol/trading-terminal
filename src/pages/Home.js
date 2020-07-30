@@ -4,6 +4,8 @@ import { Col, Row } from 'antd';
 import MobileNavigation from '../components/MobileNavigation';
 import Loader from '../components/Loader';
 import PairDrop2 from './components/PairDrop2';
+
+import './styles/home.scss';
 const CommonInfo = lazy(() =>
   import(/* webpackChunkName: 'CommonInfo' */ '../components/Home/CommonInfo')
 );
@@ -72,13 +74,21 @@ function Home(props) {
 
           {/* Sections */}
           <Col xs={24}>
-            <Row gutter={[8]}>
+            <Row style={{height: 'calc(100vh - 40px)',display:'flex',justifyContent:'space-between'}}>
               <Col className="left-panel" xs={24} lg={4}>
-                {!active && <CommonInfo History={props} />}
+                {!active && (
+                  <div className="top">
+                    <CommonInfo History={props} />
+                  </div>
+                )}
 
-                {(!active || (active && exchange && !showPairsDropdown)) && <Exchange />}
+                {(!active || (active && exchange && !showPairsDropdown)) && (
+                  <div className="bottom">
+                    <Exchange />
+                  </div>
+                )}
               </Col>
-              <Col className="center-panel" xs={24} lg={16}>
+              <Col className="center-panel" xs={24} lg={15}>
                 <Row gutter={[0, 8]}>
                   <Col xs={24}>
                     {' '}
