@@ -74,7 +74,13 @@ function Home(props) {
 
           {/* Sections */}
           <Col xs={24}>
-            <Row style={{height: 'calc(100vh - 40px)',display:'flex',justifyContent:'space-between'}}>
+            <Row
+              style={{
+                height: 'calc(100vh - 40px)',
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
               <Col className="left-panel" xs={24} lg={4}>
                 {!active && (
                   <div className="top">
@@ -88,8 +94,8 @@ function Home(props) {
                   </div>
                 )}
               </Col>
-              <Col className="center-panel" xs={24} lg={15}>
-                <Row gutter={[0, 8]}>
+              <Col className="center-panel" xs={24} lg={16}>
+                <Row style={{ width: '99%', marginLeft: '4px' }}>
                   <Col xs={24}>
                     {' '}
                     {(!active || (active && chart && !showPairsDropdown)) && <TVChart />}
