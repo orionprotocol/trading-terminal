@@ -199,7 +199,7 @@ class CandlesService {
   static _getCandles(symbolInfo, from, to, resolution) {
     const interval = CandlesService._normalizeInterval(resolution);
     const exchange = symbolInfo.exchange;
-    const path = 'https://candles.orionprotocol.io/api/v1/candles';
+    const path = `${process.env.REACT_APP_CANDLES_URL}/candles`;
 
     const fetchPath =
       exchange == 'all'
