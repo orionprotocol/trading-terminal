@@ -63,17 +63,43 @@ function Home(props) {
           togglePairsDropdown={togglePairsDropdown}
           showPairsDropdown={showPairsDropdown}
         />
-
-        <Row className="home-container">
-          {/* Mobile modules */}
+          <div className="home-container">
           {!showPairsDropdown && <MobileNavigation />}
           {active && showPairsDropdown && (
             <PairDrop2 History={props.history} handleWrapper={togglePairsDropdown} />
           )}
+            <div className="left-panel">
+              <div className="left-panel-top">
+              <CommonInfo History={props} />
+              </div>
+              <div className={`left-panel-bottom ${exchange ? 'active':''} ${showPairsDropdown ? "show-pair": ""}`}>
+              <Exchange />
+            </div>
+            </div>
+            <div className="center-panel">
+              <div className={`center-panel-top ${chart ? 'active':''} ${showPairsDropdown ? "show-pair": ""}`}>
+                <TVChart />
+              </div>
+              <div className={`center-panel-bottom ${history ? 'active':''} ${showPairsDropdown ? "show-pair": ""}`}>
+              <Orders />
+              </div>
+            </div>
+            <div className={`right-panel ${orderbook ? 'active':''} ${showPairsDropdown ? "show-pair": ""}`}>
+            <OrderBooks />
+            </div>
+          </div>
+
+
+  {/*       <Row className="home-container"> */}
+          {/* Mobile modules */}
+          {/* {!showPairsDropdown && <MobileNavigation />}
+          {active && showPairsDropdown && (
+            <PairDrop2 History={props.history} handleWrapper={togglePairsDropdown} />
+          )} */}
           {/* Mobile modules */}
 
           {/* Sections */}
-          <Col xs={24}>
+        {/*   <Col xs={24}>
             <Row
               style={{
                 height: 'calc(100vh - 40px)',
@@ -94,7 +120,7 @@ function Home(props) {
                   </div>
                 )}
               </Col>
-              <Col className="center-panel" xs={24} lg={16}>
+            <Col className="center-panel" xs={24} lg={16}>
                 <Row style={{ width: '99%', marginLeft: '4px' }}>
                   <Col xs={24}>
                     {' '}
@@ -105,15 +131,15 @@ function Home(props) {
                     {(!active || (active && history && !showPairsDropdown)) && <Orders />}
                   </Col>
                 </Row>
-              </Col>
+              </Col> 
 
               <Col className="right-panel" xs={24} lg={4}>
                 {(!active || (active && orderbook && !showPairsDropdown)) && <OrderBooks />}
               </Col>
             </Row>
-          </Col>
+          </Col> */}
           {/* Sections */}
-        </Row>
+       {/*  </Row> */}
       </div>
     </Suspense>
   );

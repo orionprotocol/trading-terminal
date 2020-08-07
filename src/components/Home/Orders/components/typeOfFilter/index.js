@@ -4,9 +4,6 @@ import './typefilter.scss'
 
 const index = memo(({ handleType,mode }) => {
     return (
-
-    
-
         <div className="content-buttons-filter">
           <div className={`container-options-buttons ${mode}`}>
             <button

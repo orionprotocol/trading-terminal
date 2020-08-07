@@ -11,7 +11,7 @@ function Dashboard(props) {
     <div className="dashboard">
       <Sidebar history={props.history} />
 
-      <Row className="dashboard-container" gutter={[8]}>
+      <Row className="dashboard-container" style={{marginRight:'0'}} gutter={[8]}>
         <TotalBalances />
         <Col xs={24} lg={18}>
           <Row className="wrapper">

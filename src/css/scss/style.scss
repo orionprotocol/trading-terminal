@@ -3753,7 +3753,7 @@ div {
     }
   }
 }
-@media (max-width: 1130px) {
+@media (max-width: 991px) {
   .index {
     overflow: visible;
     height: initial;
@@ -4636,16 +4636,16 @@ input[type='number'] {
   padding: 16px;
 }
 
-@media (max-width: 991px) {
+/* @media (max-width: 991px) {
   .home-container,
   .dashboard-container {
-    margin-top: 30px;
+    margin-top: 30px; 
   }
-}
+} */
 
 @media (min-width: 992px) {
-  .home-container,
-  .dashboard-container {
+  .home-container
+  {
   margin-left: 72px;
     width: calc(100% - 72px);
     height: 100vh;

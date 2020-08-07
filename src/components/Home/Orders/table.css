@@ -191,16 +191,15 @@
 	color: #ffffff !important;
 } */
 
-@media (max-width: 1130px) {
+/* @media (max-width: 1130px) {
   .price-card-button {
     width: 50%;
   }
 
   .orders-dates {
-    /* background-color: aqua; */
     display: flex;
     justify-content: space-around;
     align-items: center;
   
   }
-}
+} */

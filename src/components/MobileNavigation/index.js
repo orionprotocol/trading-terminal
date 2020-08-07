@@ -42,7 +42,7 @@ const MobileNavigation = memo((_) => {
  
  useEffect((_) => {
    /*  window.addEventListener('resize', (_) => { */
-       if (window.innerWidth < 1130) {
+       if (window.innerWidth < 992) {
         setActive(true);
       }
    /*  }); */
